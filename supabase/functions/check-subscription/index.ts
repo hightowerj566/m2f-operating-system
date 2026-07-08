@@ -54,6 +54,13 @@ serve(async (req) => {
       }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
+    if (!stripeKey) {
+      logStep("No STRIPE_SECRET_KEY — returning unsubscribed");
+      return new Response(JSON.stringify({ subscribed: false, product_id: null, subscription_end: null, cancel_at_period_end: false }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const stripe = new Stripe(stripeKey, { apiVersion: "2025-08-27.basil" });
     const customers = await stripe.customers.list({ email: userEmail, limit: 1 });
 
