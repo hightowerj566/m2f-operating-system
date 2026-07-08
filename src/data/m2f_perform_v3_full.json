@@ -1,0 +1,430 @@
+{
+  "program": "M2F Perform 3.0",
+  "phases": [
+    {
+      "name": "Phase 1 - Physique Build",
+      "rep_style": { "primary": "6-8", "secondary": "8-10", "accessory": "10-15" },
+      "intensity_budget": 2,
+      "mesocycles": [
+        {
+          "meso": 1,
+          "days": [
+            {
+              "name": "Upper Strength (Chest + Back)",
+              "exercises": [
+                { "name": "Med Ball Chest Pass", "sets": 3, "reps": "4", "role": "explosive", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Barbell Bench Press", "sets": 4, "reps": "6", "role": "primary", "pair": null, "rest": 150, "intensity": null },
+                { "name": "Weighted Pull-ups", "sets": 4, "reps": "6", "role": "secondary", "pair": null, "rest": 120, "intensity": null },
+                { "name": "Incline DB Press", "sets": 3, "reps": "10", "role": "accessory", "pair": "D", "rest": null, "intensity": null },
+                { "name": "Chest Supported Row", "sets": 3, "reps": "10", "role": "accessory", "pair": "D", "rest": 60, "intensity": null },
+                { "name": "Cable Fly", "sets": 3, "reps": "15", "role": "accessory", "pair": "E", "rest": null, "intensity": null },
+                { "name": "Lat Pulldown", "sets": 3, "reps": "12", "role": "accessory", "pair": "E", "rest": 60, "intensity": "myo-reps" },
+                { "name": "DB Lateral Raise", "sets": 3, "reps": "15", "role": "accessory", "pair": "F", "rest": null, "intensity": null },
+                { "name": "Face Pull", "sets": 3, "reps": "15", "role": "structural", "pair": "F", "rest": 45, "intensity": null }
+              ]
+            },
+            {
+              "name": "Lower Strength (Squat)",
+              "exercises": [
+                { "name": "Box Jump", "sets": 3, "reps": "3", "role": "explosive", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Back Squat", "sets": 4, "reps": "6", "role": "primary", "pair": null, "rest": 150, "intensity": null },
+                { "name": "Romanian Deadlift", "sets": 3, "reps": "8", "role": "secondary", "pair": null, "rest": 120, "intensity": null },
+                { "name": "Leg Press", "sets": 3, "reps": "10", "role": "accessory", "pair": "D", "rest": null, "intensity": null },
+                { "name": "Lying Leg Curl", "sets": 3, "reps": "12", "role": "accessory", "pair": "D", "rest": 60, "intensity": null },
+                { "name": "Walking Lunge", "sets": 3, "reps": "10 each", "role": "accessory", "pair": "E", "rest": null, "intensity": null },
+                { "name": "Standing Calf Raise", "sets": 4, "reps": "15", "role": "accessory", "pair": "E", "rest": 60, "intensity": "pause reps" }
+              ]
+            },
+            {
+              "name": "Conditioning + Core + Arms",
+              "exercises": [
+                { "name": "Zone 2 Cardio", "sets": 1, "reps": "25 min", "role": "conditioning", "pair": null, "rest": null, "intensity": "steady state" },
+                { "name": "Ab Wheel", "sets": 3, "reps": "10", "role": "core", "pair": "B", "rest": null, "intensity": null },
+                { "name": "Pallof Press", "sets": 3, "reps": "12 each", "role": "core", "pair": "B", "rest": 45, "intensity": null },
+                { "name": "Farmer Carry", "sets": 3, "reps": "40m", "role": "core", "pair": null, "rest": 60, "intensity": null },
+                { "name": "EZ Bar Curl", "sets": 3, "reps": "12", "role": "accessory", "pair": "D", "rest": null, "intensity": null },
+                { "name": "Overhead Tricep Extension", "sets": 3, "reps": "12", "role": "accessory", "pair": "D", "rest": 60, "intensity": null }
+              ]
+            },
+            {
+              "name": "Upper Hypertrophy (Shoulders)",
+              "exercises": [
+                { "name": "Overhead Press", "sets": 4, "reps": "8", "role": "primary", "pair": null, "rest": 120, "intensity": null },
+                { "name": "Barbell Row", "sets": 4, "reps": "10", "role": "secondary", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Landmine Press", "sets": 3, "reps": "10", "role": "accessory", "pair": "C", "rest": null, "intensity": null },
+                { "name": "Seated Cable Row", "sets": 3, "reps": "10", "role": "accessory", "pair": "C", "rest": 60, "intensity": null },
+                { "name": "Cable Lateral Raise", "sets": 4, "reps": "15", "role": "accessory", "pair": "D", "rest": null, "intensity": "mechanical drop set" },
+                { "name": "Reverse Pec Deck", "sets": 3, "reps": "15", "role": "accessory", "pair": "D", "rest": 60, "intensity": null },
+                { "name": "Incline DB Curl", "sets": 3, "reps": "12", "role": "accessory", "pair": "E", "rest": null, "intensity": null },
+                { "name": "Cable Pushdown", "sets": 4, "reps": "12", "role": "accessory", "pair": "E", "rest": 60, "intensity": null },
+                { "name": "Cable External Rotation", "sets": 2, "reps": "15", "role": "structural", "pair": null, "rest": 45, "intensity": null }
+              ]
+            },
+            {
+              "name": "Lower Hypertrophy (Hinge)",
+              "exercises": [
+                { "name": "Kettlebell Swing", "sets": 3, "reps": "5", "role": "explosive", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Trap Bar Deadlift", "sets": 4, "reps": "6", "role": "primary", "pair": null, "rest": 150, "intensity": null },
+                { "name": "Hack Squat", "sets": 3, "reps": "10", "role": "secondary", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Seated Leg Curl", "sets": 3, "reps": "12", "role": "accessory", "pair": "D", "rest": null, "intensity": "myo-reps" },
+                { "name": "Bulgarian Split Squat", "sets": 3, "reps": "10 each", "role": "accessory", "pair": "D", "rest": 60, "intensity": null },
+                { "name": "Hip Thrust", "sets": 3, "reps": "12", "role": "accessory", "pair": "E", "rest": null, "intensity": null },
+                { "name": "Seated Calf Raise", "sets": 4, "reps": "15", "role": "accessory", "pair": "E", "rest": 60, "intensity": null },
+                { "name": "DB Lateral Raise", "sets": 3, "reps": "15", "role": "accessory", "pair": null, "rest": 45, "intensity": null }
+              ]
+            }
+          ]
+        },
+        {
+          "meso": 2,
+          "days": [
+            {
+              "name": "Upper Strength (Chest + Back)",
+              "exercises": [
+                { "name": "Med Ball Slam", "sets": 3, "reps": "4", "role": "explosive", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Incline Barbell Press", "sets": 4, "reps": "6", "role": "primary", "pair": null, "rest": 150, "intensity": null },
+                { "name": "Chin-ups", "sets": 4, "reps": "6", "role": "secondary", "pair": null, "rest": 120, "intensity": null },
+                { "name": "Flat DB Press", "sets": 3, "reps": "10", "role": "accessory", "pair": "D", "rest": null, "intensity": null },
+                { "name": "Single Arm DB Row", "sets": 3, "reps": "10 each", "role": "accessory", "pair": "D", "rest": 60, "intensity": null },
+                { "name": "Machine Chest Press", "sets": 3, "reps": "12", "role": "accessory", "pair": "E", "rest": null, "intensity": "drop set" },
+                { "name": "Cable Pullover", "sets": 3, "reps": "12", "role": "accessory", "pair": "E", "rest": 60, "intensity": null },
+                { "name": "Cable Lateral Raise", "sets": 3, "reps": "15", "role": "accessory", "pair": "F", "rest": null, "intensity": null },
+                { "name": "Band Pull-Apart", "sets": 3, "reps": "20", "role": "structural", "pair": "F", "rest": 45, "intensity": null }
+              ]
+            },
+            {
+              "name": "Lower Strength (Squat)",
+              "exercises": [
+                { "name": "Broad Jump", "sets": 3, "reps": "3", "role": "explosive", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Front Squat", "sets": 4, "reps": "6", "role": "primary", "pair": null, "rest": 150, "intensity": null },
+                { "name": "Good Morning", "sets": 3, "reps": "8", "role": "secondary", "pair": null, "rest": 120, "intensity": null },
+                { "name": "Leg Extension", "sets": 3, "reps": "12", "role": "accessory", "pair": "D", "rest": null, "intensity": null },
+                { "name": "Nordic Curl (eccentric)", "sets": 3, "reps": "6", "role": "accessory", "pair": "D", "rest": 60, "intensity": null },
+                { "name": "Reverse Lunge", "sets": 3, "reps": "10 each", "role": "accessory", "pair": "E", "rest": null, "intensity": null },
+                { "name": "Seated Calf Raise", "sets": 4, "reps": "15", "role": "accessory", "pair": "E", "rest": 60, "intensity": null }
+              ]
+            },
+            {
+              "name": "Conditioning + Core + Arms",
+              "exercises": [
+                { "name": "Zone 2 Cardio", "sets": 1, "reps": "25 min", "role": "conditioning", "pair": null, "rest": null, "intensity": "steady state" },
+                { "name": "Dead Bug", "sets": 3, "reps": "10 each", "role": "core", "pair": "B", "rest": null, "intensity": null },
+                { "name": "Cable Woodchop", "sets": 3, "reps": "12 each", "role": "core", "pair": "B", "rest": 45, "intensity": null },
+                { "name": "Suitcase Carry", "sets": 3, "reps": "40m each", "role": "core", "pair": null, "rest": 60, "intensity": null },
+                { "name": "Hammer Curl", "sets": 3, "reps": "12", "role": "accessory", "pair": "D", "rest": null, "intensity": null },
+                { "name": "Dip", "sets": 3, "reps": "10", "role": "accessory", "pair": "D", "rest": 60, "intensity": null }
+              ]
+            },
+            {
+              "name": "Upper Hypertrophy (Shoulders)",
+              "exercises": [
+                { "name": "Push Press", "sets": 4, "reps": "6", "role": "primary", "pair": null, "rest": 120, "intensity": null },
+                { "name": "Single Arm DB Row", "sets": 4, "reps": "10 each", "role": "secondary", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Machine Chest Press", "sets": 3, "reps": "10", "role": "accessory", "pair": "C", "rest": null, "intensity": null },
+                { "name": "Chest Supported Row", "sets": 3, "reps": "10", "role": "accessory", "pair": "C", "rest": 60, "intensity": null },
+                { "name": "DB Lateral Raise", "sets": 4, "reps": "15", "role": "accessory", "pair": "D", "rest": null, "intensity": null },
+                { "name": "Cable Face Pull", "sets": 3, "reps": "15", "role": "accessory", "pair": "D", "rest": 60, "intensity": null },
+                { "name": "Preacher Curl", "sets": 3, "reps": "12", "role": "accessory", "pair": "E", "rest": null, "intensity": null },
+                { "name": "Overhead Tricep Extension", "sets": 4, "reps": "12", "role": "accessory", "pair": "E", "rest": 60, "intensity": null },
+                { "name": "Trap 3 Raise", "sets": 2, "reps": "15", "role": "structural", "pair": null, "rest": 45, "intensity": null }
+              ]
+            },
+            {
+              "name": "Lower Hypertrophy (Hinge)",
+              "exercises": [
+                { "name": "Hang Power Clean", "sets": 3, "reps": "3", "role": "explosive", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Romanian Deadlift", "sets": 4, "reps": "8", "role": "primary", "pair": null, "rest": 150, "intensity": null },
+                { "name": "Leg Press", "sets": 3, "reps": "10", "role": "secondary", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Lying Leg Curl", "sets": 3, "reps": "12", "role": "accessory", "pair": "D", "rest": null, "intensity": "rest-pause" },
+                { "name": "Step-Up", "sets": 3, "reps": "10 each", "role": "accessory", "pair": "D", "rest": 60, "intensity": null },
+                { "name": "Cable Pull-Through", "sets": 3, "reps": "12", "role": "accessory", "pair": "E", "rest": null, "intensity": null },
+                { "name": "Standing Calf Raise", "sets": 4, "reps": "15", "role": "accessory", "pair": "E", "rest": 60, "intensity": null },
+                { "name": "Machine Lateral Raise", "sets": 3, "reps": "15", "role": "accessory", "pair": null, "rest": 45, "intensity": null }
+              ]
+            }
+          ]
+        },
+        {
+          "meso": 3,
+          "days": [
+            {
+              "name": "Upper Strength (Chest + Back)",
+              "exercises": [
+                { "name": "Plyo Push-up", "sets": 3, "reps": "4", "role": "explosive", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Close Grip Bench Press", "sets": 4, "reps": "6", "role": "primary", "pair": null, "rest": 150, "intensity": null },
+                { "name": "Pull-ups", "sets": 4, "reps": "6", "role": "secondary", "pair": null, "rest": 120, "intensity": null },
+                { "name": "Landmine Press", "sets": 3, "reps": "10", "role": "accessory", "pair": "D", "rest": null, "intensity": null },
+                { "name": "Seal Row", "sets": 3, "reps": "10", "role": "accessory", "pair": "D", "rest": 60, "intensity": null },
+                { "name": "Pec Deck", "sets": 3, "reps": "15", "role": "accessory", "pair": "E", "rest": null, "intensity": null },
+                { "name": "Straight Arm Pulldown", "sets": 3, "reps": "12", "role": "accessory", "pair": "E", "rest": 60, "intensity": null },
+                { "name": "Plate Lateral Raise", "sets": 3, "reps": "15", "role": "accessory", "pair": "F", "rest": null, "intensity": null },
+                { "name": "Prone Y Raise", "sets": 3, "reps": "12", "role": "structural", "pair": "F", "rest": 45, "intensity": null }
+              ]
+            },
+            {
+              "name": "Lower Strength (Squat)",
+              "exercises": [
+                { "name": "Depth Jump", "sets": 3, "reps": "3", "role": "explosive", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Safety Bar Squat", "sets": 4, "reps": "6", "role": "primary", "pair": null, "rest": 150, "intensity": null },
+                { "name": "Sumo Deadlift", "sets": 3, "reps": "8", "role": "secondary", "pair": null, "rest": 120, "intensity": null },
+                { "name": "Hack Squat", "sets": 3, "reps": "10", "role": "accessory", "pair": "D", "rest": null, "intensity": null },
+                { "name": "Seated Leg Curl", "sets": 3, "reps": "12", "role": "accessory", "pair": "D", "rest": 60, "intensity": null },
+                { "name": "Goblet Squat", "sets": 3, "reps": "12", "role": "accessory", "pair": "E", "rest": null, "intensity": null },
+                { "name": "Leg Press Calf Raise", "sets": 4, "reps": "15", "role": "accessory", "pair": "E", "rest": 60, "intensity": null }
+              ]
+            },
+            {
+              "name": "Conditioning + Core + Arms",
+              "exercises": [
+                { "name": "Zone 2 Cardio", "sets": 1, "reps": "25 min", "role": "conditioning", "pair": null, "rest": null, "intensity": "steady state" },
+                { "name": "Hanging Leg Raise", "sets": 3, "reps": "10", "role": "core", "pair": "B", "rest": null, "intensity": null },
+                { "name": "Landmine Rotation", "sets": 3, "reps": "10 each", "role": "core", "pair": "B", "rest": 45, "intensity": null },
+                { "name": "Overhead Carry", "sets": 3, "reps": "40m", "role": "core", "pair": null, "rest": 60, "intensity": null },
+                { "name": "Cable Curl", "sets": 3, "reps": "12", "role": "accessory", "pair": "D", "rest": null, "intensity": null },
+                { "name": "Skull Crusher", "sets": 3, "reps": "12", "role": "accessory", "pair": "D", "rest": 60, "intensity": null }
+              ]
+            },
+            {
+              "name": "Upper Hypertrophy (Shoulders)",
+              "exercises": [
+                { "name": "Seated DB Press", "sets": 4, "reps": "8", "role": "primary", "pair": null, "rest": 120, "intensity": null },
+                { "name": "Pendlay Row", "sets": 4, "reps": "8", "role": "secondary", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Incline Machine Press", "sets": 3, "reps": "10", "role": "accessory", "pair": "C", "rest": null, "intensity": null },
+                { "name": "Cable Row", "sets": 3, "reps": "10", "role": "accessory", "pair": "C", "rest": 60, "intensity": null },
+                { "name": "Machine Lateral Raise", "sets": 4, "reps": "15", "role": "accessory", "pair": "D", "rest": null, "intensity": "mechanical drop set" },
+                { "name": "Rear Delt Fly", "sets": 3, "reps": "15", "role": "accessory", "pair": "D", "rest": 60, "intensity": null },
+                { "name": "Spider Curl", "sets": 3, "reps": "12", "role": "accessory", "pair": "E", "rest": null, "intensity": null },
+                { "name": "Rope Pushdown", "sets": 4, "reps": "12", "role": "accessory", "pair": "E", "rest": 60, "intensity": null },
+                { "name": "Wall Slides", "sets": 2, "reps": "10", "role": "structural", "pair": null, "rest": 45, "intensity": null }
+              ]
+            },
+            {
+              "name": "Lower Hypertrophy (Hinge)",
+              "exercises": [
+                { "name": "Power Clean", "sets": 3, "reps": "3", "role": "explosive", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Rack Pull", "sets": 4, "reps": "6", "role": "primary", "pair": null, "rest": 150, "intensity": null },
+                { "name": "Leg Extension", "sets": 3, "reps": "12", "role": "secondary", "pair": null, "rest": 90, "intensity": null },
+                { "name": "GHR", "sets": 3, "reps": "10", "role": "accessory", "pair": "D", "rest": null, "intensity": null },
+                { "name": "Walking Lunge", "sets": 3, "reps": "10 each", "role": "accessory", "pair": "D", "rest": 60, "intensity": null },
+                { "name": "Barbell Hip Thrust", "sets": 3, "reps": "12", "role": "accessory", "pair": "E", "rest": null, "intensity": null },
+                { "name": "Standing Calf Raise", "sets": 4, "reps": "15", "role": "accessory", "pair": "E", "rest": 60, "intensity": null },
+                { "name": "Cable Lateral Raise", "sets": 3, "reps": "15", "role": "accessory", "pair": null, "rest": 45, "intensity": null }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Phase 2 - Strength & Performance",
+      "rep_style": { "primary": "3-5", "secondary": "5-8", "accessory": "8-12" },
+      "intensity_budget": 3,
+      "mesocycles": [
+        {
+          "meso": 1,
+          "days": [
+            {
+              "name": "Upper Strength (Chest + Back)",
+              "exercises": [
+                { "name": "Med Ball Chest Pass", "sets": 4, "reps": "3", "role": "explosive", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Barbell Bench Press", "sets": 5, "reps": "4", "role": "primary", "pair": null, "rest": 180, "intensity": "cluster last set" },
+                { "name": "Weighted Pull-ups", "sets": 4, "reps": "5", "role": "secondary", "pair": null, "rest": 120, "intensity": null },
+                { "name": "Incline DB Press", "sets": 3, "reps": "8", "role": "accessory", "pair": "D", "rest": null, "intensity": null },
+                { "name": "Chest Supported Row", "sets": 3, "reps": "8", "role": "accessory", "pair": "D", "rest": 60, "intensity": null },
+                { "name": "Cable Fly", "sets": 3, "reps": "12", "role": "accessory", "pair": "E", "rest": null, "intensity": null },
+                { "name": "Lat Pulldown", "sets": 3, "reps": "10", "role": "accessory", "pair": "E", "rest": 60, "intensity": null },
+                { "name": "DB Lateral Raise", "sets": 3, "reps": "12", "role": "accessory", "pair": "F", "rest": null, "intensity": null },
+                { "name": "Face Pull", "sets": 3, "reps": "15", "role": "structural", "pair": "F", "rest": 45, "intensity": null }
+              ]
+            },
+            {
+              "name": "Lower Strength (Squat)",
+              "exercises": [
+                { "name": "Box Jump", "sets": 4, "reps": "3", "role": "explosive", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Back Squat", "sets": 5, "reps": "4", "role": "primary", "pair": null, "rest": 180, "intensity": "tempo first rep (3s eccentric)" },
+                { "name": "Romanian Deadlift", "sets": 4, "reps": "6", "role": "secondary", "pair": null, "rest": 120, "intensity": null },
+                { "name": "Leg Press", "sets": 3, "reps": "10", "role": "accessory", "pair": "D", "rest": null, "intensity": null },
+                { "name": "Lying Leg Curl", "sets": 3, "reps": "10", "role": "accessory", "pair": "D", "rest": 60, "intensity": null },
+                { "name": "Standing Calf Raise", "sets": 4, "reps": "12", "role": "accessory", "pair": null, "rest": 60, "intensity": "pause reps" }
+              ]
+            },
+            {
+              "name": "Conditioning + Core + Arms",
+              "exercises": [
+                { "name": "Zone 2 Cardio", "sets": 1, "reps": "25 min", "role": "conditioning", "pair": null, "rest": null, "intensity": "steady state" },
+                { "name": "Ab Wheel", "sets": 3, "reps": "10", "role": "core", "pair": "B", "rest": null, "intensity": null },
+                { "name": "Pallof Press", "sets": 3, "reps": "12 each", "role": "core", "pair": "B", "rest": 45, "intensity": null },
+                { "name": "Farmer Carry", "sets": 3, "reps": "50m", "role": "core", "pair": null, "rest": 60, "intensity": null },
+                { "name": "EZ Bar Curl", "sets": 3, "reps": "10", "role": "accessory", "pair": "D", "rest": null, "intensity": null },
+                { "name": "Cable Pushdown", "sets": 3, "reps": "10", "role": "accessory", "pair": "D", "rest": 60, "intensity": null }
+              ]
+            },
+            {
+              "name": "Upper Hypertrophy (Shoulders)",
+              "exercises": [
+                { "name": "Push Press", "sets": 4, "reps": "3", "role": "primary", "pair": null, "rest": 120, "intensity": null },
+                { "name": "Barbell Row", "sets": 4, "reps": "6", "role": "secondary", "pair": null, "rest": 90, "intensity": "cluster set" },
+                { "name": "Machine Shoulder Press", "sets": 3, "reps": "8", "role": "accessory", "pair": "C", "rest": null, "intensity": null },
+                { "name": "Seated Cable Row", "sets": 3, "reps": "8", "role": "accessory", "pair": "C", "rest": 60, "intensity": null },
+                { "name": "Cable Lateral Raise", "sets": 4, "reps": "12", "role": "accessory", "pair": "D", "rest": null, "intensity": "mechanical drop set" },
+                { "name": "Reverse Pec Deck", "sets": 3, "reps": "12", "role": "accessory", "pair": "D", "rest": 60, "intensity": null },
+                { "name": "Incline DB Curl", "sets": 3, "reps": "10", "role": "accessory", "pair": "E", "rest": null, "intensity": null },
+                { "name": "Overhead Tricep Extension", "sets": 3, "reps": "10", "role": "accessory", "pair": "E", "rest": 60, "intensity": null },
+                { "name": "Cable External Rotation", "sets": 2, "reps": "15", "role": "structural", "pair": null, "rest": 45, "intensity": null }
+              ]
+            },
+            {
+              "name": "Lower Hypertrophy (Hinge)",
+              "exercises": [
+                { "name": "Hang Power Clean", "sets": 4, "reps": "3", "role": "explosive", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Trap Bar Deadlift", "sets": 4, "reps": "4", "role": "primary", "pair": null, "rest": 180, "intensity": null },
+                { "name": "Hack Squat", "sets": 3, "reps": "10", "role": "secondary", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Seated Leg Curl", "sets": 3, "reps": "10", "role": "accessory", "pair": "D", "rest": null, "intensity": "myo-reps" },
+                { "name": "Bulgarian Split Squat", "sets": 3, "reps": "8 each", "role": "accessory", "pair": "D", "rest": 60, "intensity": null },
+                { "name": "Hip Thrust", "sets": 3, "reps": "10", "role": "accessory", "pair": "E", "rest": null, "intensity": null },
+                { "name": "Seated Calf Raise", "sets": 4, "reps": "12", "role": "accessory", "pair": "E", "rest": 60, "intensity": null },
+                { "name": "DB Lateral Raise", "sets": 3, "reps": "12", "role": "accessory", "pair": null, "rest": 45, "intensity": null }
+              ]
+            }
+          ]
+        },
+        {
+          "meso": 2,
+          "days": [
+            {
+              "name": "Upper Strength (Chest + Back)",
+              "exercises": [
+                { "name": "Med Ball Slam", "sets": 4, "reps": "3", "role": "explosive", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Incline Barbell Press", "sets": 5, "reps": "4", "role": "primary", "pair": null, "rest": 180, "intensity": null },
+                { "name": "Chin-ups", "sets": 4, "reps": "5", "role": "secondary", "pair": null, "rest": 120, "intensity": null },
+                { "name": "Flat DB Press", "sets": 3, "reps": "8", "role": "accessory", "pair": "D", "rest": null, "intensity": null },
+                { "name": "Single Arm DB Row", "sets": 3, "reps": "8 each", "role": "accessory", "pair": "D", "rest": 60, "intensity": null },
+                { "name": "Machine Chest Press", "sets": 3, "reps": "10", "role": "accessory", "pair": "E", "rest": null, "intensity": "drop set" },
+                { "name": "Cable Pullover", "sets": 3, "reps": "10", "role": "accessory", "pair": "E", "rest": 60, "intensity": null },
+                { "name": "Cable Lateral Raise", "sets": 3, "reps": "12", "role": "accessory", "pair": "F", "rest": null, "intensity": null },
+                { "name": "Band Pull-Apart", "sets": 3, "reps": "20", "role": "structural", "pair": "F", "rest": 45, "intensity": null }
+              ]
+            },
+            {
+              "name": "Lower Strength (Squat)",
+              "exercises": [
+                { "name": "Broad Jump", "sets": 4, "reps": "3", "role": "explosive", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Front Squat", "sets": 5, "reps": "4", "role": "primary", "pair": null, "rest": 180, "intensity": "tempo first rep" },
+                { "name": "Deficit RDL", "sets": 4, "reps": "6", "role": "secondary", "pair": null, "rest": 120, "intensity": null },
+                { "name": "Leg Extension", "sets": 3, "reps": "10", "role": "accessory", "pair": "D", "rest": null, "intensity": null },
+                { "name": "Nordic Curl (eccentric)", "sets": 3, "reps": "6", "role": "accessory", "pair": "D", "rest": 60, "intensity": null },
+                { "name": "Seated Calf Raise", "sets": 4, "reps": "12", "role": "accessory", "pair": null, "rest": 60, "intensity": null }
+              ]
+            },
+            {
+              "name": "Conditioning + Core + Arms",
+              "exercises": [
+                { "name": "Zone 2 Cardio", "sets": 1, "reps": "25 min", "role": "conditioning", "pair": null, "rest": null, "intensity": "steady state" },
+                { "name": "Dead Bug", "sets": 3, "reps": "10 each", "role": "core", "pair": "B", "rest": null, "intensity": null },
+                { "name": "Cable Woodchop", "sets": 3, "reps": "12 each", "role": "core", "pair": "B", "rest": 45, "intensity": null },
+                { "name": "Suitcase Carry", "sets": 3, "reps": "40m each", "role": "core", "pair": null, "rest": 60, "intensity": null },
+                { "name": "Hammer Curl", "sets": 3, "reps": "10", "role": "accessory", "pair": "D", "rest": null, "intensity": null },
+                { "name": "Dip", "sets": 3, "reps": "8", "role": "accessory", "pair": "D", "rest": 60, "intensity": null }
+              ]
+            },
+            {
+              "name": "Upper Hypertrophy (Shoulders)",
+              "exercises": [
+                { "name": "Landmine Push Press", "sets": 4, "reps": "3 each", "role": "primary", "pair": null, "rest": 120, "intensity": null },
+                { "name": "Pendlay Row", "sets": 4, "reps": "5", "role": "secondary", "pair": null, "rest": 90, "intensity": null },
+                { "name": "DB Shoulder Press", "sets": 3, "reps": "8", "role": "accessory", "pair": "C", "rest": null, "intensity": null },
+                { "name": "Chest Supported Row", "sets": 3, "reps": "8", "role": "accessory", "pair": "C", "rest": 60, "intensity": null },
+                { "name": "DB Lateral Raise", "sets": 4, "reps": "12", "role": "accessory", "pair": "D", "rest": null, "intensity": null },
+                { "name": "Cable Face Pull", "sets": 3, "reps": "15", "role": "accessory", "pair": "D", "rest": 60, "intensity": null },
+                { "name": "Preacher Curl", "sets": 3, "reps": "10", "role": "accessory", "pair": "E", "rest": null, "intensity": null },
+                { "name": "Skull Crusher", "sets": 3, "reps": "10", "role": "accessory", "pair": "E", "rest": 60, "intensity": "rest-pause" },
+                { "name": "Trap 3 Raise", "sets": 2, "reps": "15", "role": "structural", "pair": null, "rest": 45, "intensity": null }
+              ]
+            },
+            {
+              "name": "Lower Hypertrophy (Hinge)",
+              "exercises": [
+                { "name": "Power Clean", "sets": 4, "reps": "3", "role": "explosive", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Romanian Deadlift", "sets": 4, "reps": "5", "role": "primary", "pair": null, "rest": 180, "intensity": null },
+                { "name": "Leg Press", "sets": 3, "reps": "10", "role": "secondary", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Lying Leg Curl", "sets": 3, "reps": "10", "role": "accessory", "pair": "D", "rest": null, "intensity": "rest-pause" },
+                { "name": "Step-Up", "sets": 3, "reps": "8 each", "role": "accessory", "pair": "D", "rest": 60, "intensity": null },
+                { "name": "Cable Pull-Through", "sets": 3, "reps": "12", "role": "accessory", "pair": "E", "rest": null, "intensity": null },
+                { "name": "Standing Calf Raise", "sets": 4, "reps": "12", "role": "accessory", "pair": "E", "rest": 60, "intensity": null },
+                { "name": "Machine Lateral Raise", "sets": 3, "reps": "12", "role": "accessory", "pair": null, "rest": 45, "intensity": null }
+              ]
+            }
+          ]
+        },
+        {
+          "meso": 3,
+          "days": [
+            {
+              "name": "Upper Strength (Chest + Back)",
+              "exercises": [
+                { "name": "Plyo Push-up", "sets": 4, "reps": "3", "role": "explosive", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Close Grip Bench Press", "sets": 5, "reps": "4", "role": "primary", "pair": null, "rest": 180, "intensity": "cluster last set" },
+                { "name": "Pull-ups", "sets": 4, "reps": "5", "role": "secondary", "pair": null, "rest": 120, "intensity": null },
+                { "name": "Landmine Press", "sets": 3, "reps": "8", "role": "accessory", "pair": "D", "rest": null, "intensity": null },
+                { "name": "Seal Row", "sets": 3, "reps": "8", "role": "accessory", "pair": "D", "rest": 60, "intensity": null },
+                { "name": "Pec Deck", "sets": 3, "reps": "12", "role": "accessory", "pair": "E", "rest": null, "intensity": null },
+                { "name": "Straight Arm Pulldown", "sets": 3, "reps": "10", "role": "accessory", "pair": "E", "rest": 60, "intensity": null },
+                { "name": "Plate Lateral Raise", "sets": 3, "reps": "12", "role": "accessory", "pair": "F", "rest": null, "intensity": null },
+                { "name": "Prone Y Raise", "sets": 3, "reps": "12", "role": "structural", "pair": "F", "rest": 45, "intensity": null }
+              ]
+            },
+            {
+              "name": "Lower Strength (Squat)",
+              "exercises": [
+                { "name": "Depth Jump", "sets": 4, "reps": "3", "role": "explosive", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Safety Bar Squat", "sets": 5, "reps": "4", "role": "primary", "pair": null, "rest": 180, "intensity": null },
+                { "name": "Good Morning", "sets": 4, "reps": "6", "role": "secondary", "pair": null, "rest": 120, "intensity": null },
+                { "name": "Hack Squat", "sets": 3, "reps": "10", "role": "accessory", "pair": "D", "rest": null, "intensity": null },
+                { "name": "Seated Leg Curl", "sets": 3, "reps": "10", "role": "accessory", "pair": "D", "rest": 60, "intensity": null },
+                { "name": "Leg Press Calf Raise", "sets": 4, "reps": "12", "role": "accessory", "pair": null, "rest": 60, "intensity": null }
+              ]
+            },
+            {
+              "name": "Conditioning + Core + Arms",
+              "exercises": [
+                { "name": "Zone 2 Cardio", "sets": 1, "reps": "25 min", "role": "conditioning", "pair": null, "rest": null, "intensity": "steady state" },
+                { "name": "Hanging Leg Raise", "sets": 3, "reps": "10", "role": "core", "pair": "B", "rest": null, "intensity": null },
+                { "name": "Landmine Rotation", "sets": 3, "reps": "10 each", "role": "core", "pair": "B", "rest": 45, "intensity": null },
+                { "name": "Overhead Carry", "sets": 3, "reps": "40m", "role": "core", "pair": null, "rest": 60, "intensity": null },
+                { "name": "Cable Curl", "sets": 3, "reps": "10", "role": "accessory", "pair": "D", "rest": null, "intensity": null },
+                { "name": "Rope Pushdown", "sets": 3, "reps": "10", "role": "accessory", "pair": "D", "rest": 60, "intensity": null }
+              ]
+            },
+            {
+              "name": "Upper Hypertrophy (Shoulders)",
+              "exercises": [
+                { "name": "Strict Press", "sets": 4, "reps": "5", "role": "primary", "pair": null, "rest": 120, "intensity": null },
+                { "name": "Cable Row", "sets": 4, "reps": "6", "role": "secondary", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Incline Machine Press", "sets": 3, "reps": "8", "role": "accessory", "pair": "C", "rest": null, "intensity": null },
+                { "name": "Meadows Row", "sets": 3, "reps": "8 each", "role": "accessory", "pair": "C", "rest": 60, "intensity": null },
+                { "name": "Machine Lateral Raise", "sets": 4, "reps": "12", "role": "accessory", "pair": "D", "rest": null, "intensity": "mechanical drop set" },
+                { "name": "Rear Delt Fly", "sets": 3, "reps": "12", "role": "accessory", "pair": "D", "rest": 60, "intensity": null },
+                { "name": "Spider Curl", "sets": 3, "reps": "10", "role": "accessory", "pair": "E", "rest": null, "intensity": null },
+                { "name": "Rope Pushdown", "sets": 4, "reps": "10", "role": "accessory", "pair": "E", "rest": 60, "intensity": null },
+                { "name": "Wall Slides", "sets": 2, "reps": "10", "role": "structural", "pair": null, "rest": 45, "intensity": null }
+              ]
+            },
+            {
+              "name": "Lower Hypertrophy (Hinge)",
+              "exercises": [
+                { "name": "Clean Pull", "sets": 4, "reps": "3", "role": "explosive", "pair": null, "rest": 90, "intensity": null },
+                { "name": "Rack Pull", "sets": 4, "reps": "4", "role": "primary", "pair": null, "rest": 180, "intensity": null },
+                { "name": "Leg Extension", "sets": 3, "reps": "12", "role": "secondary", "pair": null, "rest": 90, "intensity": null },
+                { "name": "GHR", "sets": 3, "reps": "8", "role": "accessory", "pair": "D", "rest": null, "intensity": null },
+                { "name": "Reverse Lunge", "sets": 3, "reps": "8 each", "role": "accessory", "pair": "D", "rest": 60, "intensity": null },
+                { "name": "Barbell Hip Thrust", "sets": 3, "reps": "10", "role": "accessory", "pair": "E", "rest": null, "intensity": null },
+                { "name": "Standing Calf Raise", "sets": 4, "reps": "12", "role": "accessory", "pair": "E", "rest": 60, "intensity": null },
+                { "name": "Cable Lateral Raise", "sets": 3, "reps": "12", "role": "accessory", "pair": null, "rest": 45, "intensity": null }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

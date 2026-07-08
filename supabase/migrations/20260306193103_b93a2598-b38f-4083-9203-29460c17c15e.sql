@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX IF NOT EXISTS user_maxes_user_exercise_unique ON public.user_maxes (user_id, exercise_name);

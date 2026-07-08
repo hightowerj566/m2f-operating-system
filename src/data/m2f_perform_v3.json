@@ -1,0 +1,447 @@
+{
+  "program": "M2F",
+  "phases": [
+    {
+      "phase": "Phase 1 - Physique Build",
+      "duration_weeks": 4,
+      "goal": "Increase muscle mass, build structural balance, improve work capacity",
+      "rep_ranges": {
+        "explosive": "3-5",
+        "primary": "6-8",
+        "secondary": "8-10",
+        "accessory": "10-15"
+      },
+      "volume_targets": {
+        "back": 18,
+        "chest": 14,
+        "anterior_delts": 6,
+        "lateral_delts": 12,
+        "posterior_delts": 9,
+        "biceps": 11,
+        "triceps": 11,
+        "quads": 14,
+        "hamstrings": 12,
+        "glutes": 15,
+        "calves": 9,
+        "core": 10
+      },
+      "days": [
+        {
+          "day": "Upper Strength",
+          "exercises": [
+            {
+              "name": "Med Ball Chest Pass",
+              "sets": 4,
+              "reps": 4,
+              "role": "explosive",
+              "movement": "power",
+              "intensity": "none"
+            },
+            {
+              "name": "Barbell Bench Press",
+              "sets": 4,
+              "reps": 6,
+              "role": "primary",
+              "movement": "horizontal_push",
+              "intensity": "cluster_last_set (2+2 reps, 15 sec rest)"
+            },
+            {
+              "name": "Weighted Pullups",
+              "sets": 4,
+              "reps": 6,
+              "role": "secondary",
+              "movement": "vertical_pull",
+              "intensity": "none"
+            },
+            {
+              "name": "Incline Dumbbell Press",
+              "sets": 3,
+              "reps": "8-10",
+              "role": "secondary",
+              "movement": "incline_push",
+              "intensity": "none"
+            },
+            {
+              "name": "Chest Supported Row",
+              "sets": 3,
+              "reps": "8-10",
+              "role": "secondary",
+              "movement": "horizontal_pull",
+              "intensity": "none"
+            },
+            {
+              "name": "Lat Pulldown",
+              "sets": 3,
+              "reps": 12,
+              "role": "accessory",
+              "movement": "vertical_pull",
+              "intensity": "myo_reps (12 + mini sets of 3)"
+            },
+            {
+              "name": "Face Pull",
+              "sets": 3,
+              "reps": 15,
+              "role": "structural",
+              "movement": "posterior_delts",
+              "intensity": "none"
+            }
+          ]
+        },
+        {
+          "day": "Lower Strength",
+          "exercises": [
+            {
+              "name": "Box Jump",
+              "sets": 4,
+              "reps": 3,
+              "role": "explosive",
+              "movement": "power",
+              "intensity": "none"
+            },
+            {
+              "name": "Back Squat",
+              "sets": 4,
+              "reps": 6,
+              "role": "primary",
+              "movement": "squat",
+              "intensity": "tempo_first_rep (3 sec eccentric)"
+            },
+            {
+              "name": "Romanian Deadlift",
+              "sets": 3,
+              "reps": 8,
+              "role": "secondary",
+              "movement": "hinge",
+              "intensity": "none"
+            },
+            {
+              "name": "Leg Press",
+              "sets": 3,
+              "reps": 10,
+              "role": "secondary",
+              "movement": "squat",
+              "intensity": "none"
+            },
+            {
+              "name": "Leg Extension",
+              "sets": 3,
+              "reps": 12,
+              "role": "accessory",
+              "movement": "quads",
+              "intensity": "slow_tempo (3-1-2)"
+            },
+            {
+              "name": "Standing Calf Raise",
+              "sets": 4,
+              "reps": 15,
+              "role": "accessory",
+              "movement": "calves",
+              "intensity": "pause_reps"
+            }
+          ]
+        },
+        {
+          "day": "Conditioning + Core",
+          "exercises": [
+            {
+              "name": "Zone 2 Cardio",
+              "duration": "25 minutes",
+              "movement": "conditioning",
+              "intensity": "steady_state"
+            },
+            {
+              "name": "Ab Wheel",
+              "sets": 3,
+              "reps": 10,
+              "movement": "core",
+              "intensity": "none"
+            },
+            {
+              "name": "Pallof Press",
+              "sets": 3,
+              "reps": 12,
+              "movement": "core",
+              "intensity": "none"
+            },
+            {
+              "name": "Farmer Carry",
+              "sets": 3,
+              "distance": "40m",
+              "movement": "core",
+              "intensity": "none"
+            }
+          ]
+        },
+        {
+          "day": "Upper Hypertrophy",
+          "exercises": [
+            {
+              "name": "Overhead Press",
+              "sets": 4,
+              "reps": 6,
+              "role": "primary",
+              "movement": "vertical_push",
+              "intensity": "none"
+            },
+            {
+              "name": "Barbell Row",
+              "sets": 4,
+              "reps": 8,
+              "role": "secondary",
+              "movement": "horizontal_pull",
+              "intensity": "none"
+            },
+            {
+              "name": "Cable Lateral Raise",
+              "sets": 4,
+              "reps": 15,
+              "movement": "lateral_delts",
+              "intensity": "mechanical_drop_set"
+            },
+            {
+              "name": "Reverse Pec Deck",
+              "sets": 3,
+              "reps": 15,
+              "movement": "posterior_delts",
+              "intensity": "none"
+            },
+            {
+              "name": "EZ Bar Curl",
+              "sets": 3,
+              "reps": 12,
+              "movement": "biceps",
+              "intensity": "superset_with_triceps"
+            },
+            {
+              "name": "Cable Pushdown",
+              "sets": 3,
+              "reps": 12,
+              "movement": "triceps",
+              "intensity": "superset_with_biceps"
+            }
+          ]
+        },
+        {
+          "day": "Lower Hypertrophy",
+          "exercises": [
+            {
+              "name": "Kettlebell Swing",
+              "sets": 4,
+              "reps": 5,
+              "movement": "hinge",
+              "intensity": "none"
+            },
+            {
+              "name": "Trap Bar Deadlift",
+              "sets": 4,
+              "reps": 6,
+              "movement": "hinge",
+              "intensity": "none"
+            },
+            {
+              "name": "Hack Squat",
+              "sets": 3,
+              "reps": 10,
+              "movement": "squat",
+              "intensity": "none"
+            },
+            {
+              "name": "Leg Curl",
+              "sets": 3,
+              "reps": 12,
+              "movement": "hamstrings",
+              "intensity": "myo_reps"
+            },
+            {
+              "name": "Bulgarian Split Squat",
+              "sets": 3,
+              "reps": 10,
+              "movement": "unilateral",
+              "intensity": "none"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase": "Phase 2 - Strength and Performance",
+      "duration_weeks": 4,
+      "goal": "Increase maximal strength, improve neural efficiency, introduce Olympic movements",
+      "rep_ranges": {
+        "explosive": "2-4",
+        "primary": "3-5",
+        "secondary": "5-8",
+        "accessory": "8-12"
+      },
+      "days": [
+        {
+          "day": "Upper Strength",
+          "exercises": [
+            {
+              "name": "Med Ball Chest Pass",
+              "sets": 4,
+              "reps": 3,
+              "movement": "power"
+            },
+            {
+              "name": "Bench Press",
+              "sets": 5,
+              "reps": 4,
+              "movement": "horizontal_push",
+              "intensity": "cluster_last_set"
+            },
+            {
+              "name": "Weighted Pullups",
+              "sets": 4,
+              "reps": 5,
+              "movement": "vertical_pull"
+            },
+            {
+              "name": "Incline DB Press",
+              "sets": 3,
+              "reps": 8,
+              "movement": "incline_push"
+            },
+            {
+              "name": "Chest Supported Row",
+              "sets": 3,
+              "reps": 8,
+              "movement": "horizontal_pull"
+            },
+            {
+              "name": "EZ Curl",
+              "sets": 3,
+              "reps": 10,
+              "movement": "biceps",
+              "intensity": "superset"
+            },
+            {
+              "name": "Cable Pushdown",
+              "sets": 3,
+              "reps": 10,
+              "movement": "triceps",
+              "intensity": "superset"
+            }
+          ]
+        },
+        {
+          "day": "Lower Strength",
+          "exercises": [
+            {
+              "name": "Box Jump",
+              "sets": 5,
+              "reps": 3,
+              "movement": "power"
+            },
+            {
+              "name": "Front Squat",
+              "sets": 5,
+              "reps": 4,
+              "movement": "squat",
+              "intensity": "tempo_first_rep"
+            },
+            {
+              "name": "Romanian Deadlift",
+              "sets": 4,
+              "reps": 6,
+              "movement": "hinge"
+            },
+            {
+              "name": "Leg Press",
+              "sets": 3,
+              "reps": 10,
+              "movement": "squat"
+            },
+            {
+              "name": "Standing Calf Raise",
+              "sets": 4,
+              "reps": 12,
+              "movement": "calves",
+              "intensity": "pause_reps"
+            }
+          ]
+        },
+        {
+          "day": "Conditioning",
+          "exercises": [
+            {
+              "name": "Zone 2 Cardio",
+              "duration": "25 minutes"
+            },
+            {
+              "name": "Farmer Carry",
+              "sets": 3,
+              "distance": "50m"
+            }
+          ]
+        },
+        {
+          "day": "Upper Hypertrophy",
+          "exercises": [
+            {
+              "name": "Push Press",
+              "sets": 4,
+              "reps": 3,
+              "movement": "power"
+            },
+            {
+              "name": "Barbell Row",
+              "sets": 4,
+              "reps": 6,
+              "movement": "horizontal_pull"
+            },
+            {
+              "name": "Machine Shoulder Press",
+              "sets": 3,
+              "reps": 8,
+              "movement": "vertical_push"
+            },
+            {
+              "name": "Cable Lateral Raise",
+              "sets": 4,
+              "reps": 12,
+              "movement": "lateral_delts",
+              "intensity": "mechanical_drop_set"
+            },
+            {
+              "name": "Reverse Pec Deck",
+              "sets": 3,
+              "reps": 12,
+              "movement": "posterior_delts"
+            }
+          ]
+        },
+        {
+          "day": "Lower Hypertrophy",
+          "exercises": [
+            {
+              "name": "Hang Power Clean",
+              "sets": 5,
+              "reps": 3,
+              "movement": "olympic"
+            },
+            {
+              "name": "Trap Bar Deadlift",
+              "sets": 4,
+              "reps": 4,
+              "movement": "hinge"
+            },
+            {
+              "name": "Hack Squat",
+              "sets": 3,
+              "reps": 10,
+              "movement": "squat"
+            },
+            {
+              "name": "Leg Curl",
+              "sets": 3,
+              "reps": 10,
+              "movement": "hamstrings",
+              "intensity": "myo_reps"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

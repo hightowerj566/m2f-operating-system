@@ -1,0 +1,521 @@
+{
+  "program": "M2F Perform 3.1",
+  "version": "3.1",
+  "description": "Hybrid father athlete training system — strength, athleticism, aesthetics, longevity",
+  "session_duration": "45-60 min",
+  "phases": [
+    {
+      "name": "Phase 1 — Work Capacity & Hypertrophy",
+      "weeks": "1-12",
+      "goal": "Build muscle, improve work capacity, develop aerobic base, establish structural balance",
+      "load_range": "65-75%",
+      "rep_style": {
+        "explosive": "3-5",
+        "primary": "6-8",
+        "secondary": "8-10",
+        "accessory": "10-15"
+      },
+      "tempo_defaults": {
+        "explosive": "X-0-X-0",
+        "primary": "3-1-1-0",
+        "secondary": "3-0-1-0",
+        "accessory": "2-0-1-1",
+        "structural": "2-1-2-0"
+      },
+      "rir_defaults": {
+        "explosive": null,
+        "primary": 3,
+        "secondary": 2,
+        "accessory": 2,
+        "structural": null
+      },
+      "intensity_budget": "0-2 per workout",
+      "conditioning_focus": "Zone 2 aerobic base",
+      "mesocycles": [
+        {
+          "meso": 1,
+          "weeks": "1-4",
+          "rotation_notes": "Bench Press / Back Squat / RDL / Weighted Pullups / Single-Arm DB Row",
+          "days": [
+            {
+              "name": "Upper Strength (Chest + Back)",
+              "exercises": [
+                { "name": "Med Ball Chest Pass", "sets": 3, "reps": "5", "tempo": "X", "rir": null, "rest": 60, "role": "explosive", "pair": "A", "intensity": null, "notes": "Explosive chest pass against wall. Maximum velocity. Full reset between reps." },
+                { "name": "Band Pull-Apart", "sets": 3, "reps": "15", "tempo": "2-1-2-0", "rir": null, "rest": 60, "role": "structural", "pair": "A", "intensity": null, "notes": "Scapular activation. Squeeze shoulder blades at end range." },
+                { "name": "Barbell Bench Press", "sets": 5, "reps": "4", "tempo": "3-1-1-0", "rir": 3, "rest": 150, "role": "primary", "pair": null, "intensity": null, "notes": "70-75%. Drive feet into floor. Full range of motion. Retract scaps." },
+                { "name": "Weighted Pull-ups", "sets": 5, "reps": "4", "tempo": "3-0-1-0", "rir": 3, "rest": 150, "role": "secondary", "pair": null, "intensity": null, "notes": "Add weight via belt or DB. Full dead hang each rep. Squeeze lats." },
+                { "name": "Incline DB Press", "sets": 3, "reps": "10", "tempo": "3-0-1-0", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "30-degree incline. Full stretch at bottom." },
+                { "name": "Single-Arm DB Row", "sets": 3, "reps": "10 each", "tempo": "2-0-1-1", "rir": 2, "rest": 60, "role": "accessory", "pair": "D", "intensity": null, "notes": "Knee on bench. Pull to hip. Squeeze lat at top." },
+                { "name": "Cable Fly", "sets": 3, "reps": "15", "tempo": "2-0-1-1", "rir": 1, "rest": 0, "role": "accessory", "pair": "E", "intensity": null, "notes": "High-to-low. Squeeze chest. Constant tension." },
+                { "name": "Lat Pulldown", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 1, "rest": 60, "role": "accessory", "pair": "E", "intensity": "myo-reps last set", "notes": "Shoulder-width grip. Pull to upper chest." },
+                { "name": "DB Lateral Raise", "sets": 3, "reps": "15", "tempo": "2-0-1-1", "rir": 1, "rest": 0, "role": "accessory", "pair": "F", "intensity": null, "notes": "Slight forward lean. Lead with pinky." },
+                { "name": "Face Pull", "sets": 3, "reps": "15", "tempo": "2-1-2-0", "rir": null, "rest": 45, "role": "structural", "pair": "F", "intensity": null, "notes": "Rope to forehead. External rotate at end. Constant tension." }
+              ]
+            },
+            {
+              "name": "Lower Strength (Squat)",
+              "exercises": [
+                { "name": "Box Jump", "sets": 3, "reps": "4", "tempo": "X", "rir": null, "rest": 60, "role": "explosive", "pair": "A", "intensity": null, "notes": "Step off box. Explosive hip extension. Full reset." },
+                { "name": "Banded Monster Walk", "sets": 3, "reps": "12 each", "tempo": "2-0-1-0", "rir": null, "rest": 60, "role": "structural", "pair": "A", "intensity": null, "notes": "Mini band above knees. Quarter squat position." },
+                { "name": "Back Squat", "sets": 5, "reps": "4", "tempo": "3-1-1-0", "rir": 3, "rest": 150, "role": "primary", "pair": null, "intensity": null, "notes": "70-75%. Break at hips and knees together. Full depth. Brace hard." },
+                { "name": "Romanian Deadlift", "sets": 3, "reps": "8", "tempo": "3-0-1-0", "rir": 2, "rest": 120, "role": "secondary", "pair": null, "intensity": null, "notes": "Hinge at hips. Deep hamstring stretch. Slight knee bend." },
+                { "name": "Leg Press", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Full depth. Controlled eccentric. No lockout." },
+                { "name": "Lying Leg Curl", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 2, "rest": 60, "role": "accessory", "pair": "D", "intensity": null, "notes": "Squeeze hamstrings at top. Slow eccentric." },
+                { "name": "Walking Lunge", "sets": 3, "reps": "10 each", "tempo": "2-0-1-0", "rir": 2, "rest": 0, "role": "accessory", "pair": "E", "intensity": null, "notes": "Long stride. Upright torso. Control each step." },
+                { "name": "Standing Calf Raise", "sets": 4, "reps": "15", "tempo": "2-1-1-0", "rir": 1, "rest": 0, "role": "accessory", "pair": "E", "intensity": "pause reps", "notes": "Full stretch bottom. 2-sec pause at top." },
+                { "name": "Reverse Pec Deck", "sets": 3, "reps": "15", "tempo": "2-1-2-0", "rir": null, "rest": 60, "role": "structural", "pair": "E", "intensity": null, "notes": "Rear delt frequency on lower day. Full squeeze." }
+              ]
+            },
+            {
+              "name": "Conditioning + Core + Arms",
+              "exercises": [
+                { "name": "Zone 2 Cardio", "sets": 1, "reps": "25 min", "tempo": null, "rir": null, "rest": 0, "role": "conditioning", "pair": null, "intensity": "steady state", "notes": "Row, bike, or incline walk. HR 120-140 bpm. Conversational pace." },
+                { "name": "Hanging Leg Raise", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "core", "pair": "B", "intensity": null, "notes": "Control the swing. Raise to 90 degrees. Slow negative." },
+                { "name": "Pallof Press", "sets": 3, "reps": "12 each", "tempo": "2-1-2-0", "rir": null, "rest": 45, "role": "core", "pair": "B", "intensity": null, "notes": "Anti-rotation. Press and hold 2 seconds. Both sides." },
+                { "name": "Farmer Carry", "sets": 3, "reps": "40m", "tempo": null, "rir": null, "rest": 60, "role": "core", "pair": null, "intensity": null, "notes": "Heavy DBs or KBs. Tall posture. Brace core." },
+                { "name": "EZ Bar Curl", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Strict form. No swing. Full range. Squeeze at top." },
+                { "name": "Overhead Tricep Extension", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Cable or DB. Deep stretch. Full lockout." },
+                { "name": "Hammer Curl", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Neutral grip. Alternate arms. No swing." },
+                { "name": "Cable External Rotation", "sets": 2, "reps": "15 each", "tempo": "2-1-2-0", "rir": null, "rest": 45, "role": "structural", "pair": null, "intensity": null, "notes": "Elbow pinned at side. Slow controlled rotation." }
+              ]
+            },
+            {
+              "name": "Upper Hypertrophy (Shoulders)",
+              "exercises": [
+                { "name": "DB Push Press", "sets": 3, "reps": "5", "tempo": "X", "rir": null, "rest": 60, "role": "explosive", "pair": "A", "intensity": null, "notes": "Explosive press. Use legs to initiate. Control negative." },
+                { "name": "Band Face Pull", "sets": 3, "reps": "15", "tempo": "2-1-2-0", "rir": null, "rest": 60, "role": "structural", "pair": "A", "intensity": null, "notes": "High pull. External rotate and squeeze." },
+                { "name": "Overhead Press", "sets": 4, "reps": "8", "tempo": "3-1-1-0", "rir": 2, "rest": 120, "role": "primary", "pair": null, "intensity": null, "notes": "Strict press. No leg drive. Full lockout." },
+                { "name": "Barbell Row", "sets": 4, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 90, "role": "secondary", "pair": null, "intensity": null, "notes": "Overhand grip. Pull to belly button. No momentum." },
+                { "name": "Landmine Press", "sets": 3, "reps": "10 each", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "C", "intensity": null, "notes": "Staggered stance. Core braced. Each arm." },
+                { "name": "Seated Cable Row", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 60, "role": "accessory", "pair": "C", "intensity": null, "notes": "V-bar handle. Pull to belly. Squeeze." },
+                { "name": "Cable Lateral Raise", "sets": 4, "reps": "15", "tempo": "2-0-1-1", "rir": 1, "rest": 0, "role": "accessory", "pair": "D", "intensity": "mechanical drop set last set", "notes": "Behind body start. Slight lean. Constant tension." },
+                { "name": "Reverse Pec Deck", "sets": 3, "reps": "15", "tempo": "2-0-1-1", "rir": 1, "rest": 60, "role": "accessory", "pair": "D", "intensity": null, "notes": "Full contraction. Slow negative." },
+                { "name": "Incline DB Curl", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "E", "intensity": null, "notes": "45-degree bench. Full stretch at bottom." },
+                { "name": "Cable Pushdown", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 2, "rest": 60, "role": "accessory", "pair": "E", "intensity": null, "notes": "Elbows pinned. Full lockout. Constant tension." }
+              ]
+            },
+            {
+              "name": "Lower Hypertrophy (Hinge)",
+              "exercises": [
+                { "name": "Kettlebell Swing", "sets": 3, "reps": "10", "tempo": "X", "rir": null, "rest": 60, "role": "explosive", "pair": "A", "intensity": null, "notes": "Russian-style. Hip snap. Arms are hooks." },
+                { "name": "Goblet Squat", "sets": 3, "reps": "8", "tempo": "2-1-1-0", "rir": null, "rest": 60, "role": "structural", "pair": "A", "intensity": null, "notes": "Activation. Elbows between knees. Upright torso." },
+                { "name": "Trap Bar Deadlift", "sets": 4, "reps": "8", "tempo": "3-0-1-0", "rir": 2, "rest": 120, "role": "primary", "pair": null, "intensity": null, "notes": "Neutral grip. Drive through midfoot. Hips and shoulders rise together." },
+                { "name": "Hack Squat", "sets": 3, "reps": "10", "tempo": "3-0-1-0", "rir": 2, "rest": 90, "role": "secondary", "pair": null, "intensity": null, "notes": "Full depth. Controlled eccentric." },
+                { "name": "Seated Leg Curl", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": "myo-reps last set", "notes": "Squeeze hamstrings at top. Slow eccentric." },
+                { "name": "Bulgarian Split Squat", "sets": 3, "reps": "10 each", "tempo": "2-0-1-1", "rir": 2, "rest": 60, "role": "accessory", "pair": "D", "intensity": null, "notes": "Rear foot elevated. Vertical shin. Deep stretch." },
+                { "name": "Hip Thrust", "sets": 3, "reps": "12", "tempo": "2-1-1-0", "rir": 2, "rest": 0, "role": "accessory", "pair": "E", "intensity": null, "notes": "Drive through heels. Squeeze glutes at lockout." },
+                { "name": "Seated Calf Raise", "sets": 4, "reps": "15", "tempo": "2-1-1-0", "rir": 1, "rest": 60, "role": "accessory", "pair": "E", "intensity": null, "notes": "Deep stretch at bottom. Slow eccentric." },
+                { "name": "DB Lateral Raise", "sets": 3, "reps": "15", "tempo": "2-0-1-1", "rir": 1, "rest": 45, "role": "accessory", "pair": null, "intensity": null, "notes": "Shoulder frequency. Light weight. No momentum." }
+              ]
+            }
+          ]
+        },
+        {
+          "meso": 2,
+          "weeks": "5-8",
+          "rotation_notes": "Incline Barbell / Front Squat / Good Morning / Chin-ups / Chest Supported Row",
+          "days": [
+            {
+              "name": "Upper Strength (Chest + Back)",
+              "exercises": [
+                { "name": "Med Ball Slam", "sets": 3, "reps": "5", "tempo": "X", "rir": null, "rest": 60, "role": "explosive", "pair": "A", "intensity": null, "notes": "Overhead slam. Maximum force into ground." },
+                { "name": "Scap Push-Up", "sets": 3, "reps": "12", "tempo": "2-1-2-0", "rir": null, "rest": 60, "role": "structural", "pair": "A", "intensity": null, "notes": "Protract and retract shoulder blades. Maintain plank." },
+                { "name": "Incline Barbell Press", "sets": 5, "reps": "4", "tempo": "3-1-1-0", "rir": 3, "rest": 150, "role": "primary", "pair": null, "intensity": null, "notes": "30-degree incline. 70-75%. Full ROM. Retract scaps." },
+                { "name": "Chin-ups", "sets": 5, "reps": "4", "tempo": "3-0-1-0", "rir": 3, "rest": 150, "role": "secondary", "pair": null, "intensity": null, "notes": "Supinated grip. Full hang. Squeeze biceps and lats." },
+                { "name": "Flat DB Press", "sets": 3, "reps": "10", "tempo": "3-0-1-0", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Full stretch at bottom. Controlled press." },
+                { "name": "Chest Supported Row", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 60, "role": "accessory", "pair": "D", "intensity": null, "notes": "Incline bench. Pull to ribcage. No momentum." },
+                { "name": "Machine Chest Press", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 1, "rest": 0, "role": "accessory", "pair": "E", "intensity": "drop set last set", "notes": "Full stretch. Squeeze chest at peak." },
+                { "name": "Cable Pullover", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 1, "rest": 60, "role": "accessory", "pair": "E", "intensity": null, "notes": "Keep arms slightly bent. Pull to hips. Squeeze lats." },
+                { "name": "Cable Lateral Raise", "sets": 3, "reps": "15", "tempo": "2-0-1-1", "rir": 1, "rest": 0, "role": "accessory", "pair": "F", "intensity": null, "notes": "Behind body start. Constant tension." },
+                { "name": "Band Pull-Apart", "sets": 3, "reps": "20", "tempo": "2-1-2-0", "rir": null, "rest": 45, "role": "structural", "pair": "F", "intensity": null, "notes": "High reps. Squeeze rear delts." }
+              ]
+            },
+            {
+              "name": "Lower Strength (Squat)",
+              "exercises": [
+                { "name": "Broad Jump", "sets": 3, "reps": "4", "tempo": "X", "rir": null, "rest": 60, "role": "explosive", "pair": "A", "intensity": null, "notes": "Explosive hip extension. Swing arms. Stick landing." },
+                { "name": "Banded Glute Bridge", "sets": 3, "reps": "12", "tempo": "2-1-1-0", "rir": null, "rest": 60, "role": "structural", "pair": "A", "intensity": null, "notes": "Band above knees. Squeeze hard at top." },
+                { "name": "Front Squat", "sets": 5, "reps": "4", "tempo": "3-1-1-0", "rir": 3, "rest": 150, "role": "primary", "pair": null, "intensity": null, "notes": "Clean or cross grip. 70-75%. Elbows high. Full depth." },
+                { "name": "Good Morning", "sets": 3, "reps": "8", "tempo": "3-0-1-0", "rir": 2, "rest": 120, "role": "secondary", "pair": null, "intensity": null, "notes": "Barbell on traps. Slight knee bend. Deep hinge." },
+                { "name": "Leg Extension", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Slow eccentric. Full contraction at top." },
+                { "name": "Nordic Curl (eccentric)", "sets": 3, "reps": "6", "tempo": "5-0-X-0", "rir": 2, "rest": 60, "role": "accessory", "pair": "D", "intensity": null, "notes": "Lower as slowly as possible. Hands to push up." },
+                { "name": "Reverse Lunge", "sets": 3, "reps": "10 each", "tempo": "2-0-1-0", "rir": 2, "rest": 0, "role": "accessory", "pair": "E", "intensity": null, "notes": "Step back. Vertical shin front leg." },
+                { "name": "Seated Calf Raise", "sets": 4, "reps": "15", "tempo": "2-1-1-0", "rir": 1, "rest": 0, "role": "accessory", "pair": "E", "intensity": null, "notes": "Deep stretch bottom. Pause at top." },
+                { "name": "Reverse Pec Deck", "sets": 3, "reps": "15", "tempo": "2-1-2-0", "rir": null, "rest": 60, "role": "structural", "pair": "E", "intensity": null, "notes": "Rear delt frequency. Full contraction." }
+              ]
+            },
+            {
+              "name": "Conditioning + Core + Arms",
+              "exercises": [
+                { "name": "Zone 2 Cardio", "sets": 1, "reps": "25 min", "tempo": null, "rir": null, "rest": 0, "role": "conditioning", "pair": null, "intensity": "steady state", "notes": "Row, bike, or incline walk. HR 120-140 bpm." },
+                { "name": "Dead Bug", "sets": 3, "reps": "10 each", "tempo": "2-1-2-0", "rir": null, "rest": 0, "role": "core", "pair": "B", "intensity": null, "notes": "Opposite arm/leg. Press low back into floor." },
+                { "name": "Cable Woodchop", "sets": 3, "reps": "12 each", "tempo": "2-0-1-1", "rir": 2, "rest": 45, "role": "core", "pair": "B", "intensity": null, "notes": "Rotate through hips. Core resists. Each side." },
+                { "name": "Suitcase Carry", "sets": 3, "reps": "40m each", "tempo": null, "rir": null, "rest": 60, "role": "core", "pair": null, "intensity": null, "notes": "Heavy single DB/KB. Stay upright. Don't lean." },
+                { "name": "Hammer Curl", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Neutral grip. Alternate arms. No swing." },
+                { "name": "Dip", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Parallel bars. Slight lean forward. Full lockout." },
+                { "name": "Incline DB Curl", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "45-degree bench. Full stretch. Strict." },
+                { "name": "Cable External Rotation", "sets": 2, "reps": "15 each", "tempo": "2-1-2-0", "rir": null, "rest": 45, "role": "structural", "pair": null, "intensity": null, "notes": "Elbow pinned. Slow controlled rotation." }
+              ]
+            },
+            {
+              "name": "Upper Hypertrophy (Shoulders)",
+              "exercises": [
+                { "name": "Push Press", "sets": 3, "reps": "5", "tempo": "X", "rir": null, "rest": 60, "role": "explosive", "pair": "A", "intensity": null, "notes": "Dip-drive-press. Use legs to initiate." },
+                { "name": "Band Dislocate", "sets": 3, "reps": "10", "tempo": "2-0-2-0", "rir": null, "rest": 60, "role": "structural", "pair": "A", "intensity": null, "notes": "Wide grip band pull-over. Slow controlled." },
+                { "name": "DB Shoulder Press", "sets": 4, "reps": "8", "tempo": "3-1-1-0", "rir": 2, "rest": 120, "role": "primary", "pair": null, "intensity": null, "notes": "Seated. Full lockout. Controlled negative." },
+                { "name": "Single-Arm DB Row", "sets": 4, "reps": "10 each", "tempo": "2-0-1-1", "rir": 2, "rest": 90, "role": "secondary", "pair": null, "intensity": null, "notes": "Pull to hip. Squeeze lat at top. Each arm." },
+                { "name": "Machine Chest Press", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "C", "intensity": null, "notes": "Full stretch. Press volume." },
+                { "name": "Chest Supported Row", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 60, "role": "accessory", "pair": "C", "intensity": null, "notes": "Pull to ribcage. No momentum." },
+                { "name": "DB Lateral Raise", "sets": 4, "reps": "15", "tempo": "2-0-1-1", "rir": 1, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Slight forward lean. No momentum." },
+                { "name": "Cable Face Pull", "sets": 3, "reps": "15", "tempo": "2-1-2-0", "rir": null, "rest": 60, "role": "structural", "pair": "D", "intensity": null, "notes": "External rotate at end. Rear delt + scap." },
+                { "name": "Preacher Curl", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "E", "intensity": null, "notes": "Full stretch at bottom. Strict." },
+                { "name": "Overhead Tricep Extension", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 2, "rest": 60, "role": "accessory", "pair": "E", "intensity": null, "notes": "Cable or DB. Deep stretch." },
+                { "name": "Trap 3 Raise", "sets": 2, "reps": "15", "tempo": "2-1-2-0", "rir": null, "rest": 45, "role": "structural", "pair": null, "intensity": null, "notes": "Prone on incline. Thumbs up. Scapular stability." }
+              ]
+            },
+            {
+              "name": "Lower Hypertrophy (Hinge)",
+              "exercises": [
+                { "name": "Hang Power Clean", "sets": 3, "reps": "3", "tempo": "X", "rir": null, "rest": 90, "role": "explosive", "pair": null, "intensity": null, "notes": "Hip-driven. Aggressive extension. Catch in quarter squat." },
+                { "name": "Romanian Deadlift", "sets": 4, "reps": "8", "tempo": "3-0-1-0", "rir": 2, "rest": 120, "role": "primary", "pair": null, "intensity": null, "notes": "Hinge at hips. Deep hamstring stretch. Barbell." },
+                { "name": "Leg Press", "sets": 3, "reps": "10", "tempo": "3-0-1-0", "rir": 2, "rest": 90, "role": "secondary", "pair": null, "intensity": null, "notes": "Full depth. Controlled negative. No lockout." },
+                { "name": "Lying Leg Curl", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": "rest-pause last set", "notes": "Squeeze hamstrings. Slow eccentric." },
+                { "name": "Step-Up", "sets": 3, "reps": "10 each", "tempo": "2-0-1-0", "rir": 2, "rest": 60, "role": "accessory", "pair": "D", "intensity": null, "notes": "High box. Drive through lead leg. No push from back." },
+                { "name": "Cable Pull-Through", "sets": 3, "reps": "12", "tempo": "2-1-1-0", "rir": 2, "rest": 0, "role": "accessory", "pair": "E", "intensity": null, "notes": "Rope between legs. Hip hinge. Squeeze glutes." },
+                { "name": "Standing Calf Raise", "sets": 4, "reps": "15", "tempo": "2-1-1-0", "rir": 1, "rest": 60, "role": "accessory", "pair": "E", "intensity": null, "notes": "Full stretch. Pause at top." },
+                { "name": "Machine Lateral Raise", "sets": 3, "reps": "15", "tempo": "2-0-1-1", "rir": 1, "rest": 45, "role": "accessory", "pair": null, "intensity": null, "notes": "Shoulder frequency. Controlled." }
+              ]
+            }
+          ]
+        },
+        {
+          "meso": 3,
+          "weeks": "9-12",
+          "rotation_notes": "Close-Grip Bench / Safety Bar Squat / Sumo DL / Pull-ups / Pendlay Row",
+          "days": [
+            {
+              "name": "Upper Strength (Chest + Back)",
+              "exercises": [
+                { "name": "Plyo Push-up", "sets": 3, "reps": "4", "tempo": "X", "rir": null, "rest": 60, "role": "explosive", "pair": "A", "intensity": null, "notes": "Explosive. Hands leave ground. Full reset." },
+                { "name": "Prone Y Raise", "sets": 3, "reps": "12", "tempo": "2-1-2-0", "rir": null, "rest": 60, "role": "structural", "pair": "A", "intensity": null, "notes": "Face down on incline. Thumbs up. Scapular stability." },
+                { "name": "Close-Grip Bench Press", "sets": 5, "reps": "4", "tempo": "3-1-1-0", "rir": 3, "rest": 150, "role": "primary", "pair": null, "intensity": null, "notes": "Hands inside shoulder width. 70-75%. Tricep emphasis." },
+                { "name": "Pull-ups", "sets": 5, "reps": "4", "tempo": "3-0-1-0", "rir": 3, "rest": 150, "role": "secondary", "pair": null, "intensity": null, "notes": "Pronated grip. Full hang. Chin over bar." },
+                { "name": "Landmine Press", "sets": 3, "reps": "10 each", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Staggered stance. Core braced." },
+                { "name": "Seal Row", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 60, "role": "accessory", "pair": "D", "intensity": null, "notes": "Prone on bench. Pull to chest. Full squeeze." },
+                { "name": "Pec Deck", "sets": 3, "reps": "15", "tempo": "2-0-1-1", "rir": 1, "rest": 0, "role": "accessory", "pair": "E", "intensity": null, "notes": "Full stretch. Squeeze at peak." },
+                { "name": "Straight-Arm Pulldown", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 1, "rest": 60, "role": "accessory", "pair": "E", "intensity": null, "notes": "Keep arms straight. Pull to hips. Squeeze lats." },
+                { "name": "Plate Lateral Raise", "sets": 3, "reps": "15", "tempo": "2-0-1-1", "rir": 1, "rest": 0, "role": "accessory", "pair": "F", "intensity": null, "notes": "Neutral grip on plate edges. Strict." },
+                { "name": "Face Pull", "sets": 3, "reps": "15", "tempo": "2-1-2-0", "rir": null, "rest": 45, "role": "structural", "pair": "F", "intensity": null, "notes": "Rope to forehead. External rotate." }
+              ]
+            },
+            {
+              "name": "Lower Strength (Squat)",
+              "exercises": [
+                { "name": "Depth Jump", "sets": 3, "reps": "3", "tempo": "X", "rir": null, "rest": 90, "role": "explosive", "pair": null, "intensity": null, "notes": "Step off box. Immediately jump max height. Minimal ground contact." },
+                { "name": "Safety Bar Squat", "sets": 5, "reps": "4", "tempo": "3-1-1-0", "rir": 3, "rest": 150, "role": "primary", "pair": null, "intensity": null, "notes": "SSB. 70-75%. High bar position. Drive through midfoot." },
+                { "name": "Sumo Deadlift", "sets": 3, "reps": "8", "tempo": "3-0-1-0", "rir": 2, "rest": 120, "role": "secondary", "pair": null, "intensity": null, "notes": "Wide stance. Push floor away. Glute lockout." },
+                { "name": "Hack Squat", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Full depth. Controlled eccentric. Quad focus." },
+                { "name": "Seated Leg Curl", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 2, "rest": 60, "role": "accessory", "pair": "D", "intensity": null, "notes": "Squeeze at top. Slow eccentric." },
+                { "name": "Goblet Squat", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "E", "intensity": null, "notes": "Deep squat. Elbows between knees. Upright torso." },
+                { "name": "Leg Press Calf Raise", "sets": 4, "reps": "15", "tempo": "2-1-1-0", "rir": 1, "rest": 60, "role": "accessory", "pair": "E", "intensity": null, "notes": "Full ROM. Pause at stretch. Controlled." }
+              ]
+            },
+            {
+              "name": "Conditioning + Core + Arms",
+              "exercises": [
+                { "name": "Zone 2 Cardio", "sets": 1, "reps": "25 min", "tempo": null, "rir": null, "rest": 0, "role": "conditioning", "pair": null, "intensity": "steady state", "notes": "Row, bike, or incline walk. HR 120-140 bpm." },
+                { "name": "Hanging Leg Raise", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "core", "pair": "B", "intensity": null, "notes": "Control the swing. Raise to 90 degrees." },
+                { "name": "Landmine Rotation", "sets": 3, "reps": "10 each", "tempo": "2-0-1-1", "rir": 2, "rest": 45, "role": "core", "pair": "B", "intensity": null, "notes": "Rotate through hips. Controlled arc." },
+                { "name": "Overhead Carry", "sets": 3, "reps": "40m", "tempo": null, "rir": null, "rest": 60, "role": "core", "pair": null, "intensity": null, "notes": "Single KB or DB overhead. Tall posture. Each arm." },
+                { "name": "Cable Curl", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Full stretch. Squeeze at top." },
+                { "name": "Skull Crusher", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "EZ bar or DBs. Deep stretch. Full lockout." },
+                { "name": "Reverse Curl", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Pronated grip. Forearm and brachialis emphasis." },
+                { "name": "Wall Slides", "sets": 2, "reps": "10", "tempo": "2-1-2-0", "rir": null, "rest": 45, "role": "structural", "pair": null, "intensity": null, "notes": "Back against wall. Slide arms up. Maintain contact." }
+              ]
+            },
+            {
+              "name": "Upper Hypertrophy (Shoulders)",
+              "exercises": [
+                { "name": "Landmine Push Press", "sets": 3, "reps": "5 each", "tempo": "X", "rir": null, "rest": 60, "role": "explosive", "pair": "A", "intensity": null, "notes": "Explosive. Drive through legs. Each arm." },
+                { "name": "Band Pull-Apart", "sets": 3, "reps": "15", "tempo": "2-1-2-0", "rir": null, "rest": 60, "role": "structural", "pair": "A", "intensity": null, "notes": "Scapular retraction. Squeeze at end." },
+                { "name": "Seated DB Press", "sets": 4, "reps": "8", "tempo": "3-1-1-0", "rir": 2, "rest": 120, "role": "primary", "pair": null, "intensity": null, "notes": "Seated. No back support preferred. Full lockout." },
+                { "name": "Pendlay Row", "sets": 4, "reps": "8", "tempo": "X-0-1-1", "rir": 2, "rest": 90, "role": "secondary", "pair": null, "intensity": null, "notes": "Dead stop each rep. Explosive pull to sternum." },
+                { "name": "Incline Machine Press", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "C", "intensity": null, "notes": "Upper chest volume. Full stretch." },
+                { "name": "Cable Row", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 60, "role": "accessory", "pair": "C", "intensity": null, "notes": "V-bar handle. Pull to belly button." },
+                { "name": "Machine Lateral Raise", "sets": 4, "reps": "15", "tempo": "2-0-1-1", "rir": 1, "rest": 0, "role": "accessory", "pair": "D", "intensity": "mechanical drop set last set", "notes": "Full ROM. Constant tension." },
+                { "name": "Rear Delt Fly", "sets": 3, "reps": "15", "tempo": "2-0-1-1", "rir": 1, "rest": 60, "role": "accessory", "pair": "D", "intensity": null, "notes": "DB or cable. Full contraction." },
+                { "name": "Spider Curl", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "E", "intensity": null, "notes": "Incline bench face down. Short head emphasis." },
+                { "name": "Rope Pushdown", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 2, "rest": 60, "role": "accessory", "pair": "E", "intensity": null, "notes": "Spread rope at bottom. Full lockout." }
+              ]
+            },
+            {
+              "name": "Lower Hypertrophy (Hinge)",
+              "exercises": [
+                { "name": "Power Clean", "sets": 3, "reps": "3", "tempo": "X", "rir": null, "rest": 90, "role": "explosive", "pair": null, "intensity": null, "notes": "Full clean from floor. Aggressive triple extension." },
+                { "name": "Rack Pull", "sets": 4, "reps": "6", "tempo": "3-0-1-0", "rir": 2, "rest": 120, "role": "primary", "pair": null, "intensity": null, "notes": "From knee height. Lockout power. Overload stimulus." },
+                { "name": "Leg Extension", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 2, "rest": 90, "role": "secondary", "pair": null, "intensity": null, "notes": "Full contraction. Controlled eccentric." },
+                { "name": "GHR", "sets": 3, "reps": "10", "tempo": "3-0-1-0", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Glute-ham raise. Control eccentric. Full extension." },
+                { "name": "Walking Lunge", "sets": 3, "reps": "10 each", "tempo": "2-0-1-0", "rir": 2, "rest": 60, "role": "accessory", "pair": "D", "intensity": null, "notes": "DB in each hand. Long stride. Upright torso." },
+                { "name": "Barbell Hip Thrust", "sets": 3, "reps": "12", "tempo": "2-1-1-0", "rir": 2, "rest": 0, "role": "accessory", "pair": "E", "intensity": null, "notes": "Heavy. Drive through heels. Squeeze glutes." },
+                { "name": "Standing Calf Raise", "sets": 4, "reps": "15", "tempo": "2-1-1-0", "rir": 1, "rest": 60, "role": "accessory", "pair": "E", "intensity": null, "notes": "Full ROM. Pause at top." },
+                { "name": "Cable Lateral Raise", "sets": 3, "reps": "15", "tempo": "2-0-1-1", "rir": 1, "rest": 45, "role": "accessory", "pair": null, "intensity": null, "notes": "Shoulder frequency. Behind body start." }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Phase 2 — Strength & Power",
+      "weeks": "13-24",
+      "goal": "Increase maximal strength, develop explosive power, improve neural efficiency",
+      "load_range": "75-90%",
+      "rep_style": {
+        "explosive": "2-4",
+        "primary": "3-5",
+        "secondary": "5-8",
+        "accessory": "8-12"
+      },
+      "tempo_defaults": {
+        "explosive": "X-0-X-0",
+        "primary": "2-1-1-0",
+        "secondary": "2-0-1-0",
+        "accessory": "2-0-1-1",
+        "structural": "2-1-2-0"
+      },
+      "rir_defaults": {
+        "explosive": null,
+        "primary": 2,
+        "secondary": 2,
+        "accessory": 2,
+        "structural": null
+      },
+      "intensity_budget": "1-3 per workout",
+      "conditioning_focus": "Interval conditioning + maintained Zone 2",
+      "mesocycles": [
+        {
+          "meso": 1,
+          "weeks": "13-16",
+          "rotation_notes": "Bench Press / Back Squat / Trap Bar DL / Weighted Pullups / Barbell Row",
+          "days": [
+            {
+              "name": "Upper Strength (Chest + Back)",
+              "exercises": [
+                { "name": "Med Ball Chest Pass", "sets": 4, "reps": "3", "tempo": "X", "rir": null, "rest": 60, "role": "explosive", "pair": "A", "intensity": null, "notes": "Maximum velocity. Full reset between reps." },
+                { "name": "Band Pull-Apart", "sets": 4, "reps": "15", "tempo": "2-1-2-0", "rir": null, "rest": 60, "role": "structural", "pair": "A", "intensity": null, "notes": "Scapular activation before heavy pressing." },
+                { "name": "Barbell Bench Press", "sets": 6, "reps": "3", "tempo": "2-1-1-0", "rir": 2, "rest": 180, "role": "primary", "pair": null, "intensity": "cluster last set (2+1, 15s rest)", "notes": "Heavy. 80-85%. Drive feet into floor. Retract scaps. Full ROM." },
+                { "name": "Weighted Pull-ups", "sets": 4, "reps": "5", "tempo": "2-0-1-0", "rir": 2, "rest": 120, "role": "secondary", "pair": null, "intensity": null, "notes": "Heavy. Full dead hang. Squeeze at top." },
+                { "name": "Incline DB Press", "sets": 3, "reps": "8", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "30-degree. Full stretch at bottom." },
+                { "name": "Chest Supported Row", "sets": 3, "reps": "8", "tempo": "2-0-1-1", "rir": 2, "rest": 60, "role": "accessory", "pair": "D", "intensity": null, "notes": "Pull to ribcage. No momentum." },
+                { "name": "Cable Fly", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 1, "rest": 0, "role": "accessory", "pair": "E", "intensity": null, "notes": "Chest isolation. Constant tension." },
+                { "name": "Lat Pulldown", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 1, "rest": 60, "role": "accessory", "pair": "E", "intensity": null, "notes": "Wide grip. Pull to upper chest." },
+                { "name": "DB Lateral Raise", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 1, "rest": 0, "role": "accessory", "pair": "F", "intensity": null, "notes": "Slight lean. Lead with elbows." },
+                { "name": "Face Pull", "sets": 3, "reps": "15", "tempo": "2-1-2-0", "rir": null, "rest": 45, "role": "structural", "pair": "F", "intensity": null, "notes": "Rope to forehead. External rotate." }
+              ]
+            },
+            {
+              "name": "Lower Strength (Squat)",
+              "exercises": [
+                { "name": "Box Jump", "sets": 4, "reps": "3", "tempo": "X", "rir": null, "rest": 90, "role": "explosive", "pair": null, "intensity": null, "notes": "Explosive. Step down. Full reset. Increase height weekly." },
+                { "name": "Back Squat", "sets": 6, "reps": "3", "tempo": "2-1-1-0", "rir": 2, "rest": 180, "role": "primary", "pair": null, "intensity": "tempo first rep (3s eccentric)", "notes": "Heavy. 80-85%. Full depth. Brace hard." },
+                { "name": "Romanian Deadlift", "sets": 4, "reps": "6", "tempo": "2-0-1-0", "rir": 2, "rest": 120, "role": "secondary", "pair": null, "intensity": null, "notes": "Hinge at hips. Deep hamstring stretch." },
+                { "name": "Leg Press", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Full depth. Controlled eccentric." },
+                { "name": "Lying Leg Curl", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 60, "role": "accessory", "pair": "D", "intensity": null, "notes": "Squeeze at top. Controlled negative." },
+                { "name": "Walking Lunge", "sets": 3, "reps": "8 each", "tempo": "2-0-1-0", "rir": 2, "rest": 60, "role": "accessory", "pair": null, "intensity": null, "notes": "Unilateral strength. Upright torso." },
+                { "name": "Standing Calf Raise", "sets": 4, "reps": "12", "tempo": "2-1-1-0", "rir": 1, "rest": 60, "role": "accessory", "pair": null, "intensity": "pause reps", "notes": "Full stretch. 2-sec pause at top." }
+              ]
+            },
+            {
+              "name": "Conditioning + Core + Arms",
+              "exercises": [
+                { "name": "Zone 2 Cardio", "sets": 1, "reps": "25 min", "tempo": null, "rir": null, "rest": 0, "role": "conditioning", "pair": null, "intensity": "steady state", "notes": "Row, bike, or incline walk. HR 120-140 bpm. Maintain aerobic base." },
+                { "name": "Ab Wheel", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "core", "pair": "B", "intensity": null, "notes": "Full extension if able. Control return." },
+                { "name": "Pallof Press", "sets": 3, "reps": "12 each", "tempo": "2-1-2-0", "rir": null, "rest": 45, "role": "core", "pair": "B", "intensity": null, "notes": "Anti-rotation. Press and hold 2 seconds." },
+                { "name": "Farmer Carry", "sets": 3, "reps": "50m", "tempo": null, "rir": null, "rest": 60, "role": "core", "pair": null, "intensity": null, "notes": "Heavier than Phase 1. Tall posture. Brace." },
+                { "name": "EZ Bar Curl", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Strict form. No swing." },
+                { "name": "Cable Pushdown", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Elbows pinned. Full lockout." },
+                { "name": "Hammer Curl", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Neutral grip. Brachialis emphasis." },
+                { "name": "Cable External Rotation", "sets": 2, "reps": "15 each", "tempo": "2-1-2-0", "rir": null, "rest": 45, "role": "structural", "pair": null, "intensity": null, "notes": "Elbow pinned at side. Slow controlled rotation." }
+              ]
+            },
+            {
+              "name": "Upper Hypertrophy (Shoulders)",
+              "exercises": [
+                { "name": "Push Press", "sets": 4, "reps": "3", "tempo": "X", "rir": null, "rest": 90, "role": "explosive", "pair": null, "intensity": null, "notes": "Dip-drive-press. Explosive. Control negative." },
+                { "name": "Barbell Row", "sets": 4, "reps": "6", "tempo": "2-0-1-1", "rir": 2, "rest": 90, "role": "secondary", "pair": null, "intensity": "cluster last set", "notes": "Overhand grip. Pull to belly. No momentum." },
+                { "name": "Machine Shoulder Press", "sets": 3, "reps": "8", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "C", "intensity": null, "notes": "Controlled. Full lockout." },
+                { "name": "Seated Cable Row", "sets": 3, "reps": "8", "tempo": "2-0-1-1", "rir": 2, "rest": 60, "role": "accessory", "pair": "C", "intensity": null, "notes": "V-bar handle. Pull to belly. Squeeze." },
+                { "name": "Cable Lateral Raise", "sets": 4, "reps": "12", "tempo": "2-0-1-1", "rir": 1, "rest": 0, "role": "accessory", "pair": "D", "intensity": "mechanical drop set last set", "notes": "Behind body start. Constant tension." },
+                { "name": "Reverse Pec Deck", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 1, "rest": 60, "role": "accessory", "pair": "D", "intensity": null, "notes": "Full contraction. Slow negative." },
+                { "name": "Incline DB Curl", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "E", "intensity": null, "notes": "45-degree bench. Full stretch." },
+                { "name": "Overhead Tricep Extension", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 60, "role": "accessory", "pair": "E", "intensity": null, "notes": "Cable or DB. Deep stretch." },
+                { "name": "Cable External Rotation", "sets": 2, "reps": "15 each", "tempo": "2-1-2-0", "rir": null, "rest": 45, "role": "structural", "pair": null, "intensity": null, "notes": "Rotator cuff maintenance." }
+              ]
+            },
+            {
+              "name": "Lower Hypertrophy (Hinge)",
+              "exercises": [
+                { "name": "Hang Power Clean", "sets": 4, "reps": "3", "tempo": "X", "rir": null, "rest": 90, "role": "explosive", "pair": null, "intensity": null, "notes": "Hip-driven. Aggressive extension. Catch in quarter squat." },
+                { "name": "Trap Bar Deadlift", "sets": 4, "reps": "8", "tempo": "3-0-1-0", "rir": 2, "rest": 120, "role": "primary", "pair": null, "intensity": null, "notes": "Hypertrophy focus. Neutral grip. Controlled eccentric." },
+                { "name": "Hack Squat", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 90, "role": "secondary", "pair": null, "intensity": null, "notes": "Full depth. Quad focus." },
+                { "name": "Seated Leg Curl", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": "myo-reps last set", "notes": "Squeeze hamstrings. Slow eccentric." },
+                { "name": "Bulgarian Split Squat", "sets": 3, "reps": "8 each", "tempo": "2-0-1-0", "rir": 2, "rest": 60, "role": "accessory", "pair": "D", "intensity": null, "notes": "Rear foot elevated. Vertical shin." },
+                { "name": "Hip Thrust", "sets": 3, "reps": "10", "tempo": "2-1-1-0", "rir": 2, "rest": 0, "role": "accessory", "pair": "E", "intensity": null, "notes": "Heavy. Squeeze glutes at top." },
+                { "name": "Seated Calf Raise", "sets": 4, "reps": "12", "tempo": "2-1-1-0", "rir": 1, "rest": 60, "role": "accessory", "pair": "E", "intensity": null, "notes": "Deep stretch. Slow eccentric." },
+                { "name": "DB Lateral Raise", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 1, "rest": 45, "role": "accessory", "pair": null, "intensity": null, "notes": "Shoulder frequency. Light weight." }
+              ]
+            }
+          ]
+        },
+        {
+          "meso": 2,
+          "weeks": "17-20",
+          "rotation_notes": "Incline Barbell / Front Squat / Deficit RDL / Chin-ups / Single-Arm DB Row",
+          "days": [
+            {
+              "name": "Upper Strength (Chest + Back)",
+              "exercises": [
+                { "name": "Med Ball Slam", "sets": 4, "reps": "3", "tempo": "X", "rir": null, "rest": 60, "role": "explosive", "pair": "A", "intensity": null, "notes": "Overhead slam. Maximum force into ground." },
+                { "name": "Scap Push-Up", "sets": 4, "reps": "12", "tempo": "2-1-2-0", "rir": null, "rest": 60, "role": "structural", "pair": "A", "intensity": null, "notes": "Protract and retract. Maintain plank." },
+                { "name": "Incline Barbell Press", "sets": 6, "reps": "3", "tempo": "2-1-1-0", "rir": 2, "rest": 180, "role": "primary", "pair": null, "intensity": null, "notes": "30-degree. Heavy. 80-85%. Full ROM." },
+                { "name": "Chin-ups", "sets": 4, "reps": "5", "tempo": "2-0-1-0", "rir": 2, "rest": 120, "role": "secondary", "pair": null, "intensity": null, "notes": "Supinated grip. Add weight. Full hang." },
+                { "name": "Flat DB Press", "sets": 3, "reps": "8", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Full stretch at bottom. Controlled press." },
+                { "name": "Single-Arm DB Row", "sets": 3, "reps": "8 each", "tempo": "2-0-1-1", "rir": 2, "rest": 60, "role": "accessory", "pair": "D", "intensity": null, "notes": "Pull to hip. Squeeze lat at top." },
+                { "name": "Machine Chest Press", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 1, "rest": 0, "role": "accessory", "pair": "E", "intensity": "drop set last set", "notes": "Full stretch. Press volume." },
+                { "name": "Cable Pullover", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 1, "rest": 60, "role": "accessory", "pair": "E", "intensity": null, "notes": "Arms slightly bent. Pull to hips." },
+                { "name": "Cable Lateral Raise", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 1, "rest": 0, "role": "accessory", "pair": "F", "intensity": null, "notes": "Behind body start. Constant tension." },
+                { "name": "Band Pull-Apart", "sets": 3, "reps": "20", "tempo": "2-1-2-0", "rir": null, "rest": 45, "role": "structural", "pair": "F", "intensity": null, "notes": "High reps. Squeeze rear delts." }
+              ]
+            },
+            {
+              "name": "Lower Strength (Squat)",
+              "exercises": [
+                { "name": "Broad Jump", "sets": 4, "reps": "3", "tempo": "X", "rir": null, "rest": 90, "role": "explosive", "pair": null, "intensity": null, "notes": "Explosive hip extension. Stick the landing." },
+                { "name": "Front Squat", "sets": 6, "reps": "3", "tempo": "2-1-1-0", "rir": 2, "rest": 180, "role": "primary", "pair": null, "intensity": "tempo first rep (3s eccentric)", "notes": "Clean or cross grip. Elbows high. Heavy. 80-85%." },
+                { "name": "Deficit RDL", "sets": 4, "reps": "6", "tempo": "2-0-1-0", "rir": 2, "rest": 120, "role": "secondary", "pair": null, "intensity": null, "notes": "Standing on plate/step. Increased ROM." },
+                { "name": "Leg Extension", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Full contraction. Controlled eccentric." },
+                { "name": "Nordic Curl (eccentric)", "sets": 3, "reps": "6", "tempo": "5-0-X-0", "rir": 2, "rest": 60, "role": "accessory", "pair": "D", "intensity": null, "notes": "Lower as slowly as possible. Hands to push up." },
+                { "name": "Reverse Lunge", "sets": 3, "reps": "8 each", "tempo": "2-0-1-0", "rir": 2, "rest": 60, "role": "accessory", "pair": null, "intensity": null, "notes": "Step back. Vertical shin front leg." },
+                { "name": "Seated Calf Raise", "sets": 4, "reps": "12", "tempo": "2-1-1-0", "rir": 1, "rest": 60, "role": "accessory", "pair": null, "intensity": null, "notes": "Deep stretch. Pause at top." }
+              ]
+            },
+            {
+              "name": "Conditioning + Core + Arms",
+              "exercises": [
+                { "name": "Zone 2 Cardio", "sets": 1, "reps": "25 min", "tempo": null, "rir": null, "rest": 0, "role": "conditioning", "pair": null, "intensity": "steady state", "notes": "Maintain aerobic base. HR 120-140 bpm." },
+                { "name": "Dead Bug", "sets": 3, "reps": "10 each", "tempo": "2-1-2-0", "rir": null, "rest": 0, "role": "core", "pair": "B", "intensity": null, "notes": "Opposite arm/leg. Press low back into floor." },
+                { "name": "Cable Woodchop", "sets": 3, "reps": "12 each", "tempo": "2-0-1-1", "rir": 2, "rest": 45, "role": "core", "pair": "B", "intensity": null, "notes": "Rotate through hips. Core resists." },
+                { "name": "Suitcase Carry", "sets": 3, "reps": "40m each", "tempo": null, "rir": null, "rest": 60, "role": "core", "pair": null, "intensity": null, "notes": "Heavy single DB/KB. Stay upright." },
+                { "name": "Hammer Curl", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Neutral grip. No swing." },
+                { "name": "Dip", "sets": 3, "reps": "8", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Add weight if able. Full ROM." },
+                { "name": "Incline DB Curl", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "45-degree bench. Full stretch." },
+                { "name": "Prone Y Raise", "sets": 2, "reps": "12", "tempo": "2-1-2-0", "rir": null, "rest": 45, "role": "structural", "pair": null, "intensity": null, "notes": "Face down on incline. Scapular stability." }
+              ]
+            },
+            {
+              "name": "Upper Hypertrophy (Shoulders)",
+              "exercises": [
+                { "name": "Landmine Push Press", "sets": 4, "reps": "3 each", "tempo": "X", "rir": null, "rest": 90, "role": "explosive", "pair": null, "intensity": null, "notes": "Explosive. Drive through legs. Each arm." },
+                { "name": "Pendlay Row", "sets": 4, "reps": "5", "tempo": "X-0-1-1", "rir": 2, "rest": 90, "role": "secondary", "pair": null, "intensity": null, "notes": "Dead stop. Explosive pull to sternum." },
+                { "name": "DB Shoulder Press", "sets": 3, "reps": "8", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "C", "intensity": null, "notes": "Seated. Full lockout. Controlled." },
+                { "name": "Chest Supported Row", "sets": 3, "reps": "8", "tempo": "2-0-1-1", "rir": 2, "rest": 60, "role": "accessory", "pair": "C", "intensity": null, "notes": "Pull to ribcage. No momentum." },
+                { "name": "DB Lateral Raise", "sets": 4, "reps": "12", "tempo": "2-0-1-1", "rir": 1, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Slight lean. No momentum." },
+                { "name": "Cable Face Pull", "sets": 3, "reps": "15", "tempo": "2-1-2-0", "rir": null, "rest": 60, "role": "structural", "pair": "D", "intensity": null, "notes": "External rotate. Rear delt + scap." },
+                { "name": "Preacher Curl", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "E", "intensity": null, "notes": "Full stretch. Strict." },
+                { "name": "Skull Crusher", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 60, "role": "accessory", "pair": "E", "intensity": "rest-pause last set", "notes": "EZ bar or DB. Deep stretch." },
+                { "name": "Trap 3 Raise", "sets": 2, "reps": "15", "tempo": "2-1-2-0", "rir": null, "rest": 45, "role": "structural", "pair": null, "intensity": null, "notes": "Prone on incline. Scapular stability." }
+              ]
+            },
+            {
+              "name": "Lower Hypertrophy (Hinge)",
+              "exercises": [
+                { "name": "Power Clean", "sets": 4, "reps": "3", "tempo": "X", "rir": null, "rest": 90, "role": "explosive", "pair": null, "intensity": null, "notes": "Full clean from floor. Aggressive triple extension." },
+                { "name": "Romanian Deadlift", "sets": 4, "reps": "8", "tempo": "3-0-1-0", "rir": 2, "rest": 120, "role": "primary", "pair": null, "intensity": null, "notes": "Hypertrophy focus. Deep hamstring stretch. Controlled eccentric." },
+                { "name": "Leg Press", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 90, "role": "secondary", "pair": null, "intensity": null, "notes": "Full depth. Controlled." },
+                { "name": "Lying Leg Curl", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": "rest-pause last set", "notes": "Squeeze hamstrings. Slow eccentric." },
+                { "name": "Step-Up", "sets": 3, "reps": "8 each", "tempo": "2-0-1-0", "rir": 2, "rest": 60, "role": "accessory", "pair": "D", "intensity": null, "notes": "High box. Drive through lead leg." },
+                { "name": "Cable Pull-Through", "sets": 3, "reps": "12", "tempo": "2-1-1-0", "rir": 2, "rest": 0, "role": "accessory", "pair": "E", "intensity": null, "notes": "Hip hinge. Squeeze glutes at lockout." },
+                { "name": "Standing Calf Raise", "sets": 4, "reps": "12", "tempo": "2-1-1-0", "rir": 1, "rest": 60, "role": "accessory", "pair": "E", "intensity": null, "notes": "Full ROM. Pause at top." },
+                { "name": "Machine Lateral Raise", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 1, "rest": 45, "role": "accessory", "pair": null, "intensity": null, "notes": "Shoulder frequency." }
+              ]
+            }
+          ]
+        },
+        {
+          "meso": 3,
+          "weeks": "21-24",
+          "rotation_notes": "Close-Grip Bench / SSB Squat / Rack Pull / Pull-ups / Meadows Row",
+          "days": [
+            {
+              "name": "Upper Strength (Chest + Back)",
+              "exercises": [
+                { "name": "Plyo Push-up", "sets": 4, "reps": "3", "tempo": "X", "rir": null, "rest": 60, "role": "explosive", "pair": "A", "intensity": null, "notes": "Hands leave ground. Maximum velocity." },
+                { "name": "Prone Y Raise", "sets": 4, "reps": "12", "tempo": "2-1-2-0", "rir": null, "rest": 60, "role": "structural", "pair": "A", "intensity": null, "notes": "Face down on incline. Scapular stability." },
+                { "name": "Close-Grip Bench Press", "sets": 6, "reps": "3", "tempo": "2-1-1-0", "rir": 2, "rest": 180, "role": "primary", "pair": null, "intensity": "cluster last set (2+1, 15s rest)", "notes": "Hands inside shoulder width. Heavy. 80-85%." },
+                { "name": "Pull-ups", "sets": 4, "reps": "5", "tempo": "2-0-1-0", "rir": 2, "rest": 120, "role": "secondary", "pair": null, "intensity": null, "notes": "Pronated grip. Add weight. Full hang." },
+                { "name": "Landmine Press", "sets": 3, "reps": "8 each", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Staggered stance. Core braced." },
+                { "name": "Seal Row", "sets": 3, "reps": "8", "tempo": "2-0-1-1", "rir": 2, "rest": 60, "role": "accessory", "pair": "D", "intensity": null, "notes": "Prone on bench. Pull to chest." },
+                { "name": "Pec Deck", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 1, "rest": 0, "role": "accessory", "pair": "E", "intensity": null, "notes": "Full stretch. Squeeze at peak." },
+                { "name": "Straight-Arm Pulldown", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 1, "rest": 60, "role": "accessory", "pair": "E", "intensity": null, "notes": "Keep arms straight. Squeeze lats." },
+                { "name": "Plate Lateral Raise", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 1, "rest": 0, "role": "accessory", "pair": "F", "intensity": null, "notes": "Neutral grip on plate edges." },
+                { "name": "Face Pull", "sets": 3, "reps": "15", "tempo": "2-1-2-0", "rir": null, "rest": 45, "role": "structural", "pair": "F", "intensity": null, "notes": "Rope to forehead. External rotate." }
+              ]
+            },
+            {
+              "name": "Lower Strength (Squat)",
+              "exercises": [
+                { "name": "Depth Jump", "sets": 4, "reps": "3", "tempo": "X", "rir": null, "rest": 90, "role": "explosive", "pair": null, "intensity": null, "notes": "Step off box. Immediate max jump. Minimal ground contact." },
+                { "name": "Safety Bar Squat", "sets": 6, "reps": "3", "tempo": "2-1-1-0", "rir": 2, "rest": 180, "role": "primary", "pair": null, "intensity": null, "notes": "SSB. Drive through midfoot. Heavy. 80-85%." },
+                { "name": "Good Morning", "sets": 4, "reps": "6", "tempo": "2-0-1-0", "rir": 2, "rest": 120, "role": "secondary", "pair": null, "intensity": null, "notes": "Barbell on traps. Slight knee bend. Deep hinge." },
+                { "name": "Hack Squat", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Full depth. Quad focus." },
+                { "name": "Seated Leg Curl", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 60, "role": "accessory", "pair": "D", "intensity": null, "notes": "Squeeze at top. Controlled negative." },
+                { "name": "Goblet Squat", "sets": 3, "reps": "10", "tempo": "2-0-1-0", "rir": 2, "rest": 60, "role": "accessory", "pair": null, "intensity": null, "notes": "Deep squat. Upright torso. Unilateral alternative." },
+                { "name": "Leg Press Calf Raise", "sets": 4, "reps": "12", "tempo": "2-1-1-0", "rir": 1, "rest": 60, "role": "accessory", "pair": null, "intensity": null, "notes": "Full ROM. Controlled." }
+              ]
+            },
+            {
+              "name": "Conditioning + Core + Arms",
+              "exercises": [
+                { "name": "Zone 2 Cardio", "sets": 1, "reps": "25 min", "tempo": null, "rir": null, "rest": 0, "role": "conditioning", "pair": null, "intensity": "steady state", "notes": "Maintain aerobic base. HR 120-140." },
+                { "name": "Hanging Leg Raise", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "core", "pair": "B", "intensity": null, "notes": "Control swing. Raise to 90 degrees." },
+                { "name": "Landmine Rotation", "sets": 3, "reps": "10 each", "tempo": "2-0-1-1", "rir": 2, "rest": 45, "role": "core", "pair": "B", "intensity": null, "notes": "Controlled arc. Rotate through hips." },
+                { "name": "Overhead Carry", "sets": 3, "reps": "40m each", "tempo": null, "rir": null, "rest": 60, "role": "core", "pair": null, "intensity": null, "notes": "Single KB/DB overhead. Tall posture. Each arm." },
+                { "name": "Cable Curl", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Full stretch. Squeeze at top." },
+                { "name": "Rope Pushdown", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Spread rope at bottom. Full lockout." },
+                { "name": "Reverse Curl", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Pronated grip. Forearm emphasis." },
+                { "name": "Wall Slides", "sets": 2, "reps": "10", "tempo": "2-1-2-0", "rir": null, "rest": 45, "role": "structural", "pair": null, "intensity": null, "notes": "Back against wall. Maintain contact." }
+              ]
+            },
+            {
+              "name": "Upper Hypertrophy (Shoulders)",
+              "exercises": [
+                { "name": "Strict Press", "sets": 4, "reps": "5", "tempo": "2-0-1-0", "rir": 2, "rest": 120, "role": "primary", "pair": null, "intensity": null, "notes": "No leg drive. Full lockout. Heavy." },
+                { "name": "Meadows Row", "sets": 4, "reps": "6 each", "tempo": "2-0-1-1", "rir": 2, "rest": 90, "role": "secondary", "pair": null, "intensity": null, "notes": "Landmine row. Pull to hip. Each arm." },
+                { "name": "Incline Machine Press", "sets": 3, "reps": "8", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "C", "intensity": null, "notes": "Upper chest volume." },
+                { "name": "Cable Row", "sets": 3, "reps": "8", "tempo": "2-0-1-1", "rir": 2, "rest": 60, "role": "accessory", "pair": "C", "intensity": null, "notes": "V-bar handle. Pull to belly." },
+                { "name": "Machine Lateral Raise", "sets": 4, "reps": "12", "tempo": "2-0-1-1", "rir": 1, "rest": 0, "role": "accessory", "pair": "D", "intensity": "mechanical drop set last set", "notes": "Full ROM. Constant tension." },
+                { "name": "Rear Delt Fly", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 1, "rest": 60, "role": "accessory", "pair": "D", "intensity": null, "notes": "DB or cable. Full contraction." },
+                { "name": "Spider Curl", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 0, "role": "accessory", "pair": "E", "intensity": null, "notes": "Incline bench face down. Short head." },
+                { "name": "Rope Pushdown", "sets": 3, "reps": "10", "tempo": "2-0-1-1", "rir": 2, "rest": 60, "role": "accessory", "pair": "E", "intensity": null, "notes": "Spread rope at bottom." },
+                { "name": "Band Dislocate", "sets": 2, "reps": "10", "tempo": "2-0-2-0", "rir": null, "rest": 45, "role": "structural", "pair": null, "intensity": null, "notes": "Shoulder mobility. Slow controlled." }
+              ]
+            },
+            {
+              "name": "Lower Hypertrophy (Hinge)",
+              "exercises": [
+                { "name": "Clean Pull", "sets": 4, "reps": "3", "tempo": "X", "rir": null, "rest": 90, "role": "explosive", "pair": null, "intensity": null, "notes": "Full triple extension. Barbell to hip. No catch." },
+                { "name": "Sumo Deadlift", "sets": 4, "reps": "8", "tempo": "3-0-1-0", "rir": 2, "rest": 120, "role": "primary", "pair": null, "intensity": null, "notes": "Hypertrophy focus. Wide stance. Push floor away. Controlled negative." },
+                { "name": "Leg Extension", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 2, "rest": 90, "role": "secondary", "pair": null, "intensity": null, "notes": "Full contraction. Controlled eccentric." },
+                { "name": "GHR", "sets": 3, "reps": "8", "tempo": "3-0-1-0", "rir": 2, "rest": 0, "role": "accessory", "pair": "D", "intensity": null, "notes": "Glute-ham raise. Control eccentric." },
+                { "name": "Reverse Lunge", "sets": 3, "reps": "8 each", "tempo": "2-0-1-0", "rir": 2, "rest": 60, "role": "accessory", "pair": "D", "intensity": null, "notes": "DB in each hand. Step back. Vertical shin." },
+                { "name": "Barbell Hip Thrust", "sets": 3, "reps": "10", "tempo": "2-1-1-0", "rir": 2, "rest": 0, "role": "accessory", "pair": "E", "intensity": null, "notes": "Heavy. Drive through heels. Squeeze glutes." },
+                { "name": "Standing Calf Raise", "sets": 4, "reps": "12", "tempo": "2-1-1-0", "rir": 1, "rest": 60, "role": "accessory", "pair": "E", "intensity": null, "notes": "Full ROM. Pause at top." },
+                { "name": "Cable Lateral Raise", "sets": 3, "reps": "12", "tempo": "2-0-1-1", "rir": 1, "rest": 45, "role": "accessory", "pair": null, "intensity": null, "notes": "Shoulder frequency. Behind body start." }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

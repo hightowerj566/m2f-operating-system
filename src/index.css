@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 16% 7%;
+    --foreground: 40 20% 95%;
+
+    --card: 220 14% 10%;
+    --card-foreground: 40 20% 95%;
+
+    --popover: 220 14% 10%;
+    --popover-foreground: 40 20% 95%;
+
+    --primary: 43 74% 55%;
+    --primary-foreground: 220 16% 7%;
+
+    --secondary: 220 13% 14%;
+    --secondary-foreground: 40 10% 80%;
+
+    --muted: 220 13% 14%;
+    --muted-foreground: 220 10% 50%;
+
+    --accent: 43 74% 55%;
+    --accent-foreground: 220 16% 7%;
+
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 220 13% 16%;
+    --input: 220 13% 14%;
+    --ring: 43 74% 55%;
+
+    --radius: 0.5rem;
+
+    --gold: 43 74% 55%;
+    --gold-muted: 43 50% 35%;
+    --gold-glow: 43 90% 65%;
+    --charcoal: 220 16% 7%;
+    --charcoal-light: 220 14% 10%;
+    --charcoal-mid: 220 13% 14%;
+    --charcoal-border: 220 13% 16%;
+
+    --success: 142 60% 45%;
+
+    --sidebar-background: 220 16% 5%;
+    --sidebar-foreground: 40 10% 80%;
+    --sidebar-primary: 43 74% 55%;
+    --sidebar-primary-foreground: 220 16% 7%;
+    --sidebar-accent: 220 13% 12%;
+    --sidebar-accent-foreground: 40 10% 80%;
+    --sidebar-border: 220 13% 14%;
+    --sidebar-ring: 43 74% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight;
+  }
+}
+
+@layer utilities {
+  .gold-gradient {
+    background: linear-gradient(135deg, hsl(var(--gold)), hsl(var(--gold-glow)));
+  }
+
+  .gold-text {
+    color: hsl(var(--gold));
+  }
+
+  .card-dark {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+  }
+
+  .glow-gold {
+    box-shadow: 0 0 20px hsl(var(--gold) / 0.15);
+  }
+
+  .compliance-bar {
+    height: 6px;
+    border-radius: 3px;
+    background: hsl(var(--border));
+  }
+
+  .compliance-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, hsl(var(--gold)), hsl(var(--gold-glow)));
+  }
+}

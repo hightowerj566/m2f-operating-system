@@ -1,0 +1,297 @@
+{
+  "program_express_workouts": {
+    "meta": {
+      "description": "Express versions of all 6 training days for both M2F Perform 2.0 and M2F Rebuild 2.0. Use when time is under 35 minutes. Primary lift is always included — it is non-negotiable. All other blocks are minimum effective dose.",
+      "express_rules": [
+        "Primary lift stays — always. No exceptions.",
+        "One compound pull and one compound push minimum per upper day.",
+        "Farmer or loaded carry stays on every lower and conditioning day.",
+        "Face Pull stays on every upper day — rotator cuff maintenance.",
+        "Target session time: 30–35 minutes.",
+        "RIR target stays the same as full session — do not rush sets.",
+        "If you have 5 more minutes, add one accessory superset from the full session."
+      ],
+      "phase_note": "P1 = Phase 1 Build (Weeks 1–5). P2 = Phase 2 Strength (Weeks 6–9)."
+    },
+    "PERFORM": {
+      "day_1": {
+        "name": "Heavy Upper",
+        "theme": "Heavy Chest · Strength Back · Accessory Shoulders",
+        "P1": {
+          "target_time_minutes": 32,
+          "exercises": [
+            { "order": 1, "exercise": "Barbell Bench Press",         "sets": "4", "reps": "8–10",  "rir": "2",   "rest": "3 min",  "notes": "Primary — non-negotiable. 3-1-1 tempo" },
+            { "order": 2, "exercise": "Incline DB Press (neutral)",  "sets": "3", "reps": "10–12", "rir": "2",   "rest": "90s",    "notes": "Superset with pull-up" },
+            { "order": 3, "exercise": "Weighted Pull-up",            "sets": "3", "reps": "8–10",  "rir": "2",   "rest": "90s",    "notes": "Superset with incline press" },
+            { "order": 4, "exercise": "Face Pull (cable)",           "sets": "3", "reps": "15",    "rir": "2",   "rest": "60s",    "notes": "Never skip — rotator cuff maintenance" },
+            { "order": 5, "exercise": "Tricep Rope Pushdown",        "sets": "3", "reps": "12",    "rir": "2",   "rest": "60s",    "notes": "Superset with face pull" }
+          ]
+        },
+        "P2": {
+          "target_time_minutes": 35,
+          "exercises": [
+            { "order": 1, "exercise": "Barbell Bench Press",         "sets": "4", "reps": "4–6",   "rir": "1–2", "rest": "3 min",  "notes": "Cluster sets (2+2+2/15s rest) wk 6–7. Heavy doubles wk 8–9" },
+            { "order": 2, "exercise": "Back-off set",                "sets": "1", "reps": "6–8",   "rir": "2",   "rest": "2 min",  "notes": "85% of top set" },
+            { "order": 3, "exercise": "Incline DB Press (neutral)",  "sets": "3", "reps": "8–10",  "rir": "2",   "rest": "90s",    "notes": "Superset with pull-up" },
+            { "order": 4, "exercise": "Weighted Pull-up",            "sets": "3", "reps": "6–8",   "rir": "2",   "rest": "90s",    "notes": "Superset with incline press" },
+            { "order": 5, "exercise": "Face Pull (cable)",           "sets": "3", "reps": "15",    "rir": "2",   "rest": "60s",    "notes": "Never skip" }
+          ]
+        }
+      },
+      "day_2": {
+        "name": "Heavy Lower",
+        "theme": "Squat Dominant · Posterior Chain · Farmer Carry",
+        "P1": {
+          "target_time_minutes": 35,
+          "exercises": [
+            { "order": 1, "exercise": "Back Squat",                  "sets": "4", "reps": "8–10",  "rir": "2",   "rest": "3 min",  "notes": "Primary — this is the session. 3s eccentric" },
+            { "order": 2, "exercise": "Romanian Deadlift",           "sets": "3", "reps": "10–12", "rir": "2",   "rest": "90s",    "notes": "3-1-1 tempo. Superset with split squat" },
+            { "order": 3, "exercise": "Bulgarian Split Squat (DB)",  "sets": "3", "reps": "10 ea", "rir": "2",   "rest": "90s",    "notes": "3s eccentric. Superset with RDL" },
+            { "order": 4, "exercise": "Hip Thrust (barbell)",        "sets": "3", "reps": "12–15", "rir": "2",   "rest": "75s",    "notes": "1s pause at top" },
+            { "order": 5, "exercise": "Farmer Carry",                "sets": "3", "reps": "30m",   "rir": "N/A", "rest": "90s",    "notes": "Walk tall — finish strong" }
+          ]
+        },
+        "P2": {
+          "target_time_minutes": 38,
+          "exercises": [
+            { "order": 1, "exercise": "Back Squat",                  "sets": "4", "reps": "4–6",   "rir": "1–2", "rest": "3 min",  "notes": "Cluster sets wk 6–7. Heavy doubles wk 8–9. 2s pause" },
+            { "order": 2, "exercise": "Back-off set",                "sets": "1", "reps": "6–8",   "rir": "2",   "rest": "2 min",  "notes": "85% of top set" },
+            { "order": 3, "exercise": "Romanian Deadlift",           "sets": "3", "reps": "8–10",  "rir": "2",   "rest": "90s",    "notes": "Heavier than P1" },
+            { "order": 4, "exercise": "Bulgarian Split Squat (DB)",  "sets": "3", "reps": "8 ea",  "rir": "2",   "rest": "90s",    "notes": "Heavier than P1" },
+            { "order": 5, "exercise": "Farmer Carry",                "sets": "3", "reps": "40m",   "rir": "N/A", "rest": "90s",    "notes": "Heavier than P1" }
+          ]
+        }
+      },
+      "day_3": {
+        "name": "Core + Conditioning",
+        "theme": "Zone 2 · Anti-Extension · Anti-Rotation · Suitcase Carry",
+        "P1": {
+          "target_time_minutes": 30,
+          "exercises": [
+            { "order": 1, "exercise": "Zone 2 cardio",               "sets": "1", "reps": "20 min", "rir": "N/A", "rest": "N/A",   "notes": "Minimum effective dose — do not skip. Conversational pace" },
+            { "order": 2, "exercise": "Ab Wheel Rollout",            "sets": "3", "reps": "10",     "rir": "1–2", "rest": "60s",   "notes": "Ribs down" },
+            { "order": 3, "exercise": "Pallof Press (cable)",        "sets": "3", "reps": "10 ea",  "rir": "2",   "rest": "60s",   "notes": "Superset with rollout" },
+            { "order": 4, "exercise": "Suitcase Carry (single KB)",  "sets": "3", "reps": "25m ea", "rir": "N/A", "rest": "75s",   "notes": "Anti-lateral flexion — don't lean away" }
+          ]
+        },
+        "P2": {
+          "target_time_minutes": 30,
+          "exercises": [
+            { "order": 1, "exercise": "Zone 2 cardio",               "sets": "1", "reps": "20 min", "rir": "N/A", "rest": "N/A",   "notes": "Do NOT replace with HIIT — primary lifts need recovery" },
+            { "order": 2, "exercise": "Ab Wheel Rollout",            "sets": "3", "reps": "10",     "rir": "1–2", "rest": "60s",   "notes": "Same — slow the eccentric" },
+            { "order": 3, "exercise": "Pallof Press (cable)",        "sets": "3", "reps": "10 ea",  "rir": "2",   "rest": "60s",   "notes": "Heavier than P1. Superset with rollout" },
+            { "order": 4, "exercise": "Suitcase Carry (single KB)",  "sets": "3", "reps": "30m ea", "rir": "N/A", "rest": "75s",   "notes": "Heavier + longer than P1" }
+          ]
+        }
+      },
+      "day_4": {
+        "name": "Hypertrophy Upper + Biceps",
+        "theme": "Heavy Shoulders · Volume Chest · Seal Row · Biceps",
+        "P1": {
+          "target_time_minutes": 33,
+          "exercises": [
+            { "order": 1, "exercise": "Barbell Overhead Press",      "sets": "4", "reps": "8–10",  "rir": "2",   "rest": "3 min",  "notes": "Primary — strict press only. Core braced" },
+            { "order": 2, "exercise": "DB Flat Press (neutral grip)", "sets": "3", "reps": "10–12", "rir": "2",   "rest": "90s",    "notes": "Different angle from D1 incline. Superset with chin-up" },
+            { "order": 3, "exercise": "Weighted Chin-up",            "sets": "3", "reps": "8–10",  "rir": "2",   "rest": "90s",    "notes": "Supinated — dead hang every rep" },
+            { "order": 4, "exercise": "Face Pull (cable)",           "sets": "3", "reps": "15",    "rir": "2",   "rest": "60s",    "notes": "Always in — every upper day" },
+            { "order": 5, "exercise": "Incline DB Curl",             "sets": "3", "reps": "12",    "rir": "2",   "rest": "60s",    "notes": "Superset with face pull" }
+          ]
+        },
+        "P2": {
+          "target_time_minutes": 36,
+          "exercises": [
+            { "order": 1, "exercise": "Barbell Overhead Press",      "sets": "4", "reps": "4–6",   "rir": "1–2", "rest": "3 min",  "notes": "Cluster sets wk 6–7. Heavy doubles wk 8–9. Strict press" },
+            { "order": 2, "exercise": "Back-off set",                "sets": "1", "reps": "6–8",   "rir": "2",   "rest": "2 min",  "notes": "85% of top set" },
+            { "order": 3, "exercise": "Weighted Chin-up",            "sets": "3", "reps": "6–8",   "rir": "2",   "rest": "90s",    "notes": "Heavy — add load weekly" },
+            { "order": 4, "exercise": "DB Flat Press (neutral grip)", "sets": "3", "reps": "8–10",  "rir": "2",   "rest": "90s",    "notes": "Neutral grip maintained" },
+            { "order": 5, "exercise": "Face Pull (cable)",           "sets": "3", "reps": "15",    "rir": "2",   "rest": "60s",    "notes": "Always in" }
+          ]
+        }
+      },
+      "day_5": {
+        "name": "Hypertrophy Lower + Triceps",
+        "theme": "Hinge Dominant · Unilateral · Overhead Carry",
+        "P1": {
+          "target_time_minutes": 35,
+          "exercises": [
+            { "order": 1, "exercise": "Conventional Deadlift",                  "sets": "4", "reps": "8",     "rir": "2",   "rest": "3 min",  "notes": "Primary — this is the session. Brace before every pull" },
+            { "order": 2, "exercise": "Hack Squat / Heel-Elevated Goblet Squat","sets": "3", "reps": "10–12", "rir": "2",   "rest": "90s",    "notes": "Quad emphasis — different from D2. Superset with leg curl" },
+            { "order": 3, "exercise": "Leg Curl (seated)",                      "sets": "3", "reps": "12",    "rir": "2",   "rest": "90s",    "notes": "3-1-2 tempo. Superset with hack squat" },
+            { "order": 4, "exercise": "Cable Pull-Through",                     "sets": "3", "reps": "15",    "rir": "2",   "rest": "75s",    "notes": "Glute hinge — different load vector from D2 hip thrust" },
+            { "order": 5, "exercise": "KB Overhead Carry",                      "sets": "3", "reps": "25m",   "rir": "N/A", "rest": "90s",    "notes": "Ribs down — lock the overhead position" }
+          ]
+        },
+        "P2": {
+          "target_time_minutes": 38,
+          "exercises": [
+            { "order": 1, "exercise": "Conventional Deadlift",                  "sets": "4", "reps": "3–5",   "rir": "1–2", "rest": "3 min",  "notes": "Cluster sets wk 6–7. Heavy doubles/triples wk 8–9. Belt recommended" },
+            { "order": 2, "exercise": "Back-off set",                           "sets": "1", "reps": "5–6",   "rir": "2",   "rest": "2 min",  "notes": "85% of top set" },
+            { "order": 3, "exercise": "Hack Squat / Heel-Elevated Goblet Squat","sets": "3", "reps": "8–10",  "rir": "2",   "rest": "90s",    "notes": "Heavier than P1" },
+            { "order": 4, "exercise": "Leg Curl (seated)",                      "sets": "3", "reps": "10–12", "rir": "2",   "rest": "75s",    "notes": "Heavier than P1 — 3-1-2 tempo maintained" },
+            { "order": 5, "exercise": "KB Overhead Carry",                      "sets": "3", "reps": "30m",   "rir": "N/A", "rest": "90s",    "notes": "Heavier + longer than P1" }
+          ]
+        }
+      },
+      "day_6": {
+        "name": "Athletic Conditioning",
+        "theme": "Olympic Primer · Mixed Modality · Farmer Carry",
+        "P1": {
+          "target_time_minutes": 30,
+          "exercises": [
+            { "order": 1, "exercise": "Assault Bike Sprint",         "sets": "5", "reps": "30s all-out",  "rir": "N/A", "rest": "30s",   "notes": "30s on / 30s off — true sprint, not a fast ride" },
+            { "order": 2, "exercise": "KB Snatch",                   "sets": "3", "reps": "6 each",       "rir": "N/A", "rest": "60s",   "notes": "Full hip extension — lock out overhead" },
+            { "order": 3, "exercise": "Clean Pull + Shrug",          "sets": "3", "reps": "6",            "rir": "N/A", "rest": "75s",   "notes": "Pull to hip → shrug → high pull" },
+            { "order": 4, "exercise": "Farmer Carry",                "sets": "3", "reps": "40m",          "rir": "N/A", "rest": "90s",   "notes": "Heavy — finish the week strong" }
+          ]
+        },
+        "P2": {
+          "target_time_minutes": 30,
+          "exercises": [
+            { "order": 1, "exercise": "Assault Bike Sprint",         "sets": "5", "reps": "30s all-out",  "rir": "N/A", "rest": "30s",   "notes": "Beat last week's RPM — track your output" },
+            { "order": 2, "exercise": "KB Snatch",                   "sets": "3", "reps": "5 each",       "rir": "N/A", "rest": "60s",   "notes": "Heavier than P1 — lock out overhead" },
+            { "order": 3, "exercise": "Clean Pull + Shrug",          "sets": "3", "reps": "5",            "rir": "N/A", "rest": "75s",   "notes": "Heavier than P1 — same three-phase intent" },
+            { "order": 4, "exercise": "Farmer Carry",                "sets": "3", "reps": "40m",          "rir": "N/A", "rest": "90s",   "notes": "Heaviest of the week. Walk tall throughout" }
+          ]
+        }
+      }
+    },
+    "REBUILD": {
+      "day_1": {
+        "name": "Heavy Upper",
+        "theme": "DB Bench · Lat Pulldown · Shoulder Accessory",
+        "P1": {
+          "target_time_minutes": 28,
+          "exercises": [
+            { "order": 1, "exercise": "DB Bench Press",              "sets": "4", "reps": "10–12", "rir": "3",   "rest": "2 min",  "notes": "Primary — full stretch at bottom. 3-1-1 tempo. Build the pattern ✓" },
+            { "order": 2, "exercise": "Lat Pulldown",                "sets": "3", "reps": "12–15", "rir": "2",   "rest": "75s",    "notes": "Full stretch at top. Superset with cable fly" },
+            { "order": 3, "exercise": "Cable Fly (mid)",             "sets": "3", "reps": "15",    "rir": "2",   "rest": "75s",    "notes": "2-0-2 tempo. Superset with lat pulldown" },
+            { "order": 4, "exercise": "Face Pull (cable)",           "sets": "3", "reps": "15",    "rir": "2",   "rest": "60s",    "notes": "Never skip — every upper day" }
+          ]
+        },
+        "P2": {
+          "target_time_minutes": 28,
+          "exercises": [
+            { "order": 1, "exercise": "DB Bench Press",              "sets": "4", "reps": "8–10",  "rir": "2",   "rest": "2 min",  "notes": "Heavier DBs. Same 3-1-1 tempo. Heavier — same controlled movement ✓" },
+            { "order": 2, "exercise": "Lat Pulldown",                "sets": "3", "reps": "10–12", "rir": "2",   "rest": "75s",    "notes": "Push the load weekly. Superset with cable fly" },
+            { "order": 3, "exercise": "Cable Fly",                   "sets": "3", "reps": "12",    "rir": "2",   "rest": "75s",    "notes": "Drop set final set wk 8–9. Superset with pulldown" },
+            { "order": 4, "exercise": "Face Pull (cable)",           "sets": "3", "reps": "15",    "rir": "2",   "rest": "60s",    "notes": "Always in" }
+          ]
+        }
+      },
+      "day_2": {
+        "name": "Heavy Lower",
+        "theme": "Goblet Squat · Hip Hinge · Farmer Carry",
+        "P1": {
+          "target_time_minutes": 28,
+          "exercises": [
+            { "order": 1, "exercise": "Goblet Squat",                "sets": "4", "reps": "10–12", "rir": "3",   "rest": "2 min",  "notes": "Primary — sit between knees. Build the pattern ✓" },
+            { "order": 2, "exercise": "DB Romanian Deadlift",        "sets": "3", "reps": "12–15", "rir": "2",   "rest": "75s",    "notes": "3-1-1 tempo — feel the hamstring" },
+            { "order": 3, "exercise": "Hip Thrust (DB)",             "sets": "3", "reps": "15",    "rir": "2",   "rest": "60s",    "notes": "1s pause at top. Superset with RDL" },
+            { "order": 4, "exercise": "Farmer Carry",                "sets": "3", "reps": "20m",   "rir": "N/A", "rest": "90s",    "notes": "Walk tall — finish strong" }
+          ]
+        },
+        "P2": {
+          "target_time_minutes": 28,
+          "exercises": [
+            { "order": 1, "exercise": "Goblet Squat (paused)",       "sets": "4", "reps": "8–10",  "rir": "2",   "rest": "2 min",  "notes": "1s pause at bottom — heavier + paused ✓" },
+            { "order": 2, "exercise": "DB Romanian Deadlift",        "sets": "3", "reps": "10–12", "rir": "2",   "rest": "75s",    "notes": "Heavier than P1. 3-1-1 tempo" },
+            { "order": 3, "exercise": "Hip Thrust (DB)",             "sets": "3", "reps": "12",    "rir": "2",   "rest": "60s",    "notes": "Heavier than P1. 1s pause. Myoreps final set wk 8–9" },
+            { "order": 4, "exercise": "Farmer Carry",                "sets": "3", "reps": "25m",   "rir": "N/A", "rest": "90s",    "notes": "Heavier + longer than P1" }
+          ]
+        }
+      },
+      "day_3": {
+        "name": "Core + Conditioning",
+        "theme": "Zone 2 · Core All Functions · Suitcase Carry",
+        "P1": {
+          "target_time_minutes": 28,
+          "exercises": [
+            { "order": 1, "exercise": "Zone 2 cardio",               "sets": "1", "reps": "20 min", "rir": "N/A", "rest": "N/A",   "notes": "Durability is built here — don't skip" },
+            { "order": 2, "exercise": "Dead Bug",                    "sets": "3", "reps": "10 each","rir": "N/A", "rest": "60s",   "notes": "Slow and deliberate. Superset with Pallof" },
+            { "order": 3, "exercise": "Pallof Press (cable)",        "sets": "3", "reps": "10 each","rir": "2",   "rest": "60s",   "notes": "Superset with dead bug" },
+            { "order": 4, "exercise": "Suitcase Carry (single KB)",  "sets": "3", "reps": "20m ea", "rir": "N/A", "rest": "75s",   "notes": "Anti-lateral flexion — walk tall" }
+          ]
+        },
+        "P2": {
+          "target_time_minutes": 28,
+          "exercises": [
+            { "order": 1, "exercise": "Zone 2 cardio",               "sets": "1", "reps": "20 min", "rir": "N/A", "rest": "N/A",   "notes": "Do NOT replace with HIIT in strength phase" },
+            { "order": 2, "exercise": "Dead Bug (2s hold at ext.)",  "sets": "3", "reps": "10 each","rir": "N/A", "rest": "60s",   "notes": "P2: 2s hold at extension. Superset with Pallof" },
+            { "order": 3, "exercise": "Pallof Press (cable)",        "sets": "3", "reps": "10 each","rir": "2",   "rest": "60s",   "notes": "Heavier than P1. Superset with dead bug" },
+            { "order": 4, "exercise": "Suitcase Carry (single KB)",  "sets": "3", "reps": "25m ea", "rir": "N/A", "rest": "75s",   "notes": "Heavier + longer than P1" }
+          ]
+        }
+      },
+      "day_4": {
+        "name": "Hypertrophy Upper + Biceps",
+        "theme": "DB Shoulder Press · Volume Chest · Biceps",
+        "P1": {
+          "target_time_minutes": 30,
+          "exercises": [
+            { "order": 1, "exercise": "DB Shoulder Press",           "sets": "4", "reps": "10–12", "rir": "3",   "rest": "2 min",  "notes": "Neutral grip — lower to ear height every rep. Good shoulder pattern ✓" },
+            { "order": 2, "exercise": "Incline DB Press",            "sets": "3", "reps": "12–15", "rir": "2",   "rest": "75s",    "notes": "3-1-1 tempo. Superset with cable row" },
+            { "order": 3, "exercise": "Cable Row",                   "sets": "3", "reps": "12–15", "rir": "2",   "rest": "75s",    "notes": "Drive elbows back. Superset with incline press" },
+            { "order": 4, "exercise": "Face Pull",                   "sets": "3", "reps": "15",    "rir": "2",   "rest": "60s",    "notes": "Always in" },
+            { "order": 5, "exercise": "DB Curl",                     "sets": "3", "reps": "12",    "rir": "2",   "rest": "60s",    "notes": "Full stretch at bottom. Superset with face pull" }
+          ]
+        },
+        "P2": {
+          "target_time_minutes": 30,
+          "exercises": [
+            { "order": 1, "exercise": "DB Shoulder Press",           "sets": "4", "reps": "8–10",  "rir": "2",   "rest": "2 min",  "notes": "Heavier than P1. Full ROM to ear height ✓" },
+            { "order": 2, "exercise": "Incline DB Press",            "sets": "3", "reps": "10–12", "rir": "2",   "rest": "75s",    "notes": "Push the load. Superset with cable row" },
+            { "order": 3, "exercise": "Cable Row",                   "sets": "3", "reps": "10–12", "rir": "2",   "rest": "75s",    "notes": "Heavier — pulling matches pressing. Superset with press" },
+            { "order": 4, "exercise": "Face Pull",                   "sets": "3", "reps": "15",    "rir": "2",   "rest": "60s",    "notes": "Always in" },
+            { "order": 5, "exercise": "Incline DB Curl",             "sets": "3", "reps": "10–12", "rir": "2",   "rest": "60s",    "notes": "P2: incline for more stretch. Myoreps final set wk 8–9" }
+          ]
+        }
+      },
+      "day_5": {
+        "name": "Hypertrophy Lower + Triceps",
+        "theme": "Trap Bar Hinge · Unilateral · Overhead Carry",
+        "P1": {
+          "target_time_minutes": 30,
+          "exercises": [
+            { "order": 1, "exercise": "Trap Bar Deadlift",           "sets": "4", "reps": "10–12", "rir": "3",   "rest": "2 min",  "notes": "Push the floor away — not a back pull. Build the hinge ✓" },
+            { "order": 2, "exercise": "Bulgarian Split Squat (DB)",  "sets": "3", "reps": "12 ea", "rir": "2",   "rest": "90s",    "notes": "3s eccentric. Superset with leg curl" },
+            { "order": 3, "exercise": "Leg Curl",                    "sets": "3", "reps": "15",    "rir": "2",   "rest": "75s",    "notes": "3-1-2 tempo. Full stretch at bottom. Superset with split squat" },
+            { "order": 4, "exercise": "Overhead Tricep Extension",   "sets": "3", "reps": "12–15", "rir": "2",   "rest": "60s",    "notes": "Full stretch at bottom — non-negotiable" },
+            { "order": 5, "exercise": "KB Overhead Carry",           "sets": "3", "reps": "20m",   "rir": "N/A", "rest": "90s",    "notes": "Lock the overhead position — ribs down" }
+          ]
+        },
+        "P2": {
+          "target_time_minutes": 32,
+          "exercises": [
+            { "order": 1, "exercise": "Trap Bar Deadlift (paused)",  "sets": "4", "reps": "8–10",  "rir": "2",   "rest": "2 min",  "notes": "1s pause at bottom. Heavier trap bar + paused reps ✓" },
+            { "order": 2, "exercise": "Bulgarian Split Squat (DB)",  "sets": "3", "reps": "10 ea", "rir": "2",   "rest": "90s",    "notes": "Heavier than P1. 3s eccentric maintained" },
+            { "order": 3, "exercise": "Leg Curl",                    "sets": "3", "reps": "10–12", "rir": "2",   "rest": "75s",    "notes": "Heavier — 3-1-2 tempo. Drop set final set wk 8–9" },
+            { "order": 4, "exercise": "Overhead Tricep Extension",   "sets": "3", "reps": "10–12", "rir": "2",   "rest": "60s",    "notes": "Heavier than P1. Full stretch at bottom. Myoreps wk 8–9" },
+            { "order": 5, "exercise": "KB Overhead Carry",           "sets": "3", "reps": "25m",   "rir": "N/A", "rest": "90s",    "notes": "Heavier + longer than P1" }
+          ]
+        }
+      },
+      "day_6": {
+        "name": "Athletic Conditioning",
+        "theme": "KB Circuits · Cardio · Farmer Carry",
+        "P1": {
+          "target_time_minutes": 28,
+          "exercises": [
+            { "order": 1, "exercise": "Assault Bike / Row / Treadmill","sets": "4", "reps": "30s moderate-hard","rir": "N/A","rest": "45s","notes": "75–80% effort — build the aerobic base. Consistent pace" },
+            { "order": 2, "exercise": "KB Clean and Press",           "sets": "3", "reps": "5 each",       "rir": "N/A", "rest": "75s",   "notes": "Full hip drive into clean — strict press overhead" },
+            { "order": 3, "exercise": "KB Goblet Squat",              "sets": "3", "reps": "10",           "rir": "N/A", "rest": "60s",   "notes": "Full ROM — pattern reinforcement" },
+            { "order": 4, "exercise": "Farmer Carry",                 "sets": "3", "reps": "20m",          "rir": "N/A", "rest": "90s",   "notes": "Every conditioning day ends with a carry" }
+          ]
+        },
+        "P2": {
+          "target_time_minutes": 28,
+          "exercises": [
+            { "order": 1, "exercise": "Assault Bike / Row / Treadmill","sets": "4", "reps": "30s hard",    "rir": "N/A", "rest": "45s",   "notes": "80–85% effort — beat last week's output" },
+            { "order": 2, "exercise": "KB Clean and Press",           "sets": "3", "reps": "5 each",       "rir": "N/A", "rest": "75s",   "notes": "Heavier than P1. Same hip drive" },
+            { "order": 3, "exercise": "KB Goblet Squat (paused)",     "sets": "3", "reps": "8",            "rir": "N/A", "rest": "60s",   "notes": "P2: 1s pause at bottom" },
+            { "order": 4, "exercise": "Farmer Carry",                 "sets": "3", "reps": "25m",          "rir": "N/A", "rest": "90s",   "notes": "Heavier + longer than P1" }
+          ]
+        }
+      }
+    }
+  }
+}

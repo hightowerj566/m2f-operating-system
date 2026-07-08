@@ -1,0 +1,1912 @@
+{
+  "metadata": {
+    "brand": "M2F",
+    "program_family": "Everyday Athlete",
+    "training_intent": [
+      "get stronger",
+      "get leaner",
+      "build athletic muscle",
+      "improve durability",
+      "keep up with kids"
+    ],
+    "equipment_profile": [
+      "barbell",
+      "plates",
+      "adjustable dumbbells",
+      "pull-up bar",
+      "cable station",
+      "lat pulldown",
+      "leg extension",
+      "leg curl",
+      "ghd/back extension",
+      "assault bike or rower"
+    ],
+    "session_cap_minutes": 60,
+    "global_rules": {
+      "max_high_cns_days_per_week": 2,
+      "no_back_to_back_high_cns_days_in_4_day": true,
+      "power_first_when_present": true,
+      "day5_hypertrophy_in_6_day_must_be_tension_based": true,
+      "conditioning_only_on_assigned_days": true,
+      "pull_to_push_ratio_minimum": 1.3,
+      "all_3_planes_weekly": [
+        "sagittal",
+        "frontal",
+        "transverse"
+      ],
+      "shoulder_health_weekly_requirements": {
+        "scapular_sets": "6-12",
+        "serratus_sets": "4-8",
+        "external_rotation_sets": "2-4"
+      },
+      "quick_mode_rule": "When time is limited, keep prep shortened, complete power/primary strength first, then one accessory superset only."
+    },
+    "progression_engine": {
+      "week_1": "Establish baseline loads and leave 2-3 reps in reserve unless otherwise noted.",
+      "week_2": "Add 1 rep per set where prescribed or 2.5-5 lb upper / 5-10 lb lower if all sets met.",
+      "week_3": "Push load progression while keeping target RIR.",
+      "week_4": "Deload or pivot week depending on meso. Reduce volume 30-40% while maintaining bar speed.",
+      "readiness_rules": {
+        "low_sleep_under_6_hours": "Remove one accessory set from each later block and keep all lifts 1 RIR easier.",
+        "joint_irritation": "Swap offensive movement for listed substitution and avoid intensity techniques.",
+        "time_crunch_under_40_minutes": "Use quick_mode variant."
+      }
+    },
+    "tracking_fields": [
+      "load",
+      "reps_completed",
+      "rir_actual",
+      "session_duration_minutes",
+      "readiness_score_1_5",
+      "bodyweight_optional",
+      "notes"
+    ]
+  },
+  "audit_summary": {
+    "version": "M2F_6_day_audited_v2",
+    "audit_date": "2026-04-07",
+    "auditor_notes": "Full program audit completed. Meso 1 (Foundation) retained unchanged \u2014 correctly programmed. Meso 2 and Meso 3 updated per Phase 2/3/4 audit findings. See meso-level audit_notes and day-level audit_changes fields for specific changes.",
+    "key_fixes": [
+      "Push:pull ratio restored to \u22651.3:1 across all mesos via DB Incline restoration and Face Pull repositioning",
+      "Weighted Pull-Up promoted to primary strength block on M2 Day 1",
+      "BOR moved to M2 Day 3 where it gets fresh neurological exposure",
+      "Bench and Squat restructured from 1+4 sets to 1+3 sets in M2 to fit time budget",
+      "M3 primary strength structured in weekly undulating intensity wave rather than flat 3x3 throughout",
+      "Depth Jump to Broad Jump reduced from 4x2 to 3x2 in M3 \u2014 cannot simultaneously peak plyometric AND near-maximal strength",
+      "Med Ball Shot Put reduced from 5x3/side to 4x3/side in M3 \u2014 quality over volume for power expression",
+      "M3 Day 4 intervals reduced from 10x15s to 8x15s \u2014 was the highest set-count day in the program",
+      "M3 Day 5 RIR targets added throughout \u2014 missing RIR prescription creates junk volume or excessive fatigue",
+      "M3 Day 6 shoulder health restored from 4 sets to 6 sets \u2014 cut exactly when it was most needed",
+      "M2 Lateral Bound reduced from 3x4/side to 2x4/side \u2014 high-CNS reactive work trimmed in strength-bias meso",
+      "M2 Day 5 Calf Raise removed and total sets trimmed from 21 to 16 \u2014 21 sets in 30min was physically unexecutable",
+      "Session time estimates corrected throughout to reflect actual rest + setup time"
+    ],
+    "outstanding_recommendations_not_in_json": [
+      "Add explicit week 4 and week 8 deload sessions as separate day structures \u2014 progression engine mentions deload but no session-level programming exists. Busy dads will not self-regulate without explicit instruction.",
+      "Add lateral epicondyle warning note for weeks 6-9 given cumulative elbow flexor load across Days 3/4/5/6",
+      "Consider adding a unilateral lower option (step-up or single-leg RDL) to M1 Day 3 accessories for athletes flagged with bilateral asymmetry at baseline"
+    ]
+  },
+  "program": {
+    "program_name": "M2F Everyday Athlete",
+    "display_tier": "Expanded",
+    "version_type": "audited_v2",
+    "schedule_type": "distributed_frequency",
+    "weekly_structure": [
+      {
+        "day": 1,
+        "title": "Upper Strength + Lower Power",
+        "focus": "Strength",
+        "cns": "high"
+      },
+      {
+        "day": 2,
+        "title": "Speed + Zone 2 + Core",
+        "focus": "Aerobic + Mechanics",
+        "cns": "low"
+      },
+      {
+        "day": 3,
+        "title": "Lower Strength + Upper Power",
+        "focus": "Strength",
+        "cns": "high"
+      },
+      {
+        "day": 4,
+        "title": "Lateral / Rotational + Intervals",
+        "focus": "Athletic Capacity",
+        "cns": "medium"
+      },
+      {
+        "day": 5,
+        "title": "Full Body Hypertrophy",
+        "focus": "Pump + Structural",
+        "cns": "medium"
+      },
+      {
+        "day": 6,
+        "title": "Arms + Mobility + Recovery",
+        "focus": "Recovery Support",
+        "cns": "low"
+      },
+      {
+        "day": 7,
+        "title": "Off",
+        "focus": "Recovery",
+        "cns": "low"
+      }
+    ],
+    "mesocycles": [
+      {
+        "meso_id": "m1",
+        "meso_name": "Foundation",
+        "bias": "balanced",
+        "weeks": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "rir_target": "2-3",
+        "volume_level": "moderate_high",
+        "intensity_techniques": [
+          "tempo_control_on_primary_lifts",
+          "myo_reps_last_set_on_day5_accessories_week3",
+          "slow_eccentrics_on_day6_arms"
+        ],
+        "days": [
+          {
+            "day": 1,
+            "primary_focus": "upper_strength",
+            "secondary_focus": "lower_power",
+            "blocks": [
+              {
+                "block_type": "prep",
+                "primary_focus": "movement_prep",
+                "estimated_time_minutes": 4,
+                "notes": "",
+                "exercises": [
+                  {
+                    "name": "Band Pull-Apart",
+                    "sets": 2,
+                    "reps": 15,
+                    "rest_seconds": 25,
+                    "notes": "Set shoulder position"
+                  },
+                  {
+                    "name": "Box Breathing",
+                    "sets": 1,
+                    "reps": "90 sec",
+                    "rest_seconds": 0,
+                    "notes": "Arrive and focus"
+                  }
+                ]
+              },
+              {
+                "block_type": "power",
+                "primary_focus": "lower_power",
+                "estimated_time_minutes": 7,
+                "notes": "",
+                "exercises": [
+                  {
+                    "name": "Broad Jump",
+                    "sets": 3,
+                    "reps": 3,
+                    "rest_seconds": 75,
+                    "notes": "Max distance, reset each rep",
+                    "tags": [
+                      "power"
+                    ],
+                    "tracking": {
+                      "metric": "best_distance"
+                    }
+                  }
+                ]
+              },
+              {
+                "block_type": "primary_strength",
+                "primary_focus": "push_pull",
+                "estimated_time_minutes": 18,
+                "notes": "",
+                "exercises": [
+                  {
+                    "name": "Barbell Bench Press",
+                    "sets": 4,
+                    "reps": 5,
+                    "rest_seconds": 150,
+                    "notes": "Strong but smooth",
+                    "tempo": "3-1-1",
+                    "rir": "2-3"
+                  },
+                  {
+                    "name": "Barbell Bent-Over Row",
+                    "sets": 4,
+                    "reps": 5,
+                    "rest_seconds": 120,
+                    "notes": "Strong pull, full retraction",
+                    "tempo": "2-1-1",
+                    "rir": "2-3"
+                  }
+                ]
+              },
+              {
+                "block_type": "accessories",
+                "primary_focus": "support",
+                "estimated_time_minutes": 10,
+                "notes": "",
+                "exercises": [
+                  {
+                    "name": "DB Incline Press",
+                    "sets": 3,
+                    "reps": 10,
+                    "rest_seconds": 60,
+                    "notes": "Hypertrophy support",
+                    "tempo": "2-0-1",
+                    "rir": "2"
+                  },
+                  {
+                    "name": "Cable Face Pull",
+                    "sets": 3,
+                    "reps": 15,
+                    "rest_seconds": 45,
+                    "notes": "Shoulder health support",
+                    "tempo": "2-1-1",
+                    "rir": "2"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "day": 2,
+            "primary_focus": "speed_and_aerobic_base",
+            "secondary_focus": "core",
+            "blocks": [
+              {
+                "block_type": "prep",
+                "primary_focus": "speed_prep",
+                "estimated_time_minutes": 4,
+                "notes": "",
+                "exercises": [
+                  {
+                    "name": "Leg Swing",
+                    "sets": 2,
+                    "reps": "10 each",
+                    "rest_seconds": 20,
+                    "notes": "Dynamic mobility"
+                  },
+                  {
+                    "name": "A-Skip",
+                    "sets": 2,
+                    "reps": "20 yd",
+                    "rest_seconds": 25,
+                    "notes": "Sprint rhythm"
+                  }
+                ]
+              },
+              {
+                "block_type": "speed",
+                "primary_focus": "mechanics",
+                "estimated_time_minutes": 9,
+                "notes": "",
+                "exercises": [
+                  {
+                    "name": "20 Yard Build-Up Sprint",
+                    "sets": 5,
+                    "reps": 1,
+                    "rest_seconds": 90,
+                    "notes": "Technique first"
+                  }
+                ]
+              },
+              {
+                "block_type": "conditioning",
+                "primary_focus": "zone2",
+                "estimated_time_minutes": 25,
+                "notes": "",
+                "exercises": [
+                  {
+                    "name": "Zone 2 Bike or Rower",
+                    "sets": 1,
+                    "reps": "25 min",
+                    "rest_seconds": 0,
+                    "notes": "Conversational pace; nasal breathing optional"
+                  }
+                ]
+              },
+              {
+                "block_type": "core",
+                "primary_focus": "trunk",
+                "estimated_time_minutes": 7,
+                "notes": "",
+                "exercises": [
+                  {
+                    "name": "Dead Bug",
+                    "sets": 3,
+                    "reps": "10/side",
+                    "rest_seconds": 45,
+                    "notes": "Slow exhales"
+                  },
+                  {
+                    "name": "Side Plank",
+                    "sets": 3,
+                    "reps": "30s/side",
+                    "rest_seconds": 30,
+                    "notes": "Stay stacked"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "day": 3,
+            "primary_focus": "lower_strength",
+            "secondary_focus": "upper_power",
+            "blocks": [
+              {
+                "block_type": "prep",
+                "primary_focus": "hip_shoulder_prep",
+                "estimated_time_minutes": 4,
+                "notes": "",
+                "exercises": [
+                  {
+                    "name": "90/90 Hip Switch",
+                    "sets": 2,
+                    "reps": "6/side",
+                    "rest_seconds": 25,
+                    "notes": "Hip rotation"
+                  },
+                  {
+                    "name": "Wall Slide",
+                    "sets": 2,
+                    "reps": 10,
+                    "rest_seconds": 25,
+                    "notes": "Serratus prep"
+                  }
+                ]
+              },
+              {
+                "block_type": "power",
+                "primary_focus": "upper_power",
+                "estimated_time_minutes": 8,
+                "notes": "",
+                "exercises": [
+                  {
+                    "name": "Rotational Med Ball Throw",
+                    "sets": 4,
+                    "reps": "4/side",
+                    "rest_seconds": 75,
+                    "notes": "Drive through hips",
+                    "tags": [
+                      "power",
+                      "rotation"
+                    ],
+                    "tracking": {
+                      "metric": "distance_or_velocity"
+                    }
+                  }
+                ]
+              },
+              {
+                "block_type": "primary_strength",
+                "primary_focus": "lower",
+                "estimated_time_minutes": 18,
+                "notes": "",
+                "exercises": [
+                  {
+                    "name": "Back Squat",
+                    "sets": 4,
+                    "reps": 5,
+                    "rest_seconds": 150,
+                    "notes": "Repeatable depth and brace",
+                    "tempo": "3-1-1",
+                    "rir": "2-3"
+                  },
+                  {
+                    "name": "Romanian Deadlift",
+                    "sets": 3,
+                    "reps": 6,
+                    "rest_seconds": 120,
+                    "notes": "Posterior chain tension",
+                    "tempo": "3-1-1",
+                    "rir": "2-3"
+                  }
+                ]
+              },
+              {
+                "block_type": "accessories",
+                "primary_focus": "support",
+                "estimated_time_minutes": 14,
+                "notes": "",
+                "exercises": [
+                  {
+                    "name": "DB Overhead Press",
+                    "sets": 3,
+                    "reps": 10,
+                    "rest_seconds": 60,
+                    "notes": "Controlled lockout",
+                    "tempo": "2-0-1",
+                    "rir": "2"
+                  },
+                  {
+                    "name": "Seated Cable Row",
+                    "sets": 3,
+                    "reps": 12,
+                    "rest_seconds": 60,
+                    "notes": "Mid-back support",
+                    "tempo": "2-1-1",
+                    "rir": "2"
+                  },
+                  {
+                    "name": "Leg Curl",
+                    "sets": 3,
+                    "reps": 12,
+                    "rest_seconds": 60,
+                    "notes": "Extra hamstring support",
+                    "tempo": "2-1-1",
+                    "rir": "2"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "day": 4,
+            "primary_focus": "lateral_rotation_conditioning",
+            "secondary_focus": "core",
+            "blocks": [
+              {
+                "block_type": "prep",
+                "primary_focus": "frontal_plane_prep",
+                "estimated_time_minutes": 4,
+                "notes": "",
+                "exercises": [
+                  {
+                    "name": "Cossack Squat",
+                    "sets": 2,
+                    "reps": "6/side",
+                    "rest_seconds": 25,
+                    "notes": "Lateral prep"
+                  },
+                  {
+                    "name": "Band Pull-Apart",
+                    "sets": 2,
+                    "reps": 15,
+                    "rest_seconds": 20,
+                    "notes": "Scap set"
+                  }
+                ]
+              },
+              {
+                "block_type": "athletic",
+                "primary_focus": "lateral_rotation",
+                "estimated_time_minutes": 11,
+                "notes": "",
+                "exercises": [
+                  {
+                    "name": "Lateral Bound",
+                    "sets": 3,
+                    "reps": "4/side",
+                    "rest_seconds": 60,
+                    "notes": "Stick then drive"
+                  },
+                  {
+                    "name": "Landmine Rotation",
+                    "sets": 3,
+                    "reps": "10/side",
+                    "rest_seconds": 60,
+                    "notes": "Move through trunk and hips",
+                    "tempo": "2-0-1",
+                    "rir": "2"
+                  }
+                ]
+              },
+              {
+                "block_type": "conditioning",
+                "primary_focus": "intervals",
+                "estimated_time_minutes": 12,
+                "notes": "",
+                "exercises": [
+                  {
+                    "name": "Assault Bike Intervals",
+                    "sets": 8,
+                    "reps": "20s on / 40s off",
+                    "rest_seconds": 0,
+                    "notes": "Repeatable hard output"
+                  }
+                ]
+              },
+              {
+                "block_type": "core",
+                "primary_focus": "rotation",
+                "estimated_time_minutes": 5,
+                "notes": "",
+                "exercises": [
+                  {
+                    "name": "Cable Woodchop",
+                    "sets": 3,
+                    "reps": "12/side",
+                    "rest_seconds": 45,
+                    "notes": "Ribs down"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "day": 5,
+            "primary_focus": "hypertrophy",
+            "secondary_focus": "structural_balance",
+            "blocks": [
+              {
+                "block_type": "prep",
+                "primary_focus": "brief_activation",
+                "estimated_time_minutes": 4,
+                "notes": "",
+                "exercises": [
+                  {
+                    "name": "Cat-Cow",
+                    "sets": 2,
+                    "reps": 8,
+                    "rest_seconds": 20,
+                    "notes": "Spinal motion"
+                  },
+                  {
+                    "name": "Y-T-W Raise",
+                    "sets": 2,
+                    "reps": "8 each",
+                    "rest_seconds": 20,
+                    "notes": "Upper-back activation"
+                  }
+                ]
+              },
+              {
+                "block_type": "upper",
+                "primary_focus": "tension",
+                "estimated_time_minutes": 12,
+                "notes": "",
+                "exercises": [
+                  {
+                    "name": "DB Bench Press",
+                    "sets": 3,
+                    "reps": 12,
+                    "rest_seconds": 60,
+                    "notes": "Constant tension",
+                    "tempo": "2-0-2",
+                    "rir": "2",
+                    "intensity_technique": "drop_set_last_set_week3"
+                  },
+                  {
+                    "name": "Chest Supported Row",
+                    "sets": 3,
+                    "reps": 12,
+                    "rest_seconds": 60,
+                    "notes": "Back thickness",
+                    "tempo": "2-1-1",
+                    "rir": "2",
+                    "intensity_technique": "rest_pause_last_set_week3"
+                  }
+                ]
+              },
+              {
+                "block_type": "lower",
+                "primary_focus": "legs",
+                "estimated_time_minutes": 12,
+                "notes": "",
+                "exercises": [
+                  {
+                    "name": "Leg Extension",
+                    "sets": 3,
+                    "reps": 15,
+                    "rest_seconds": 60,
+                    "notes": "Pause at top",
+                    "tempo": "2-1-1",
+                    "rir": "2"
+                  },
+                  {
+                    "name": "Seated Leg Curl",
+                    "sets": 3,
+                    "reps": 15,
+                    "rest_seconds": 60,
+                    "notes": "Control squeeze",
+                    "tempo": "2-1-1",
+                    "rir": "2"
+                  }
+                ]
+              },
+              {
+                "block_type": "delts_calves",
+                "primary_focus": "priority_look",
+                "estimated_time_minutes": 11,
+                "notes": "",
+                "exercises": [
+                  {
+                    "name": "DB Lateral Raise",
+                    "sets": 5,
+                    "reps": 15,
+                    "rest_seconds": 45,
+                    "notes": "Lateral delt priority",
+                    "tempo": "2-0-2",
+                    "rir": "2",
+                    "intensity_technique": "drop_set_last_set_week3"
+                  },
+                  {
+                    "name": "Standing Calf Raise",
+                    "sets": 4,
+                    "reps": 15,
+                    "rest_seconds": 45,
+                    "notes": "Full ROM",
+                    "tempo": "2-1-2",
+                    "rir": "2"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "day": 6,
+            "primary_focus": "arms_mobility_recovery",
+            "secondary_focus": "shoulder_health",
+            "blocks": [
+              {
+                "block_type": "arms",
+                "primary_focus": "pump_and_joint_friendly",
+                "estimated_time_minutes": 16,
+                "notes": "",
+                "exercises": [
+                  {
+                    "name": "EZ-Bar Curl",
+                    "sets": 4,
+                    "reps": 12,
+                    "rest_seconds": 45,
+                    "notes": "Slow eccentric",
+                    "tempo": "3-0-1",
+                    "rir": "2",
+                    "intensity_technique": "myo_reps_last_set_week3"
+                  },
+                  {
+                    "name": "Rope Pushdown",
+                    "sets": 4,
+                    "reps": 12,
+                    "rest_seconds": 45,
+                    "notes": "Full elbow extension",
+                    "tempo": "2-0-2",
+                    "rir": "2",
+                    "intensity_technique": "myo_reps_last_set_week3"
+                  },
+                  {
+                    "name": "Hammer Curl",
+                    "sets": 3,
+                    "reps": 12,
+                    "rest_seconds": 45,
+                    "notes": "Neutral grip for elbow comfort",
+                    "tempo": "2-0-2",
+                    "rir": "2"
+                  },
+                  {
+                    "name": "Overhead Triceps Extension",
+                    "sets": 3,
+                    "reps": 12,
+                    "rest_seconds": 45,
+                    "notes": "Long-head emphasis",
+                    "tempo": "2-0-2",
+                    "rir": "2"
+                  }
+                ]
+              },
+              {
+                "block_type": "shoulder_health",
+                "primary_focus": "cuff_serratus",
+                "estimated_time_minutes": 6,
+                "notes": "",
+                "exercises": [
+                  {
+                    "name": "Band External Rotation",
+                    "sets": 3,
+                    "reps": 15,
+                    "rest_seconds": 30,
+                    "notes": "Easy quality reps"
+                  },
+                  {
+                    "name": "Serratus Wall Slide",
+                    "sets": 3,
+                    "reps": 12,
+                    "rest_seconds": 30,
+                    "notes": "Reach hard at top"
+                  }
+                ]
+              },
+              {
+                "block_type": "recovery",
+                "primary_focus": "easy_engine",
+                "estimated_time_minutes": 15,
+                "notes": "",
+                "exercises": [
+                  {
+                    "name": "Easy Walk or Bike",
+                    "sets": 1,
+                    "reps": "15-20 min",
+                    "rest_seconds": 0,
+                    "notes": "Blood flow only"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "audit_status": "reviewed_no_changes_required",
+        "audit_notes": "Meso 1 (Foundation) passed audit. Split logic, volume distribution, power placement, and shoulder health architecture are correctly programmed. Session time estimates are accurate."
+      },
+      {
+        "meso_id": "m2",
+        "meso_name": "Strength Bias",
+        "version": "audited_v2",
+        "audit_notes": "Push:pull ratio restored to 1.3:1. Weighted Pull-Up promoted to primary. BOR moved to Day 3. DB Incline restored to accessories. Face Pull moved to prep. Bench restructured to 4 total sets. Lateral Bound trimmed to 2x4/side. Day 5 Calf Raise removed; total sets reduced to 16. Session time estimates corrected.",
+        "bias": "strength",
+        "weeks": [
+          5,
+          6,
+          7,
+          8
+        ],
+        "rir_target": "1-2 on primary, 2 on accessories",
+        "volume_level": "moderate",
+        "intensity_techniques": [
+          "top_set_plus_3_backoffs_on_day1_bench_and_day3_squat",
+          "paused_reps_week6_on_primary_lifts",
+          "reduced_conditioning_rounds_vs_m1"
+        ],
+        "days": [
+          {
+            "day": 1,
+            "primary_focus": "upper_strength",
+            "secondary_focus": "lower_power",
+            "estimated_session_time_minutes": 43,
+            "audit_changes": [
+              "Face Pull moved from accessories to prep as daily shoulder primer \u2014 no RIR, movement quality only",
+              "BOR removed from Day 1 \u2014 moved to Day 3 where it gets honest spotlight after lower body",
+              "Weighted Pull-Up promoted from accessories to primary_strength block",
+              "Bench restructured: 1 top set + 3 backoffs = 4 total sets (was 5 sets \u2014 time budget exceeded)",
+              "DB Incline Press restored to accessories (was cut in original M2, causing push:pull to drop below 1.3:1)",
+              "Band External Rotation added to accessories as daily shoulder health floor"
+            ],
+            "blocks": [
+              {
+                "block_type": "prep",
+                "primary_focus": "movement_prep_and_shoulder_primer",
+                "estimated_time_minutes": 4,
+                "notes": "Face Pull added here as shoulder primer \u2014 quality only, no RIR, no load chase",
+                "exercises": [
+                  {
+                    "name": "Band Pull-Apart",
+                    "sets": 2,
+                    "reps": 12,
+                    "rest_seconds": 20,
+                    "notes": "Set shoulder position"
+                  },
+                  {
+                    "name": "Cable Face Pull",
+                    "sets": 2,
+                    "reps": 12,
+                    "rest_seconds": 25,
+                    "notes": "MOVED FROM ACCESSORIES \u2014 daily scapular primer, movement quality focus only, no RIR target"
+                  }
+                ]
+              },
+              {
+                "block_type": "power",
+                "primary_focus": "lower_power",
+                "estimated_time_minutes": 8,
+                "notes": "",
+                "exercises": [
+                  {
+                    "name": "Broad Jump",
+                    "sets": 4,
+                    "reps": 3,
+                    "rest_seconds": 75,
+                    "notes": "Beat previous distance. Full reset each rep.",
+                    "tags": [
+                      "power"
+                    ],
+                    "tracking": {
+                      "metric": "best_distance"
+                    }
+                  }
+                ]
+              },
+              {
+                "block_type": "primary_strength",
+                "primary_focus": "push_and_vertical_pull",
+                "estimated_time_minutes": 22,
+                "notes": "Weighted Pull-Up promoted to primary \u2014 it earns honest neurological exposure here, not buried after 5 sets of heavy pressing",
+                "exercises": [
+                  {
+                    "name": "Barbell Bench Press",
+                    "sets": {
+                      "top_set": "1x4",
+                      "backoff_sets": "3x4"
+                    },
+                    "total_sets": 4,
+                    "reps": 4,
+                    "rest_seconds": 150,
+                    "notes": "RESTRUCTURED: 1 top set + 3 backoffs = 4 total sets. Was 1+4=5 sets \u2014 primary block was running 7+ min over estimate.",
+                    "tempo": "2-1-1",
+                    "rir": "1-2",
+                    "intensity_technique": "paused_reps_week6"
+                  },
+                  {
+                    "name": "Weighted Pull-Up",
+                    "sets": 4,
+                    "reps": "4-5",
+                    "rest_seconds": 120,
+                    "notes": "PROMOTED FROM ACCESSORIES \u2014 heavy vertical pull deserves primary placement. Load conservatively week 5, progress weekly.",
+                    "tempo": "2-1-1",
+                    "rir": "1-2"
+                  }
+                ]
+              },
+              {
+                "block_type": "accessories",
+                "primary_focus": "push_support_and_shoulder_health",
+                "estimated_time_minutes": 9,
+                "notes": "DB Incline restored to fix push:pull ratio. Band ER maintains shoulder health floor.",
+                "exercises": [
+                  {
+                    "name": "DB Incline Press",
+                    "sets": 3,
+                    "reps": 8,
+                    "rest_seconds": 60,
+                    "notes": "RESTORED \u2014 was removed in original M2, dropping push:pull below 1.3:1. Upper chest support and push volume balance.",
+                    "tempo": "2-0-1",
+                    "rir": "2"
+                  },
+                  {
+                    "name": "Band External Rotation",
+                    "sets": 2,
+                    "reps": 15,
+                    "rest_seconds": 30,
+                    "notes": "Daily shoulder health floor \u2014 maintain throughout meso"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "day": 2,
+            "primary_focus": "speed_and_aerobic_base",
+            "secondary_focus": "core",
+            "estimated_session_time_minutes": 41,
+            "audit_changes": [
+              "No changes \u2014 Day 2 correctly programmed in original M2"
+            ],
+            "blocks": [
+              {
+                "block_type": "prep",
+                "primary_focus": "speed_prep",
+                "estimated_time_minutes": 3,
+                "exercises": [
+                  {
+                    "name": "Leg Swing",
+                    "sets": 2,
+                    "reps": "8 each",
+                    "rest_seconds": 20,
+                    "notes": "Quick mobility"
+                  },
+                  {
+                    "name": "A-Skip",
+                    "sets": 2,
+                    "reps": "15 yd",
+                    "rest_seconds": 20,
+                    "notes": "Mechanics"
+                  }
+                ]
+              },
+              {
+                "block_type": "speed",
+                "primary_focus": "mechanics",
+                "estimated_time_minutes": 8,
+                "exercises": [
+                  {
+                    "name": "30 Yard Build-Up Sprint",
+                    "sets": 4,
+                    "reps": 1,
+                    "rest_seconds": 90,
+                    "notes": "Slightly longer distance than M1, still controlled build"
+                  }
+                ]
+              },
+              {
+                "block_type": "conditioning",
+                "primary_focus": "zone2",
+                "estimated_time_minutes": 25,
+                "exercises": [
+                  {
+                    "name": "Zone 2 Bike or Rower",
+                    "sets": 1,
+                    "reps": "25 min",
+                    "rest_seconds": 0,
+                    "notes": "Keep easy enough to support strength recovery. Nasal breathing if possible."
+                  }
+                ]
+              },
+              {
+                "block_type": "core",
+                "primary_focus": "trunk",
+                "estimated_time_minutes": 5,
+                "exercises": [
+                  {
+                    "name": "Dead Bug",
+                    "sets": 2,
+                    "reps": "8/side",
+                    "rest_seconds": 40,
+                    "notes": "Controlled breathing"
+                  },
+                  {
+                    "name": "Side Plank",
+                    "sets": 2,
+                    "reps": "35s/side",
+                    "rest_seconds": 30,
+                    "notes": "Brace hard"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "day": 3,
+            "primary_focus": "lower_strength",
+            "secondary_focus": "upper_power",
+            "estimated_session_time_minutes": 43,
+            "audit_changes": [
+              "BOR moved from Day 1 to Day 3 primary \u2014 it now gets honest exposure after lower body, not after bench + pull-ups",
+              "BOR reduced to 3x5 (from 4x6) \u2014 still heavy, less competing fatigue from bench",
+              "RDL moved from primary to accessory tier \u2014 supports posterior chain without competing with top-set squat CNS load",
+              "Bulgarian Split Squat retained \u2014 critical for bilateral lower dominance problem",
+              "DB Overhead Press not restored here \u2014 push balance handled on Day 1 with DB Incline"
+            ],
+            "blocks": [
+              {
+                "block_type": "prep",
+                "primary_focus": "hip_shoulder_prep",
+                "estimated_time_minutes": 3,
+                "exercises": [
+                  {
+                    "name": "90/90 Hip Switch",
+                    "sets": 2,
+                    "reps": "5/side",
+                    "rest_seconds": 20,
+                    "notes": "Full range"
+                  },
+                  {
+                    "name": "Wall Slide",
+                    "sets": 2,
+                    "reps": 8,
+                    "rest_seconds": 20,
+                    "notes": "Reach long at top"
+                  }
+                ]
+              },
+              {
+                "block_type": "power",
+                "primary_focus": "upper_power",
+                "estimated_time_minutes": 8,
+                "exercises": [
+                  {
+                    "name": "Rotational Med Ball Throw",
+                    "sets": 4,
+                    "reps": "4/side",
+                    "rest_seconds": 75,
+                    "notes": "Max rotational velocity. Full reset between reps.",
+                    "tags": [
+                      "power",
+                      "rotation"
+                    ]
+                  }
+                ]
+              },
+              {
+                "block_type": "primary_strength",
+                "primary_focus": "lower_and_horizontal_pull",
+                "estimated_time_minutes": 22,
+                "notes": "BOR now gets honest spotlight after lower body \u2014 not stacked behind bench and pull-ups",
+                "exercises": [
+                  {
+                    "name": "Back Squat",
+                    "sets": {
+                      "top_set": "1x4",
+                      "backoff_sets": "3x4"
+                    },
+                    "total_sets": 4,
+                    "reps": 4,
+                    "rest_seconds": 150,
+                    "notes": "RESTRUCTURED: 1 top set + 3 backoffs = 4 total sets (matches Day 1 bench structure for consistency)",
+                    "tempo": "2-1-1",
+                    "rir": "1-2",
+                    "intensity_technique": "paused_reps_week6"
+                  },
+                  {
+                    "name": "Barbell Bent-Over Row",
+                    "sets": 3,
+                    "reps": 5,
+                    "rest_seconds": 120,
+                    "notes": "MOVED FROM DAY 1 and REDUCED to 3x5. Gets full neurological freshness here. Load heavy with clean mechanics.",
+                    "tempo": "2-1-1",
+                    "rir": "1-2"
+                  }
+                ]
+              },
+              {
+                "block_type": "accessories",
+                "primary_focus": "unilateral_lower_and_posterior_chain",
+                "estimated_time_minutes": 10,
+                "notes": "RDL moved to accessories \u2014 still targets posterior chain but no longer competing with squat for primary CNS output",
+                "exercises": [
+                  {
+                    "name": "Bulgarian Split Squat",
+                    "sets": 3,
+                    "reps": "8/side",
+                    "rest_seconds": 75,
+                    "notes": "Key unilateral lower work \u2014 addresses bilateral dominance deficit. Rear foot elevated, front shin vertical.",
+                    "tempo": "2-1-1",
+                    "rir": "2"
+                  },
+                  {
+                    "name": "Romanian Deadlift",
+                    "sets": 3,
+                    "reps": 6,
+                    "rest_seconds": 90,
+                    "notes": "MOVED TO ACCESSORY \u2014 posterior chain support without competing with top-set squat intensity",
+                    "tempo": "3-1-1",
+                    "rir": "2"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "day": 4,
+            "primary_focus": "lateral_rotation_conditioning",
+            "secondary_focus": "core",
+            "estimated_session_time_minutes": 28,
+            "audit_changes": [
+              "Lateral Bound reduced from 3x4/side to 2x4/side \u2014 high-CNS reactive work was over-represented in a strength-bias meso three days after heavy squats",
+              "Intervals unchanged at 6x20s/40s \u2014 correct reduction from M1"
+            ],
+            "blocks": [
+              {
+                "block_type": "prep",
+                "primary_focus": "frontal_plane_prep",
+                "estimated_time_minutes": 3,
+                "exercises": [
+                  {
+                    "name": "Cossack Squat",
+                    "sets": 2,
+                    "reps": "5/side",
+                    "rest_seconds": 20,
+                    "notes": "Stay open laterally"
+                  },
+                  {
+                    "name": "Band Pull-Apart",
+                    "sets": 2,
+                    "reps": 12,
+                    "rest_seconds": 20,
+                    "notes": "Scap set"
+                  }
+                ]
+              },
+              {
+                "block_type": "athletic",
+                "primary_focus": "lateral_rotation",
+                "estimated_time_minutes": 9,
+                "notes": "Lateral Bound reduced \u2014 saves CNS for Days 1 and 3 which are the priority in this meso",
+                "exercises": [
+                  {
+                    "name": "Lateral Bound",
+                    "sets": 2,
+                    "reps": "4/side",
+                    "rest_seconds": 60,
+                    "notes": "REDUCED from 3x4/side to 2x4/side. High-CNS reactive work trimmed in strength-bias meso. Clean landings, full reset."
+                  },
+                  {
+                    "name": "Landmine Rotation",
+                    "sets": 3,
+                    "reps": "8/side",
+                    "rest_seconds": 60,
+                    "notes": "Slightly heavier than M1",
+                    "tempo": "2-0-1",
+                    "rir": "2"
+                  }
+                ]
+              },
+              {
+                "block_type": "conditioning",
+                "primary_focus": "intervals",
+                "estimated_time_minutes": 9,
+                "exercises": [
+                  {
+                    "name": "Assault Bike Intervals",
+                    "sets": 6,
+                    "reps": "20s on / 40s off",
+                    "rest_seconds": 0,
+                    "notes": "Correctly reduced from M1 8x to 6x \u2014 maintain this"
+                  }
+                ]
+              },
+              {
+                "block_type": "core",
+                "primary_focus": "rotation",
+                "estimated_time_minutes": 4,
+                "exercises": [
+                  {
+                    "name": "Cable Woodchop",
+                    "sets": 2,
+                    "reps": "10/side",
+                    "rest_seconds": 40,
+                    "notes": "Quality reps only"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "day": 5,
+            "primary_focus": "hypertrophy",
+            "secondary_focus": "structural_balance",
+            "estimated_session_time_minutes": 28,
+            "audit_changes": [
+              "Standing Calf Raise removed \u2014 lowest priority movement, was costing 3 sets and 5+ minutes in an already dense session",
+              "Total working sets reduced from 21 to 16 \u2014 21 sets at 50-60s rest in a 30-min estimate was physically unexecutable",
+              "DB Lateral Raise reduced from 4x12 to 4x12 (maintained) \u2014 delt work preserved as it serves the push:pull balance",
+              "Session time estimate corrected to reflect actual rest + setup time"
+            ],
+            "blocks": [
+              {
+                "block_type": "prep",
+                "primary_focus": "brief_activation",
+                "estimated_time_minutes": 2,
+                "exercises": [
+                  {
+                    "name": "Cat-Cow",
+                    "sets": 1,
+                    "reps": 8,
+                    "rest_seconds": 15,
+                    "notes": "Quick prep"
+                  },
+                  {
+                    "name": "Y-T-W Raise",
+                    "sets": 1,
+                    "reps": "8 each",
+                    "rest_seconds": 15,
+                    "notes": "Shoulder activation"
+                  }
+                ]
+              },
+              {
+                "block_type": "upper",
+                "primary_focus": "tension",
+                "estimated_time_minutes": 10,
+                "exercises": [
+                  {
+                    "name": "DB Bench Press",
+                    "sets": 3,
+                    "reps": 10,
+                    "rest_seconds": 60,
+                    "notes": "Heavier than M1",
+                    "tempo": "2-0-1",
+                    "rir": "2"
+                  },
+                  {
+                    "name": "Chest Supported Row",
+                    "sets": 3,
+                    "reps": 10,
+                    "rest_seconds": 60,
+                    "notes": "Heavier than M1",
+                    "tempo": "2-1-1",
+                    "rir": "2"
+                  }
+                ]
+              },
+              {
+                "block_type": "lower",
+                "primary_focus": "legs",
+                "estimated_time_minutes": 10,
+                "exercises": [
+                  {
+                    "name": "Leg Extension",
+                    "sets": 3,
+                    "reps": 12,
+                    "rest_seconds": 60,
+                    "notes": "Moderate support",
+                    "tempo": "2-1-1",
+                    "rir": "2"
+                  },
+                  {
+                    "name": "Seated Leg Curl",
+                    "sets": 3,
+                    "reps": 12,
+                    "rest_seconds": 60,
+                    "notes": "Moderate support",
+                    "tempo": "2-1-1",
+                    "rir": "2"
+                  }
+                ]
+              },
+              {
+                "block_type": "delts",
+                "primary_focus": "shoulder_aesthetics",
+                "estimated_time_minutes": 6,
+                "notes": "Calf Raise removed. DB Lateral Raise maintained as shoulder work supports push:pull balance and athletic look.",
+                "exercises": [
+                  {
+                    "name": "DB Lateral Raise",
+                    "sets": 4,
+                    "reps": 12,
+                    "rest_seconds": 45,
+                    "notes": "CALF RAISE REMOVED \u2014 DB Lateral maintained. 4 sets preserved for delt volume.",
+                    "tempo": "2-0-2",
+                    "rir": "2"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "day": 6,
+            "primary_focus": "arms_mobility_recovery",
+            "secondary_focus": "shoulder_health",
+            "estimated_session_time_minutes": 34,
+            "audit_changes": [
+              "No changes \u2014 Day 6 correctly programmed in original M2. Shoulder health at 6 sets is appropriate."
+            ],
+            "blocks": [
+              {
+                "block_type": "arms",
+                "primary_focus": "maintenance_plus",
+                "estimated_time_minutes": 13,
+                "exercises": [
+                  {
+                    "name": "EZ-Bar Curl",
+                    "sets": 4,
+                    "reps": 10,
+                    "rest_seconds": 45,
+                    "notes": "Heavier than M1",
+                    "tempo": "2-0-2",
+                    "rir": "2"
+                  },
+                  {
+                    "name": "Rope Pushdown",
+                    "sets": 4,
+                    "reps": 10,
+                    "rest_seconds": 45,
+                    "notes": "Heavier than M1",
+                    "tempo": "2-0-2",
+                    "rir": "2"
+                  },
+                  {
+                    "name": "Hammer Curl",
+                    "sets": 2,
+                    "reps": 10,
+                    "rest_seconds": 45,
+                    "notes": "Keep elbows happy",
+                    "tempo": "2-0-2",
+                    "rir": "2"
+                  },
+                  {
+                    "name": "Overhead Triceps Extension",
+                    "sets": 2,
+                    "reps": 10,
+                    "rest_seconds": 45,
+                    "notes": "Long-head work",
+                    "tempo": "2-0-2",
+                    "rir": "2"
+                  }
+                ]
+              },
+              {
+                "block_type": "shoulder_health",
+                "primary_focus": "cuff_serratus",
+                "estimated_time_minutes": 6,
+                "exercises": [
+                  {
+                    "name": "Band External Rotation",
+                    "sets": 3,
+                    "reps": 15,
+                    "rest_seconds": 30,
+                    "notes": "Quality only"
+                  },
+                  {
+                    "name": "Serratus Wall Slide",
+                    "sets": 3,
+                    "reps": 12,
+                    "rest_seconds": 30,
+                    "notes": "Reach at top"
+                  }
+                ]
+              },
+              {
+                "block_type": "recovery",
+                "primary_focus": "easy_engine",
+                "estimated_time_minutes": 15,
+                "exercises": [
+                  {
+                    "name": "Easy Walk or Bike",
+                    "sets": 1,
+                    "reps": "15 min",
+                    "rest_seconds": 0,
+                    "notes": "Recovery only \u2014 do not push pace"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "meso_id": "m3",
+        "meso_name": "Performance Bias",
+        "version": "audited_v2",
+        "audit_notes": "Depth Jump volume reduced to 3x2. Primary strength structured in weekly undulating intensity wave (not flat 3x3 throughout). Med Ball Shot Put reduced to 4x3/side. Day 4 intervals reduced from 10x15s to 8x15s. Day 5 RIR targets restored across all exercises. Day 6 shoulder health restored from 4 to 6 sets \u2014 critical during highest intensity phase.",
+        "bias": "power_performance",
+        "weeks": [
+          9,
+          10,
+          11,
+          12
+        ],
+        "rir_target": "Weekly wave on primary lifts \u2014 see weekly_strength_wave. Accessories: RIR 2-3.",
+        "weekly_strength_wave": {
+          "week_9": {
+            "sets": "3x4",
+            "rir": "1",
+            "notes": "Re-establish bar speed with slightly higher rep \u2014 feel the weight move fast"
+          },
+          "week_10": {
+            "sets": "3x3",
+            "rir": "0-1",
+            "notes": "Heavy triples \u2014 this is the money week for CNS peak"
+          },
+          "week_11": {
+            "sets": "2x3 + 1x2",
+            "rir": "0",
+            "notes": "Near-max effort \u2014 cluster sets optional on the double"
+          },
+          "week_12": {
+            "sets": "1x2 + 1x1",
+            "rir": "0",
+            "notes": "Peak expression \u2014 treat this as a test. Leave nothing for after."
+          }
+        },
+        "volume_level": "low",
+        "intensity_techniques": [
+          "weekly_undulating_intensity_wave_on_primary_lifts",
+          "cluster_sets_optional_week11_on_singles",
+          "contrast_pairing_power_into_strength",
+          "minimal_accessories"
+        ],
+        "days": [
+          {
+            "day": 1,
+            "primary_focus": "upper_strength",
+            "secondary_focus": "lower_power",
+            "estimated_session_time_minutes": 33,
+            "audit_changes": [
+              "Depth Jump to Broad Jump reduced from 4x2 to 3x2 with 100s rest \u2014 cannot simultaneously express maximal plyometric AND near-maximal strength in same session. Fewer reps, more intent per rep.",
+              "Bench Press restructured to weekly undulating wave (see weekly_strength_wave) \u2014 flat 3x3 at RIR 0-1 throughout gave no peaking arc and risked going to failure too early",
+              "DB Incline Press retained in accessories \u2014 push:pull maintenance",
+              "Cable Face Pull retained \u2014 shoulder health non-negotiable in performance meso"
+            ],
+            "blocks": [
+              {
+                "block_type": "prep",
+                "primary_focus": "movement_prep",
+                "estimated_time_minutes": 2,
+                "exercises": [
+                  {
+                    "name": "Band Pull-Apart",
+                    "sets": 2,
+                    "reps": 10,
+                    "rest_seconds": 15,
+                    "notes": "Set shoulder position"
+                  },
+                  {
+                    "name": "Pogo Hop",
+                    "sets": 2,
+                    "reps": 10,
+                    "rest_seconds": 15,
+                    "notes": "Elastic prep \u2014 feel the spring"
+                  }
+                ]
+              },
+              {
+                "block_type": "power",
+                "primary_focus": "lower_power",
+                "estimated_time_minutes": 7,
+                "notes": "REDUCED: 3x2 gives 6 maximal contacts with full intent. 4x2 was rushing the athlete and sandbagging quality.",
+                "exercises": [
+                  {
+                    "name": "Depth Jump to Broad Jump",
+                    "sets": 3,
+                    "reps": 2,
+                    "rest_seconds": 100,
+                    "notes": "REDUCED from 4x2 to 3x2 \u2014 maximal reactive intent on every rep. Step off box, absorb, explode immediately. If landing is off, reset fully before next rep.",
+                    "tags": [
+                      "power",
+                      "reactive_strength"
+                    ]
+                  }
+                ]
+              },
+              {
+                "block_type": "primary_strength",
+                "primary_focus": "push_and_horizontal_pull",
+                "estimated_time_minutes": 16,
+                "notes": "Bench follows weekly undulating wave \u2014 see meso weekly_strength_wave for sets/reps/RIR by week",
+                "exercises": [
+                  {
+                    "name": "Barbell Bench Press",
+                    "sets": "SEE_WEEKLY_WAVE",
+                    "reps": "SEE_WEEKLY_WAVE",
+                    "rest_seconds": 165,
+                    "notes": "RESTRUCTURED to weekly undulating wave. W9:3x4@RIR1 | W10:3x3@RIR0-1 | W11:2x3+1x2@RIR0 | W12:1x2+1x1 peak. Bar speed is the priority \u2014 every rep must look fast.",
+                    "tempo": "2-1-X",
+                    "rir": "SEE_WEEKLY_WAVE",
+                    "intensity_technique": "cluster_sets_optional_week11"
+                  },
+                  {
+                    "name": "Barbell Bent-Over Row",
+                    "sets": 3,
+                    "reps": 5,
+                    "rest_seconds": 120,
+                    "notes": "Explosive concentric \u2014 snap the bar into the body",
+                    "tempo": "2-0-X",
+                    "rir": "1"
+                  }
+                ]
+              },
+              {
+                "block_type": "accessories",
+                "primary_focus": "minimal_push_and_shoulder_health",
+                "estimated_time_minutes": 8,
+                "notes": "Minimal but non-zero push support. Face Pull stays \u2014 shoulder health is most critical during max intensity phase.",
+                "exercises": [
+                  {
+                    "name": "Cable Face Pull",
+                    "sets": 2,
+                    "reps": 15,
+                    "rest_seconds": 40,
+                    "notes": "Shoulder health non-negotiable \u2014 do not remove even if pressed for time"
+                  },
+                  {
+                    "name": "DB Incline Press",
+                    "sets": 2,
+                    "reps": 8,
+                    "rest_seconds": 55,
+                    "notes": "Push:pull maintenance. Keep moderate load \u2014 this is not a performance set.",
+                    "rir": "2-3"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "day": 2,
+            "primary_focus": "speed_and_aerobic_base",
+            "secondary_focus": "core",
+            "estimated_session_time_minutes": 33,
+            "audit_changes": [
+              "No changes \u2014 Day 2 correctly programmed in original M3"
+            ],
+            "blocks": [
+              {
+                "block_type": "prep",
+                "primary_focus": "speed_prep",
+                "estimated_time_minutes": 1,
+                "exercises": [
+                  {
+                    "name": "A-Skip",
+                    "sets": 2,
+                    "reps": "15 yd",
+                    "rest_seconds": 15,
+                    "notes": "Quick rhythm before sprints"
+                  }
+                ]
+              },
+              {
+                "block_type": "speed",
+                "primary_focus": "acceleration",
+                "estimated_time_minutes": 9,
+                "exercises": [
+                  {
+                    "name": "20 Yard Acceleration Sprint",
+                    "sets": 5,
+                    "reps": 1,
+                    "rest_seconds": 90,
+                    "notes": "Full intent. Full recovery. No sloppy reps."
+                  }
+                ]
+              },
+              {
+                "block_type": "conditioning",
+                "primary_focus": "zone2",
+                "estimated_time_minutes": 20,
+                "exercises": [
+                  {
+                    "name": "Zone 2 Bike or Rower",
+                    "sets": 1,
+                    "reps": "20 min",
+                    "rest_seconds": 0,
+                    "notes": "Slightly reduced from M2 to protect speed quality. Nasal breathing target."
+                  }
+                ]
+              },
+              {
+                "block_type": "core",
+                "primary_focus": "trunk",
+                "estimated_time_minutes": 3,
+                "exercises": [
+                  {
+                    "name": "Dead Bug",
+                    "sets": 2,
+                    "reps": "8/side",
+                    "rest_seconds": 35,
+                    "notes": "Trunk control maintained"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "day": 3,
+            "primary_focus": "lower_strength",
+            "secondary_focus": "upper_power",
+            "estimated_session_time_minutes": 32,
+            "audit_changes": [
+              "Med Ball Shot Put reduced from 5x3/side to 4x3/side \u2014 performance meso requires maximal intent per rep, not high volume. High volume throws create oblique fatigue that compromises squat stability.",
+              "Back Squat restructured to same weekly undulating wave as bench (see weekly_strength_wave)",
+              "RIR targets added to accessory exercises (were missing in original M3 Day 3)"
+            ],
+            "blocks": [
+              {
+                "block_type": "prep",
+                "primary_focus": "hip_shoulder_prep",
+                "estimated_time_minutes": 2,
+                "exercises": [
+                  {
+                    "name": "90/90 Hip Switch",
+                    "sets": 2,
+                    "reps": "4/side",
+                    "rest_seconds": 15,
+                    "notes": "Quick hip prep"
+                  },
+                  {
+                    "name": "Wall Slide",
+                    "sets": 2,
+                    "reps": 6,
+                    "rest_seconds": 15,
+                    "notes": "Shoulder prep"
+                  }
+                ]
+              },
+              {
+                "block_type": "power",
+                "primary_focus": "rotational_power",
+                "estimated_time_minutes": 8,
+                "notes": "REDUCED: 4x3/side = 24 total reps vs original 30. Each rep gets full reset and true maximal velocity.",
+                "exercises": [
+                  {
+                    "name": "Med Ball Shot Put",
+                    "sets": 4,
+                    "reps": "3/side",
+                    "rest_seconds": 75,
+                    "notes": "REDUCED from 5x3/side to 4x3/side \u2014 max velocity each throw. High volume oblique fatigue was compromising subsequent squat stability.",
+                    "tags": [
+                      "power",
+                      "rotation"
+                    ]
+                  }
+                ]
+              },
+              {
+                "block_type": "primary_strength",
+                "primary_focus": "lower",
+                "estimated_time_minutes": 16,
+                "notes": "Squat follows same weekly undulating wave as bench \u2014 see meso weekly_strength_wave",
+                "exercises": [
+                  {
+                    "name": "Back Squat",
+                    "sets": "SEE_WEEKLY_WAVE",
+                    "reps": "SEE_WEEKLY_WAVE",
+                    "rest_seconds": 165,
+                    "notes": "RESTRUCTURED to weekly undulating wave. W9:3x4@RIR1 | W10:3x3@RIR0-1 | W11:2x3+1x2@RIR0 | W12:1x2+1x1 peak. Pristine form every rep \u2014 position over load.",
+                    "tempo": "2-1-X",
+                    "rir": "SEE_WEEKLY_WAVE",
+                    "intensity_technique": "cluster_sets_optional_week11"
+                  },
+                  {
+                    "name": "Romanian Deadlift",
+                    "sets": 3,
+                    "reps": 5,
+                    "rest_seconds": 120,
+                    "notes": "Heavy hinge \u2014 explosive concentric",
+                    "tempo": "3-0-X",
+                    "rir": "1"
+                  }
+                ]
+              },
+              {
+                "block_type": "accessories",
+                "primary_focus": "minimal_support",
+                "estimated_time_minutes": 6,
+                "exercises": [
+                  {
+                    "name": "Seated Cable Row",
+                    "sets": 2,
+                    "reps": 10,
+                    "rest_seconds": 55,
+                    "notes": "Pull volume maintenance",
+                    "rir": "2"
+                  },
+                  {
+                    "name": "Leg Curl",
+                    "sets": 2,
+                    "reps": 10,
+                    "rest_seconds": 55,
+                    "notes": "Keep hamstrings responsive",
+                    "rir": "2"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "day": 4,
+            "primary_focus": "lateral_rotation_conditioning",
+            "secondary_focus": "core",
+            "estimated_session_time_minutes": 23,
+            "audit_changes": [
+              "Assault Bike Intervals reduced from 10x15s to 8x15s \u2014 original M3 Day 4 had the highest total set count (19 sets) in the entire program. This is the athletic support day, not the hardest day.",
+              "Work:rest ratio preserved at 1:3 (15s/45s) \u2014 correct quality signal maintained"
+            ],
+            "blocks": [
+              {
+                "block_type": "prep",
+                "primary_focus": "frontal_plane_prep",
+                "estimated_time_minutes": 1,
+                "exercises": [
+                  {
+                    "name": "Cossack Squat",
+                    "sets": 1,
+                    "reps": "5/side",
+                    "rest_seconds": 15,
+                    "notes": "Quick prep"
+                  }
+                ]
+              },
+              {
+                "block_type": "athletic",
+                "primary_focus": "lateral_rotation",
+                "estimated_time_minutes": 9,
+                "exercises": [
+                  {
+                    "name": "Lateral Bound",
+                    "sets": 4,
+                    "reps": "3/side",
+                    "rest_seconds": 60,
+                    "notes": "Reactive and controlled \u2014 quality of landing matters as much as distance"
+                  },
+                  {
+                    "name": "Landmine Rotation",
+                    "sets": 3,
+                    "reps": "8/side",
+                    "rest_seconds": 55,
+                    "notes": "Fast concentric \u2014 own the rotation",
+                    "tempo": "2-0-X",
+                    "rir": "1-2"
+                  }
+                ]
+              },
+              {
+                "block_type": "conditioning",
+                "primary_focus": "intervals",
+                "estimated_time_minutes": 9,
+                "notes": "REDUCED from 10x15s to 8x15s. 1:3 work:rest preserved. Day 4 was the highest set-count day in original M3 \u2014 that is wrong for an athletic support day.",
+                "exercises": [
+                  {
+                    "name": "Assault Bike Intervals",
+                    "sets": 8,
+                    "reps": "15s on / 45s off",
+                    "rest_seconds": 0,
+                    "notes": "REDUCED from 10 to 8 rounds. Max output each interval. If you can't go max, rest an extra round before starting."
+                  }
+                ]
+              },
+              {
+                "block_type": "core",
+                "primary_focus": "rotation",
+                "estimated_time_minutes": 4,
+                "exercises": [
+                  {
+                    "name": "Cable Woodchop",
+                    "sets": 2,
+                    "reps": "8/side",
+                    "rest_seconds": 35,
+                    "notes": "Fast quality reps"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "day": 5,
+            "primary_focus": "hypertrophy",
+            "secondary_focus": "structural_balance",
+            "estimated_session_time_minutes": 25,
+            "audit_changes": [
+              "RIR targets added to ALL exercises \u2014 original M3 Day 5 had no RIR prescribed, creating either junk volume (too easy) or excessive fatigue (too hard) with no intent guide",
+              "Session time estimate corrected from 20min to 25min to reflect realistic setup and transition"
+            ],
+            "blocks": [
+              {
+                "block_type": "prep",
+                "primary_focus": "brief_activation",
+                "estimated_time_minutes": 1,
+                "exercises": [
+                  {
+                    "name": "Cat-Cow",
+                    "sets": 1,
+                    "reps": 6,
+                    "rest_seconds": 10,
+                    "notes": "Very brief prep"
+                  }
+                ]
+              },
+              {
+                "block_type": "upper",
+                "primary_focus": "maintenance",
+                "estimated_time_minutes": 7,
+                "exercises": [
+                  {
+                    "name": "DB Bench Press",
+                    "sets": 2,
+                    "reps": 10,
+                    "rest_seconds": 55,
+                    "notes": "RIR TARGET ADDED: aim for RIR 2-3. This is maintenance, not performance.",
+                    "rir": "2-3"
+                  },
+                  {
+                    "name": "Chest Supported Row",
+                    "sets": 2,
+                    "reps": 10,
+                    "rest_seconds": 55,
+                    "notes": "RIR TARGET ADDED: RIR 2-3",
+                    "rir": "2-3"
+                  }
+                ]
+              },
+              {
+                "block_type": "lower",
+                "primary_focus": "maintenance",
+                "estimated_time_minutes": 7,
+                "exercises": [
+                  {
+                    "name": "Leg Extension",
+                    "sets": 2,
+                    "reps": 12,
+                    "rest_seconds": 50,
+                    "notes": "RIR TARGET ADDED: RIR 2-3",
+                    "rir": "2-3"
+                  },
+                  {
+                    "name": "Seated Leg Curl",
+                    "sets": 2,
+                    "reps": 12,
+                    "rest_seconds": 50,
+                    "notes": "RIR TARGET ADDED: RIR 2-3",
+                    "rir": "2-3"
+                  }
+                ]
+              },
+              {
+                "block_type": "delts_calves",
+                "primary_focus": "look_maintenance",
+                "estimated_time_minutes": 8,
+                "exercises": [
+                  {
+                    "name": "DB Lateral Raise",
+                    "sets": 3,
+                    "reps": 15,
+                    "rest_seconds": 40,
+                    "notes": "RIR TARGET ADDED: RIR 2",
+                    "rir": "2"
+                  },
+                  {
+                    "name": "Standing Calf Raise",
+                    "sets": 3,
+                    "reps": 12,
+                    "rest_seconds": 40,
+                    "notes": "RIR TARGET ADDED: RIR 2",
+                    "rir": "2"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "day": 6,
+            "primary_focus": "arms_mobility_recovery",
+            "secondary_focus": "shoulder_health",
+            "estimated_session_time_minutes": 25,
+            "audit_changes": [
+              "Shoulder health block RESTORED from 4 sets to 6 sets \u2014 original M3 cut shoulder health exactly when intensity is highest and shoulder stress is greatest. This is the opposite of correct periodization.",
+              "Band External Rotation: 2x15 \u2192 3x15",
+              "Serratus Wall Slide: 2x10 \u2192 3x10"
+            ],
+            "blocks": [
+              {
+                "block_type": "arms",
+                "primary_focus": "minimum_effective",
+                "estimated_time_minutes": 5,
+                "exercises": [
+                  {
+                    "name": "EZ-Bar Curl",
+                    "sets": 2,
+                    "reps": 10,
+                    "rest_seconds": 40,
+                    "notes": "Minimal arm maintenance",
+                    "tempo": "2-0-2",
+                    "rir": "2"
+                  },
+                  {
+                    "name": "Rope Pushdown",
+                    "sets": 2,
+                    "reps": 10,
+                    "rest_seconds": 40,
+                    "notes": "Minimal arm maintenance",
+                    "tempo": "2-0-2",
+                    "rir": "2"
+                  }
+                ]
+              },
+              {
+                "block_type": "shoulder_health",
+                "primary_focus": "cuff_serratus",
+                "estimated_time_minutes": 6,
+                "notes": "RESTORED to 6 sets \u2014 was cut to 4 in original M3. Meso 3 is the most shoulder-stressful phase. This is exactly when you need more cuff work, not less.",
+                "exercises": [
+                  {
+                    "name": "Band External Rotation",
+                    "sets": 3,
+                    "reps": 15,
+                    "rest_seconds": 30,
+                    "notes": "RESTORED from 2x15 to 3x15. Quality rotation \u2014 no shoulder hiking."
+                  },
+                  {
+                    "name": "Serratus Wall Slide",
+                    "sets": 3,
+                    "reps": 10,
+                    "rest_seconds": 30,
+                    "notes": "RESTORED from 2x10 to 3x10. Reach long at the top of every rep."
+                  }
+                ]
+              },
+              {
+                "block_type": "recovery",
+                "primary_focus": "easy_engine",
+                "estimated_time_minutes": 15,
+                "exercises": [
+                  {
+                    "name": "Easy Walk or Bike",
+                    "sets": 1,
+                    "reps": "15 min",
+                    "rest_seconds": 0,
+                    "notes": "Recovery only \u2014 this is deliberate rest, not wasted time"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

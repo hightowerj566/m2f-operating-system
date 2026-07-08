@@ -1,0 +1,1 @@
+ALTER TABLE public.profiles ADD COLUMN goal_rate_lb_per_week numeric NULL;

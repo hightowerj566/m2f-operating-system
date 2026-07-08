@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX IF NOT EXISTS macro_targets_user_unique ON public.macro_targets (user_id);
