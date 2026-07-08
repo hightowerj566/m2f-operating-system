@@ -38,7 +38,7 @@ export default function BuildList() {
       </button>
 
       <div className="mb-6">
-        <p className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-1">The Build List</p>
+        <p className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-1">Before She Arrives</p>
         <h1 className="text-3xl font-black tracking-tight">
           {completedCount}/{milestones.length} built
         </h1>
