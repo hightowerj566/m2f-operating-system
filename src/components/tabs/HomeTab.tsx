@@ -174,7 +174,7 @@ export function HomeTab({ onOpenWorkout, onOpenStandards, programName }: HomeTab
               </button>
             </div>
           </>
-        ) : user && !isLoading ? (
+        ) : user && !isLoading && !trainingMode ? (
           <div className="w-full bg-card border border-border rounded-2xl p-5 text-center">
             <p className="font-bold mb-1">No Readiness Score yet</p>
             <p className="text-muted-foreground text-sm mb-3">Seven categories. One number. Two minutes.</p>
@@ -186,7 +186,7 @@ export function HomeTab({ onOpenWorkout, onOpenStandards, programName }: HomeTab
       </div>
 
       {/* ── THE MISSION (the one thing) ── */}
-      {weeklyMission && (
+      {weeklyMission && !trainingMode && (
         <div className="bg-card border border-primary/40 rounded-2xl p-4 mb-3">
           <div className="flex items-center gap-2 mb-2">
             <Target className="w-4 h-4 text-primary" />
@@ -246,7 +246,7 @@ export function HomeTab({ onOpenWorkout, onOpenStandards, programName }: HomeTab
       {/* ── SECONDARY ROWS ── */}
       <div className="space-y-2 mt-5">
         <SlimRow icon={Dumbbell} label="Today's Training" sub={phase ? phase.trainingGuidance : programName || ""} onClick={onOpenWorkout} />
-        {user && buildMilestones.length > 0 && (
+        {user && buildMilestones.length > 0 && !trainingMode && (
           <SlimRow
             icon={Hammer}
             label={`Before She Arrives · ${builtCount}/${buildMilestones.length}`}
@@ -263,11 +263,19 @@ export function HomeTab({ onOpenWorkout, onOpenStandards, programName }: HomeTab
         {user && (arrived || (days != null && days <= 60)) && (
           <SlimRow icon={BookOpen} label={arrived ? "The First 40 Days" : "The Day One Playbook"} sub={arrived ? "The postpartum operating manual" : "What to do the moment it starts"} onClick={() => navigate("/day-one")} />
         )}
-        {user && (
+        {user && !trainingMode && (
           <SlimRow icon={Target} label="Weekly Review" sub="The Sunday scoreboard" onClick={() => navigate("/week-review")} />
         )}
         {myCohortName && cohortCount >= COHORT_MIN_MEMBERS && (
           <SlimRow icon={Users} label={myCohortName} sub={`${cohortCount} men on your exact countdown`} onClick={() => navigate("/cohort")} />
+        )}
+        {trainingMode && (
+          <SlimRow
+            icon={Heart}
+            label="Baby on the way?"
+            sub="Set your due date — the full M2F system switches on"
+            onClick={() => navigate("/start")}
+          />
         )}
       </div>
     </div>
