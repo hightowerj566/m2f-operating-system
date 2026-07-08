@@ -196,6 +196,7 @@ export function useLatestReadiness(userId: string | undefined) {
       }
 
       return {
+        journey: (profile?.journey as "expecting" | "training" | null) ?? null,
         dueDate: (profile?.due_date as string | null) ?? null,
         babyArrivedAt: (profile?.baby_arrived_at as string | null) ?? null,
         babyName: (profile?.baby_name as string | null) ?? null,
