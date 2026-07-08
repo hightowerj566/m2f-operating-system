@@ -37,6 +37,7 @@ export function HomeTab({ onOpenWorkout, onOpenStandards, programName }: HomeTab
   const { data, isLoading } = useLatestReadiness(user?.id);
   const { data: buildMilestones = [] } = useBuildList(user?.id);
 
+  const trainingMode = data?.journey === "training" && !data?.dueDate;
   const days = calcDaysRemaining(data?.dueDate);
   const arrived = !!data?.babyArrivedAt;
   const phase = getPhase(days, arrived);
@@ -120,6 +121,11 @@ export function HomeTab({ onOpenWorkout, onOpenStandards, programName }: HomeTab
               <span className="text-2xl font-bold text-muted-foreground ml-2">DAYS</span>
             </h1>
             <p className="text-muted-foreground mt-2">until everything changes</p>
+          </>
+        ) : trainingMode ? (
+          <>
+            <h1 className="text-5xl font-black tracking-tight text-foreground leading-none">TRAINING MODE</h1>
+            <p className="text-muted-foreground mt-2">{programName || "Build the man. The rest can wait."}</p>
           </>
         ) : (
           <>
