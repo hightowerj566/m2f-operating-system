@@ -11,6 +11,11 @@ import FatherAthleteQuiz from "./pages/FatherAthleteQuiz";
 import ScoreReveal from "./pages/ScoreReveal";
 import Cohort from "./pages/Cohort";
 import BuildList from "./pages/BuildList";
+import Start from "./pages/Start";
+import Plan from "./pages/Plan";
+import HerAndBaby from "./pages/HerAndBaby";
+import DayOne from "./pages/DayOne";
+import WeekReview from "./pages/WeekReview";
 import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
 
@@ -33,6 +38,11 @@ const App = () => (
           <Route path="/score-reveal" element={<ScoreReveal />} />
           <Route path="/cohort" element={<Cohort />} />
           <Route path="/build-list" element={<BuildList />} />
+          <Route path="/start" element={<Start />} />
+          <Route path="/plan" element={<Plan />} />
+          <Route path="/her-and-baby" element={<HerAndBaby />} />
+          <Route path="/day-one" element={<DayOne />} />
+          <Route path="/week-review" element={<WeekReview />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

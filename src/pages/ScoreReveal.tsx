@@ -68,7 +68,7 @@ export default function ScoreReveal() {
 
   const handleCta = () => {
     if (user) {
-      navigate("/", { replace: true });
+      navigate("/plan", { replace: true }); // S5: the money screen
     } else {
       navigate("/auth");
     }
@@ -91,6 +91,7 @@ export default function ScoreReveal() {
         <p className="text-xs font-bold tracking-[0.25em] uppercase text-muted-foreground mb-1">Build status</p>
         <h2 className="text-2xl md:text-3xl font-black gold-text mb-2">{band.name}</h2>
         <p className="text-muted-foreground max-w-md leading-relaxed">{band.copy(state.weeksRemaining)}</p>
+        <p className="text-xs text-muted-foreground mt-2">Most expecting dads start in the 30s. This is your baseline, not your ceiling.</p>
       </div>
 
       {/* Category bars, worst first */}
@@ -131,7 +132,7 @@ export default function ScoreReveal() {
             onClick={handleCta}
             className="w-full text-lg py-6 font-bold gold-gradient text-primary-foreground rounded-xl"
           >
-            {user ? "Open My Plan" : "Start The Build"} <ChevronRight className="ml-2 w-5 h-5" />
+            {user ? "See My Plan" : "Start The Build"} <ChevronRight className="ml-2 w-5 h-5" />
           </Button>
           <p className="text-muted-foreground text-xs mt-3">
             Your full breakdown is on its way to your inbox.
