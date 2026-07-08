@@ -103,3 +103,73 @@ describe("missions week math", async () => {
     expect(weekStart(new Date("2026-07-06T08:00:00"))).toBe("2026-07-06");
   });
 });
+
+describe("phase engine", async () => {
+  const { getPhase } = await import("@/lib/phases");
+  it("maps days remaining to the five phases", () => {
+    expect(getPhase(200)?.id).toBe(1);
+    expect(getPhase(181)?.id).toBe(1);
+    expect(getPhase(180)?.id).toBe(2);
+    expect(getPhase(121)?.id).toBe(2);
+    expect(getPhase(120)?.id).toBe(3);
+    expect(getPhase(61)?.id).toBe(3);
+    expect(getPhase(60)?.id).toBe(4);
+    expect(getPhase(31)?.id).toBe(4);
+    expect(getPhase(30)?.id).toBe(5);
+    expect(getPhase(0)?.id).toBe(5);
+  });
+  it("Father Mode wins regardless of days", () => {
+    expect(getPhase(90, true)?.id).toBe(6);
+    expect(getPhase(null, true)?.id).toBe(6);
+  });
+  it("no due date and not arrived → null", () => {
+    expect(getPhase(null)).toBeNull();
+  });
+});
+
+describe("build list score math", async () => {
+  const { applyMilestoneBoost, surfaceMilestones } = await import("@/hooks/useBuildList");
+  const base = { physical: 8, mindset: 5, knowledge: 3, home: 2, relationship: 6, finances: 1, habits: 4 } as const;
+
+  it("adds completed points to the right categories", () => {
+    const r = applyMilestoneBoost({ ...base }, [
+      { category_id: 6, points: 2, completed: true },
+      { category_id: 4, points: 1, completed: true },
+      { category_id: 3, points: 2, completed: false }, // incomplete: ignored
+    ]);
+    expect(r.byCategory.finances).toBe(3);
+    expect(r.byCategory.home).toBe(3);
+    expect(r.byCategory.knowledge).toBe(3);
+    expect(r.boost).toBe(3);
+  });
+
+  it("caps every category at 10", () => {
+    const r = applyMilestoneBoost({ ...base }, [
+      { category_id: 1, points: 3, completed: true },
+      { category_id: 1, points: 3, completed: true },
+    ]);
+    expect(r.byCategory.physical).toBe(10); // 8 + 6 capped
+    expect(r.boost).toBe(2); // only the capped gain counts
+  });
+
+  it("surfaces overdue, then current phase, then pulls the next phase forward", () => {
+    const ms = [
+      { id: "a", category_id: 1, phase: 1, title: "", detail: null, points: 1, sort_order: 1, completed: false },
+      { id: "b", category_id: 1, phase: 3, title: "", detail: null, points: 1, sort_order: 1, completed: false },
+      { id: "c", category_id: 1, phase: 4, title: "", detail: null, points: 1, sort_order: 1, completed: false },
+      { id: "d", category_id: 1, phase: 3, title: "", detail: null, points: 1, sort_order: 2, completed: true },
+    ];
+    const top = surfaceMilestones(ms as never, 3, 3);
+    expect(top.map((m) => m.id)).toEqual(["a", "b", "c"]); // overdue P1 first, current P3, then P4 pulled forward
+  });
+
+  it("pulls future phases forward when current phase is fully built", () => {
+    const ms = [
+      { id: "p3", category_id: 1, phase: 3, title: "", detail: null, points: 1, sort_order: 1, completed: true },
+      { id: "p4", category_id: 1, phase: 4, title: "", detail: null, points: 1, sort_order: 1, completed: false },
+      { id: "p5", category_id: 1, phase: 5, title: "", detail: null, points: 1, sort_order: 1, completed: false },
+    ];
+    const top = surfaceMilestones(ms as never, 3, 2);
+    expect(top.map((m) => m.id)).toEqual(["p4", "p5"]);
+  });
+});
