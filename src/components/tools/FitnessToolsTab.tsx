@@ -32,7 +32,7 @@ export function FitnessToolsTab() {
 
   if (activeTool === "plate") {
     return (
-      <div className="px-4 pt-6 pb-24 space-y-4">
+      <div className="px-4 pt-6 pb-nav space-y-4">
         <button
           onClick={() => setActiveTool("menu")}
           className="text-xs font-bold text-primary uppercase tracking-wider"
@@ -47,7 +47,7 @@ export function FitnessToolsTab() {
 
   if (activeTool === "1rm") {
     return (
-      <div className="px-4 pt-6 pb-24 space-y-4">
+      <div className="px-4 pt-6 pb-nav space-y-4">
         <button
           onClick={() => setActiveTool("menu")}
           className="text-xs font-bold text-primary uppercase tracking-wider"
@@ -77,7 +77,7 @@ export function FitnessToolsTab() {
   }
 
   return (
-    <div className="px-4 pt-6 pb-24 space-y-5">
+    <div className="px-4 pt-6 pb-nav space-y-5">
       <div>
         <p className="text-xs font-bold tracking-widest text-muted-foreground uppercase">
           Gym Bag

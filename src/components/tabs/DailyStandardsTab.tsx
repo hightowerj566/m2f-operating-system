@@ -294,7 +294,7 @@ export function DailyStandardsTab() {
   if (!today) return null;
 
   return (
-    <div className="px-4 pt-6 pb-24 space-y-5">
+    <div className="px-4 pt-6 pb-nav space-y-5">
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>

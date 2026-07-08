@@ -83,7 +83,7 @@ export function ManageSubscriptionView({ tier, subscriptionEnd, cancelAtPeriodEn
   // ---- DONE ----
   if (step === "done") {
     return (
-      <div className="px-4 pt-4 pb-24 space-y-4">
+      <div className="px-4 pt-4 pb-nav space-y-4">
         <div className="flex items-center justify-between mb-2">
           <button onClick={onBack} className="text-sm text-muted-foreground hover:text-foreground">← Back</button>
           <p className="text-xs font-bold tracking-widest text-muted-foreground uppercase">Cancelled</p>
@@ -111,7 +111,7 @@ export function ManageSubscriptionView({ tier, subscriptionEnd, cancelAtPeriodEn
   // ---- REASON ----
   if (step === "reason" || step === "confirming") {
     return (
-      <div className="px-4 pt-4 pb-24 space-y-4">
+      <div className="px-4 pt-4 pb-nav space-y-4">
         <div className="flex items-center justify-between mb-2">
           <button onClick={() => setStep("review")} className="text-sm text-muted-foreground hover:text-foreground">← Back</button>
           <p className="text-xs font-bold tracking-widest text-muted-foreground uppercase">Why are you leaving?</p>
@@ -156,7 +156,7 @@ export function ManageSubscriptionView({ tier, subscriptionEnd, cancelAtPeriodEn
   // ---- REVIEW ----
   if (step === "review") {
     return (
-      <div className="px-4 pt-4 pb-24 space-y-4">
+      <div className="px-4 pt-4 pb-nav space-y-4">
         <div className="flex items-center justify-between mb-2">
           <button onClick={() => setStep("manage")} className="text-sm text-muted-foreground hover:text-foreground">← Back</button>
           <p className="text-xs font-bold tracking-widest text-muted-foreground uppercase">Rate Your Experience</p>
@@ -194,7 +194,7 @@ export function ManageSubscriptionView({ tier, subscriptionEnd, cancelAtPeriodEn
 
   // ---- MANAGE (main view) ----
   return (
-    <div className="px-4 pt-4 pb-24 space-y-4">
+    <div className="px-4 pt-4 pb-nav space-y-4">
       <div className="flex items-center justify-between mb-2">
         <button onClick={onBack} className="text-sm text-muted-foreground hover:text-foreground">← Back</button>
         <p className="text-xs font-bold tracking-widest text-muted-foreground uppercase">Manage Subscription</p>

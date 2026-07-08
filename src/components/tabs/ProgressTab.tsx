@@ -193,7 +193,7 @@ export function ProgressTab() {
   );
 
   return (
-    <div className="px-4 pt-6 pb-24 space-y-5">
+    <div className="px-4 pt-6 pb-nav space-y-5">
       {/* Command Center Header */}
       <div>
         <p className="text-xs font-bold tracking-widest text-muted-foreground uppercase">Command Center</p>

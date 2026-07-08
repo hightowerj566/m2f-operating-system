@@ -1025,7 +1025,7 @@ export default function Index() {
       )}
 
       {/* Bottom Nav */}
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-card border-t border-border px-2 py-2">
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-card border-t border-border px-2 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))]">
         <div className="flex justify-around">
           {navItems.map(({ icon: Icon, label }) => {
             const locked = isTabLocked(label);

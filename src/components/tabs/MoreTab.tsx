@@ -391,7 +391,7 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
   // ---- GRADUATION VIEW (Slice 6) ----
   if (view === "graduation") {
     return (
-      <div className="px-4 pt-4 pb-24 space-y-4">
+      <div className="px-4 pt-4 pb-nav space-y-4">
         <div className="flex items-center justify-between mb-2">
           <button onClick={() => setView("menu")} className="text-sm text-muted-foreground hover:text-foreground">
             ← Back
@@ -467,7 +467,7 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
   // ---- TOOLS VIEW ----
   if (view === "tools") {
     return (
-      <div className="pb-24">
+      <div className="pb-nav">
         <div className="flex items-center justify-between px-4 pt-4 mb-2">
           <button
             onClick={() => setView("menu")}
@@ -501,7 +501,7 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
     // Enroll confirmation
     if (programView === "enroll" && selectedProgram) {
       return (
-        <div className="px-4 pt-4 pb-24 space-y-4">
+        <div className="px-4 pt-4 pb-nav space-y-4">
           <div className="flex items-center justify-between mb-2">
             <button
               onClick={() => setProgramView("detail")}
@@ -575,7 +575,7 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
     if (programView === "detail" && selectedProgram) {
       const info = PHASE_INFO[selectedProgram.name];
       return (
-        <div className="px-4 pt-4 pb-24 space-y-5">
+        <div className="px-4 pt-4 pb-nav space-y-5">
           <div className="flex items-center justify-between mb-2">
             <button
               onClick={() => {
@@ -690,7 +690,7 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
 
     // Program list
     return (
-      <div className="px-4 pt-4 pb-24 space-y-4">
+      <div className="px-4 pt-4 pb-nav space-y-4">
         <div className="flex items-center justify-between mb-2">
           <button onClick={() => setView("menu")} className="text-sm text-muted-foreground hover:text-foreground">
             ← Back
@@ -743,7 +743,7 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
   // ---- MAXES VIEW ----
   if (view === "maxes") {
     return (
-      <div className="px-4 pt-4 pb-24 space-y-4">
+      <div className="px-4 pt-4 pb-nav space-y-4">
         <div className="flex items-center justify-between mb-2">
           <button onClick={() => setView("menu")} className="text-sm text-muted-foreground hover:text-foreground">
             ← Back
@@ -795,7 +795,7 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
 
   // ---- MENU ----
   return (
-    <div className="px-4 pt-4 pb-24 space-y-2">
+    <div className="px-4 pt-4 pb-nav space-y-2">
       <p className="text-xs font-bold tracking-widest text-muted-foreground uppercase mb-3 px-1">Settings</p>
 
       {/* Subscription Status */}
