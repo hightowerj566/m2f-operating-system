@@ -8,8 +8,7 @@ import Auth from "./pages/Auth";
 import ResetPassword from "./pages/ResetPassword";
 import Coach from "./pages/Coach";
 import FatherAthleteQuiz from "./pages/FatherAthleteQuiz";
-import ArchetypeReveal from "./pages/ArchetypeReveal";
-import FatherAthleteResults from "./pages/FatherAthleteResults";
+import ScoreReveal from "./pages/ScoreReveal";
 import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
 
@@ -28,8 +27,8 @@ const App = () => (
           <Route path="/coach" element={<Coach />} />
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/father-athlete-quiz" element={<FatherAthleteQuiz />} />
-          <Route path="/archetype-reveal" element={<ArchetypeReveal />} />
-          <Route path="/father-athlete-results" element={<FatherAthleteResults />} />
+          <Route path="/readiness" element={<FatherAthleteQuiz />} />
+          <Route path="/score-reveal" element={<ScoreReveal />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

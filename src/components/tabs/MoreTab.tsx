@@ -11,6 +11,7 @@ import {
   ExternalLink,
   Sparkles,
   Settings,
+  Wrench,
 } from "lucide-react";
 import { format } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
@@ -21,6 +22,7 @@ import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { TIERS, type SubscriptionTier } from "@/lib/subscriptionTiers";
 import { ManageSubscriptionView } from "@/components/settings/ManageSubscriptionView";
+import { FitnessToolsTab } from "@/components/tools/FitnessToolsTab";
 
 interface MoreTabProps {
   tier?: SubscriptionTier;
@@ -94,7 +96,7 @@ interface Program {
 
 export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRefreshSub, currentProgramId, onProgramChanged }: MoreTabProps = {}) {
   const { user, signOut } = useAuth();
-  const [view, setView] = useState<"menu" | "maxes" | "programs" | "manage-sub">("menu");
+  const [view, setView] = useState<"menu" | "maxes" | "programs" | "manage-sub" | "tools">("menu");
   const [programView, setProgramView] = useState<"list" | "detail" | "enroll">("list");
   const [maxes, setMaxes] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
@@ -319,6 +321,25 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
       ],
     },
   };
+
+  // ---- TOOLS VIEW ----
+  if (view === "tools") {
+    return (
+      <div className="pb-24">
+        <div className="flex items-center justify-between px-4 pt-4 mb-2">
+          <button
+            onClick={() => setView("menu")}
+            className="text-sm text-muted-foreground hover:text-foreground"
+          >
+            ← Back
+          </button>
+          <p className="text-xs font-bold tracking-widest text-muted-foreground uppercase">Fitness Tools</p>
+          <div className="w-10" />
+        </div>
+        <FitnessToolsTab />
+      </div>
+    );
+  }
 
   // ---- MANAGE SUBSCRIPTION VIEW ----
   if (view === "manage-sub" && tier) {
@@ -715,6 +736,14 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
       >
         <BookOpen className="w-5 h-5 text-primary" />
         <span className="flex-1 font-bold text-sm text-foreground">Programs</span>
+        <ChevronRight className="w-4 h-4 text-muted-foreground" />
+      </button>
+      <button
+        onClick={() => setView("tools")}
+        className="w-full flex items-center gap-3 bg-card border border-border rounded-xl p-4 hover:border-primary/40 transition-all text-left"
+      >
+        <Wrench className="w-5 h-5 text-primary" />
+        <span className="flex-1 font-bold text-sm text-foreground">Fitness Tools</span>
         <ChevronRight className="w-4 h-4 text-muted-foreground" />
       </button>
       <button

@@ -14,6 +14,139 @@ export type Database = {
   }
   public: {
     Tables: {
+      assessment_category_scores: {
+        Row: {
+          assessment_id: string
+          category_id: number
+          score: number
+        }
+        Insert: {
+          assessment_id: string
+          category_id: number
+          score: number
+        }
+        Update: {
+          assessment_id?: string
+          category_id?: number
+          score?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assessment_category_scores_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "assessments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assessment_category_scores_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "readiness_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      assessment_options: {
+        Row: {
+          id: string
+          label: string
+          points: number | null
+          question_id: string
+          routing_value: string | null
+          sort_order: number
+        }
+        Insert: {
+          id?: string
+          label: string
+          points?: number | null
+          question_id: string
+          routing_value?: string | null
+          sort_order: number
+        }
+        Update: {
+          id?: string
+          label?: string
+          points?: number | null
+          question_id?: string
+          routing_value?: string | null
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assessment_options_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "assessment_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      assessment_questions: {
+        Row: {
+          category_id: number | null
+          code: string
+          id: string
+          is_active: boolean
+          kind: string
+          prompt: string
+          sort_order: number
+        }
+        Insert: {
+          category_id?: number | null
+          code: string
+          id?: string
+          is_active?: boolean
+          kind: string
+          prompt: string
+          sort_order: number
+        }
+        Update: {
+          category_id?: number | null
+          code?: string
+          id?: string
+          is_active?: boolean
+          kind?: string
+          prompt?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assessment_questions_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "readiness_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      assessments: {
+        Row: {
+          answers: Json
+          id: string
+          taken_at: string
+          total_score: number
+          user_id: string
+          weeks_remaining: number | null
+        }
+        Insert: {
+          answers?: Json
+          id?: string
+          taken_at?: string
+          total_score: number
+          user_id: string
+          weeks_remaining?: number | null
+        }
+        Update: {
+          answers?: Json
+          id?: string
+          taken_at?: string
+          total_score?: number
+          user_id?: string
+          weeks_remaining?: number | null
+        }
+        Relationships: []
+      }
       cancellation_feedback: {
         Row: {
           comments: string | null
@@ -158,33 +291,45 @@ export type Database = {
       father_athlete_leads: {
         Row: {
           archetype_type: string
+          category_scores: Json | null
           created_at: string
+          due_date: string | null
           email: string
           id: string
           name: string
           phone: string
           quiz_answers: Json
           source: string
+          total_score: number | null
+          weakest_category: string | null
         }
         Insert: {
           archetype_type: string
+          category_scores?: Json | null
           created_at?: string
+          due_date?: string | null
           email: string
           id?: string
           name: string
           phone: string
           quiz_answers?: Json
           source?: string
+          total_score?: number | null
+          weakest_category?: string | null
         }
         Update: {
           archetype_type?: string
+          category_scores?: Json | null
           created_at?: string
+          due_date?: string | null
           email?: string
           id?: string
           name?: string
           phone?: string
           quiz_answers?: Json
           source?: string
+          total_score?: number | null
+          weakest_category?: string | null
         }
         Relationships: []
       }
@@ -351,17 +496,21 @@ export type Database = {
         Row: {
           age: number | null
           avg_daily_steps: number | null
+          baby_arrived_at: string | null
+          baby_name: string | null
           body_composition_category: string | null
           body_fat_pct: number | null
           conditioning_level: string | null
           created_at: string
           display_name: string | null
+          due_date: string | null
           equipment_access: string | null
           goal: string | null
           goal_rate_lb_per_week: number | null
           height_inches: number | null
           id: string
           job_type: string | null
+          last_assessment_id: string | null
           onboarding_complete: boolean
           sex: string | null
           training_days_per_week: number | null
@@ -374,17 +523,21 @@ export type Database = {
         Insert: {
           age?: number | null
           avg_daily_steps?: number | null
+          baby_arrived_at?: string | null
+          baby_name?: string | null
           body_composition_category?: string | null
           body_fat_pct?: number | null
           conditioning_level?: string | null
           created_at?: string
           display_name?: string | null
+          due_date?: string | null
           equipment_access?: string | null
           goal?: string | null
           goal_rate_lb_per_week?: number | null
           height_inches?: number | null
           id?: string
           job_type?: string | null
+          last_assessment_id?: string | null
           onboarding_complete?: boolean
           sex?: string | null
           training_days_per_week?: number | null
@@ -397,17 +550,21 @@ export type Database = {
         Update: {
           age?: number | null
           avg_daily_steps?: number | null
+          baby_arrived_at?: string | null
+          baby_name?: string | null
           body_composition_category?: string | null
           body_fat_pct?: number | null
           conditioning_level?: string | null
           created_at?: string
           display_name?: string | null
+          due_date?: string | null
           equipment_access?: string | null
           goal?: string | null
           goal_rate_lb_per_week?: number | null
           height_inches?: number | null
           id?: string
           job_type?: string | null
+          last_assessment_id?: string | null
           onboarding_complete?: boolean
           sex?: string | null
           training_days_per_week?: number | null
@@ -417,7 +574,15 @@ export type Database = {
           weekly_checkin_day?: number | null
           weight_lbs?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_last_assessment_id_fkey"
+            columns: ["last_assessment_id"]
+            isOneToOne: false
+            referencedRelation: "assessments"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       program_assignments: {
         Row: {
@@ -528,6 +693,27 @@ export type Database = {
           published_through_day?: number | null
           total_days?: number
           updated_at?: string
+        }
+        Relationships: []
+      }
+      readiness_categories: {
+        Row: {
+          id: number
+          name: string
+          slug: string
+          sort_order: number
+        }
+        Insert: {
+          id: number
+          name: string
+          slug: string
+          sort_order: number
+        }
+        Update: {
+          id?: number
+          name?: string
+          slug?: string
+          sort_order?: number
         }
         Relationships: []
       }
