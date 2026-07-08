@@ -1,6 +1,9 @@
 // M2F OS · Onboarding (S1–S3): Welcome → The Countdown → The Man Assessment.
 // Ends by routing into the Readiness Assessment (S4), which reveals the score
 // and hands off to the 73-day plan (S5, /plan).
+//
+// Training Mode: users without a baby on the way can skip the due date entirely
+// and answer only the training-relevant questions. They land on the home dashboard.
 
 import { useEffect, useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
@@ -10,6 +13,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import { daysRemaining } from "@/lib/phases";
+import { routeTrack } from "@/lib/readiness";
+import { ensureTrackAssignment } from "@/hooks/useReadiness";
 
 type Step = "welcome" | "due" | "punch" | number | "saving"; // numbers = assessment questions
 
@@ -21,9 +26,14 @@ interface Q {
   placeholder?: string;
 }
 
+const BABY_KEYS = new Set(["first_child", "partner_name", "biggest_fear"]);
+
 const QUESTIONS: Q[] = [
   { key: "first_child", prompt: "Is this your first?", options: [
     { label: "First one", value: true }, { label: "I've done this before", value: false },
+  ]},
+  { key: "training_experience", prompt: "Training experience:", options: [
+    { label: "Under a year", value: "under_1yr" }, { label: "1–3 years", value: "1_3yr" }, { label: "3+ years consistent", value: "3plus" },
   ]},
   { key: "training_days", prompt: "Days per week you can actually train:", options: [
     { label: "3", value: 3 }, { label: "4", value: 4 }, { label: "5", value: 5 }, { label: "6", value: 6 },
@@ -50,21 +60,30 @@ export default function Start() {
   const [step, setStep] = useState<Step>("welcome");
   const [dueDate, setDueDate] = useState("");
   const [answers, setAnswers] = useState<Record<string, string | number | boolean>>({});
+  const [trainingOnly, setTrainingOnly] = useState(false);
   const [textDraft, setTextDraft] = useState("");
   const [error, setError] = useState("");
 
-  // If the profile already has a due_date (e.g. set in the readiness quiz),
-  // pre-fill and skip the "due" step.
+  // Resume-later: a Training Mode user upgrading to Expecting jumps straight
+  // to the due date, then answers ONLY the baby questions he skipped.
+  // Also: if the profile already has a due_date (e.g. set in the readiness
+  // quiz), pre-fill it so the "due" step doesn't ask again.
+  const [upgrading, setUpgrading] = useState(false);
   useEffect(() => {
     if (!user?.id) return;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (supabase as any)
       .from("profiles")
-      .select("due_date")
+      .select("journey, due_date")
       .eq("user_id", user.id)
       .maybeSingle()
-      .then(({ data }: { data: { due_date: string | null } | null }) => {
-        if (data?.due_date) setDueDate(data.due_date);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .then(({ data: prof }: any) => {
+        if (prof?.due_date) setDueDate(prof.due_date);
+        if (prof?.journey === "training" && !prof?.due_date) {
+          setUpgrading(true);
+          setStep("due");
+        }
       });
   }, [user?.id]);
 
@@ -72,13 +91,33 @@ export default function Start() {
   if (!user) return <Navigate to="/auth" replace />;
 
   const days = daysRemaining(dueDate || null);
+  const activeQuestions = trainingOnly
+    ? QUESTIONS.filter((qq) => !BABY_KEYS.has(qq.key))
+    : upgrading
+      ? QUESTIONS.filter((qq) => BABY_KEYS.has(qq.key)) // upgrade: only what he skipped
+      : QUESTIONS;
 
   const finish = async (final: Record<string, string | number | boolean>) => {
     setStep("saving");
     const scriptureOff = final.faith_practicing === false;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const db = supabase as any;
-    await db.from("profiles").update({ ...final, due_date: dueDate }).eq("user_id", user.id);
+    const profileUpdate: Record<string, unknown> = {
+      ...final,
+      journey: trainingOnly ? "training" : "expecting",
+    };
+    if (!trainingOnly && dueDate) profileUpdate.due_date = dueDate;
+    await db.from("profiles").update(profileUpdate).eq("user_id", user.id);
+
+    // Training Mode: route + enroll the track now (no Readiness quiz required)
+    if (trainingOnly) {
+      const daysVal = Number(final.training_days ?? 3);
+      const r3 = daysVal >= 5 ? "5plus" : String(daysVal);
+      const gym = String(final.gym_access ?? "home_setup");
+      const r2 = gym === "hybrid" ? "home_setup" : gym;
+      const track = routeTrack({ R1: String(final.training_experience ?? "under_1yr"), R2: r2, R3: r3 });
+      await ensureTrackAssignment(user.id, track);
+    }
     if (scriptureOff) {
       // Respect his answer: pre-toggle the scripture standard off (he can re-enable anytime)
       const { data: def } = await db
@@ -94,7 +133,7 @@ export default function Start() {
         );
       }
     }
-    navigate("/readiness");
+    navigate(trainingOnly ? "/" : "/readiness");
   };
 
   const answerOption = (q: Q, value: string | number | boolean) => {
@@ -114,12 +153,12 @@ export default function Start() {
 
   const advance = (next: Record<string, string | number | boolean>) => {
     const i = typeof step === "number" ? step : -1;
-    if (i < QUESTIONS.length - 1) setStep(i + 1);
+    if (i < activeQuestions.length - 1) setStep(i + 1);
     else finish(next);
   };
 
   const qIndex = typeof step === "number" ? step : -1;
-  const q = qIndex >= 0 ? QUESTIONS[qIndex] : null;
+  const q = qIndex >= 0 ? activeQuestions[qIndex] : null;
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center px-6">
@@ -159,6 +198,15 @@ export default function Start() {
             Set The Clock <ChevronRight className="ml-2 w-5 h-5" />
           </Button>
           {error && <p className="text-destructive text-sm mt-3">{error}</p>}
+          {!upgrading && (
+            <button
+              onClick={() => { setTrainingOnly(true); setStep(0); }}
+              className="mt-6 text-muted-foreground text-sm hover:text-foreground transition-colors underline underline-offset-4 mx-auto block"
+            >
+              No baby on the way yet — I'm just here to train
+            </button>
+          )}
+          <p className="text-[10px] text-muted-foreground mt-2">You can set the date anytime later and the full system switches on.</p>
         </div>
       )}
 
@@ -183,10 +231,10 @@ export default function Start() {
       {q && (
         <div className="w-full max-w-md">
           <div className="flex justify-between text-xs text-muted-foreground mb-1">
-            <span>{qIndex + 1} of {QUESTIONS.length}</span>
+            <span>{qIndex + 1} of {activeQuestions.length}</span>
           </div>
           <div className="compliance-bar w-full mb-8">
-            <div className="compliance-fill" style={{ width: `${((qIndex + 1) / QUESTIONS.length) * 100}%`, transition: "width 0.3s ease" }} />
+            <div className="compliance-fill" style={{ width: `${((qIndex + 1) / activeQuestions.length) * 100}%`, transition: "width 0.3s ease" }} />
           </div>
           <h2 className="text-2xl md:text-3xl font-bold mb-8">{q.prompt}</h2>
           {q.options ? (
@@ -220,7 +268,7 @@ export default function Start() {
             </div>
           )}
           <button
-            onClick={() => (qIndex === 0 ? setStep("punch") : setStep(qIndex - 1))}
+            onClick={() => (qIndex === 0 ? setStep(trainingOnly ? "due" : "punch") : setStep(qIndex - 1))}
             className="mt-6 text-muted-foreground text-sm flex items-center gap-1 hover:text-foreground transition-colors"
           >
             <ChevronLeft className="w-4 h-4" /> Back
