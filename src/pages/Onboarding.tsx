@@ -67,7 +67,7 @@ export default function Onboarding() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
+      <div className="flex items-center justify-center min-h-dvh bg-background">
         <div className="text-muted-foreground">Loading...</div>
       </div>
     );
@@ -181,7 +181,7 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-dvh bg-background flex flex-col">
       {/* Header */}
       <div className="px-4 pt-6 pb-2">
         <h1 className="text-xl font-bold text-foreground text-center">Let's Get You Set Up</h1>

@@ -609,14 +609,14 @@ export default function Index() {
   };
 
 
-  if (loading || subLoading) return <div className="flex items-center justify-center min-h-screen bg-background"><div className="text-muted-foreground">Loading...</div></div>;
+  if (loading || subLoading) return <div className="flex items-center justify-center min-h-dvh bg-background"><div className="text-muted-foreground">Loading...</div></div>;
   if (!user) return <Navigate to="/auth" replace />;
-  if (!onboardingChecked) return <div className="flex items-center justify-center min-h-screen bg-background"><div className="text-muted-foreground">Loading...</div></div>;
+  if (!onboardingChecked) return <div className="flex items-center justify-center min-h-dvh bg-background"><div className="text-muted-foreground">Loading...</div></div>;
 
   // No subscription → show pricing (coaches bypass)
   if (!subscribed && !isCoach) {
     return (
-      <div className="flex flex-col min-h-screen bg-background max-w-md mx-auto">
+      <div className="flex flex-col min-h-dvh bg-background max-w-md mx-auto">
         <PricingView
           currentTier={tier}
           onCheckout={handleCheckout}
@@ -1010,7 +1010,7 @@ export default function Index() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-background max-w-md mx-auto relative">
+    <div className="flex flex-col min-h-dvh bg-background max-w-md mx-auto relative">
       {/* Offline Banner */}
       {isOffline && (
         <div className="bg-destructive/90 text-destructive-foreground text-center py-2 text-xs font-bold sticky top-0 z-50">

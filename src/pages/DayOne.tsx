@@ -19,7 +19,7 @@ export default function DayOne() {
   const steps = tab === "day-one" ? DAY_ONE_PLAYBOOK : FIRST_40_DAYS;
 
   return (
-    <div className="min-h-screen bg-background text-foreground max-w-md mx-auto px-5 pt-6 pb-16">
+    <div className="min-h-dvh bg-background text-foreground max-w-md mx-auto px-5 pt-6 pb-16">
       <button
         onClick={() => navigate("/")}
         className="text-sm text-muted-foreground flex items-center gap-1 hover:text-foreground transition-colors mb-6"

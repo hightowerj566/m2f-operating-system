@@ -22,7 +22,7 @@ export default function HerAndBaby() {
 
   if (!card) {
     return (
-      <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center px-6 text-center">
+      <div className="min-h-dvh bg-background text-foreground flex flex-col items-center justify-center px-6 text-center">
         <h1 className="text-2xl font-black mb-2">Set the clock first.</h1>
         <p className="text-muted-foreground mb-4">This page runs on your due date.</p>
         <button onClick={() => navigate("/start")} className="text-primary font-bold">Set it up →</button>
@@ -33,7 +33,7 @@ export default function HerAndBaby() {
   const upcoming = PREGNANCY_WEEKS.filter((c) => c.week > card.week).slice(0, 2);
 
   return (
-    <div className="min-h-screen bg-background text-foreground max-w-md mx-auto px-5 pt-6 pb-16">
+    <div className="min-h-dvh bg-background text-foreground max-w-md mx-auto px-5 pt-6 pb-16">
       <button
         onClick={() => navigate("/")}
         className="text-sm text-muted-foreground flex items-center gap-1 hover:text-foreground transition-colors mb-6"

@@ -28,7 +28,7 @@ export default function Plan() {
 
   if (days == null) {
     return (
-      <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center px-6 text-center">
+      <div className="min-h-dvh bg-background text-foreground flex flex-col items-center justify-center px-6 text-center">
         <h1 className="text-2xl font-black mb-2">No clock, no plan.</h1>
         <p className="text-muted-foreground mb-6">Set your due date to see your full path.</p>
         <Button onClick={() => navigate("/start")} className="gold-gradient text-primary-foreground font-bold rounded-xl px-8 py-5">
@@ -44,7 +44,7 @@ export default function Plan() {
     milestones.filter((m) => m.phase === phaseId);
 
   return (
-    <div className="min-h-screen bg-background text-foreground max-w-md mx-auto px-5 pt-6 pb-16">
+    <div className="min-h-dvh bg-background text-foreground max-w-md mx-auto px-5 pt-6 pb-16">
       <button
         onClick={() => navigate("/")}
         className="text-sm text-muted-foreground flex items-center gap-1 hover:text-foreground transition-colors mb-6"
