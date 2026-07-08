@@ -650,6 +650,7 @@ export type Database = {
           height_inches: number | null
           id: string
           job_type: string | null
+          journey: string | null
           last_assessment_id: string | null
           onboarding_complete: boolean
           partner_name: string | null
@@ -684,6 +685,7 @@ export type Database = {
           height_inches?: number | null
           id?: string
           job_type?: string | null
+          journey?: string | null
           last_assessment_id?: string | null
           onboarding_complete?: boolean
           partner_name?: string | null
@@ -718,6 +720,7 @@ export type Database = {
           height_inches?: number | null
           id?: string
           job_type?: string | null
+          journey?: string | null
           last_assessment_id?: string | null
           onboarding_complete?: boolean
           partner_name?: string | null
