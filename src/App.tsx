@@ -10,6 +10,7 @@ import Coach from "./pages/Coach";
 import FatherAthleteQuiz from "./pages/FatherAthleteQuiz";
 import ScoreReveal from "./pages/ScoreReveal";
 import Cohort from "./pages/Cohort";
+import BuildList from "./pages/BuildList";
 import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
 
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/readiness" element={<FatherAthleteQuiz />} />
           <Route path="/score-reveal" element={<ScoreReveal />} />
           <Route path="/cohort" element={<Cohort />} />
+          <Route path="/build-list" element={<BuildList />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

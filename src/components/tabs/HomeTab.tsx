@@ -4,11 +4,13 @@
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import { Dumbbell, ClipboardCheck, RefreshCw, ChevronRight, Target, Check, Users } from "lucide-react";
+import { Dumbbell, ClipboardCheck, RefreshCw, ChevronRight, Target, Check, Users, Hammer } from "lucide-react";
 import { ReadinessRing } from "@/components/ReadinessRing";
 import { useLatestReadiness } from "@/hooks/useReadiness";
 import { useWeeklyMission, useCompleteMission } from "@/hooks/useMissions";
 import { cohortMonthFromDueDate, cohortName } from "@/hooks/useM2fOs";
+import { useBuildList, applyMilestoneBoost, surfaceMilestones } from "@/hooks/useBuildList";
+import { getPhase, daysRemaining as calcDaysRemaining } from "@/lib/phases";
 import { CATEGORIES, countdownParts, daysAsDad, type Category, type CategorySlug } from "@/lib/readiness";
 
 interface HomeTabProps {
@@ -29,6 +31,8 @@ export function HomeTab({ onOpenWorkout, onOpenStandards, programName }: HomeTab
   const { data: weeklyMission } = useWeeklyMission(user?.id, weakestForMission?.id);
   const completeMission = useCompleteMission(user?.id);
   const myCohortName = cohortName(cohortMonthFromDueDate(data?.dueDate));
+  const phase = getPhase(calcDaysRemaining(data?.dueDate), !!data?.babyArrivedAt);
+  const { data: buildMilestones = [] } = useBuildList(user?.id);
 
   const countdown = countdownParts(data?.dueDate);
   const dadDays = daysAsDad(data?.babyArrivedAt);
@@ -36,6 +40,9 @@ export function HomeTab({ onOpenWorkout, onOpenStandards, programName }: HomeTab
   const byCategory = latest?.byCategory;
   const delta =
     latest && data?.previousTotal != null ? latest.total_score - data.previousTotal : null;
+  const liveScore = byCategory ? applyMilestoneBoost(byCategory, buildMilestones) : null;
+  const nextMilestone = surfaceMilestones(buildMilestones, phase && phase.id <= 5 ? phase.id : 5, 1)[0];
+  const builtCount = buildMilestones.filter((m) => m.completed).length;
 
   const weakest: Category | null = byCategory
     ? [...CATEGORIES].sort(
@@ -78,6 +85,11 @@ export function HomeTab({ onOpenWorkout, onOpenStandards, programName }: HomeTab
               <span className="text-2xl font-bold text-muted-foreground ml-2">DAYS</span>
             </h1>
             <p className="text-muted-foreground mt-2">until everything changes</p>
+            {phase && (
+              <span className="inline-block mt-3 text-[10px] font-bold tracking-[0.2em] uppercase text-primary bg-primary/10 border border-primary/30 px-3 py-1 rounded-full">
+                {phase.name} — {phase.focus}
+              </span>
+            )}
           </>
         ) : (
           <>
@@ -91,7 +103,16 @@ export function HomeTab({ onOpenWorkout, onOpenStandards, programName }: HomeTab
       <div className="flex flex-col items-center mb-8">
         {latest ? (
           <>
-            <ReadinessRing total={latest.total_score} byCategory={byCategory} size={210} />
+            <ReadinessRing
+              total={liveScore ? liveScore.total : latest.total_score}
+              byCategory={liveScore ? liveScore.byCategory : byCategory}
+              size={210}
+            />
+            {liveScore && liveScore.boost > 0 && (
+              <span className="mt-3 text-[10px] font-bold tracking-wider uppercase text-primary bg-primary/10 px-3 py-1 rounded-full">
+                +{liveScore.boost} verified from the Build List
+              </span>
+            )}
             {delta != null && delta !== 0 && (
               <span
                 className={`mt-3 text-xs font-bold px-3 py-1 rounded-full ${
@@ -166,6 +187,32 @@ export function HomeTab({ onOpenWorkout, onOpenStandards, programName }: HomeTab
           </div>
         ) : null}
 
+        {/* Build List card — next milestone, event-driven */}
+        {user && buildMilestones.length > 0 && (
+          <button
+            onClick={() => navigate("/build-list")}
+            className="w-full bg-card border border-border rounded-2xl p-4 flex items-center gap-4 text-left hover:border-primary transition-colors"
+          >
+            <span className="bg-primary p-2.5 rounded-xl">
+              <Hammer className="w-5 h-5 text-primary-foreground" />
+            </span>
+            <span className="flex-1">
+              <span className="block text-[10px] font-bold tracking-[0.2em] uppercase text-muted-foreground">
+                The Build List · {builtCount}/{buildMilestones.length}
+              </span>
+              <span className="block font-bold">
+                {nextMilestone ? nextMilestone.title : "Everything's built. Hold the line."}
+              </span>
+              {nextMilestone && (
+                <span className="block text-xs text-muted-foreground">
+                  +{nextMilestone.points} {CATEGORIES.find((c) => c.id === nextMilestone.category_id)?.name} when done
+                </span>
+              )}
+            </span>
+            <ChevronRight className="w-5 h-5 text-muted-foreground" />
+          </button>
+        )}
+
         <button
           onClick={onOpenWorkout}
           className="w-full bg-card border border-border rounded-2xl p-4 flex items-center gap-4 text-left hover:border-primary transition-colors"
@@ -179,7 +226,7 @@ export function HomeTab({ onOpenWorkout, onOpenStandards, programName }: HomeTab
             </span>
             <span className="block font-bold">Today's Training</span>
             <span className="block text-xs text-muted-foreground">
-              {programName || "Your track is waiting"}
+              {phase ? phase.trainingGuidance : programName || "Your track is waiting"}
             </span>
           </span>
           <ChevronRight className="w-5 h-5 text-muted-foreground" />
