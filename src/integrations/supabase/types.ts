@@ -174,6 +174,30 @@ export type Database = {
         }
         Relationships: []
       }
+      cohort_posts: {
+        Row: {
+          cohort_month: string
+          content: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          cohort_month: string
+          content: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          cohort_month?: string
+          content?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       daily_check_ins: {
         Row: {
           actual_calories: number | null
@@ -285,6 +309,30 @@ export type Database = {
           user_id?: string
           weigh_date?: string
           weight_lbs?: number
+        }
+        Relationships: []
+      }
+      due_date_passes: {
+        Row: {
+          expires_at: string
+          id: string
+          purchased_at: string
+          stripe_session_id: string
+          user_id: string
+        }
+        Insert: {
+          expires_at: string
+          id?: string
+          purchased_at?: string
+          stripe_session_id: string
+          user_id: string
+        }
+        Update: {
+          expires_at?: string
+          id?: string
+          purchased_at?: string
+          stripe_session_id?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -491,6 +539,50 @@ export type Database = {
           weight_lbs?: number
         }
         Relationships: []
+      }
+      missions: {
+        Row: {
+          category_id: number
+          created_at: string
+          difficulty: number
+          directive: string
+          id: string
+          is_active: boolean
+          proof_hint: string | null
+          sort_order: number
+          title: string
+        }
+        Insert: {
+          category_id: number
+          created_at?: string
+          difficulty?: number
+          directive: string
+          id?: string
+          is_active?: boolean
+          proof_hint?: string | null
+          sort_order?: number
+          title: string
+        }
+        Update: {
+          category_id?: number
+          created_at?: string
+          difficulty?: number
+          directive?: string
+          id?: string
+          is_active?: boolean
+          proof_hint?: string | null
+          sort_order?: number
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "missions_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "readiness_categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -851,6 +943,47 @@ export type Database = {
         }
         Relationships: []
       }
+      user_missions: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          id: string
+          mission_id: string
+          note: string | null
+          status: string
+          user_id: string
+          week_start: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          mission_id: string
+          note?: string | null
+          status?: string
+          user_id: string
+          week_start: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          mission_id?: string
+          note?: string | null
+          status?: string
+          user_id?: string
+          week_start?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_missions_mission_id_fkey"
+            columns: ["mission_id"]
+            isOneToOne: false
+            referencedRelation: "missions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           id: string
@@ -868,6 +1001,35 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_standard_prefs: {
+        Row: {
+          enabled: boolean
+          standard_definition_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          enabled?: boolean
+          standard_definition_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          enabled?: boolean
+          standard_definition_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_standard_prefs_standard_definition_id_fkey"
+            columns: ["standard_definition_id"]
+            isOneToOne: false
+            referencedRelation: "standard_definitions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_subscriptions: {
         Row: {
@@ -1034,6 +1196,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      year_one_waitlist: {
+        Row: {
+          email: string
+          joined_at: string
+          user_id: string
+        }
+        Insert: {
+          email: string
+          joined_at?: string
+          user_id: string
+        }
+        Update: {
+          email?: string
+          joined_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
     }
     Views: {

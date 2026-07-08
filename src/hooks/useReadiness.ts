@@ -10,6 +10,7 @@ import {
   type AssessmentQuestion,
   type CategorySlug,
   type ScoreResult,
+  type TrackName,
 } from "@/lib/readiness";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -67,8 +68,9 @@ export async function saveAssessment(params: {
   weeksRemaining: number | null;
   answers: Record<string, unknown>;
   dueDate: string | null; // yyyy-mm-dd
+  track?: TrackName; // Slice 3: auto-assign the routed program
 }): Promise<string | null> {
-  const { userId, result, weeksRemaining, answers, dueDate } = params;
+  const { userId, result, weeksRemaining, answers, dueDate, track } = params;
   const { data: inserted, error } = await db
     .from("assessments")
     .insert({
@@ -92,7 +94,66 @@ export async function saveAssessment(params: {
   if (dueDate) profileUpdate.due_date = dueDate;
   await db.from("profiles").update(profileUpdate).eq("user_id", userId);
 
+  if (track) await ensureTrackAssignment(userId, track);
+
   return inserted.id as string;
+}
+
+/**
+ * Slice 3 · Track routing: if the user has no active program, enroll them in
+ * their routed track (M2F Rebuild / M2F Perform). Never overrides an active
+ * program — re-tests don't yank a man mid-block.
+ */
+export async function ensureTrackAssignment(userId: string, track: TrackName): Promise<void> {
+  try {
+    const { data: active } = await db
+      .from("program_assignments")
+      .select("id")
+      .eq("user_id", userId)
+      .eq("is_active", true)
+      .limit(1);
+    if (active && active.length > 0) return;
+
+    const { data: programs } = await db
+      .from("programs")
+      .select("id, name")
+      .ilike("name", `%${track}%`)
+      .limit(1);
+    let programId = programs?.[0]?.id as string | undefined;
+    if (!programId) {
+      // Fallback: match on Rebuild/Perform keyword
+      const keyword = track.includes("Perform") ? "Perform" : "Rebuild";
+      const { data: fallback } = await db
+        .from("programs")
+        .select("id, name")
+        .ilike("name", `%${keyword}%`)
+        .limit(1);
+      programId = fallback?.[0]?.id;
+    }
+    if (!programId) return;
+
+    // Reactivate a prior assignment if one exists, else create fresh
+    const { data: prior } = await db
+      .from("program_assignments")
+      .select("id")
+      .eq("user_id", userId)
+      .eq("program_id", programId)
+      .limit(1);
+    if (prior && prior.length > 0) {
+      await db.from("program_assignments").update({ is_active: true }).eq("id", prior[0].id);
+    } else {
+      await db.from("program_assignments").insert({
+        user_id: userId,
+        program_id: programId,
+        current_day: 1,
+        assigned_by: userId,
+        assigned_at: new Date().toISOString(),
+        is_active: true,
+      });
+    }
+  } catch {
+    // Assignment is best-effort; the ProgramPicker remains the manual fallback
+  }
 }
 
 /** Latest snapshot + due date for the Home tab. */

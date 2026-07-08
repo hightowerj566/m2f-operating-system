@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "@/hooks/use-toast";
 import { Flame, Trophy, CheckCircle2, Circle, TrendingUp, Plus, Trash2, Settings, X } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 
 interface StandardDef {
   id: string;
@@ -48,6 +49,7 @@ export function DailyStandardsTab() {
   const [newLabel, setNewLabel] = useState("");
   const [newEmoji, setNewEmoji] = useState("✅");
   const [currentDate, setCurrentDate] = useState(todayStr());
+  const [disabledGlobals, setDisabledGlobals] = useState<Set<string>>(new Set());
 
   // Re-check the date every 30 seconds; reload if it rolled over midnight
   useEffect(() => {
@@ -93,6 +95,17 @@ export function DailyStandardsTab() {
     const activeStandards = (stdData && stdData.length > 0) ? (stdData as any[]) : FALLBACK_STANDARDS;
     setStandards(activeStandards);
 
+    // D4: load per-user global-standard prefs (rows only exist when toggled)
+    const { data: prefData } = await (supabase as any)
+      .from("user_standard_prefs")
+      .select("standard_definition_id, enabled")
+      .eq("user_id", user.id);
+    if (prefData) {
+      setDisabledGlobals(
+        new Set((prefData as any[]).filter((r) => r.enabled === false).map((r) => r.standard_definition_id)),
+      );
+    }
+
     if (todayData) {
       setToday({
         id: (todayData as any).id,
@@ -115,8 +128,8 @@ export function DailyStandardsTab() {
   };
 
   const activeStandards = useMemo(
-    () => standards.filter((s) => s.is_active),
-    [standards]
+    () => standards.filter((s) => s.is_active && !disabledGlobals.has(s.id)),
+    [standards, disabledGlobals]
   );
 
   const toggleStandard = async (key: string) => {
@@ -175,6 +188,21 @@ export function DailyStandardsTab() {
     await supabase.from("standard_definitions").delete().eq("id", id);
     loadData();
     toast({ title: "Standard removed" });
+  };
+
+  // D4: toggle a GLOBAL standard on/off for this user only
+  const toggleGlobalStandard = async (definitionId: string, enabled: boolean) => {
+    if (!user) return;
+    setDisabledGlobals((prev) => {
+      const next = new Set(prev);
+      if (enabled) next.delete(definitionId);
+      else next.add(definitionId);
+      return next;
+    });
+    await (supabase as any).from("user_standard_prefs").upsert(
+      { user_id: user.id, standard_definition_id: definitionId, enabled, updated_at: new Date().toISOString() },
+      { onConflict: "user_id,standard_definition_id" },
+    );
   };
 
   // Calculations
@@ -302,6 +330,25 @@ export function DailyStandardsTab() {
             </button>
           </div>
 
+          {/* Global standards - toggle on/off for yourself (D4) */}
+          {standards.filter((s) => s.is_global && !s.id.startsWith("f")).length > 0 && (
+            <div className="space-y-1">
+              <p className="text-[10px] font-bold tracking-widest text-muted-foreground uppercase">Core Standards</p>
+              {standards
+                .filter((s) => s.is_global && !s.id.startsWith("f"))
+                .map((s) => (
+                  <div key={s.id} className="flex items-center gap-3 px-3 py-2 rounded-xl bg-secondary/50">
+                    <span className="text-lg">{s.emoji}</span>
+                    <span className="text-sm font-semibold text-foreground flex-1">{s.label}</span>
+                    <Switch
+                      checked={!disabledGlobals.has(s.id)}
+                      onCheckedChange={(checked) => toggleGlobalStandard(s.id, checked)}
+                    />
+                  </div>
+                ))}
+            </div>
+          )}
+
           {/* Personal standards (user-created) */}
           {standards
             .filter((s) => s.created_by === user?.id && !s.is_global)
@@ -343,7 +390,7 @@ export function DailyStandardsTab() {
             </button>
           </div>
           <p className="text-[10px] text-muted-foreground">
-            Coach-set standards cannot be removed. You can add your own personal ones here.
+            Core standards are on by default. Switch off any that do not fit your build, or add your own below.
           </p>
         </div>
       )}

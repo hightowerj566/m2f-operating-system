@@ -19,6 +19,7 @@ import { MacrosTab } from "@/components/tabs/MacrosTab";
 import { ProgressTab } from "@/components/tabs/ProgressTab";
 import { DailyStandardsTab } from "@/components/tabs/DailyStandardsTab";
 import { HomeTab } from "@/components/tabs/HomeTab";
+import { useDueDatePass } from "@/hooks/useM2fOs";
 import { StreakMilestonePopup } from "@/components/streak/StreakMilestonePopup";
 import { DayPickerModal } from "@/components/workout/DayPickerModal";
 import { ProgramPickerModal } from "@/components/workout/ProgramPickerModal";
@@ -77,6 +78,7 @@ export default function Index() {
   const { user, loading } = useAuth();
   const { subscribed, tier, subscriptionEnd, cancelAtPeriodEnd, loading: subLoading, refresh: refreshSub } = useSubscription(user?.id);
   const isOffline = useOffline();
+  const { hasPass } = useDueDatePass(user?.id);
   const navigate = useNavigate();
   const [activeNav, setActiveNav] = useState("Home");
   const [restTimer, setRestTimer] = useState<{ seconds: number } | null>(null);
@@ -532,7 +534,7 @@ export default function Index() {
       return;
     }
     // Check if user has no subscription at all for gated content
-    if (!subscribed && label !== "More" && label !== "Home") {
+    if (!subscribed && !hasPass && label !== "More" && label !== "Home") {
       setShowUpgradeModal(true);
       return;
     }

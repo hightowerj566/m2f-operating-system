@@ -96,6 +96,47 @@ serve(async (req) => {
         }
         break;
       }
+      case "checkout.session.completed": {
+        const session = event.data.object as Stripe.Checkout.Session;
+        if (session.mode !== "payment" || session.metadata?.m2f_sku !== "due_date_pass") {
+          logStep("checkout.session.completed ignored (not a due-date pass)");
+          break;
+        }
+        const passUserId = session.metadata?.user_id;
+        if (!passUserId) {
+          logStep("Due-date pass session missing user_id metadata");
+          break;
+        }
+
+        // Pass runs until 60 days after the due date (or 300 days from purchase as fallback)
+        const { data: profile } = await supabaseAdmin
+          .from("profiles")
+          .select("due_date")
+          .eq("user_id", passUserId)
+          .maybeSingle();
+        let expires: Date;
+        if (profile?.due_date) {
+          expires = new Date(profile.due_date + "T00:00:00Z");
+          expires.setDate(expires.getDate() + 60);
+        } else {
+          expires = new Date();
+          expires.setDate(expires.getDate() + 300);
+        }
+
+        const { error: passError } = await supabaseAdmin
+          .from("due_date_passes")
+          .upsert(
+            {
+              user_id: passUserId,
+              stripe_session_id: session.id,
+              expires_at: expires.toISOString().slice(0, 10),
+            },
+            { onConflict: "stripe_session_id" }
+          );
+        if (passError) logStep("Error recording due-date pass", { error: passError.message });
+        else logStep("Due-date pass recorded", { userId: passUserId, expires: expires.toISOString() });
+        break;
+      }
       case "customer.subscription.deleted": {
         const sub = event.data.object as Stripe.Subscription;
         logStep("Subscription canceled", { subscriptionId: sub.id, status: sub.status });
