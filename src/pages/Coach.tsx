@@ -422,7 +422,7 @@ export default function Coach() {
 
   useEffect(() => {
     if (user) {
-      supabase.rpc("has_role", { _user_id: user.id, _role: "coach" }).then(({ data }) => setIsCoach(!!data));
+      supabase.from("user_roles").select("role").eq("user_id", user.id).eq("role", "coach").maybeSingle().then(({ data }) => setIsCoach(!!data));
     }
   }, [user]);
 
