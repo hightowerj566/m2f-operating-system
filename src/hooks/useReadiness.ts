@@ -164,7 +164,7 @@ export function useLatestReadiness(userId: string | undefined) {
     queryFn: async () => {
       const { data: profile } = await db
         .from("profiles")
-        .select("due_date, baby_arrived_at, baby_name, last_assessment_id")
+        .select("due_date, baby_arrived_at, baby_name, last_assessment_id, journey")
         .eq("user_id", userId)
         .maybeSingle();
 
@@ -196,6 +196,7 @@ export function useLatestReadiness(userId: string | undefined) {
       }
 
       return {
+        journey: (profile?.journey as "expecting" | "training" | null) ?? null,
         dueDate: (profile?.due_date as string | null) ?? null,
         babyArrivedAt: (profile?.baby_arrived_at as string | null) ?? null,
         babyName: (profile?.baby_name as string | null) ?? null,
