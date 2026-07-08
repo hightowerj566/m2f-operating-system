@@ -2,7 +2,7 @@
 // Ends by routing into the Readiness Assessment (S4), which reveals the score
 // and hands off to the 73-day plan (S5, /plan).
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -52,6 +52,21 @@ export default function Start() {
   const [answers, setAnswers] = useState<Record<string, string | number | boolean>>({});
   const [textDraft, setTextDraft] = useState("");
   const [error, setError] = useState("");
+
+  // If the profile already has a due_date (e.g. set in the readiness quiz),
+  // pre-fill and skip the "due" step.
+  useEffect(() => {
+    if (!user?.id) return;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (supabase as any)
+      .from("profiles")
+      .select("due_date")
+      .eq("user_id", user.id)
+      .maybeSingle()
+      .then(({ data }: { data: { due_date: string | null } | null }) => {
+        if (data?.due_date) setDueDate(data.due_date);
+      });
+  }, [user?.id]);
 
   if (loading) return null;
   if (!user) return <Navigate to="/auth" replace />;
