@@ -99,4 +99,15 @@
     border-radius: 3px;
     background: linear-gradient(90deg, hsl(var(--gold)), hsl(var(--gold-glow)));
   }
+
+  /* Safe-area helpers for notched devices */
+  .pt-safe { padding-top: env(safe-area-inset-top); }
+  .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+  .pl-safe { padding-left: env(safe-area-inset-left); }
+  .pr-safe { padding-right: env(safe-area-inset-right); }
+
+  /* Content padding that clears the fixed bottom nav + home indicator */
+  .pb-nav {
+    padding-bottom: calc(6rem + env(safe-area-inset-bottom));
+  }
 }
