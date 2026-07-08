@@ -634,6 +634,7 @@ export type Database = {
           avg_daily_steps: number | null
           baby_arrived_at: string | null
           baby_name: string | null
+          biggest_fear: string | null
           body_composition_category: string | null
           body_fat_pct: number | null
           conditioning_level: string | null
@@ -641,14 +642,20 @@ export type Database = {
           display_name: string | null
           due_date: string | null
           equipment_access: string | null
+          faith_practicing: boolean | null
+          first_child: boolean | null
           goal: string | null
           goal_rate_lb_per_week: number | null
+          gym_access: string | null
           height_inches: number | null
           id: string
           job_type: string | null
           last_assessment_id: string | null
           onboarding_complete: boolean
+          partner_name: string | null
+          session_length_min: number | null
           sex: string | null
+          training_days: number | null
           training_days_per_week: number | null
           training_experience: string | null
           updated_at: string
@@ -661,6 +668,7 @@ export type Database = {
           avg_daily_steps?: number | null
           baby_arrived_at?: string | null
           baby_name?: string | null
+          biggest_fear?: string | null
           body_composition_category?: string | null
           body_fat_pct?: number | null
           conditioning_level?: string | null
@@ -668,14 +676,20 @@ export type Database = {
           display_name?: string | null
           due_date?: string | null
           equipment_access?: string | null
+          faith_practicing?: boolean | null
+          first_child?: boolean | null
           goal?: string | null
           goal_rate_lb_per_week?: number | null
+          gym_access?: string | null
           height_inches?: number | null
           id?: string
           job_type?: string | null
           last_assessment_id?: string | null
           onboarding_complete?: boolean
+          partner_name?: string | null
+          session_length_min?: number | null
           sex?: string | null
+          training_days?: number | null
           training_days_per_week?: number | null
           training_experience?: string | null
           updated_at?: string
@@ -688,6 +702,7 @@ export type Database = {
           avg_daily_steps?: number | null
           baby_arrived_at?: string | null
           baby_name?: string | null
+          biggest_fear?: string | null
           body_composition_category?: string | null
           body_fat_pct?: number | null
           conditioning_level?: string | null
@@ -695,14 +710,20 @@ export type Database = {
           display_name?: string | null
           due_date?: string | null
           equipment_access?: string | null
+          faith_practicing?: boolean | null
+          first_child?: boolean | null
           goal?: string | null
           goal_rate_lb_per_week?: number | null
+          gym_access?: string | null
           height_inches?: number | null
           id?: string
           job_type?: string | null
           last_assessment_id?: string | null
           onboarding_complete?: boolean
+          partner_name?: string | null
+          session_length_min?: number | null
           sex?: string | null
+          training_days?: number | null
           training_days_per_week?: number | null
           training_experience?: string | null
           updated_at?: string
