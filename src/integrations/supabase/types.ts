@@ -147,6 +147,50 @@ export type Database = {
         }
         Relationships: []
       }
+      build_milestones: {
+        Row: {
+          category_id: number
+          created_at: string
+          detail: string | null
+          id: string
+          is_active: boolean
+          phase: number
+          points: number
+          sort_order: number
+          title: string
+        }
+        Insert: {
+          category_id: number
+          created_at?: string
+          detail?: string | null
+          id?: string
+          is_active?: boolean
+          phase: number
+          points?: number
+          sort_order?: number
+          title: string
+        }
+        Update: {
+          category_id?: number
+          created_at?: string
+          detail?: string | null
+          id?: string
+          is_active?: boolean
+          phase?: number
+          points?: number
+          sort_order?: number
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "build_milestones_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "readiness_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cancellation_feedback: {
         Row: {
           comments: string | null
@@ -942,6 +986,32 @@ export type Database = {
           weight_lbs?: number
         }
         Relationships: []
+      }
+      user_milestones: {
+        Row: {
+          completed_at: string
+          milestone_id: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          milestone_id: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          milestone_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_milestones_milestone_id_fkey"
+            columns: ["milestone_id"]
+            isOneToOne: false
+            referencedRelation: "build_milestones"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_missions: {
         Row: {
