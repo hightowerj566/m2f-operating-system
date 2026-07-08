@@ -20,7 +20,6 @@ serve(async (req) => {
   try {
     logStep("Function started");
     const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
-    if (!stripeKey) throw new Error("STRIPE_SECRET_KEY is not set");
 
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) throw new Error("No authorization header");
@@ -53,6 +52,13 @@ serve(async (req) => {
         subscription_end: null,
         cancel_at_period_end: false,
       }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
+    if (!stripeKey) {
+      logStep("No STRIPE_SECRET_KEY — returning unsubscribed");
+      return new Response(JSON.stringify({ subscribed: false, product_id: null, subscription_end: null, cancel_at_period_end: false }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     const stripe = new Stripe(stripeKey, { apiVersion: "2025-08-27.basil" });
