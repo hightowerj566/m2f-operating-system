@@ -37,6 +37,24 @@ serve(async (req) => {
     const userEmail = userData.user.email;
     logStep("User authenticated", { email: userEmail });
 
+    // Coach bypass: coaches get free Performance-tier access, no Stripe required
+    const { data: coachRole } = await supabaseClient
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userData.user.id)
+      .eq("role", "coach")
+      .maybeSingle();
+
+    if (coachRole) {
+      logStep("Coach bypass — granting Performance tier");
+      return new Response(JSON.stringify({
+        subscribed: true,
+        product_id: "prod_U2ua2GJe34qJMp",
+        subscription_end: null,
+        cancel_at_period_end: false,
+      }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
     const stripe = new Stripe(stripeKey, { apiVersion: "2025-08-27.basil" });
     const customers = await stripe.customers.list({ email: userEmail, limit: 1 });
 
