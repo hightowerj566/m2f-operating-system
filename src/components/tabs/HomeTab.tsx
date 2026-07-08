@@ -99,7 +99,7 @@ export function HomeTab({ onOpenWorkout, onOpenStandards, programName }: HomeTab
   const prompt = askHerTonight(new Date(), partnerName);
 
   return (
-    <div className="px-5 pt-8 pb-28">
+    <div className="px-5 pt-8 pb-nav">
       {/* ── HERO: THE CLOCK ── */}
       <div className="text-center mb-6">
         <p className="text-xs font-semibold tracking-widest text-muted-foreground uppercase mb-2">

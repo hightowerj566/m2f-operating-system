@@ -75,7 +75,7 @@ export default function ScoreReveal() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col items-center px-6 py-12">
+    <div className="min-h-dvh bg-background text-foreground flex flex-col items-center px-6 pt-[calc(3rem+env(safe-area-inset-top))] pb-[calc(3rem+env(safe-area-inset-bottom))]">
       <p className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-2">Man to Father</p>
       <h1 className="text-2xl font-black tracking-tight mb-8">
         {state.name ? `${state.name}, here's the truth.` : "Here's the truth."}

@@ -249,7 +249,7 @@ export function MacrosTab() {
     const preview = getTDEEPreview();
 
     return (
-      <div className="px-4 pt-4 pb-24 space-y-4">
+      <div className="px-4 pt-4 pb-nav space-y-4">
         {/* Step indicator */}
         <div className="flex items-center gap-2 mb-2">
           {[1, 2, 3].map(s => (
@@ -542,7 +542,7 @@ export function MacrosTab() {
     : null;
 
   return (
-    <div className="px-4 pt-4 pb-24 space-y-5">
+    <div className="px-4 pt-4 pb-nav space-y-5">
       {/* Goal badge */}
       <div className="flex items-center gap-3 flex-wrap">
         <div className="bg-primary/10 border border-primary/20 rounded-xl px-4 py-2 flex items-center gap-2">

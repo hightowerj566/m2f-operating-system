@@ -229,7 +229,7 @@ export function WeeklyCheckInWizard({ onClose, onComplete }: WeeklyCheckInWizard
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto px-4 pb-24">
+      <div className="flex-1 overflow-y-auto px-4 pb-nav">
         {/* Step 0: Welcome */}
         {step === 0 && (
           <div className="space-y-6 pt-8">

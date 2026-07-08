@@ -60,7 +60,7 @@ export default function Auth() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-background max-w-md mx-auto px-6 justify-center">
+    <div className="flex flex-col min-h-dvh bg-background max-w-md mx-auto px-6 justify-center pt-safe pb-safe">
       <div className="flex flex-col items-center mb-8">
         <img src={logoImage} alt="Refined Performance" className="w-24 h-24 mb-4 object-contain" />
         <h1 className="text-3xl font-black text-foreground">MAN TO FATHER</h1>

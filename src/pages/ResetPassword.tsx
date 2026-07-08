@@ -55,7 +55,7 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-background max-w-md mx-auto px-6 justify-center">
+    <div className="flex flex-col min-h-dvh bg-background max-w-md mx-auto px-6 justify-center pt-safe pb-safe">
       <div className="flex flex-col items-center mb-8">
         <div className="bg-primary p-3 rounded-2xl mb-4">
           <Dumbbell className="w-8 h-8 text-primary-foreground" />

@@ -161,7 +161,7 @@ export default function Start() {
   const q = qIndex >= 0 ? activeQuestions[qIndex] : null;
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center px-6">
+    <div className="min-h-dvh bg-background text-foreground flex flex-col items-center justify-center px-6 pt-safe pb-safe">
       {/* S1 · WELCOME */}
       {step === "welcome" && (
         <div className="text-center max-w-md">

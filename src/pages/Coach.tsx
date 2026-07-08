@@ -180,7 +180,7 @@ function SidebarNav({ active, onChange, onBack }: { active: string; onChange: (v
     { id: "billing", icon: CreditCard, label: "Billing" },
   ];
   return (
-    <div className="w-56 border-r border-border bg-card flex flex-col min-h-screen shrink-0">
+    <div className="w-56 border-r border-border bg-card flex flex-col min-h-dvh shrink-0">
       <div className="p-4 border-b border-border">
         <button onClick={onBack} className="flex items-center gap-2 text-muted-foreground hover:text-foreground text-xs mb-3 transition-colors">
           <ArrowLeft className="w-3.5 h-3.5" /> Back to app
@@ -629,10 +629,10 @@ export default function Coach() {
   };
 
   // ─── Guards ───
-  if (loading || isCoach === null) return <div className="flex items-center justify-center min-h-screen bg-background"><p className="text-muted-foreground">Loading...</p></div>;
+  if (loading || isCoach === null) return <div className="flex items-center justify-center min-h-dvh bg-background"><p className="text-muted-foreground">Loading...</p></div>;
   if (!user) return <Navigate to="/auth" replace />;
   if (!isCoach) return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-background gap-4">
+    <div className="flex flex-col items-center justify-center min-h-dvh bg-background gap-4">
       <LayoutDashboard className="w-10 h-10 text-muted-foreground" />
       <p className="text-foreground font-bold text-lg">Coach Access Required</p>
       <p className="text-muted-foreground text-sm max-w-xs text-center">You need coach permissions to access this dashboard.</p>
@@ -645,14 +645,14 @@ export default function Coach() {
   // ═══════════════════════════════════════
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex min-h-dvh bg-background">
       <SidebarNav active={section} onChange={setSection} onBack={() => navigate("/")} />
 
       <div className="flex-1 overflow-y-auto">
         {section === "programs" && (
           <div className="flex h-full">
             {/* Program list panel */}
-            <div className="w-72 border-r border-border bg-card/50 flex flex-col shrink-0 h-screen overflow-y-auto">
+            <div className="w-72 border-r border-border bg-card/50 flex flex-col shrink-0 h-dvh overflow-y-auto">
               <div className="p-4 border-b border-border flex items-center justify-between">
                 <h2 className="font-bold text-foreground text-sm">Programs</h2>
                 <button onClick={() => setShowCreateForm(!showCreateForm)}
@@ -695,7 +695,7 @@ export default function Coach() {
             </div>
 
             {/* Program editor panel */}
-            <div className="flex-1 overflow-y-auto h-screen">
+            <div className="flex-1 overflow-y-auto h-dvh">
               {!selectedProgram ? (
                 <div className="flex flex-col items-center justify-center h-full text-muted-foreground gap-3">
                   <BookOpen className="w-10 h-10" />
@@ -1014,7 +1014,7 @@ export default function Coach() {
         {section === "clients" && (
           <div className="flex h-full">
             {/* Client list */}
-            <div className="w-72 border-r border-border bg-card/50 flex flex-col shrink-0 h-screen overflow-y-auto">
+            <div className="w-72 border-r border-border bg-card/50 flex flex-col shrink-0 h-dvh overflow-y-auto">
               <div className="p-4 border-b border-border">
                 <h2 className="font-bold text-foreground text-sm">Clients</h2>
                 <p className="text-[10px] text-muted-foreground mt-0.5">{clients.length} total</p>
@@ -1038,7 +1038,7 @@ export default function Coach() {
             </div>
 
             {/* Client detail */}
-            <div className="flex-1 overflow-y-auto h-screen">
+            <div className="flex-1 overflow-y-auto h-dvh">
               {!selectedClient ? (
                 <div className="flex flex-col items-center justify-center h-full text-muted-foreground gap-3">
                   <UserCircle className="w-10 h-10" />

@@ -168,10 +168,10 @@ export default function FatherAthleteQuiz() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-dvh bg-background text-foreground">
       {/* INTRO */}
       {step === INTRO_STEP && (
-        <section className="flex flex-col items-center justify-center min-h-screen px-6 text-center">
+        <section className="flex flex-col items-center justify-center min-h-dvh px-6 text-center">
           <div className="w-20 h-20 rounded-2xl gold-gradient flex items-center justify-center mb-8">
             <Shield className="w-10 h-10 text-primary-foreground" />
           </div>
@@ -201,7 +201,7 @@ export default function FatherAthleteQuiz() {
       <div ref={quizRef}>
         {/* DUE DATE */}
         {step === DUE_STEP && (
-          <section className="flex flex-col items-center justify-center min-h-screen px-6 py-16">
+          <section className="flex flex-col items-center justify-center min-h-dvh px-6 py-16">
             <div className="w-full max-w-md text-center">
               <p className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-3">The Clock</p>
               <h2 className="text-3xl font-black mb-3">When is she due?</h2>
@@ -233,7 +233,7 @@ export default function FatherAthleteQuiz() {
 
         {/* QUESTIONS */}
         {step >= 0 && step < totalQuestions && questions[step] && (
-          <section className="flex flex-col items-center justify-center min-h-screen px-6 py-16">
+          <section className="flex flex-col items-center justify-center min-h-dvh px-6 py-16">
             <div className="w-full max-w-lg mb-2">
               <div className="flex justify-between text-xs text-muted-foreground mb-1">
                 <span>Question {step + 1} of {totalQuestions}</span>
@@ -282,7 +282,7 @@ export default function FatherAthleteQuiz() {
 
         {/* EMAIL OPT-IN — gates the reveal (D3) */}
         {step === LEAD_STEP && totalQuestions > 0 && (
-          <section className="flex flex-col items-center justify-center min-h-screen px-6 py-16">
+          <section className="flex flex-col items-center justify-center min-h-dvh px-6 py-16">
             <div className="w-full max-w-md">
               <div className="text-center mb-8">
                 <div className="w-16 h-16 rounded-full gold-gradient flex items-center justify-center mx-auto mb-4">
