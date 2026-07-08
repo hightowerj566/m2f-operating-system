@@ -40,5 +40,15 @@ export function getPriceId(tier: "base" | "performance", yearly: boolean): strin
   return yearly ? TIERS[tier].yearly_price_id : TIERS[tier].monthly_price_id;
 }
 
+// Slice 4 · One-time "Through Your Due Date" pass.
+// Requires a one-time price in Stripe + two env vars:
+//   VITE_DUE_DATE_PASS_PRICE_ID (client)  ·  DUE_DATE_PASS_PRICE_ID (edge functions)
+export const DUE_DATE_PASS = {
+  name: "Through Your Due Date",
+  price: 149,
+  price_id: (import.meta.env.VITE_DUE_DATE_PASS_PRICE_ID as string | undefined) ?? "",
+  description: "One payment. Full training + missions access until 60 days after she arrives.",
+} as const;
+
 // Tabs gated behind Performance plan
 export const PERFORMANCE_ONLY_TABS = ["Macros"];

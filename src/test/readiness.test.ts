@@ -88,3 +88,18 @@ describe("the clock", () => {
     expect(weeksRemaining(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000))).toBe(0);
   });
 });
+
+describe("missions week math", async () => {
+  const { weekStart } = await import("@/hooks/useMissions");
+  it("returns a Monday", () => {
+    const ws = weekStart(new Date("2026-07-08T12:00:00")); // a Wednesday
+    expect(ws).toBe("2026-07-06");
+    expect(new Date(ws + "T00:00:00").getDay()).toBe(1);
+  });
+  it("Sunday maps back to the previous Monday", () => {
+    expect(weekStart(new Date("2026-07-12T12:00:00"))).toBe("2026-07-06");
+  });
+  it("Monday maps to itself", () => {
+    expect(weekStart(new Date("2026-07-06T08:00:00"))).toBe("2026-07-06");
+  });
+});

@@ -126,6 +126,7 @@ export default function FatherAthleteQuiz() {
           weeksRemaining: weeks,
           answers: answersPayload,
           dueDate,
+          track,
         });
       }
 

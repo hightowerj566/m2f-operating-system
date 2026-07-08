@@ -12,6 +12,8 @@ import {
   Sparkles,
   Settings,
   Wrench,
+  Baby,
+  Download,
 } from "lucide-react";
 import { format } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
@@ -23,6 +25,9 @@ import { toast } from "@/hooks/use-toast";
 import { TIERS, type SubscriptionTier } from "@/lib/subscriptionTiers";
 import { ManageSubscriptionView } from "@/components/settings/ManageSubscriptionView";
 import { FitnessToolsTab } from "@/components/tools/FitnessToolsTab";
+import { DUE_DATE_PASS } from "@/lib/subscriptionTiers";
+import { useDueDatePass, recordArrival, joinYearOneWaitlist, useOnWaitlist } from "@/hooks/useM2fOs";
+import { generateKeepsake } from "@/lib/keepsake";
 
 interface MoreTabProps {
   tier?: SubscriptionTier;
@@ -96,7 +101,68 @@ interface Program {
 
 export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRefreshSub, currentProgramId, onProgramChanged }: MoreTabProps = {}) {
   const { user, signOut } = useAuth();
-  const [view, setView] = useState<"menu" | "maxes" | "programs" | "manage-sub" | "tools">("menu");
+  const [view, setView] = useState<"menu" | "maxes" | "programs" | "manage-sub" | "tools" | "graduation">("menu");
+  const { hasPass, passExpires } = useDueDatePass(user?.id);
+  const { data: onWaitlist } = useOnWaitlist(user?.id);
+  const [babyName, setBabyName] = useState("");
+  const [arrivalDate, setArrivalDate] = useState("");
+  const [gradSaving, setGradSaving] = useState(false);
+  const [gradSaved, setGradSaved] = useState(false);
+  const [buyingPass, setBuyingPass] = useState(false);
+
+  const buyDueDatePass = async () => {
+    if (!DUE_DATE_PASS.price_id || buyingPass) return;
+    setBuyingPass(true);
+    const { data, error } = await supabase.functions.invoke("create-checkout", {
+      body: { price_id: DUE_DATE_PASS.price_id },
+    });
+    setBuyingPass(false);
+    if (!error && (data as any)?.url) window.location.href = (data as any).url;
+    else toast({ title: "Couldn't start checkout", variant: "destructive" });
+  };
+
+  const saveArrival = async () => {
+    if (!user || !babyName.trim() || !arrivalDate || gradSaving) return;
+    setGradSaving(true);
+    const ok = await recordArrival(user.id, babyName, arrivalDate);
+    setGradSaving(false);
+    if (ok) {
+      setGradSaved(true);
+      toast({ title: "Welcome to Day One, Dad. 🎉" });
+    } else {
+      toast({ title: "Failed to save", variant: "destructive" });
+    }
+  };
+
+  const downloadKeepsake = async () => {
+    if (!user) return;
+    const { data: assessments } = await (supabase as any)
+      .from("assessments")
+      .select("total_score, taken_at")
+      .eq("user_id", user.id)
+      .order("taken_at", { ascending: true });
+    const first = assessments?.[0]?.total_score ?? null;
+    const last = assessments?.length ? assessments[assessments.length - 1].total_score : null;
+    const { data: profile } = await (supabase as any)
+      .from("profiles")
+      .select("due_date, baby_name, baby_arrived_at, display_name, first_name, name")
+      .eq("user_id", user.id)
+      .maybeSingle();
+    generateKeepsake({
+      dadName: profile?.display_name || profile?.first_name || profile?.name || user.email?.split("@")[0] || "Dad",
+      babyName: profile?.baby_name || babyName || "Baby Girl",
+      arrivedAt: profile?.baby_arrived_at || arrivalDate || new Date().toISOString().slice(0, 10),
+      dueDate: profile?.due_date ?? null,
+      finalScore: last,
+      firstScore: first,
+    });
+  };
+
+  const joinWaitlist = async () => {
+    if (!user?.email) return;
+    const ok = await joinYearOneWaitlist(user.id, user.email);
+    toast({ title: ok ? "You're on the Year One list." : "Failed to join", variant: ok ? undefined : "destructive" });
+  };
   const [programView, setProgramView] = useState<"list" | "detail" | "enroll">("list");
   const [maxes, setMaxes] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
@@ -321,6 +387,82 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
       ],
     },
   };
+
+  // ---- GRADUATION VIEW (Slice 6) ----
+  if (view === "graduation") {
+    return (
+      <div className="px-4 pt-4 pb-24 space-y-4">
+        <div className="flex items-center justify-between mb-2">
+          <button onClick={() => setView("menu")} className="text-sm text-muted-foreground hover:text-foreground">
+            ← Back
+          </button>
+          <p className="text-xs font-bold tracking-widest text-muted-foreground uppercase">Day One</p>
+          <div className="w-10" />
+        </div>
+
+        {!gradSaved ? (
+          <div className="bg-card border border-border rounded-2xl p-5 space-y-4">
+            <div>
+              <h2 className="text-xl font-black text-foreground">She's here?</h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                Lock in the day everything changed. Your countdown becomes a count-up.
+              </p>
+            </div>
+            <div>
+              <p className="text-xs font-bold text-muted-foreground uppercase mb-1.5">Her name</p>
+              <input
+                type="text"
+                value={babyName}
+                onChange={(e) => setBabyName(e.target.value)}
+                placeholder="e.g. Parker"
+                maxLength={50}
+                className="w-full bg-secondary border border-border rounded-xl px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary"
+              />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-muted-foreground uppercase mb-1.5">Arrival date</p>
+              <input
+                type="date"
+                value={arrivalDate}
+                onChange={(e) => setArrivalDate(e.target.value)}
+                className="w-full bg-secondary border border-border rounded-xl px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary"
+              />
+            </div>
+            <button
+              onClick={saveArrival}
+              disabled={!babyName.trim() || !arrivalDate || gradSaving}
+              className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-bold text-sm hover:bg-primary/90 transition-colors disabled:opacity-50"
+            >
+              {gradSaving ? "Saving..." : "She's Here 🎉"}
+            </button>
+          </div>
+        ) : (
+          <div className="bg-card border border-primary/40 rounded-2xl p-5 space-y-4 text-center">
+            <h2 className="text-xl font-black text-foreground">Day One, Dad.</h2>
+            <p className="text-sm text-muted-foreground">
+              The build phase is over. The real work — and the best part — starts now.
+            </p>
+            <button
+              onClick={downloadKeepsake}
+              className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-bold text-sm hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
+            >
+              <Download className="w-4 h-4" /> Download The Keepsake
+            </button>
+            {!onWaitlist ? (
+              <button
+                onClick={joinWaitlist}
+                className="w-full py-3 rounded-xl bg-secondary border border-border text-foreground font-bold text-sm hover:border-primary transition-colors"
+              >
+                Join the Year One waitlist
+              </button>
+            ) : (
+              <p className="text-xs text-primary font-bold">✓ You're on the Year One waitlist</p>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  }
 
   // ---- TOOLS VIEW ----
   if (view === "tools") {
@@ -738,12 +880,41 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
         <span className="flex-1 font-bold text-sm text-foreground">Programs</span>
         <ChevronRight className="w-4 h-4 text-muted-foreground" />
       </button>
+      {/* Due-Date Pass (Slice 4) */}
+      {!subscribed && !hasPass && DUE_DATE_PASS.price_id && (
+        <button
+          onClick={buyDueDatePass}
+          disabled={buyingPass}
+          className="w-full text-left bg-card border border-primary/40 rounded-xl p-4 hover:border-primary transition-all"
+        >
+          <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-primary mb-1">One-time · ${DUE_DATE_PASS.price}</p>
+          <p className="font-bold text-sm text-foreground">{DUE_DATE_PASS.name}</p>
+          <p className="text-xs text-muted-foreground mt-0.5">{DUE_DATE_PASS.description}</p>
+        </button>
+      )}
+      {hasPass && (
+        <div className="bg-card border border-primary/40 rounded-xl p-4">
+          <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-primary mb-1">Due-Date Pass Active</p>
+          <p className="text-xs text-muted-foreground">
+            Full access through {passExpires ? new Date(passExpires + "T00:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "your due date window"}.
+          </p>
+        </div>
+      )}
+
       <button
         onClick={() => setView("tools")}
         className="w-full flex items-center gap-3 bg-card border border-border rounded-xl p-4 hover:border-primary/40 transition-all text-left"
       >
         <Wrench className="w-5 h-5 text-primary" />
         <span className="flex-1 font-bold text-sm text-foreground">Fitness Tools</span>
+        <ChevronRight className="w-4 h-4 text-muted-foreground" />
+      </button>
+      <button
+        onClick={() => setView("graduation")}
+        className="w-full flex items-center gap-3 bg-card border border-border rounded-xl p-4 hover:border-primary/40 transition-all text-left"
+      >
+        <Baby className="w-5 h-5 text-primary" />
+        <span className="flex-1 font-bold text-sm text-foreground">She's Here</span>
         <ChevronRight className="w-4 h-4 text-muted-foreground" />
       </button>
       <button

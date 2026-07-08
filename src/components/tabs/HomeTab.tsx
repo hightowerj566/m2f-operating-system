@@ -4,9 +4,11 @@
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import { Dumbbell, ClipboardCheck, RefreshCw, ChevronRight } from "lucide-react";
+import { Dumbbell, ClipboardCheck, RefreshCw, ChevronRight, Target, Check, Users } from "lucide-react";
 import { ReadinessRing } from "@/components/ReadinessRing";
 import { useLatestReadiness } from "@/hooks/useReadiness";
+import { useWeeklyMission, useCompleteMission } from "@/hooks/useMissions";
+import { cohortMonthFromDueDate, cohortName } from "@/hooks/useM2fOs";
 import { CATEGORIES, countdownParts, daysAsDad, type Category, type CategorySlug } from "@/lib/readiness";
 
 interface HomeTabProps {
@@ -19,6 +21,14 @@ export function HomeTab({ onOpenWorkout, onOpenStandards, programName }: HomeTab
   const { user } = useAuth();
   const navigate = useNavigate();
   const { data, isLoading } = useLatestReadiness(user?.id);
+  const weakestForMission = data?.latest?.byCategory
+    ? [...CATEGORIES].sort(
+        (a, b) => (data.latest!.byCategory![a.slug] ?? 0) - (data.latest!.byCategory![b.slug] ?? 0),
+      )[0]
+    : null;
+  const { data: weeklyMission } = useWeeklyMission(user?.id, weakestForMission?.id);
+  const completeMission = useCompleteMission(user?.id);
+  const myCohortName = cohortName(cohortMonthFromDueDate(data?.dueDate));
 
   const countdown = countdownParts(data?.dueDate);
   const dadDays = daysAsDad(data?.babyArrivedAt);
@@ -120,14 +130,41 @@ export function HomeTab({ onOpenWorkout, onOpenStandards, programName }: HomeTab
         This Week
       </p>
       <div className="space-y-3">
-        {weakest && (
+        {weeklyMission ? (
+          <div className="bg-card border border-primary/40 rounded-2xl p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <Target className="w-4 h-4 text-primary" />
+              <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-primary">
+                This Week's Mission · {CATEGORIES.find((c) => c.id === weeklyMission.mission.category_id)?.name}
+              </p>
+            </div>
+            <p className="font-bold text-foreground mb-1">{weeklyMission.mission.title}</p>
+            <p className="text-sm text-muted-foreground leading-relaxed mb-1">{weeklyMission.mission.directive}</p>
+            {weeklyMission.mission.proof_hint && (
+              <p className="text-xs text-muted-foreground italic mb-3">Proof: {weeklyMission.mission.proof_hint}</p>
+            )}
+            {weeklyMission.status === "completed" ? (
+              <div className="flex items-center gap-2 text-primary text-sm font-bold">
+                <Check className="w-4 h-4" /> Mission complete. New one drops Monday.
+              </div>
+            ) : (
+              <Button
+                onClick={() => completeMission(weeklyMission.id)}
+                size="sm"
+                className="gold-gradient text-primary-foreground font-bold rounded-lg"
+              >
+                Mark Complete <Check className="ml-1 w-4 h-4" />
+              </Button>
+            )}
+          </div>
+        ) : weakest ? (
           <div className="bg-card border border-primary/40 rounded-2xl p-4">
             <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-primary mb-1">
               Focus · {weakest.name}
             </p>
             <p className="text-sm text-foreground leading-relaxed">{focusCopy[weakest.slug]}</p>
           </div>
-        )}
+        ) : null}
 
         <button
           onClick={onOpenWorkout}
@@ -164,6 +201,26 @@ export function HomeTab({ onOpenWorkout, onOpenStandards, programName }: HomeTab
           </span>
           <ChevronRight className="w-5 h-5 text-muted-foreground" />
         </button>
+
+        {/* Cohort card */}
+        {myCohortName && (
+          <button
+            onClick={() => navigate("/cohort")}
+            className="w-full bg-card border border-border rounded-2xl p-4 flex items-center gap-4 text-left hover:border-primary transition-colors"
+          >
+            <span className="bg-primary p-2.5 rounded-xl">
+              <Users className="w-5 h-5 text-primary-foreground" />
+            </span>
+            <span className="flex-1">
+              <span className="block text-[10px] font-bold tracking-[0.2em] uppercase text-muted-foreground">
+                The Cohort
+              </span>
+              <span className="block font-bold">{myCohortName}</span>
+              <span className="block text-xs text-muted-foreground">Men on your exact countdown</span>
+            </span>
+            <ChevronRight className="w-5 h-5 text-muted-foreground" />
+          </button>
+        )}
       </div>
     </div>
   );
