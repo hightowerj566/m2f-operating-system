@@ -133,7 +133,7 @@ export default function Start() {
           <p className="text-xl text-muted-foreground mb-10">Let's build the man first.</p>
           <Button
             size="lg"
-            onClick={() => setStep("due")}
+            onClick={() => setStep(dueDate ? "punch" : "due")}
             className="text-lg px-12 py-6 font-bold rounded-xl gold-gradient text-primary-foreground"
           >
             Begin <ChevronRight className="ml-2 w-5 h-5" />
