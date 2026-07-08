@@ -15,7 +15,7 @@ Deno.serve(async (req) => {
 
   try {
     const body = await req.json();
-    const { name, email, phone, archetype_type, quiz_answers, source } = body;
+    const { name, email, phone, archetype_type, quiz_answers, source, total_score, category_scores, weakest_category, due_date } = body;
 
     // Validate required fields
     if (typeof name !== "string" || name.trim().length === 0 || name.trim().length > 100) {
@@ -45,13 +45,27 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
 
+    // Optional Readiness Score payload (M2F OS)
+    const cleanTotal = typeof total_score === "number" && total_score >= 0 && total_score <= 70
+      ? Math.round(total_score) : null;
+    const cleanCategoryScores = category_scores && typeof category_scores === "object"
+      ? category_scores : null;
+    const cleanWeakest = typeof weakest_category === "string" && weakest_category.length <= 20
+      ? weakest_category : null;
+    const cleanDueDate = typeof due_date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(due_date)
+      ? due_date : null;
+
     const { error: dbError } = await supabase.from("father_athlete_leads").insert({
       name: name.trim().slice(0, 100),
       email: email.trim().toLowerCase().slice(0, 255),
       phone: cleanPhone.slice(0, 20),
       archetype_type: archetype_type.trim(),
       quiz_answers: quiz_answers ?? [],
-      source: typeof source === "string" ? source.slice(0, 100) : "M2F Onboarding Quiz",
+      source: typeof source === "string" ? source.slice(0, 100) : "M2F Readiness Assessment",
+      total_score: cleanTotal,
+      category_scores: cleanCategoryScores,
+      weakest_category: cleanWeakest,
+      due_date: cleanDueDate,
     });
 
     if (dbError) {

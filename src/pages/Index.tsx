@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { ChevronLeft, ChevronRight, Dumbbell, BarChart2, TrendingUp, Menu, Lock, Sparkles, Check, LayoutDashboard, Home, Wrench } from "lucide-react";
+import { ChevronLeft, ChevronRight, Dumbbell, BarChart2, TrendingUp, Menu, Lock, Sparkles, Check, LayoutDashboard, Home, ClipboardList } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useSubscription } from "@/hooks/useSubscription";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -18,7 +18,7 @@ import { MoreTab } from "@/components/tabs/MoreTab";
 import { MacrosTab } from "@/components/tabs/MacrosTab";
 import { ProgressTab } from "@/components/tabs/ProgressTab";
 import { DailyStandardsTab } from "@/components/tabs/DailyStandardsTab";
-import { FitnessToolsTab } from "@/components/tools/FitnessToolsTab";
+import { HomeTab } from "@/components/tabs/HomeTab";
 import { StreakMilestonePopup } from "@/components/streak/StreakMilestonePopup";
 import { DayPickerModal } from "@/components/workout/DayPickerModal";
 import { ProgramPickerModal } from "@/components/workout/ProgramPickerModal";
@@ -55,10 +55,10 @@ interface WorkoutGroup {
 }
 
 const baseNavItems = [
-  { icon: Home, label: "Daily" },
+  { icon: Home, label: "Home" },
   { icon: Dumbbell, label: "Workout" },
+  { icon: ClipboardList, label: "Daily" },
   { icon: BarChart2, label: "Macros" },
-  { icon: Wrench, label: "Tools" },
   { icon: Menu, label: "More" },
 ];
 
@@ -78,7 +78,7 @@ export default function Index() {
   const { subscribed, tier, subscriptionEnd, cancelAtPeriodEnd, loading: subLoading, refresh: refreshSub } = useSubscription(user?.id);
   const isOffline = useOffline();
   const navigate = useNavigate();
-  const [activeNav, setActiveNav] = useState("Daily");
+  const [activeNav, setActiveNav] = useState("Home");
   const [restTimer, setRestTimer] = useState<{ seconds: number } | null>(null);
   const [pendingNextExercise, setPendingNextExercise] = useState<{ name: string; detail: string; sets: number; reps: number | null; video_url: string | null; video_type: string | null; defaultWeight: number | null } | null>(null);
   const [activeExercise, setActiveExercise] = useState<{ name: string; detail: string; sets: number; reps: number | null; video_url: string | null; video_type: string | null; defaultWeight: number | null } | null>(null);
@@ -532,7 +532,7 @@ export default function Index() {
       return;
     }
     // Check if user has no subscription at all for gated content
-    if (!subscribed && label !== "More") {
+    if (!subscribed && label !== "More" && label !== "Home") {
       setShowUpgradeModal(true);
       return;
     }
@@ -643,14 +643,20 @@ export default function Index() {
 
   const renderTabContent = () => {
     switch (activeNav) {
+      case "Home":
+        return (
+          <HomeTab
+            programName={programName}
+            onOpenWorkout={() => handleNavClick("Workout")}
+            onOpenStandards={() => handleNavClick("Daily")}
+          />
+        );
       case "Daily":
         return <DailyStandardsTab />;
       case "Macros":
         return <MacrosTab />;
       case "More":
         return <MoreTab tier={tier} subscriptionEnd={subscriptionEnd} cancelAtPeriodEnd={cancelAtPeriodEnd} onRefreshSub={refreshSub} currentProgramId={programId} onProgramChanged={() => window.location.reload()} />;
-      case "Tools":
-        return <FitnessToolsTab />;
       case "Workout":
         return (
           <>
