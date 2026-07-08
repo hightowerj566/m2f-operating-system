@@ -181,7 +181,7 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="min-h-dvh bg-background flex flex-col">
+    <div className="min-h-dvh bg-background flex flex-col pt-safe pb-safe">
       {/* Header */}
       <div className="px-4 pt-6 pb-2">
         <h1 className="text-xl font-bold text-foreground text-center">Let's Get You Set Up</h1>

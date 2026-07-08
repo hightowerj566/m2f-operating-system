@@ -616,7 +616,7 @@ export default function Index() {
   // No subscription → show pricing (coaches bypass)
   if (!subscribed && !isCoach) {
     return (
-      <div className="flex flex-col min-h-dvh bg-background max-w-md mx-auto">
+      <div className="flex flex-col min-h-dvh bg-background max-w-md mx-auto pt-safe">
         <PricingView
           currentTier={tier}
           onCheckout={handleCheckout}
@@ -1010,7 +1010,7 @@ export default function Index() {
   };
 
   return (
-    <div className="flex flex-col min-h-dvh bg-background max-w-md mx-auto relative">
+    <div className="flex flex-col min-h-dvh bg-background max-w-md mx-auto pt-safe relative">
       {/* Offline Banner */}
       {isOffline && (
         <div className="bg-destructive/90 text-destructive-foreground text-center py-2 text-xs font-bold sticky top-0 z-50">
