@@ -3,7 +3,7 @@
 //   intro → due date → 14 scored + 3 routing questions → email opt-in → /score-reveal
 // D3: opt-in ALWAYS gates the reveal. Leads write to father_athlete_leads with score payload.
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -41,15 +41,34 @@ export default function FatherAthleteQuiz() {
   const [phone, setPhone] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [dueDatePrefilled, setDueDatePrefilled] = useState(false);
 
   const totalQuestions = questions.length;
   const LEAD_STEP = totalQuestions;
+
+  // If the profile already has a due_date (set during /start), skip that step.
+  useEffect(() => {
+    if (!user?.id) return;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (supabase as any)
+      .from("profiles")
+      .select("due_date")
+      .eq("user_id", user.id)
+      .maybeSingle()
+      .then(({ data }: { data: { due_date: string | null } | null }) => {
+        if (data?.due_date) {
+          setDueDate(data.due_date);
+          setDueDatePrefilled(true);
+        }
+      });
+  }, [user?.id]);
 
   const categoryFor = (question: AssessmentQuestion) =>
     CATEGORIES.find((c) => c.id === question.category_id)?.name ?? "TRAINING SETUP";
 
   const startAssessment = () => {
-    setStep(DUE_STEP);
+    // Skip the due-date step entirely when we already have it.
+    setStep(dueDatePrefilled ? 0 : DUE_STEP);
     setTimeout(() => quizRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
   };
 
@@ -252,7 +271,7 @@ export default function FatherAthleteQuiz() {
                 ))}
               </div>
               <button
-                onClick={() => setStep(step === 0 ? DUE_STEP : step - 1)}
+                onClick={() => setStep(step === 0 ? (dueDatePrefilled ? INTRO_STEP : DUE_STEP) : step - 1)}
                 className="mt-6 text-muted-foreground text-sm flex items-center gap-1 hover:text-foreground transition-colors"
               >
                 <ChevronLeft className="w-4 h-4" /> Back
