@@ -271,7 +271,7 @@ export default function FatherAthleteQuiz() {
                 ))}
               </div>
               <button
-                onClick={() => setStep(step === 0 ? DUE_STEP : step - 1)}
+                onClick={() => setStep(step === 0 ? (dueDatePrefilled ? INTRO_STEP : DUE_STEP) : step - 1)}
                 className="mt-6 text-muted-foreground text-sm flex items-center gap-1 hover:text-foreground transition-colors"
               >
                 <ChevronLeft className="w-4 h-4" /> Back
