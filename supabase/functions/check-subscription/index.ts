@@ -30,6 +30,14 @@ serve(async (req) => {
       { global: { headers: { Authorization: authHeader } } }
     );
 
+    // Service-role client for role lookup (bypasses RLS — needed because
+    // the user_roles SELECT policy references has_role() and authenticated
+    // no longer has EXECUTE on that function).
+    const supabaseAdmin = createClient(
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
+    );
+
     const token = authHeader.replace("Bearer ", "");
     const { data: userData, error: userError } = await supabaseClient.auth.getUser(token);
     if (userError || !userData.user?.email) throw new Error("User not authenticated");
@@ -37,12 +45,13 @@ serve(async (req) => {
     logStep("User authenticated", { email: userEmail });
 
     // Coach bypass: coaches get free Performance-tier access, no Stripe required
-    const { data: coachRole } = await supabaseClient
+    const { data: coachRole, error: coachErr } = await supabaseAdmin
       .from("user_roles")
       .select("role")
       .eq("user_id", userData.user.id)
       .eq("role", "coach")
       .maybeSingle();
+    if (coachErr) logStep("Coach lookup error", { message: coachErr.message });
 
     if (coachRole) {
       logStep("Coach bypass — granting Performance tier");
