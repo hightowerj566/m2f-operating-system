@@ -6,12 +6,12 @@ import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useLatestReadiness } from "@/hooks/useReadiness";
 import {
   Dumbbell, ClipboardCheck, ChevronRight, Target, Check, Users,
   Hammer, Heart, MessageCircle, CalendarRange, BookOpen, Flame,
-  TrendingUp, Map, Sunrise, Utensils,
+  TrendingUp, Map, Sunrise,
 } from "lucide-react";
-import { useLatestReadiness } from "@/hooks/useReadiness";
 import { useWeeklyMission, useCompleteMission } from "@/hooks/useMissions";
 import { cohortMonthFromDueDate, cohortName, useCohortMemberCount } from "@/hooks/useM2fOs";
 import { useBuildList, applyMilestoneBoost, surfaceMilestones } from "@/hooks/useBuildList";
@@ -304,7 +304,6 @@ export function HomeTab({ onOpenToday, onOpenProgress, onOpenWorkout, onOpenStan
         <div className="space-y-2">
           <SlimRow icon={Dumbbell} label="Today's Training" sub={phase ? phase.trainingGuidance : programName || ""} onClick={onOpenWorkout} />
           <SlimRow icon={ClipboardCheck} label="Daily Standards" sub={standardsToday ? `${standardsToday.done}/${standardsToday.total} held today` : "Hold the standard"} onClick={onOpenStandards} />
-          <SlimRow icon={Utensils} label="Fuel & Macros" sub="Eat like the man they need you to be" onClick={onOpenMacros} />
           {user && buildMilestones.length > 0 && !trainingMode && (
             <SlimRow
               icon={Hammer}
