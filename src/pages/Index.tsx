@@ -117,25 +117,37 @@ export default function Index() {
     return d;
   })();
 
-  // Check onboarding status
+  // Check onboarding (fatherhood essentials) status
   const [onboardingChecked, setOnboardingChecked] = useState(false);
+  const [trainingProfileComplete, setTrainingProfileComplete] = useState<boolean | null>(null);
 
   useEffect(() => {
     if (!user) return;
     const checkOnboarding = async () => {
       const { data } = await supabase
         .from("profiles")
-        .select("onboarding_complete")
+        .select("onboarding_complete, training_profile_complete")
         .eq("user_id", user.id)
         .single();
       if (data && !(data as any).onboarding_complete) {
         navigate("/onboarding", { replace: true });
         return;
       }
+      setTrainingProfileComplete(!!(data as any)?.training_profile_complete);
       setOnboardingChecked(true);
     };
     checkOnboarding();
   }, [user, navigate]);
+
+  // Gate: opening Training or Nutrition requires a training profile.
+  useEffect(() => {
+    if (!onboardingChecked || trainingProfileComplete !== false) return;
+    if (activeNav === "Today") {
+      navigate("/training-profile?next=today", { replace: true });
+    } else if (activeNav === "Macros") {
+      navigate("/training-profile?next=macros", { replace: true });
+    }
+  }, [activeNav, trainingProfileComplete, onboardingChecked, navigate]);
 
   // Load assignment + maxes + training days preference
   useEffect(() => {
