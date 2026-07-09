@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -13,7 +13,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "@/hooks/use-toast";
 import { Navigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight, Dumbbell, User, Target, Activity, ClipboardCheck, Check } from "lucide-react";
-import { useEffect } from "react";
 import { CATEGORIES } from "@/lib/readiness";
 import bfUnder15 from "@/assets/bf-under15.png";
 import bf1522 from "@/assets/bf-15-22.png";
