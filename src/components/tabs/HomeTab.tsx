@@ -15,7 +15,7 @@ import { recommendedForWeek } from "@/content/learn";
 import { useLearnProgress } from "@/hooks/useLearnProgress";
 import {
   ArrowRight, Check, ChevronRight, Dumbbell, Flame, MessageSquare,
-  Home as HomeIcon, Sparkles, BookOpen, Calendar, User,
+  Home as HomeIcon, Sparkles, BookOpen, Calendar, User, Utensils,
 } from "lucide-react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,7 +33,7 @@ interface HomeTabProps {
 
 const todayISO = () => new Date().toISOString().slice(0, 10);
 
-export function HomeTab({ onOpenToday, onOpenMore }: HomeTabProps) {
+export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { data } = useLatestReadiness(user?.id);
@@ -95,7 +95,18 @@ export function HomeTab({ onOpenToday, onOpenMore }: HomeTabProps) {
     setAskDone(true);
   };
 
-  // Mission 3: Next open build task
+  // Mission 3: Nutrition — locally-acked per day (opens Macros)
+  const nutriKey = `m2f.nutrition.${todayISO()}`;
+  const [nutriDone, setNutriDone] = useState(false);
+  useEffect(() => { setNutriDone(localStorage.getItem(nutriKey) === "1"); }, [nutriKey]);
+  const openNutrition = () => {
+    localStorage.setItem(nutriKey, "1");
+    setNutriDone(true);
+    if (onOpenMacros) onOpenMacros();
+    else onOpenMore?.();
+  };
+
+  // Mission 4: Next open build task
   const nextBuild = buildMilestones.find((m) => !m.completed) ?? null;
   const buildDone = !nextBuild;
 
@@ -106,6 +117,13 @@ export function HomeTab({ onOpenToday, onOpenMore }: HomeTabProps) {
       title: workoutDoneToday ? "Workout complete" : "Complete today's workout",
       done: workoutDoneToday,
       onClick: onOpenToday,
+    },
+    {
+      key: "nutrition",
+      icon: Utensils,
+      title: nutriDone ? "Nutrition logged" : "Log today's nutrition",
+      done: nutriDone,
+      onClick: openNutrition,
     },
     {
       key: "ask",
@@ -287,7 +305,7 @@ export function HomeTab({ onOpenToday, onOpenMore }: HomeTabProps) {
             <div>
               <p className="text-[10px] font-bold tracking-[0.24em] uppercase text-primary">Today's Mission</p>
               <p className="text-foreground font-black text-lg leading-tight mt-0.5">
-                {allMissionsDone ? "You crushed today." : "Three moves. That's it."}
+                {allMissionsDone ? "You crushed today." : "A few moves. That's it."}
               </p>
             </div>
             <p className="text-xs font-bold text-muted-foreground tabular-nums shrink-0">

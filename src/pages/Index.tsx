@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { ChevronLeft, ChevronRight, Dumbbell, TrendingUp, Menu, Lock, Sparkles, Check, LayoutDashboard, Home, ClipboardList, LineChart } from "lucide-react";
+import { ChevronLeft, ChevronRight, Dumbbell, TrendingUp, Menu, Lock, Sparkles, Check, LayoutDashboard, Home, ClipboardList, LineChart, Wrench, X } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useSubscription } from "@/hooks/useSubscription";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -18,6 +18,7 @@ import { MoreTab } from "@/components/tabs/MoreTab";
 import { MacrosTab } from "@/components/tabs/MacrosTab";
 import { ProgressTab } from "@/components/tabs/ProgressTab";
 import { DailyStandardsTab } from "@/components/tabs/DailyStandardsTab";
+import { FitnessToolsTab } from "@/components/tools/FitnessToolsTab";
 import { HomeTab } from "@/components/tabs/HomeTab";
 import { useDueDatePass } from "@/hooks/useM2fOs";
 import { StreakMilestonePopup } from "@/components/streak/StreakMilestonePopup";
@@ -104,6 +105,7 @@ export default function Index() {
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [loadRecommendations, setLoadRecommendations] = useState<LoadRecommendation[]>([]);
   const [standardsStreak, setStandardsStreak] = useState(0);
+  const [showFitnessTools, setShowFitnessTools] = useState(false);
 
   // The displayed program day based on offset
   const displayedDay = Math.min(baseDay + dayOffset, totalDays);
@@ -685,9 +687,9 @@ export default function Index() {
                     <span className="text-primary">📅</span> Day {displayedDay}
                   </div>
                 )}
-                <button onClick={() => handleNavClick("Daily")}
+                <button onClick={() => setShowFitnessTools(true)}
                   className="flex items-center gap-2 bg-secondary text-foreground text-sm font-semibold px-4 py-2 rounded-full border border-border hover:border-primary/40 transition-colors">
-                  <ClipboardList className="w-4 h-4 text-primary" /> Daily Standards
+                  <Wrench className="w-4 h-4 text-primary" /> Fitness Tools
                 </button>
               </div>
             </div>
@@ -1031,6 +1033,24 @@ export default function Index() {
         </div>
       )}
       {renderTabContent()}
+
+      {/* Fitness Tools overlay (opens from Today pill) */}
+      {showFitnessTools && (
+        <div className="fixed inset-0 z-50 bg-background overflow-y-auto pb-24">
+          <div className="flex items-center justify-between px-4 pt-4 pb-2 sticky top-0 bg-background z-10 border-b border-border">
+            <button
+              onClick={() => setShowFitnessTools(false)}
+              className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1"
+            >
+              <X className="w-4 h-4" /> Close
+            </button>
+            <p className="text-xs font-bold tracking-widest text-muted-foreground uppercase">Fitness Tools</p>
+            <div className="w-10" />
+          </div>
+          <FitnessToolsTab />
+        </div>
+      )}
+
 
       {/* Streak Milestone Popup */}
       {standardsStreak > 0 && (

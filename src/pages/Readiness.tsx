@@ -272,6 +272,14 @@ export default function Readiness() {
           </button>
         )}
 
+        {/* Small link to Daily Standards */}
+        <button
+          onClick={() => navigate("/daily-standards")}
+          className="w-full text-left text-xs text-muted-foreground hover:text-foreground flex items-center justify-between px-1 -mt-1"
+        >
+          <span>Log today's Daily Standards →</span>
+        </button>
+
         {/* 8 category progress bars */}
         <div className="space-y-2">
           <p className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground px-1">

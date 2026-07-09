@@ -18,6 +18,7 @@ import DayOne from "./pages/DayOne";
 import WeekReview from "./pages/WeekReview";
 import Onboarding from "./pages/Onboarding";
 import Readiness from "./pages/Readiness";
+import DailyStandardsPage from "./pages/DailyStandards";
 import Learn from "./pages/Learn";
 import LearnCategory from "./pages/LearnCategory";
 import LearnLesson from "./pages/LearnLesson";
@@ -41,6 +42,7 @@ const App = () => (
           <Route path="/father-athlete-quiz" element={<FatherAthleteQuiz />} />
           <Route path="/readiness" element={<Readiness />} />
           <Route path="/readiness/assessment" element={<FatherAthleteQuiz />} />
+          <Route path="/daily-standards" element={<DailyStandardsPage />} />
           <Route path="/score-reveal" element={<ScoreReveal />} />
           <Route path="/cohort" element={<Cohort />} />
           <Route path="/build-list" element={<BuildList />} />
