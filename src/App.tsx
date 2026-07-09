@@ -17,6 +17,7 @@ import HerAndBaby from "./pages/HerAndBaby";
 import DayOne from "./pages/DayOne";
 import WeekReview from "./pages/WeekReview";
 import Onboarding from "./pages/Onboarding";
+import TrainingProfile from "./pages/TrainingProfile";
 import Readiness from "./pages/Readiness";
 import DailyStandardsPage from "./pages/DailyStandards";
 import Learn from "./pages/Learn";
@@ -39,6 +40,7 @@ const App = () => (
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/coach" element={<Coach />} />
           <Route path="/onboarding" element={<Onboarding />} />
+          <Route path="/training-profile" element={<TrainingProfile />} />
           <Route path="/father-athlete-quiz" element={<FatherAthleteQuiz />} />
           <Route path="/readiness" element={<Readiness />} />
           <Route path="/readiness/assessment" element={<FatherAthleteQuiz />} />
