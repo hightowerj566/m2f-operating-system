@@ -225,7 +225,10 @@ export function HomeTab({
   const standardsPct = standardsToday && standardsToday.total > 0
     ? Math.round((standardsToday.done / standardsToday.total) * 100)
     : 0;
+  // Day completion = standards progress + workout logged today
   const dayCompletion = Math.round((standardsPct + (workoutsThisWeek > 0 ? 100 : 0)) / 2);
+  const standardsExpanded = expanded === "standards";
+  const askExpanded = expanded === "ask";
 
   const bigDays = arrived ? dadDays ?? 0 : days ?? 0;
   const bigLabel = arrived ? "DAYS IN" : "DAYS";
