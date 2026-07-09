@@ -12,7 +12,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "@/hooks/use-toast";
 import { Navigate } from "react-router-dom";
-import { ChevronLeft, ChevronRight, Dumbbell, User, Target, Activity } from "lucide-react";
+import { ChevronLeft, ChevronRight, Dumbbell, User, Target, Activity, ClipboardCheck, Check } from "lucide-react";
+import { useEffect } from "react";
+import { CATEGORIES } from "@/lib/readiness";
 import bfUnder15 from "@/assets/bf-under15.png";
 import bf1522 from "@/assets/bf-15-22.png";
 import bf2230 from "@/assets/bf-22-30.png";
@@ -23,7 +25,16 @@ const STEPS = [
   { label: "Fitness", icon: Activity },
   { label: "Goals", icon: Target },
   { label: "Strength", icon: Dumbbell },
+  { label: "Prep", icon: ClipboardCheck },
 ];
+
+interface OnboardMilestone {
+  id: string;
+  category_id: number;
+  phase: number;
+  title: string;
+  detail: string | null;
+}
 
 const BF_OPTIONS = [
   { value: "under_15", label: "Under 15%", pct: 12, img: bfUnder15 },
