@@ -143,6 +143,7 @@ export function Countdown({ days, arrived, babyArrivedAt, week, babyName, firstN
               <span className="font-bold text-muted-foreground text-lg">days</span>
             </>
           )}
+          <span className="font-bold text-muted-foreground text-lg ml-1">Until Fatherhood</span>
         </div>
         <p className="text-muted-foreground mt-2 text-[15px] leading-snug">Pregnancy Week {week ?? "—"}</p>
         <p className="text-foreground/70 text-sm mt-2">{message}</p>
