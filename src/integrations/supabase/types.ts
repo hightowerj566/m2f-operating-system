@@ -692,6 +692,7 @@ export type Database = {
           training_days: number | null
           training_days_per_week: number | null
           training_experience: string | null
+          training_profile_complete: boolean
           updated_at: string
           user_id: string
           weekly_checkin_day: number | null
@@ -727,6 +728,7 @@ export type Database = {
           training_days?: number | null
           training_days_per_week?: number | null
           training_experience?: string | null
+          training_profile_complete?: boolean
           updated_at?: string
           user_id: string
           weekly_checkin_day?: number | null
@@ -762,6 +764,7 @@ export type Database = {
           training_days?: number | null
           training_days_per_week?: number | null
           training_experience?: string | null
+          training_profile_complete?: boolean
           updated_at?: string
           user_id?: string
           weekly_checkin_day?: number | null
