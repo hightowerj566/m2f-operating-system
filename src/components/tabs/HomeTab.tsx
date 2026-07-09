@@ -13,6 +13,7 @@ import { getPhase, daysRemaining as calcDaysRemaining, pregnancyWeek } from "@/l
 import { askHerTonight } from "@/content/fatherhood";
 import { recommendedForWeek } from "@/content/learn";
 import { useLearnProgress } from "@/hooks/useLearnProgress";
+import m2fLogo from "@/assets/m2f-logo.png.asset.json";
 import { weeklyContent } from "@/content/weeklyPregnancy";
 import {
   ArrowRight, Check, ChevronRight, Dumbbell, Flame, MessageSquare,
