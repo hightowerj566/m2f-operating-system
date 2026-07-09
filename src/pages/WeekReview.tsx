@@ -124,7 +124,7 @@ export default function WeekReview() {
       </div>
 
       <Button
-        onClick={() => navigate("/readiness")}
+        onClick={() => navigate("/readiness/assessment")}
         variant="outline"
         className="w-full font-bold rounded-xl py-5 mb-3"
       >

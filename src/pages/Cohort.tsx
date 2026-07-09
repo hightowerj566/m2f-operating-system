@@ -56,7 +56,7 @@ export default function Cohort() {
             Your cohort is the men due the same month you are. Set your due date by taking the Readiness Assessment.
           </p>
           <Button
-            onClick={() => navigate("/readiness")}
+            onClick={() => navigate("/readiness/assessment")}
             className="gold-gradient text-primary-foreground font-bold rounded-xl px-6"
           >
             Get My Score

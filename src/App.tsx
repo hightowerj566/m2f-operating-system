@@ -17,6 +17,7 @@ import HerAndBaby from "./pages/HerAndBaby";
 import DayOne from "./pages/DayOne";
 import WeekReview from "./pages/WeekReview";
 import Onboarding from "./pages/Onboarding";
+import Readiness from "./pages/Readiness";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,7 +35,8 @@ const App = () => (
           <Route path="/coach" element={<Coach />} />
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/father-athlete-quiz" element={<FatherAthleteQuiz />} />
-          <Route path="/readiness" element={<FatherAthleteQuiz />} />
+          <Route path="/readiness" element={<Readiness />} />
+          <Route path="/readiness/assessment" element={<FatherAthleteQuiz />} />
           <Route path="/score-reveal" element={<ScoreReveal />} />
           <Route path="/cohort" element={<Cohort />} />
           <Route path="/build-list" element={<BuildList />} />
