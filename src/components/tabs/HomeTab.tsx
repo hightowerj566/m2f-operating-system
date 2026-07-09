@@ -9,7 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import {
   Dumbbell, ClipboardCheck, ChevronRight, Target, Check, Users,
   Hammer, Heart, MessageCircle, CalendarRange, BookOpen, Flame,
-  TrendingUp, Map, Sunrise,
+  TrendingUp, Map, Sunrise, Utensils,
 } from "lucide-react";
 import { useLatestReadiness } from "@/hooks/useReadiness";
 import { useWeeklyMission, useCompleteMission } from "@/hooks/useMissions";
@@ -30,10 +30,11 @@ interface HomeTabProps {
   onOpenProgress: () => void;
   onOpenWorkout: () => void;
   onOpenStandards: () => void;
+  onOpenMacros: () => void;
   programName?: string | null;
 }
 
-export function HomeTab({ onOpenToday, onOpenProgress, onOpenWorkout, onOpenStandards, programName }: HomeTabProps) {
+export function HomeTab({ onOpenToday, onOpenProgress, onOpenWorkout, onOpenStandards, onOpenMacros, programName }: HomeTabProps) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { data, isLoading } = useLatestReadiness(user?.id);
