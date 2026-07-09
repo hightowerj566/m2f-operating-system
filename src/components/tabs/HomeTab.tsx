@@ -2,15 +2,16 @@
 // Header (logo · title · avatar) → greeting + countdown hero → 3 numbered cards
 // (Today / Progress / Next) → horizontal Deeper Tools row.
 
+import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLatestReadiness } from "@/hooks/useReadiness";
 import {
-  Dumbbell, CheckCircle2, MessageSquare, Home as HomeIcon, ChevronRight,
+  Dumbbell, CheckCircle2, MessageSquare, Home as HomeIcon, ChevronRight, ChevronDown,
   ArrowRight, Flame, Users, Calendar, Star, Clock, Utensils, BookOpen,
-  Wrench, Layers, HeartHandshake, User,
+  Wrench, Layers, HeartHandshake, User, Check,
 } from "lucide-react";
 import { useWeeklyMission } from "@/hooks/useMissions";
 import { useBuildList, applyMilestoneBoost, surfaceMilestones } from "@/hooks/useBuildList";
