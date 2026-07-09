@@ -126,6 +126,8 @@ export default function Onboarding() {
         return goal && equipment;
       case 3:
         return true; // all optional
+      case 4:
+        return true; // Prep step — all checks optional
       default:
         return false;
     }
@@ -208,6 +210,18 @@ export default function Onboarding() {
       );
 
       if (macroError) throw macroError;
+
+      // Save pre-completed build milestones (from Prep step)
+      if (preCompleted.size > 0) {
+        const rows = Array.from(preCompleted).map((milestone_id) => ({
+          user_id: user.id,
+          milestone_id,
+        }));
+        const { error: msError } = await supabase
+          .from("user_milestones")
+          .upsert(rows, { onConflict: "user_id,milestone_id" });
+        if (msError) console.error("Milestone save error:", msError);
+      }
 
       toast({ title: "Welcome aboard!", description: "Your profile and macros are set up." });
       navigate("/", { replace: true });
