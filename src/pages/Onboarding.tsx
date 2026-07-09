@@ -486,6 +486,80 @@ export default function Onboarding() {
             </div>
           </div>
         )}
+
+        {step === 4 && (
+          <div className="space-y-5">
+            <div>
+              <h2 className="text-lg font-bold text-foreground">What have you already done?</h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                Check off any prep tasks you've already handled. This sets your starting readiness — you can update anytime.
+              </p>
+            </div>
+
+            {milestonesLoading && (
+              <p className="text-sm text-muted-foreground">Loading your list…</p>
+            )}
+
+            {!milestonesLoading && milestones.length === 0 && (
+              <p className="text-sm text-muted-foreground">No prep tasks yet. You're all set.</p>
+            )}
+
+            {CATEGORIES.map((cat) => {
+              const items = milestones.filter((m) => m.category_id === cat.id);
+              if (items.length === 0) return null;
+              const doneInCat = items.filter((m) => preCompleted.has(m.id)).length;
+              return (
+                <div key={cat.slug}>
+                  <div className="flex items-baseline justify-between mb-2">
+                    <p className="text-[11px] font-bold tracking-[0.2em] uppercase text-primary">
+                      {cat.name}
+                    </p>
+                    <p className="text-[11px] text-muted-foreground tabular-nums">
+                      {doneInCat} / {items.length}
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    {items.map((m) => {
+                      const checked = preCompleted.has(m.id);
+                      return (
+                        <button
+                          key={m.id}
+                          type="button"
+                          onClick={() => togglePreCompleted(m.id)}
+                          className={`w-full flex items-start gap-3 p-3 rounded-lg border text-left transition-colors ${
+                            checked
+                              ? "border-primary bg-primary/10"
+                              : "border-border bg-card hover:border-muted-foreground"
+                          }`}
+                        >
+                          <span className={`mt-0.5 w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-colors ${
+                            checked ? "bg-primary border-primary" : "border-border"
+                          }`}>
+                            {checked && <Check className="w-3.5 h-3.5 text-primary-foreground" strokeWidth={3} />}
+                          </span>
+                          <div className="flex-1 min-w-0">
+                            <p className={`text-sm font-semibold leading-tight ${checked ? "text-foreground" : "text-foreground"}`}>
+                              {m.title}
+                            </p>
+                            {m.detail && (
+                              <p className="text-xs text-muted-foreground leading-snug mt-0.5">{m.detail}</p>
+                            )}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+
+            {!milestonesLoading && milestones.length > 0 && (
+              <p className="text-xs text-muted-foreground text-center pt-2">
+                {preCompleted.size} task{preCompleted.size === 1 ? "" : "s"} marked complete
+              </p>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Footer navigation */}
