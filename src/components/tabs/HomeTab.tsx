@@ -449,8 +449,8 @@ export function HomeTab({
           <ToolButton icon={Utensils} label="Nutrition" onClick={onOpenMacros ?? onOpenMore ?? (() => {})} />
           <ToolButton icon={Dumbbell} label="Programs" onClick={onOpenMore ?? (() => {})} />
           <ToolButton icon={TrendingUp} label="Readiness" onClick={() => navigate("/readiness")} />
-          <ToolButton icon={Heart} label="Coach" onClick={() => navigate("/coach")} />
-          <ToolButton icon={BookOpen} label="Learn" onClick={() => navigate("/plan")} />
+          <ToolButton icon={Heart} label="Her & Baby" onClick={() => navigate("/her-and-baby")} />
+          <ToolButton icon={BookOpen} label="Learn" onClick={() => navigate("/learn")} />
 
 
         </div>

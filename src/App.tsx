@@ -18,6 +18,10 @@ import DayOne from "./pages/DayOne";
 import WeekReview from "./pages/WeekReview";
 import Onboarding from "./pages/Onboarding";
 import Readiness from "./pages/Readiness";
+import Learn from "./pages/Learn";
+import LearnCategory from "./pages/LearnCategory";
+import LearnLesson from "./pages/LearnLesson";
+import LearnSearch from "./pages/LearnSearch";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -45,6 +49,10 @@ const App = () => (
           <Route path="/her-and-baby" element={<HerAndBaby />} />
           <Route path="/day-one" element={<DayOne />} />
           <Route path="/week-review" element={<WeekReview />} />
+          <Route path="/learn" element={<Learn />} />
+          <Route path="/learn/search" element={<LearnSearch />} />
+          <Route path="/learn/category/:slug" element={<LearnCategory />} />
+          <Route path="/learn/lesson/:slug" element={<LearnLesson />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
