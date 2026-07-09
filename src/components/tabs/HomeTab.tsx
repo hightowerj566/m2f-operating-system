@@ -37,8 +37,11 @@ export function HomeTab({
 }: HomeTabProps) {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const qc = useQueryClient();
   const { data } = useLatestReadiness(user?.id);
   const { data: buildMilestones = [] } = useBuildList(user?.id);
+  const [expanded, setExpanded] = useState<null | "standards" | "ask">(null);
+  const [savingKey, setSavingKey] = useState<string | null>(null);
 
   const days = calcDaysRemaining(data?.dueDate);
   const arrived = !!data?.babyArrivedAt;
