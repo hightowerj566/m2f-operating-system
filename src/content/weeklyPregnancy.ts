@@ -1,0 +1,56 @@
+// Weekly pregnancy content: what's happening with baby + how to help mom.
+// Keeps tone honest, practical, dad-focused. Ranges cover weeks 4–40.
+
+export interface WeeklyEntry {
+  week: number;
+  size: string;           // e.g. "poppy seed"
+  baby: string;           // what's changing with baby this week
+  mom: string;            // what mom is likely feeling
+  help: string;           // one concrete way dad can help
+}
+
+const ENTRIES: WeeklyEntry[] = [
+  { week: 4,  size: "poppy seed",   baby: "The embryo is implanting and the placenta is starting to form.",       mom: "Fatigue and mild cramping are common. Most women don't feel much yet.",         help: "Stock the fridge with easy protein and water. Take one household task off her plate this week." },
+  { week: 5,  size: "sesame seed",  baby: "The neural tube (brain and spine) is forming.",                          mom: "First real waves of nausea and exhaustion often hit.",                          help: "Pick up dinner tonight so she doesn't have to think about food or smells." },
+  { week: 6,  size: "lentil",       baby: "Tiny heart is beating around 110 bpm. Arm and leg buds are appearing.", mom: "Morning sickness peaks for many. Smells become unbearable.",                    help: "Take out the trash daily and keep strong-smelling foods out of the house." },
+  { week: 7,  size: "blueberry",    baby: "Brain is growing fast — 100 new cells per minute.",                      mom: "Constant fatigue. She may need a nap by 3pm.",                                  help: "Protect her sleep. Handle the evening routine so she can lie down early." },
+  { week: 8,  size: "raspberry",    baby: "Fingers and toes are starting to separate.",                             mom: "Nausea, breast tenderness, and mood swings are peaking.",                       help: "Don't take mood swings personally. Ask 'what do you need right now?' instead of fixing." },
+  { week: 9,  size: "cherry",       baby: "All essential organs have started forming. Tiny muscles are moving.",   mom: "Bloating and constipation are common.",                                         help: "Keep fiber-rich snacks visible: berries, oatmeal, nuts. Refill her water bottle." },
+  { week: 10, size: "strawberry",   baby: "Vital organs are functional. Baby can swallow and kick (too small to feel).", mom: "Nausea may start easing for some. Others are still deep in it.",             help: "Book the first OB appointment on your calendar and plan to be there." },
+  { week: 11, size: "lime",         baby: "Hair follicles, fingernails, and tooth buds are forming.",                mom: "Energy may start returning. Appetite comes back.",                              help: "Plan one real date night this week. Anywhere. Just the two of you." },
+  { week: 12, size: "plum",         baby: "Reflexes develop — baby can curl fingers and toes.",                     mom: "End of the first trimester. Miscarriage risk drops sharply.",                   help: "If you've been keeping it quiet, plan how you'll tell family together." },
+  { week: 13, size: "peapod",       baby: "Vocal cords are forming. Baby is starting to make facial expressions.", mom: "Second trimester energy boost usually starts here.",                            help: "Use this window. Tackle one big prep task — nursery, finances, or the will." },
+  { week: 14, size: "lemon",        baby: "Baby can squint, frown, and suck a thumb.",                              mom: "Skin may glow. Libido often returns.",                                          help: "Reconnect physically. A long hug, a real kiss, a walk holding hands counts." },
+  { week: 15, size: "apple",        baby: "Baby can sense light through her belly, even with eyes closed.",         mom: "Round ligament pain (sharp side twinges) starts as the uterus grows.",          help: "Rub her lower back. Don't wait to be asked." },
+  { week: 16, size: "avocado",      baby: "Baby's heart pumps ~25 quarts of blood a day. She may feel flutters.",   mom: "First 'quickening' — tiny bubble-like movements.",                              help: "When she says 'I felt it,' stop what you're doing and put a hand on her belly." },
+  { week: 17, size: "turnip",       baby: "Fat stores start building. Skeleton hardens from cartilage to bone.",    mom: "Weight gain becomes noticeable. Old clothes stop fitting.",                     help: "Offer to go maternity-clothes shopping with her, or hand her your card without a comment." },
+  { week: 18, size: "bell pepper",  baby: "Baby can hear now. Your voice is one of the first sounds she knows.",   mom: "Belly is clearly visible. Sleep gets harder.",                                  help: "Start talking to the belly out loud. Read a page of a book each night." },
+  { week: 19, size: "mango",        baby: "Vernix (protective coating) forms on the skin.",                          mom: "Leg cramps and back pain kick in.",                                             help: "Foot rubs. Ten minutes, no phone." },
+  { week: 20, size: "banana",       baby: "Halfway there. Anatomy scan usually happens this week.",                  mom: "This scan is emotional — you'll likely learn the sex if you want to.",          help: "Take the day off if you can. Be there in person, not on speakerphone." },
+  { week: 21, size: "carrot",       baby: "Baby's movements become stronger and more coordinated.",                  mom: "She can feel kicks reliably now. Braxton Hicks may start.",                     help: "When she grabs your hand and puts it on her belly, be patient. Wait for it." },
+  { week: 22, size: "papaya",       baby: "Eyebrows and eyelashes are visible. Grip is developing.",                 mom: "Swelling in feet and hands starts.",                                            help: "Elevate her feet at night. Bring her water without being asked." },
+  { week: 23, size: "grapefruit",   baby: "Baby's lungs are developing surfactant, prepping for first breath.",     mom: "Heartburn and indigestion get worse.",                                          help: "Stock Tums, ginger tea, and an extra pillow for propping her up in bed." },
+  { week: 24, size: "corn",         baby: "Viability milestone — with NICU care, baby could survive if born now.",  mom: "The reality of it hits harder. Anxiety is normal.",                             help: "Ask her what she's afraid of. Don't fix it. Just listen and say 'I'm here.'" },
+  { week: 25, size: "cauliflower",  baby: "Baby responds to your voice and can recognize it after birth.",           mom: "Third-trimester fatigue starts creeping back.",                                 help: "Take over one recurring chore for good — dishes, trash, laundry. Pick one." },
+  { week: 26, size: "lettuce",      baby: "Eyes open for the first time. Sleep-wake cycles begin.",                  mom: "Rib pain as baby stretches upward.",                                            help: "Help her find a comfortable sleeping position with pillows. Get a pregnancy pillow." },
+  { week: 27, size: "cabbage",      baby: "Brain activity looks similar to a newborn's.",                            mom: "Start of the third trimester. Doctor visits shift to every 2 weeks.",           help: "Put every appointment on your calendar now. Plan to be at as many as possible." },
+  { week: 28, size: "eggplant",     baby: "Baby dreams — REM sleep is measurable.",                                  mom: "Glucose test this week. Rhogam shot if she's Rh-negative.",                     help: "Drive her to the glucose test. It's a long, boring appointment." },
+  { week: 29, size: "butternut squash", baby: "Bones are hardening. Baby's kicks feel sharper.",                     mom: "Shortness of breath as the uterus presses on her diaphragm.",                   help: "Carry the groceries. Carry everything. She's carrying enough." },
+  { week: 30, size: "cucumber",     baby: "Baby can distinguish between light and dark.",                            mom: "Emotions run high. Nesting instinct kicks in.",                                 help: "Say yes to the nesting projects. Assemble the crib this weekend." },
+  { week: 31, size: "coconut",      baby: "All five senses are working.",                                             mom: "Braxton Hicks contractions get more noticeable.",                               help: "Learn the difference between real labor and Braxton Hicks. She'll ask you." },
+  { week: 32, size: "jicama",       baby: "Baby practices breathing motions. Fingernails reach the fingertips.",     mom: "Sleep gets rough — bathroom trips, hip pain, restless legs.",                   help: "Take the late-night dog walk or trash duty. Let her stay in bed." },
+  { week: 33, size: "pineapple",    baby: "Baby's skull stays soft to fit through the birth canal.",                 mom: "Swelling and fatigue peak.",                                                     help: "Pack the hospital bag together. Print the go-list. Fill up the gas tank." },
+  { week: 34, size: "cantaloupe",   baby: "Central nervous system and lungs are maturing.",                          mom: "Pelvic pressure increases as baby drops.",                                      help: "Install the car seat this week. Get it inspected — most fire stations do it free." },
+  { week: 35, size: "honeydew",     baby: "Baby is putting on about half a pound per week.",                         mom: "Waddling, back pain, and Braxton Hicks are constant.",                          help: "Set up the diaper station, changing pad, and 20+ diapers within arm's reach of the bed." },
+  { week: 36, size: "papaya",       baby: "Baby is considered 'early term' next week.",                              mom: "Doctor visits become weekly. Group B strep test.",                              help: "Confirm the birth plan. Know her preferences on pain meds, delivery position, visitors." },
+  { week: 37, size: "romaine",      baby: "Baby is full-term. Could arrive any day.",                                mom: "Nesting energy or complete exhaustion — sometimes both.",                       help: "Keep your phone on, charged, and next to you at all times. Tank of gas stays full." },
+  { week: 38, size: "leek",         baby: "Vernix and lanugo (fine hair) are mostly gone.",                          mom: "Every twinge feels like it could be labor.",                                    help: "Stay calm when she calls. Time contractions with an app. Don't panic-drive." },
+  { week: 39, size: "watermelon",   baby: "Baby is fully developed. Just gaining weight now.",                       mom: "Physical and emotional patience is thin. Every day feels like a week.",         help: "Stop asking 'any signs yet?' Just be present. Cook dinner. Rub her back." },
+  { week: 40, size: "small pumpkin", baby: "Due date week. Only ~5% of babies arrive on the exact due date.",       mom: "Impatience, discomfort, and every well-meaning text asking 'still no baby?'",   help: "Field the family texts for her. Protect her peace this week." },
+];
+
+export function weeklyContent(week: number | null | undefined): WeeklyEntry | null {
+  if (week == null || week < 4) return ENTRIES[0];
+  if (week > 40) return ENTRIES[ENTRIES.length - 1];
+  return ENTRIES.find((e) => e.week === week) ?? null;
+}

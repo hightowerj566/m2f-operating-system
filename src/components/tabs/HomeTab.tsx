@@ -13,9 +13,10 @@ import { getPhase, daysRemaining as calcDaysRemaining, pregnancyWeek } from "@/l
 import { askHerTonight } from "@/content/fatherhood";
 import { recommendedForWeek } from "@/content/learn";
 import { useLearnProgress } from "@/hooks/useLearnProgress";
+import { weeklyContent } from "@/content/weeklyPregnancy";
 import {
   ArrowRight, Check, ChevronRight, Dumbbell, Flame, MessageSquare,
-  Home as HomeIcon, Sparkles, BookOpen, Calendar, User, Utensils,
+  Home as HomeIcon, Sparkles, BookOpen, Baby, User, Utensils, Heart,
 } from "lucide-react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -449,25 +450,46 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
         </button>
       </div>
 
-      {/* ── 6 · Next Milestone ── */}
-      <div className="px-5 pt-4">
-        <button
-          onClick={() => navigate("/plan")}
-          className="w-full text-left rounded-2xl border border-border bg-card/60 backdrop-blur p-5 active:scale-[0.99] transition-transform"
-        >
-          <div className="flex items-center gap-2 mb-2">
-            <Calendar className="w-3.5 h-3.5 text-purple-400" />
-            <p className="text-[10px] font-bold tracking-[0.24em] uppercase text-purple-400">Coming Up</p>
+      {/* ── 6 · This Week: Baby + Mom ── */}
+      {(() => {
+        const wk = weeklyContent(week);
+        if (arrived || !wk) return null;
+        return (
+          <div className="px-5 pt-4">
+            <div className="rounded-2xl border border-border bg-card/60 backdrop-blur p-5 space-y-4">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Baby className="w-3.5 h-3.5 text-purple-400" />
+                  <p className="text-[10px] font-bold tracking-[0.24em] uppercase text-purple-400">
+                    Week {wk.week} · Baby
+                  </p>
+                </div>
+                <p className="font-black text-foreground text-base leading-tight">
+                  About the size of a {wk.size}.
+                </p>
+                <p className="text-sm text-muted-foreground mt-1.5 leading-snug">{wk.baby}</p>
+              </div>
+
+              <div className="h-px bg-border" />
+
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Heart className="w-3.5 h-3.5 text-rose-400" />
+                  <p className="text-[10px] font-bold tracking-[0.24em] uppercase text-rose-400">
+                    How to help {partnerName || "her"}
+                  </p>
+                </div>
+                <p className="text-sm text-muted-foreground leading-snug">
+                  <span className="text-foreground/90">{wk.mom}</span>
+                </p>
+                <p className="text-sm text-foreground mt-2 leading-snug font-medium">
+                  → {wk.help}
+                </p>
+              </div>
+            </div>
           </div>
-          <p className="font-black text-foreground text-lg leading-tight">{milestoneLabel}</p>
-          {milestoneWhen && (
-            <p className="text-sm text-muted-foreground mt-1">{milestoneWhen}</p>
-          )}
-          <p className="text-xs font-bold text-purple-400 mt-3 flex items-center gap-1">
-            See the road ahead <ArrowRight className="w-3 h-3" />
-          </p>
-        </button>
-      </div>
+        );
+      })()}
     </div>
   );
 }
