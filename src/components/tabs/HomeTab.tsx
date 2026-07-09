@@ -296,7 +296,7 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
 
       {/* ── 2 · Father Readiness Ring ── */}
       <button
-        onClick={() => navigate("/readiness")}
+        onClick={() => navigate(latest ? "/readiness" : "/readiness/assessment")}
         className="w-full text-left px-5 pt-8"
       >
         <div className={`rounded-2xl border ${latest ? "border-border" : "border-primary/50"} bg-card/60 backdrop-blur p-5 flex items-center gap-5 active:scale-[0.99] transition-transform`}>
