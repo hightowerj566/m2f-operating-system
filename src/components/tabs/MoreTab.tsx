@@ -38,6 +38,8 @@ interface MoreTabProps {
   onRefreshSub?: () => Promise<void>;
   currentProgramId?: string | null;
   onProgramChanged?: () => void;
+  onOpenMacros?: () => void;
+  onOpenStandards?: () => void;
 }
 
 const EXERCISE_CATEGORIES = [
