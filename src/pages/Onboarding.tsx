@@ -279,6 +279,17 @@ export default function Onboarding() {
         {step === 0 && (
           <div className="space-y-4">
             <div>
+              <Label className="text-foreground">First Name</Label>
+              <Input
+                type="text"
+                placeholder="What should we call you?"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                autoComplete="given-name"
+                className="mt-1 bg-card border-border text-foreground"
+              />
+            </div>
+            <div>
               <Label className="text-foreground">Height</Label>
               <div className="flex gap-2 mt-1">
                 <div className="flex-1">
