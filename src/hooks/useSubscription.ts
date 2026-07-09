@@ -18,7 +18,7 @@ export const FREE_ACCESS_TEMP = true;
 export function useSubscription(userId: string | undefined): SubscriptionState {
   const [loading, setLoading] = useState(!FREE_ACCESS_TEMP);
   const [subscribed, setSubscribed] = useState(FREE_ACCESS_TEMP);
-  const [tier, setTier] = useState<SubscriptionTier>(FREE_ACCESS_TEMP ? "premium" : null);
+  const [tier, setTier] = useState<SubscriptionTier>(FREE_ACCESS_TEMP ? "performance" : null);
   const [subscriptionEnd, setSubscriptionEnd] = useState<string | null>(null);
   const [cancelAtPeriodEnd, setCancelAtPeriodEnd] = useState(false);
 
