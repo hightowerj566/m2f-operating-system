@@ -18,7 +18,7 @@ import { Countdown } from "@/components/home/Countdown";
 import { weeklyContent } from "@/content/weeklyPregnancy";
 import {
   ArrowRight, Check, ChevronRight, Dumbbell, Flame, MessageSquare,
-  Home as HomeIcon, Sparkles, BookOpen, Baby, User, Utensils, Heart,
+  Home as HomeIcon, Sparkles, BookOpen, Baby, User, Utensils, Heart, Calculator,
 } from "lucide-react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
