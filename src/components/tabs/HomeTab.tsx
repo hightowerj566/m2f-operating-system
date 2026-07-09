@@ -62,13 +62,13 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
     queryFn: async () => {
       const { data: p } = await db
         .from("profiles")
-        .select("display_name, first_name, name, partner_name")
+        .select("display_name, partner_name")
         .eq("user_id", user!.id).maybeSingle();
-      return p as { display_name?: string; first_name?: string; name?: string; partner_name?: string } | null;
+      return p as { display_name?: string; partner_name?: string } | null;
     },
   });
   const queryClient = useQueryClient();
-  const rawName = profile?.first_name || profile?.display_name || profile?.name || "";
+  const rawName = profile?.display_name || "";
   const looksLikeEmail = /@/.test(rawName);
   const hasRealName = !!rawName && !looksLikeEmail;
   const firstName = hasRealName ? rawName.split(" ")[0] : "Dad";
