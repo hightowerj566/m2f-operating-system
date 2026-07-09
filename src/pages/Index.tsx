@@ -57,9 +57,8 @@ interface WorkoutGroup {
 
 const baseNavItems = [
   { icon: Home, label: "Home" },
-  { icon: Dumbbell, label: "Workout" },
-  { icon: ClipboardList, label: "Daily" },
-  { icon: BarChart2, label: "Macros" },
+  { icon: CalendarCheck, label: "Today" },
+  { icon: LineChart, label: "Progress" },
   { icon: Menu, label: "More" },
 ];
 
