@@ -11,7 +11,8 @@ import { useLatestReadiness } from "@/hooks/useReadiness";
 import {
   Dumbbell, CheckCircle2, MessageSquare, Home as HomeIcon, ChevronRight, ChevronDown,
   ArrowRight, Flame, Users, Calendar, Star, Clock, Utensils, BookOpen,
-  Wrench, Layers, HeartHandshake, User, Check,
+  Heart, TrendingUp, User, Check,
+
 } from "lucide-react";
 import { useWeeklyMission } from "@/hooks/useMissions";
 import { useBuildList, applyMilestoneBoost, surfaceMilestones } from "@/hooks/useBuildList";
