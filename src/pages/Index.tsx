@@ -663,7 +663,7 @@ export default function Index() {
       case "Progress":
         return <ProgressTab />;
       case "More":
-        return <MoreTab tier={tier} subscriptionEnd={subscriptionEnd} cancelAtPeriodEnd={cancelAtPeriodEnd} onRefreshSub={refreshSub} currentProgramId={programId} onProgramChanged={() => window.location.reload()} onOpenStandards={() => handleNavClick("Daily")} />;
+        return <MoreTab tier={tier} subscriptionEnd={subscriptionEnd} cancelAtPeriodEnd={cancelAtPeriodEnd} onRefreshSub={refreshSub} currentProgramId={programId} onProgramChanged={() => window.location.reload()} onOpenStandards={() => handleNavClick("Daily")} onOpenMacros={() => handleNavClick("Macros")} />;
       case "Today":
       case "Workout":
         return (
