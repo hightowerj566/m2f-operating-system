@@ -2,7 +2,7 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
-import logoImage from "@/assets/refined-performance-logo.png";
+
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
