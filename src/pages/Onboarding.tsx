@@ -156,6 +156,7 @@ export default function Onboarding() {
       const { error: profileError } = await supabase
         .from("profiles")
         .update({
+          display_name: firstName.trim(),
           height_inches: heightInches,
           weight_lbs: weightLbs,
           age: userAge,
