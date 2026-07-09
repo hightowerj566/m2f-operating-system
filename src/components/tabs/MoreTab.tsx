@@ -103,7 +103,7 @@ interface Program {
   total_days: number;
 }
 
-export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRefreshSub, currentProgramId, onProgramChanged }: MoreTabProps = {}) {
+export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRefreshSub, currentProgramId, onProgramChanged, onOpenMacros, onOpenStandards }: MoreTabProps = {}) {
   const { user, signOut } = useAuth();
   const [view, setView] = useState<"menu" | "maxes" | "programs" | "manage-sub" | "tools" | "graduation">("menu");
   const { hasPass, passExpires } = useDueDatePass(user?.id);
