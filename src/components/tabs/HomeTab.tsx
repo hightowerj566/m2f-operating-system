@@ -118,12 +118,15 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
   const nextBuild = buildMilestones.find((m) => !m.completed) ?? null;
   const buildDone = !nextBuild;
 
+  const workoutEffectiveDone = workoutDoneToday || overrides.workout === true;
+  const buildEffectiveDone = !nextBuild || overrides.build === true;
+
   const missions = [
     {
       key: "workout",
       icon: Dumbbell,
-      title: workoutDoneToday ? "Workout complete" : "Complete today's workout",
-      done: workoutDoneToday,
+      title: workoutEffectiveDone ? "Workout complete" : "Complete today's workout",
+      done: workoutEffectiveDone,
       onClick: onOpenToday,
     },
     {
@@ -141,14 +144,13 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
         : `Ask ${partnerName || "her"} tonight's question`,
       done: askDone,
       onClick: () => navigate("/her-and-baby"),
-      secondary: askDone ? undefined : { label: "Mark done", onClick: markAsk },
       detail: askDone ? undefined : `"${prompt}"`,
     },
     {
       key: "build",
       icon: HomeIcon,
-      title: buildDone ? "Build list complete" : (nextBuild?.title ?? "Set your build list"),
-      done: buildDone,
+      title: buildEffectiveDone ? "Build list complete" : (nextBuild?.title ?? "Set your build list"),
+      done: buildEffectiveDone,
       onClick: () => navigate("/build-list"),
     },
   ];
