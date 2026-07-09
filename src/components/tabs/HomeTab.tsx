@@ -515,10 +515,12 @@ function NumberedCard({
 }
 
 function TodayRow({
-  icon, label, value, valueClassName, onClick,
+  icon, label, value, valueClassName, onClick, expanded,
 }: {
-  icon: React.ReactNode; label: string; value: string; valueClassName?: string; onClick?: () => void;
+  icon: React.ReactNode; label: string; value: string; valueClassName?: string;
+  onClick?: () => void; expanded?: boolean;
 }) {
+  const Chevron = expanded === undefined ? ChevronRight : (expanded ? ChevronDown : ChevronRight);
   return (
     <li>
       <button
@@ -530,7 +532,7 @@ function TodayRow({
         <span className={`text-sm text-muted-foreground truncate max-w-[45%] text-right ${valueClassName ?? ""}`}>
           {value}
         </span>
-        <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
+        <Chevron className="w-4 h-4 text-muted-foreground shrink-0" />
       </button>
     </li>
   );
