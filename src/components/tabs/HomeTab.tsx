@@ -93,8 +93,9 @@ export function HomeTab({
 
   // Today's standards
   const today = new Date().toISOString().slice(0, 10);
+  const standardsKey = ["home-standards", user?.id, today];
   const { data: standardsToday } = useQuery({
-    queryKey: ["home-standards", user?.id, today],
+    queryKey: standardsKey,
     enabled: !!user?.id,
     queryFn: async () => {
       const [{ data: defs }, { data: log }, { data: prefs }] = await Promise.all([
@@ -103,19 +104,58 @@ export function HomeTab({
           .eq("is_active", true)
           .or(`is_global.eq.true,target_user_id.eq.${user!.id}`)
           .order("sort_order"),
-        db.from("daily_standards").select("completions").eq("user_id", user!.id).eq("date", today).maybeSingle(),
+        db.from("daily_standards").select("id, completions").eq("user_id", user!.id).eq("standard_date", today).maybeSingle(),
         db.from("user_standard_prefs").select("standard_definition_id, enabled").eq("user_id", user!.id),
       ]);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const disabled = new Set((prefs ?? []).filter((p: any) => p.enabled === false).map((p: any) => p.standard_definition_id));
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const active = (defs ?? []).filter((d: any) => !disabled.has(d.id));
-      const completions = log?.completions ?? {};
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const remaining = active.filter((d: any) => !completions[d.key]);
-      return { total: active.length, done: active.length - remaining.length };
+      const completions = (log?.completions ?? {}) as Record<string, boolean>;
+      const done = active.filter((d: { key: string }) => completions[d.key]).length;
+      return {
+        total: active.length,
+        done,
+        logId: log?.id ?? null,
+        completions,
+        items: active as Array<{ id: string; key: string; label: string; emoji: string | null }>,
+      };
     },
   });
+
+  const toggleStandard = async (key: string) => {
+    if (!user || !standardsToday || savingKey) return;
+    setSavingKey(key);
+    const newCompletions = { ...standardsToday.completions, [key]: !standardsToday.completions[key] };
+    // Optimistic
+    qc.setQueryData(standardsKey, {
+      ...standardsToday,
+      completions: newCompletions,
+      done: standardsToday.items.filter((s) => newCompletions[s.key]).length,
+    });
+    const payload = {
+      user_id: user.id,
+      standard_date: today,
+      completions: newCompletions,
+      wake_on_time: !!newCompletions.wake_on_time,
+      workout_completed: !!newCompletions.workout_completed,
+      protein_hit: !!newCompletions.protein_hit,
+      steps_hit: !!newCompletions.steps_hit,
+      scripture_read: !!newCompletions.scripture_read,
+      family_time: !!newCompletions.family_time,
+      no_phone_at_dinner: !!newCompletions.no_phone_at_dinner,
+      hydration_hit: !!newCompletions.hydration_hit,
+    };
+    if (standardsToday.logId) {
+      await db.from("daily_standards").update(payload).eq("id", standardsToday.logId);
+    } else {
+      const { data: ins } = await db.from("daily_standards").insert(payload).select("id").single();
+      if (ins) qc.setQueryData(standardsKey, (prev: typeof standardsToday | undefined) =>
+        prev ? { ...prev, logId: ins.id } : prev);
+    }
+    qc.invalidateQueries({ queryKey: ["home-streak", user.id] });
+    setSavingKey(null);
+  };
 
   // Standards streak
   const { data: streak = 0 } = useQuery({
@@ -124,9 +164,9 @@ export function HomeTab({
     queryFn: async () => {
       const { data: hist } = await db
         .from("daily_standards")
-        .select("date, completions")
+        .select("standard_date, completions")
         .eq("user_id", user!.id)
-        .order("date", { ascending: false })
+        .order("standard_date", { ascending: false })
         .limit(60);
       if (!hist || hist.length === 0) return 0;
       let count = 0;
@@ -135,7 +175,7 @@ export function HomeTab({
         const d = new Date(now); d.setDate(d.getDate() - i);
         const key = d.toISOString().slice(0, 10);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const entry = hist.find((h: any) => h.date === key);
+        const entry = hist.find((h: any) => h.standard_date === key);
         if (!entry) break;
         const doneCount = Object.values(entry.completions || {}).filter(Boolean).length;
         if (doneCount >= 3) count++;
