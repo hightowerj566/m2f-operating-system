@@ -527,13 +527,14 @@ export default function Index() {
       setActiveNav(label);
       return;
     }
-    // Check if tab requires Performance tier
+    // Check if tab requires Performance tier (Macros is accessed via More)
     if (PERFORMANCE_ONLY_TABS.includes(label) && tier !== "performance") {
       setShowUpgradeModal(true);
       return;
     }
-    // Check if user has no subscription at all for gated content
-    if (!subscribed && !hasPass && label !== "More" && label !== "Home") {
+    // Gate premium tabs when no subscription
+    const openTabs = ["Home", "More", "Progress"];
+    if (!subscribed && !hasPass && !openTabs.includes(label)) {
       setShowUpgradeModal(true);
       return;
     }
