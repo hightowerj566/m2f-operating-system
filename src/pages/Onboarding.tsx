@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -12,7 +12,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "@/hooks/use-toast";
 import { Navigate } from "react-router-dom";
-import { ChevronLeft, ChevronRight, Dumbbell, User, Target, Activity } from "lucide-react";
+import { ChevronLeft, ChevronRight, Dumbbell, User, Target, Activity, ClipboardCheck, Check } from "lucide-react";
+import { CATEGORIES } from "@/lib/readiness";
 import bfUnder15 from "@/assets/bf-under15.png";
 import bf1522 from "@/assets/bf-15-22.png";
 import bf2230 from "@/assets/bf-22-30.png";
@@ -23,7 +24,16 @@ const STEPS = [
   { label: "Fitness", icon: Activity },
   { label: "Goals", icon: Target },
   { label: "Strength", icon: Dumbbell },
+  { label: "Prep", icon: ClipboardCheck },
 ];
+
+interface OnboardMilestone {
+  id: string;
+  category_id: number;
+  phase: number;
+  title: string;
+  detail: string | null;
+}
 
 const BF_OPTIONS = [
   { value: "under_15", label: "Under 15%", pct: 12, img: bfUnder15 },
@@ -65,6 +75,35 @@ export default function Onboarding() {
   const [squat, setSquat] = useState("");
   const [deadlift, setDeadlift] = useState("");
 
+  // Step 5 — Prep list (already-completed milestones)
+  const [milestones, setMilestones] = useState<OnboardMilestone[]>([]);
+  const [preCompleted, setPreCompleted] = useState<Set<string>>(new Set());
+  const [milestonesLoading, setMilestonesLoading] = useState(false);
+
+  useEffect(() => {
+    if (step !== 4 || milestones.length > 0) return;
+    setMilestonesLoading(true);
+    (async () => {
+      const { data } = await supabase
+        .from("build_milestones")
+        .select("id, category_id, phase, title, detail")
+        .eq("is_active", true)
+        .order("phase")
+        .order("sort_order");
+      setMilestones((data as OnboardMilestone[]) ?? []);
+      setMilestonesLoading(false);
+    })();
+  }, [step, milestones.length]);
+
+  const togglePreCompleted = (id: string) => {
+    setPreCompleted((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-dvh bg-background">
@@ -87,6 +126,8 @@ export default function Onboarding() {
         return goal && equipment;
       case 3:
         return true; // all optional
+      case 4:
+        return true; // Prep step — all checks optional
       default:
         return false;
     }
@@ -169,6 +210,18 @@ export default function Onboarding() {
       );
 
       if (macroError) throw macroError;
+
+      // Save pre-completed build milestones (from Prep step)
+      if (preCompleted.size > 0) {
+        const rows = Array.from(preCompleted).map((milestone_id) => ({
+          user_id: user.id,
+          milestone_id,
+        }));
+        const { error: msError } = await supabase
+          .from("user_milestones")
+          .upsert(rows, { onConflict: "user_id,milestone_id" });
+        if (msError) console.error("Milestone save error:", msError);
+      }
 
       toast({ title: "Welcome aboard!", description: "Your profile and macros are set up." });
       navigate("/", { replace: true });
@@ -431,6 +484,80 @@ export default function Onboarding() {
                 className="mt-1 bg-card border-border text-foreground"
               />
             </div>
+          </div>
+        )}
+
+        {step === 4 && (
+          <div className="space-y-5">
+            <div>
+              <h2 className="text-lg font-bold text-foreground">What have you already done?</h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                Check off any prep tasks you've already handled. This sets your starting readiness — you can update anytime.
+              </p>
+            </div>
+
+            {milestonesLoading && (
+              <p className="text-sm text-muted-foreground">Loading your list…</p>
+            )}
+
+            {!milestonesLoading && milestones.length === 0 && (
+              <p className="text-sm text-muted-foreground">No prep tasks yet. You're all set.</p>
+            )}
+
+            {CATEGORIES.map((cat) => {
+              const items = milestones.filter((m) => m.category_id === cat.id);
+              if (items.length === 0) return null;
+              const doneInCat = items.filter((m) => preCompleted.has(m.id)).length;
+              return (
+                <div key={cat.slug}>
+                  <div className="flex items-baseline justify-between mb-2">
+                    <p className="text-[11px] font-bold tracking-[0.2em] uppercase text-primary">
+                      {cat.name}
+                    </p>
+                    <p className="text-[11px] text-muted-foreground tabular-nums">
+                      {doneInCat} / {items.length}
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    {items.map((m) => {
+                      const checked = preCompleted.has(m.id);
+                      return (
+                        <button
+                          key={m.id}
+                          type="button"
+                          onClick={() => togglePreCompleted(m.id)}
+                          className={`w-full flex items-start gap-3 p-3 rounded-lg border text-left transition-colors ${
+                            checked
+                              ? "border-primary bg-primary/10"
+                              : "border-border bg-card hover:border-muted-foreground"
+                          }`}
+                        >
+                          <span className={`mt-0.5 w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-colors ${
+                            checked ? "bg-primary border-primary" : "border-border"
+                          }`}>
+                            {checked && <Check className="w-3.5 h-3.5 text-primary-foreground" strokeWidth={3} />}
+                          </span>
+                          <div className="flex-1 min-w-0">
+                            <p className={`text-sm font-semibold leading-tight ${checked ? "text-foreground" : "text-foreground"}`}>
+                              {m.title}
+                            </p>
+                            {m.detail && (
+                              <p className="text-xs text-muted-foreground leading-snug mt-0.5">{m.detail}</p>
+                            )}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+
+            {!milestonesLoading && milestones.length > 0 && (
+              <p className="text-xs text-muted-foreground text-center pt-2">
+                {preCompleted.size} task{preCompleted.size === 1 ? "" : "s"} marked complete
+              </p>
+            )}
           </div>
         )}
       </div>
