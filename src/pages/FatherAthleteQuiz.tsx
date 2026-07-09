@@ -83,14 +83,26 @@ export default function FatherAthleteQuiz() {
 
   const selectAnswer = (question: AssessmentQuestion, optionIndex: number) => {
     const option = question.options[optionIndex];
-    setLabelByCode((prev) => ({ ...prev, [question.code]: option.label }));
-    if (question.kind === "scored") {
-      setPointsByCode((prev) => ({ ...prev, [question.code]: option.points ?? 0 }));
+    const nextLabels = { ...labelByCode, [question.code]: option.label };
+    const nextPoints = question.kind === "scored"
+      ? { ...pointsByCode, [question.code]: option.points ?? 0 }
+      : pointsByCode;
+    const nextRouting = question.kind === "scored"
+      ? routingByCode
+      : { ...routingByCode, [question.code]: option.routing_value ?? "" };
+    setLabelByCode(nextLabels);
+    setPointsByCode(nextPoints);
+    setRoutingByCode(nextRouting);
+    if (step < totalQuestions - 1) {
+      setStep(step + 1);
+    } else if (user?.id) {
+      // Signed-in members skip the email capture and go straight to results.
+      void submitAsMember(nextPoints, nextRouting, nextLabels);
     } else {
-      setRoutingByCode((prev) => ({ ...prev, [question.code]: option.routing_value ?? "" }));
+      setStep(LEAD_STEP);
     }
-    setStep((s) => (s < totalQuestions - 1 ? s + 1 : LEAD_STEP));
   };
+
 
   const progress =
     step >= 0 && step < totalQuestions
