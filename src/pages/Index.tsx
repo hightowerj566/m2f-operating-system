@@ -58,6 +58,7 @@ interface WorkoutGroup {
 const baseNavItems = [
   { icon: Home, label: "Home" },
   { icon: CalendarCheck, label: "Today" },
+  { icon: BarChart2, label: "Fuel" },
   { icon: LineChart, label: "Progress" },
   { icon: Menu, label: "More" },
 ];
@@ -653,17 +654,17 @@ export default function Index() {
             onOpenProgress={() => handleNavClick("Progress")}
             onOpenWorkout={() => handleNavClick("Today")}
             onOpenStandards={() => handleNavClick("Daily")}
-            onOpenMacros={() => handleNavClick("Macros")}
           />
         );
       case "Daily":
         return <DailyStandardsTab />;
+      case "Fuel":
       case "Macros":
         return <MacrosTab />;
       case "Progress":
         return <ProgressTab />;
       case "More":
-        return <MoreTab tier={tier} subscriptionEnd={subscriptionEnd} cancelAtPeriodEnd={cancelAtPeriodEnd} onRefreshSub={refreshSub} currentProgramId={programId} onProgramChanged={() => window.location.reload()} onOpenMacros={() => handleNavClick("Macros")} onOpenStandards={() => handleNavClick("Daily")} />;
+        return <MoreTab tier={tier} subscriptionEnd={subscriptionEnd} cancelAtPeriodEnd={cancelAtPeriodEnd} onRefreshSub={refreshSub} currentProgramId={programId} onProgramChanged={() => window.location.reload()} onOpenStandards={() => handleNavClick("Daily")} />;
       case "Today":
       case "Workout":
         return (
@@ -686,10 +687,6 @@ export default function Index() {
                 <button onClick={() => handleNavClick("Daily")}
                   className="flex items-center gap-2 bg-secondary text-foreground text-sm font-semibold px-4 py-2 rounded-full border border-border hover:border-primary/40 transition-colors">
                   <ClipboardList className="w-4 h-4 text-primary" /> Daily Standards
-                </button>
-                <button onClick={() => handleNavClick("Macros")}
-                  className="flex items-center gap-2 bg-secondary text-foreground text-sm font-semibold px-4 py-2 rounded-full border border-border hover:border-primary/40 transition-colors">
-                  <BarChart2 className="w-4 h-4 text-primary" /> Fuel & Macros
                 </button>
               </div>
             </div>

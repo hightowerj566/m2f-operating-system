@@ -30,11 +30,10 @@ interface HomeTabProps {
   onOpenProgress: () => void;
   onOpenWorkout: () => void;
   onOpenStandards: () => void;
-  onOpenMacros: () => void;
   programName?: string | null;
 }
 
-export function HomeTab({ onOpenToday, onOpenProgress, onOpenWorkout, onOpenStandards, onOpenMacros, programName }: HomeTabProps) {
+export function HomeTab({ onOpenToday, onOpenProgress, onOpenWorkout, onOpenStandards, programName }: HomeTabProps) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { data, isLoading } = useLatestReadiness(user?.id);
