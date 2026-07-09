@@ -18,7 +18,7 @@ import { Countdown } from "@/components/home/Countdown";
 import { weeklyContent } from "@/content/weeklyPregnancy";
 import {
   ArrowRight, Check, ChevronRight, Dumbbell, Flame, MessageSquare,
-  Home as HomeIcon, Sparkles, BookOpen, Baby, User, Utensils, Heart,
+  Home as HomeIcon, Sparkles, BookOpen, Baby, User, Utensils, Heart, Calculator,
 } from "lucide-react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -86,6 +86,20 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
     if (!error) queryClient.invalidateQueries({ queryKey: ["home-profile", user.id] });
   };
 
+  // Macro targets — mission complete once user has set up nutrition
+  const { data: hasMacros = false } = useQuery({
+    queryKey: ["home-has-macros", user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data } = await db
+        .from("macro_targets")
+        .select("calories")
+        .eq("user_id", user!.id)
+        .maybeSingle();
+      return !!data?.calories;
+    },
+  });
+
   // Mission 1: Workout logged today (via workout_feedback)
   const { data: workoutDoneToday = false } = useQuery({
     queryKey: ["home-workout-today", user?.id, todayISO()],
@@ -137,6 +151,16 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
   const buildEffectiveDone = !nextBuild || overrides.build === true;
 
   const missions = [
+    ...(!hasMacros
+      ? [{
+          key: "set-macros",
+          icon: Calculator,
+          title: "Set your macros",
+          done: false,
+          onClick: () => (onOpenMacros ? onOpenMacros() : onOpenMore?.()),
+          detail: "Dial in calories & your rate of loss/gain",
+        }]
+      : []),
     {
       key: "workout",
       icon: Dumbbell,
