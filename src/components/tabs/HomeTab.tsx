@@ -304,6 +304,7 @@ export function HomeTab({ onOpenToday, onOpenProgress, onOpenWorkout, onOpenStan
         <div className="space-y-2">
           <SlimRow icon={Dumbbell} label="Today's Training" sub={phase ? phase.trainingGuidance : programName || ""} onClick={onOpenWorkout} />
           <SlimRow icon={ClipboardCheck} label="Daily Standards" sub={standardsToday ? `${standardsToday.done}/${standardsToday.total} held today` : "Hold the standard"} onClick={onOpenStandards} />
+          <SlimRow icon={Utensils} label="Fuel & Macros" sub="Eat like the man they need you to be" onClick={onOpenMacros} />
           {user && buildMilestones.length > 0 && !trainingMode && (
             <SlimRow
               icon={Hammer}
