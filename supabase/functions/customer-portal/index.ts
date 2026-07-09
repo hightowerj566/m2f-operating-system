@@ -43,10 +43,11 @@ serve(async (req) => {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error("[CUSTOMER-PORTAL] ERROR:", error instanceof Error ? error.message : error);
-    return new Response(JSON.stringify({ error: "An internal error occurred" }), {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error("[CUSTOMER-PORTAL] ERROR:", msg);
+    return new Response(JSON.stringify({ error: msg }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
-      status: 500,
+      status: 200,
     });
   }
 });
