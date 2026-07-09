@@ -120,7 +120,7 @@ export default function Onboarding() {
   const canAdvance = () => {
     switch (step) {
       case 0:
-        return heightFt && heightIn && weight && age;
+        return firstName.trim() && heightFt && heightIn && weight && age;
       case 1:
         return bodyFat && experience;
       case 2:
