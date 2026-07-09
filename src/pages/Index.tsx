@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { ChevronLeft, ChevronRight, Dumbbell, BarChart2, TrendingUp, Menu, Lock, Sparkles, Check, LayoutDashboard, Home, ClipboardList } from "lucide-react";
+import { ChevronLeft, ChevronRight, Dumbbell, BarChart2, TrendingUp, Menu, Lock, Sparkles, Check, LayoutDashboard, Home, ClipboardList, CalendarCheck, LineChart } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useSubscription } from "@/hooks/useSubscription";
 import { Navigate, useNavigate } from "react-router-dom";
