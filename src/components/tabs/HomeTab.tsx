@@ -271,9 +271,24 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
         <p className="text-[11px] font-bold tracking-[0.22em] uppercase text-muted-foreground mb-3">
           Good to see you, {firstName}
         </p>
-        <h1 className="font-black tracking-tight leading-[0.9] text-foreground text-[64px]">
-          {bigNumber}
-        </h1>
+        {arrived ? (
+          <h1 className="font-black tracking-tight leading-[0.9] text-foreground text-[64px]">
+            Day One+
+          </h1>
+        ) : days == null ? (
+          <h1 className="font-black tracking-tight leading-[0.9] text-foreground text-[64px]">—</h1>
+        ) : (
+          <div className="flex items-baseline gap-2 flex-wrap">
+            <span className="font-black tracking-tight leading-none text-foreground text-[64px] tabular-nums">
+              {weeksLeft}
+            </span>
+            <span className="font-bold text-muted-foreground text-lg">weeks</span>
+            <span className="font-black tracking-tight leading-none text-foreground text-[40px] tabular-nums ml-1">
+              {extraDaysLeft}
+            </span>
+            <span className="font-bold text-muted-foreground text-lg">days</span>
+          </div>
+        )}
         <p className="text-muted-foreground mt-3 text-[15px] leading-snug">{bigSub}</p>
         {!arrived && week != null && (
           <p className="text-foreground/90 text-sm mt-1">
