@@ -65,7 +65,7 @@ export default function Auth() {
       <div className="flex flex-col items-center mb-8">
         <img
           src={m2fLogo.url}
-          alt="M2F — Man to Father"
+          alt="M2F — Man 2 Father"
           className="w-56 h-56 object-contain mb-2"
         />
         <p className="text-muted-foreground text-sm mt-1">
