@@ -86,6 +86,20 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
     if (!error) queryClient.invalidateQueries({ queryKey: ["home-profile", user.id] });
   };
 
+  // Macro targets — mission complete once user has set up nutrition
+  const { data: hasMacros = false } = useQuery({
+    queryKey: ["home-has-macros", user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data } = await db
+        .from("macro_targets")
+        .select("calories")
+        .eq("user_id", user!.id)
+        .maybeSingle();
+      return !!data?.calories;
+    },
+  });
+
   // Mission 1: Workout logged today (via workout_feedback)
   const { data: workoutDoneToday = false } = useQuery({
     queryKey: ["home-workout-today", user?.id, todayISO()],
