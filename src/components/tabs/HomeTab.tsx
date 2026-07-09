@@ -236,7 +236,7 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
   const milestoneLabel = nextMilestone?.title ?? (phase ? `${phase.name} · ${phase.focus}` : "Set your due date");
   const milestoneWhen = week ? `Week ${(week ?? 0) + 1}` : phase?.window ?? "";
 
-  // Header status line
+  // Header greeting + readiness status
   const statusLine = arrived
     ? "Father mode. Steady wins."
     : (delta != null && delta > 0)
@@ -244,12 +244,6 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
       : (readinessPct != null && readinessPct >= 60)
         ? "You're on track."
         : "One step today.";
-
-  const weeksLeft = days != null ? Math.floor(days / 7) : null;
-  const extraDaysLeft = days != null ? days % 7 : null;
-  const bigSub = arrived
-    ? `${babyName ? `${babyName} is here.` : "She's here."} ${statusLine}`
-    : `Until ${babyName || "Baby"} Arrives`;
 
   return (
     <div className="pb-nav">
