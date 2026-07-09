@@ -11,10 +11,14 @@ interface SubscriptionState {
   refresh: () => Promise<void>;
 }
 
+// TEMP: Free-access flag. Set to `false` to re-enable subscription gating.
+// Search for FREE_ACCESS_TEMP to find every gate we opened up.
+export const FREE_ACCESS_TEMP = true;
+
 export function useSubscription(userId: string | undefined): SubscriptionState {
-  const [loading, setLoading] = useState(true);
-  const [subscribed, setSubscribed] = useState(false);
-  const [tier, setTier] = useState<SubscriptionTier>(null);
+  const [loading, setLoading] = useState(!FREE_ACCESS_TEMP);
+  const [subscribed, setSubscribed] = useState(FREE_ACCESS_TEMP);
+  const [tier, setTier] = useState<SubscriptionTier>(FREE_ACCESS_TEMP ? "performance" : null);
   const [subscriptionEnd, setSubscriptionEnd] = useState<string | null>(null);
   const [cancelAtPeriodEnd, setCancelAtPeriodEnd] = useState(false);
 
@@ -36,6 +40,7 @@ export function useSubscription(userId: string | undefined): SubscriptionState {
   }, [userId]);
 
   useEffect(() => {
+    if (FREE_ACCESS_TEMP) { setLoading(false); return; }
     if (!userId) {
       setLoading(false);
       return;
