@@ -326,40 +326,38 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
           <ul className="space-y-2">
             {missions.map((m) => (
               <li key={m.key}>
-                <button
-                  onClick={m.onClick}
-                  className="w-full flex items-center gap-3 py-3 px-3 rounded-xl bg-secondary/40 hover:bg-secondary/60 transition-colors text-left min-h-[56px]"
-                >
-                  <span className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
-                    m.done ? "bg-emerald-500 border-emerald-500" : "border-border"
-                  }`}>
+                <div className="w-full flex items-center gap-3 py-3 px-3 rounded-xl bg-secondary/40 hover:bg-secondary/60 transition-colors text-left min-h-[56px]">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); toggleOverride(m.key); }}
+                    aria-label={m.done ? "Mark incomplete" : "Mark complete"}
+                    className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
+                      m.done ? "bg-emerald-500 border-emerald-500" : "border-border hover:border-primary"
+                    }`}
+                  >
                     {m.done && <Check className="w-3.5 h-3.5 text-black" strokeWidth={3} />}
-                  </span>
-                  <m.icon className={`w-4 h-4 shrink-0 ${m.done ? "text-muted-foreground" : "text-primary"}`} />
-                  <div className="flex-1 min-w-0">
-                    <p className={`text-sm font-semibold leading-tight ${m.done ? "text-muted-foreground line-through" : "text-foreground"}`}>
-                      {m.title}
-                    </p>
-                    {m.detail && (
-                      <p className="text-[11px] text-muted-foreground italic leading-snug mt-0.5 line-clamp-2">
-                        {m.detail}
+                  </button>
+                  <button
+                    onClick={m.onClick}
+                    className="flex-1 min-w-0 flex items-center gap-3 text-left"
+                  >
+                    <m.icon className={`w-4 h-4 shrink-0 ${m.done ? "text-muted-foreground" : "text-primary"}`} />
+                    <div className="flex-1 min-w-0">
+                      <p className={`text-sm font-semibold leading-tight ${m.done ? "text-muted-foreground line-through" : "text-foreground"}`}>
+                        {m.title}
                       </p>
-                    )}
-                  </div>
-                  {m.secondary && !m.done && (
-                    <span
-                      role="button"
-                      onClick={(e) => { e.stopPropagation(); m.secondary!.onClick(); }}
-                      className="text-[11px] font-bold text-primary shrink-0 px-2 py-1 rounded-md border border-primary/40"
-                    >
-                      {m.secondary.label}
-                    </span>
-                  )}
-                  {(!m.secondary || m.done) && <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />}
-                </button>
+                      {m.detail && (
+                        <p className="text-[11px] text-muted-foreground italic leading-snug mt-0.5 line-clamp-2">
+                          {m.detail}
+                        </p>
+                      )}
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
+                  </button>
+                </div>
               </li>
             ))}
           </ul>
+
 
           <button
             onClick={onOpenToday}
