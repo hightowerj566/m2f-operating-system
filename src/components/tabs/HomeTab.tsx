@@ -305,7 +305,7 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
             <div>
               <p className="text-[10px] font-bold tracking-[0.24em] uppercase text-primary">Today's Mission</p>
               <p className="text-foreground font-black text-lg leading-tight mt-0.5">
-                {allMissionsDone ? "You crushed today." : "Three moves. That's it."}
+                {allMissionsDone ? "You crushed today." : "A few moves. That's it."}
               </p>
             </div>
             <p className="text-xs font-bold text-muted-foreground tabular-nums shrink-0">
