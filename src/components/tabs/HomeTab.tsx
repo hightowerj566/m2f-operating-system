@@ -13,6 +13,7 @@ import { getPhase, daysRemaining as calcDaysRemaining, pregnancyWeek } from "@/l
 import { askHerTonight } from "@/content/fatherhood";
 import { recommendedForWeek } from "@/content/learn";
 import { useLearnProgress } from "@/hooks/useLearnProgress";
+import m2fLogo from "@/assets/m2f-logo.png.asset.json";
 import { weeklyContent } from "@/content/weeklyPregnancy";
 import {
   ArrowRight, Check, ChevronRight, Dumbbell, Flame, MessageSquare,
@@ -266,10 +267,8 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
 
       {/* ── Minimal header ── */}
       <div className="px-5 pt-5 flex items-center justify-between">
-        <div className="flex items-baseline gap-0 font-black tracking-tight text-lg leading-none">
-          <span className="text-foreground">M2</span>
-          <span className="text-primary">F</span>
-        </div>
+        <img src={m2fLogo.url} alt="M2F" className="h-9 w-auto object-contain" />
+
         <button
           onClick={onOpenMore}
           aria-label="Profile"
