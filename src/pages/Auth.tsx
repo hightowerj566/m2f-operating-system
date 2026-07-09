@@ -2,7 +2,7 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
-import logoImage from "@/assets/refined-performance-logo.png";
+
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -62,7 +62,13 @@ export default function Auth() {
   return (
     <div className="flex flex-col min-h-dvh bg-background max-w-md mx-auto px-6 justify-center pt-safe pb-safe">
       <div className="flex flex-col items-center mb-8">
-        <img src={logoImage} alt="Refined Performance" className="w-24 h-24 mb-4 object-contain" />
+        <div
+          className="mb-4 flex items-baseline font-black tracking-tight leading-none"
+          aria-label="M2F"
+        >
+          <span className="text-foreground text-6xl">M2</span>
+          <span className="text-primary text-6xl">F</span>
+        </div>
         <h1 className="text-3xl font-black text-foreground">MAN TO FATHER</h1>
         <p className="text-muted-foreground text-sm mt-1">
           {forgotMode ? "Reset your password" : isLogin ? "Welcome back" : "Create your account"}
