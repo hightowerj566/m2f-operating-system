@@ -75,6 +75,35 @@ export default function Onboarding() {
   const [squat, setSquat] = useState("");
   const [deadlift, setDeadlift] = useState("");
 
+  // Step 5 — Prep list (already-completed milestones)
+  const [milestones, setMilestones] = useState<OnboardMilestone[]>([]);
+  const [preCompleted, setPreCompleted] = useState<Set<string>>(new Set());
+  const [milestonesLoading, setMilestonesLoading] = useState(false);
+
+  useEffect(() => {
+    if (step !== 4 || milestones.length > 0) return;
+    setMilestonesLoading(true);
+    (async () => {
+      const { data } = await supabase
+        .from("build_milestones")
+        .select("id, category_id, phase, title, detail")
+        .eq("is_active", true)
+        .order("phase")
+        .order("sort_order");
+      setMilestones((data as OnboardMilestone[]) ?? []);
+      setMilestonesLoading(false);
+    })();
+  }, [step, milestones.length]);
+
+  const togglePreCompleted = (id: string) => {
+    setPreCompleted((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-dvh bg-background">
