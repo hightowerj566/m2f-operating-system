@@ -44,17 +44,29 @@ export default function Readiness() {
   useEffect(() => {
     if (!user) return;
     (async () => {
-      const [{ data: checks }, { data: target }, { data: miles }] = await Promise.all([
-        supabase
-          .from("daily_check_ins")
-          .select("actual_protein_g")
-          .eq("user_id", user.id)
-          .order("check_date", { ascending: false })
-          .limit(30),
-        supabase.from("macro_targets").select("protein_g").eq("user_id", user.id).maybeSingle(),
-        supabase.from("build_milestones").select("completed").eq("user_id", user.id),
-      ]);
-      if (checks && checks.length > 0 && target?.protein_g) {
+      const checksRes = await supabase
+        .from("daily_check_ins")
+        .select("actual_protein_g")
+        .eq("user_id", user.id)
+        .order("check_date", { ascending: false })
+        .limit(30);
+      const targetRes = await supabase
+        .from("macro_targets")
+        .select("protein_g")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      const totalRes = await supabase
+        .from("build_milestones")
+        .select("id", { count: "exact", head: true })
+        .eq("is_active", true);
+      const doneRes = await supabase
+        .from("user_milestones")
+        .select("milestone_id", { count: "exact", head: true })
+        .eq("user_id", user.id);
+
+      const checks = checksRes.data ?? [];
+      const target = targetRes.data;
+      if (checks.length > 0 && target?.protein_g) {
         const hit = checks.filter(
           (c) => c.actual_protein_g && c.actual_protein_g >= target.protein_g * 0.9,
         ).length;
@@ -62,12 +74,9 @@ export default function Readiness() {
       } else {
         setNutritionPct(null);
       }
-      if (miles && miles.length > 0) {
-        const done = miles.filter((m) => m.completed).length;
-        setEmergencyPct(Math.round((done / miles.length) * 100));
-      } else {
-        setEmergencyPct(null);
-      }
+      const total = totalRes.count ?? 0;
+      const done = doneRes.count ?? 0;
+      setEmergencyPct(total > 0 ? Math.round((done / total) * 100) : null);
     })();
   }, [user]);
 
