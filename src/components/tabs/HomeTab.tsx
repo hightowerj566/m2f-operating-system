@@ -299,22 +299,35 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
         onClick={() => navigate("/readiness")}
         className="w-full text-left px-5 pt-8"
       >
-        <div className="rounded-2xl border border-border bg-card/60 backdrop-blur p-5 flex items-center gap-5 active:scale-[0.99] transition-transform">
+        <div className={`rounded-2xl border ${latest ? "border-border" : "border-primary/50"} bg-card/60 backdrop-blur p-5 flex items-center gap-5 active:scale-[0.99] transition-transform`}>
           <ReadinessRing pct={readinessPct ?? 0} />
           <div className="flex-1 min-w-0">
             <p className="text-[10px] font-bold tracking-[0.24em] uppercase text-muted-foreground mb-1">
               Father Readiness
             </p>
-            <p className="font-black text-foreground text-2xl leading-none">
-              {readinessPct != null ? `${readinessPct}%` : "Take the assessment"}
-            </p>
-            {delta != null && delta !== 0 && (
-              <p className={`text-xs font-bold mt-2 ${delta > 0 ? "text-emerald-400" : "text-muted-foreground"}`}>
-                {delta > 0 ? `↑ +${delta}% this week` : `↓ ${delta}% this week`}
-              </p>
-            )}
-            {delta == null && readinessPct != null && (
-              <p className="text-xs text-muted-foreground mt-2">Tap for the full breakdown</p>
+            {latest ? (
+              <>
+                <p className="font-black text-foreground text-2xl leading-none">
+                  {readinessPct}%
+                </p>
+                {delta != null && delta !== 0 && (
+                  <p className={`text-xs font-bold mt-2 ${delta > 0 ? "text-emerald-400" : "text-muted-foreground"}`}>
+                    {delta > 0 ? `↑ +${delta}% this week` : `↓ ${delta}% this week`}
+                  </p>
+                )}
+                {delta == null && (
+                  <p className="text-xs text-muted-foreground mt-2">Tap for the full breakdown</p>
+                )}
+              </>
+            ) : (
+              <>
+                <p className="font-black text-foreground text-lg leading-tight">
+                  Ready to see where you stand?
+                </p>
+                <p className="text-xs font-bold text-primary mt-2 flex items-center gap-1">
+                  Take the 2-minute assessment <ArrowRight className="w-3 h-3" />
+                </p>
+              </>
             )}
           </div>
           <ChevronRight className="w-5 h-5 text-muted-foreground shrink-0" />
