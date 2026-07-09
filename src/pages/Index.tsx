@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { ChevronLeft, ChevronRight, Dumbbell, BarChart2, TrendingUp, Menu, Lock, Sparkles, Check, LayoutDashboard, Home, ClipboardList } from "lucide-react";
+import { ChevronLeft, ChevronRight, Dumbbell, BarChart2, TrendingUp, Menu, Lock, Sparkles, Check, LayoutDashboard, Home, ClipboardList, CalendarCheck, LineChart } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useSubscription } from "@/hooks/useSubscription";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -57,9 +57,8 @@ interface WorkoutGroup {
 
 const baseNavItems = [
   { icon: Home, label: "Home" },
-  { icon: Dumbbell, label: "Workout" },
-  { icon: ClipboardList, label: "Daily" },
-  { icon: BarChart2, label: "Macros" },
+  { icon: CalendarCheck, label: "Today" },
+  { icon: LineChart, label: "Progress" },
   { icon: Menu, label: "More" },
 ];
 
@@ -528,13 +527,14 @@ export default function Index() {
       setActiveNav(label);
       return;
     }
-    // Check if tab requires Performance tier
+    // Check if tab requires Performance tier (Macros is accessed via More)
     if (PERFORMANCE_ONLY_TABS.includes(label) && tier !== "performance") {
       setShowUpgradeModal(true);
       return;
     }
-    // Check if user has no subscription at all for gated content
-    if (!subscribed && !hasPass && label !== "More" && label !== "Home") {
+    // Gate premium tabs when no subscription
+    const openTabs = ["Home", "More", "Progress"];
+    if (!subscribed && !hasPass && !openTabs.includes(label)) {
       setShowUpgradeModal(true);
       return;
     }
@@ -649,7 +649,9 @@ export default function Index() {
         return (
           <HomeTab
             programName={programName}
-            onOpenWorkout={() => handleNavClick("Workout")}
+            onOpenToday={() => handleNavClick("Today")}
+            onOpenProgress={() => handleNavClick("Progress")}
+            onOpenWorkout={() => handleNavClick("Today")}
             onOpenStandards={() => handleNavClick("Daily")}
           />
         );
@@ -657,15 +659,19 @@ export default function Index() {
         return <DailyStandardsTab />;
       case "Macros":
         return <MacrosTab />;
+      case "Progress":
+        return <ProgressTab />;
       case "More":
-        return <MoreTab tier={tier} subscriptionEnd={subscriptionEnd} cancelAtPeriodEnd={cancelAtPeriodEnd} onRefreshSub={refreshSub} currentProgramId={programId} onProgramChanged={() => window.location.reload()} />;
+        return <MoreTab tier={tier} subscriptionEnd={subscriptionEnd} cancelAtPeriodEnd={cancelAtPeriodEnd} onRefreshSub={refreshSub} currentProgramId={programId} onProgramChanged={() => window.location.reload()} onOpenMacros={() => handleNavClick("Macros")} onOpenStandards={() => handleNavClick("Daily")} />;
+      case "Today":
       case "Workout":
         return (
           <>
             <div className="px-5 pt-8 pb-4">
               <p className="text-xs font-semibold tracking-widest text-muted-foreground uppercase mb-1">{programName || "NO PROGRAM ASSIGNED"}</p>
-              <h1 className="text-5xl font-black tracking-tight text-foreground mb-4">WORKOUT</h1>
-              <div className="flex gap-3">
+              <h1 className="text-5xl font-black tracking-tight text-foreground mb-1">TODAY</h1>
+              <p className="text-sm text-muted-foreground mb-4">Train. Hold the standards. Own the day.</p>
+              <div className="flex gap-3 flex-wrap">
                 {isCoach ? (
                   <button onClick={() => setShowDayPicker(true)}
                     className="flex items-center gap-2 bg-secondary text-foreground text-sm font-semibold px-4 py-2 rounded-full border border-border hover:border-primary/40 transition-colors">
@@ -676,6 +682,10 @@ export default function Index() {
                     <span className="text-primary">📅</span> Day {displayedDay}
                   </div>
                 )}
+                <button onClick={() => handleNavClick("Daily")}
+                  className="flex items-center gap-2 bg-secondary text-foreground text-sm font-semibold px-4 py-2 rounded-full border border-border hover:border-primary/40 transition-colors">
+                  <ClipboardList className="w-4 h-4 text-primary" /> Daily Standards
+                </button>
               </div>
             </div>
             {user && <TrainingScheduleSelector userId={user.id} programName={programName} programId={programId} onChange={handleScheduleChange} onProgramSwitch={handleProgramSwitch} />}

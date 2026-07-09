@@ -14,6 +14,8 @@ import {
   Wrench,
   Baby,
   Download,
+  BarChart2,
+  ClipboardList,
 } from "lucide-react";
 import { format } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
@@ -36,6 +38,8 @@ interface MoreTabProps {
   onRefreshSub?: () => Promise<void>;
   currentProgramId?: string | null;
   onProgramChanged?: () => void;
+  onOpenMacros?: () => void;
+  onOpenStandards?: () => void;
 }
 
 const EXERCISE_CATEGORIES = [
@@ -99,7 +103,7 @@ interface Program {
   total_days: number;
 }
 
-export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRefreshSub, currentProgramId, onProgramChanged }: MoreTabProps = {}) {
+export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRefreshSub, currentProgramId, onProgramChanged, onOpenMacros, onOpenStandards }: MoreTabProps = {}) {
   const { user, signOut } = useAuth();
   const [view, setView] = useState<"menu" | "maxes" | "programs" | "manage-sub" | "tools" | "graduation">("menu");
   const { hasPass, passExpires } = useDueDatePass(user?.id);
@@ -872,6 +876,26 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
         <span className="flex-1 font-bold text-sm text-foreground">1RM Maxes</span>
         <ChevronRight className="w-4 h-4 text-muted-foreground" />
       </button>
+      {onOpenStandards && (
+        <button
+          onClick={onOpenStandards}
+          className="w-full flex items-center gap-3 bg-card border border-border rounded-xl p-4 hover:border-primary/40 transition-all text-left"
+        >
+          <ClipboardList className="w-5 h-5 text-primary" />
+          <span className="flex-1 font-bold text-sm text-foreground">Daily Standards</span>
+          <ChevronRight className="w-4 h-4 text-muted-foreground" />
+        </button>
+      )}
+      {onOpenMacros && (
+        <button
+          onClick={onOpenMacros}
+          className="w-full flex items-center gap-3 bg-card border border-border rounded-xl p-4 hover:border-primary/40 transition-all text-left"
+        >
+          <BarChart2 className="w-5 h-5 text-primary" />
+          <span className="flex-1 font-bold text-sm text-foreground">Nutrition &amp; Macros</span>
+          <ChevronRight className="w-4 h-4 text-muted-foreground" />
+        </button>
+      )}
       <button
         onClick={() => setView("programs")}
         className="w-full flex items-center gap-3 bg-card border border-border rounded-xl p-4 hover:border-primary/40 transition-all text-left"
