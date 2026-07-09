@@ -649,7 +649,9 @@ export default function Index() {
         return (
           <HomeTab
             programName={programName}
-            onOpenWorkout={() => handleNavClick("Workout")}
+            onOpenToday={() => handleNavClick("Today")}
+            onOpenProgress={() => handleNavClick("Progress")}
+            onOpenWorkout={() => handleNavClick("Today")}
             onOpenStandards={() => handleNavClick("Daily")}
           />
         );
@@ -657,8 +659,11 @@ export default function Index() {
         return <DailyStandardsTab />;
       case "Macros":
         return <MacrosTab />;
+      case "Progress":
+        return <ProgressTab />;
       case "More":
-        return <MoreTab tier={tier} subscriptionEnd={subscriptionEnd} cancelAtPeriodEnd={cancelAtPeriodEnd} onRefreshSub={refreshSub} currentProgramId={programId} onProgramChanged={() => window.location.reload()} />;
+        return <MoreTab tier={tier} subscriptionEnd={subscriptionEnd} cancelAtPeriodEnd={cancelAtPeriodEnd} onRefreshSub={refreshSub} currentProgramId={programId} onProgramChanged={() => window.location.reload()} onOpenMacros={() => handleNavClick("Macros")} onOpenStandards={() => handleNavClick("Daily")} />;
+      case "Today":
       case "Workout":
         return (
           <>
