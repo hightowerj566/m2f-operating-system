@@ -13,9 +13,10 @@ import { getPhase, daysRemaining as calcDaysRemaining, pregnancyWeek } from "@/l
 import { askHerTonight } from "@/content/fatherhood";
 import { recommendedForWeek } from "@/content/learn";
 import { useLearnProgress } from "@/hooks/useLearnProgress";
+import { weeklyContent } from "@/content/weeklyPregnancy";
 import {
   ArrowRight, Check, ChevronRight, Dumbbell, Flame, MessageSquare,
-  Home as HomeIcon, Sparkles, BookOpen, Calendar, User, Utensils,
+  Home as HomeIcon, Sparkles, BookOpen, Baby, User, Utensils, Heart,
 } from "lucide-react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
