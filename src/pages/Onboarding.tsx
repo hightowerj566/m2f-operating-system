@@ -56,6 +56,7 @@ export default function Onboarding() {
   const [saving, setSaving] = useState(false);
 
   // Step 1
+  const [firstName, setFirstName] = useState("");
   const [heightFt, setHeightFt] = useState("");
   const [heightIn, setHeightIn] = useState("");
   const [weight, setWeight] = useState("");
