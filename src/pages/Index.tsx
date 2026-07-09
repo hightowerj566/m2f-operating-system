@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { ChevronLeft, ChevronRight, Dumbbell, TrendingUp, Menu, Lock, Sparkles, Check, LayoutDashboard, Home, ClipboardList, Utensils, LineChart } from "lucide-react";
+import { ChevronLeft, ChevronRight, Dumbbell, TrendingUp, Menu, Lock, Sparkles, Check, LayoutDashboard, Home, ClipboardList, LineChart } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useSubscription } from "@/hooks/useSubscription";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -58,7 +58,6 @@ interface WorkoutGroup {
 const baseNavItems = [
   { icon: Home, label: "Home" },
   { icon: Dumbbell, label: "Today" },
-  { icon: Utensils, label: "Macros" },
   { icon: LineChart, label: "Progress" },
   { icon: Menu, label: "More" },
 ];
@@ -664,7 +663,7 @@ export default function Index() {
       case "Progress":
         return <ProgressTab />;
       case "More":
-        return <MoreTab tier={tier} subscriptionEnd={subscriptionEnd} cancelAtPeriodEnd={cancelAtPeriodEnd} onRefreshSub={refreshSub} currentProgramId={programId} onProgramChanged={() => window.location.reload()} onOpenStandards={() => handleNavClick("Daily")} />;
+        return <MoreTab tier={tier} subscriptionEnd={subscriptionEnd} cancelAtPeriodEnd={cancelAtPeriodEnd} onRefreshSub={refreshSub} currentProgramId={programId} onProgramChanged={() => window.location.reload()} onOpenStandards={() => handleNavClick("Daily")} onOpenMacros={() => handleNavClick("Macros")} />;
       case "Today":
       case "Workout":
         return (
