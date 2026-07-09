@@ -17,6 +17,7 @@ import HerAndBaby from "./pages/HerAndBaby";
 import DayOne from "./pages/DayOne";
 import WeekReview from "./pages/WeekReview";
 import Onboarding from "./pages/Onboarding";
+import Readiness from "./pages/Readiness";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
