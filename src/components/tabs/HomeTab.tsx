@@ -68,7 +68,7 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
     },
   });
   const queryClient = useQueryClient();
-  const rawName = profile?.first_name || profile?.display_name || profile?.name || "";
+  const rawName = profile?.display_name || "";
   const looksLikeEmail = /@/.test(rawName);
   const hasRealName = !!rawName && !looksLikeEmail;
   const firstName = hasRealName ? rawName.split(" ")[0] : "Dad";
