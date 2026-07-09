@@ -5,7 +5,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLatestReadiness } from "@/hooks/useReadiness";
 import { useBuildList, applyMilestoneBoost, surfaceMilestones } from "@/hooks/useBuildList";
@@ -67,9 +67,21 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
       return p as { display_name?: string; first_name?: string; name?: string; partner_name?: string } | null;
     },
   });
-  const firstName = (profile?.first_name || profile?.display_name || profile?.name ||
-    user?.email?.split("@")[0] || "Dad").split(" ")[0];
+  const queryClient = useQueryClient();
+  const rawName = profile?.first_name || profile?.display_name || profile?.name || "";
+  const looksLikeEmail = /@/.test(rawName);
+  const hasRealName = !!rawName && !looksLikeEmail;
+  const firstName = hasRealName ? rawName.split(" ")[0] : "Dad";
   const partnerName = profile?.partner_name ?? null;
+
+  const promptForName = async () => {
+    if (!user?.id) return;
+    const entered = window.prompt("What's your first name?", hasRealName ? firstName : "");
+    const trimmed = entered?.trim();
+    if (!trimmed) return;
+    const { error } = await db.from("profiles").update({ display_name: trimmed }).eq("user_id", user.id);
+    if (!error) queryClient.invalidateQueries({ queryKey: ["home-profile", user.id] });
+  };
 
   // Mission 1: Workout logged today (via workout_feedback)
   const { data: workoutDoneToday = false } = useQuery({
@@ -269,7 +281,13 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
       {/* ── 1 · Emotional Countdown Header ── */}
       <div className="px-5 pt-8">
         <p className="text-[11px] font-bold tracking-[0.22em] uppercase text-muted-foreground mb-3">
-          Good to see you, {firstName}
+          Good to see you,{" "}
+          <button
+            onClick={promptForName}
+            className={`underline-offset-2 ${hasRealName ? "hover:underline" : "underline text-primary"}`}
+          >
+            {hasRealName ? firstName : "add your name"}
+          </button>
         </p>
         {arrived ? (
           <h1 className="font-black tracking-tight leading-[0.9] text-foreground text-[64px]">

@@ -56,6 +56,7 @@ export default function Onboarding() {
   const [saving, setSaving] = useState(false);
 
   // Step 1
+  const [firstName, setFirstName] = useState("");
   const [heightFt, setHeightFt] = useState("");
   const [heightIn, setHeightIn] = useState("");
   const [weight, setWeight] = useState("");
@@ -119,7 +120,7 @@ export default function Onboarding() {
   const canAdvance = () => {
     switch (step) {
       case 0:
-        return heightFt && heightIn && weight && age;
+        return firstName.trim() && heightFt && heightIn && weight && age;
       case 1:
         return bodyFat && experience;
       case 2:
@@ -155,6 +156,7 @@ export default function Onboarding() {
       const { error: profileError } = await supabase
         .from("profiles")
         .update({
+          display_name: firstName.trim(),
           height_inches: heightInches,
           weight_lbs: weightLbs,
           age: userAge,
@@ -276,6 +278,17 @@ export default function Onboarding() {
       <div className="flex-1 px-4 py-6 max-w-md mx-auto w-full">
         {step === 0 && (
           <div className="space-y-4">
+            <div>
+              <Label className="text-foreground">First Name</Label>
+              <Input
+                type="text"
+                placeholder="What should we call you?"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                autoComplete="given-name"
+                className="mt-1 bg-card border-border text-foreground"
+              />
+            </div>
             <div>
               <Label className="text-foreground">Height</Label>
               <div className="flex gap-2 mt-1">
