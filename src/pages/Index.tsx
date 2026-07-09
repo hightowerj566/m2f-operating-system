@@ -653,6 +653,7 @@ export default function Index() {
             onOpenProgress={() => handleNavClick("Progress")}
             onOpenWorkout={() => handleNavClick("Today")}
             onOpenStandards={() => handleNavClick("Daily")}
+            onOpenMacros={() => handleNavClick("Macros")}
           />
         );
       case "Daily":
@@ -685,6 +686,10 @@ export default function Index() {
                 <button onClick={() => handleNavClick("Daily")}
                   className="flex items-center gap-2 bg-secondary text-foreground text-sm font-semibold px-4 py-2 rounded-full border border-border hover:border-primary/40 transition-colors">
                   <ClipboardList className="w-4 h-4 text-primary" /> Daily Standards
+                </button>
+                <button onClick={() => handleNavClick("Macros")}
+                  className="flex items-center gap-2 bg-secondary text-foreground text-sm font-semibold px-4 py-2 rounded-full border border-border hover:border-primary/40 transition-colors">
+                  <BarChart2 className="w-4 h-4 text-primary" /> Fuel & Macros
                 </button>
               </div>
             </div>
