@@ -111,7 +111,46 @@ export default function FatherAthleteQuiz() {
         ? 100
         : 0;
 
+  const submitAsMember = async (
+    pts: Record<string, number>,
+    routing: Record<string, string>,
+    labels: Record<string, string>,
+  ) => {
+    if (!user?.id) return;
+    setSubmitting(true);
+    setError("");
+    try {
+      const scored = scoreAssessment(pts, questions);
+      const track = routeTrack(routing);
+      const weeks = calcWeeksRemaining(dueDate);
+      const answersPayload = { due_date: dueDate, labels, points: pts, routing };
+      await saveAssessment({
+        userId: user.id,
+        result: scored,
+        weeksRemaining: weeks,
+        answers: answersPayload,
+        dueDate,
+        track,
+      });
+      const revealState = {
+        total: scored.total,
+        byCategory: scored.byCategory,
+        weakest: scored.weakest.slug,
+        weeksRemaining: weeks,
+        dueDate,
+        track,
+        name: "",
+      };
+      sessionStorage.setItem(REVEAL_STORAGE_KEY, JSON.stringify(revealState));
+      navigate("/score-reveal", { state: revealState });
+    } catch {
+      setError("Something went wrong. Please try again.");
+      setSubmitting(false);
+    }
+  };
+
   const result = useMemo(() => scoreAssessment(pointsByCode, questions), [pointsByCode, questions]);
+
 
   const handleSubmit = async () => {
     if (!name.trim() || !email.trim()) {
