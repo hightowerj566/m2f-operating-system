@@ -171,9 +171,16 @@ export function HomeTab({ onOpenToday, onOpenProgress, onOpenWorkout, onOpenStan
         ) : countdown ? (
           <>
             <h1 className="text-6xl font-black tracking-tight text-foreground leading-none">
-              {countdown.total}
-              <span className="text-2xl font-bold text-muted-foreground ml-2">DAYS</span>
+              {countdown.weeks}
+              <span className="text-2xl font-bold text-muted-foreground ml-1">W</span>{" "}
+              {countdown.days}
+              <span className="text-2xl font-bold text-muted-foreground ml-1">D</span>
             </h1>
+            <p className="text-muted-foreground mt-2 text-sm">until everything changes</p>
+            <p className="text-foreground/90 mt-4 text-sm max-w-xs mx-auto leading-relaxed">
+              Your job today: become 1% more prepared than yesterday.
+            </p>
+          </>
             <p className="text-muted-foreground mt-2 text-sm">until everything changes</p>
             <p className="text-foreground/90 mt-4 text-sm max-w-xs mx-auto leading-relaxed">
               Your job today: become 1% more prepared than yesterday.
