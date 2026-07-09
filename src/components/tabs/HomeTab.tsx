@@ -447,9 +447,10 @@ export function HomeTab({
         <div className="grid grid-cols-5 gap-2">
           <ToolButton icon={Utensils} label="Nutrition" onClick={onOpenMacros ?? onOpenMore ?? (() => {})} />
           <ToolButton icon={Layers} label="Programs" onClick={onOpenMore ?? (() => {})} />
-          <ToolButton icon={HeartHandshake} label="Coach" onClick={onOpenMore ?? (() => {})} />
+          <ToolButton icon={HeartHandshake} label="Coach" onClick={() => navigate("/coach")} />
           <ToolButton icon={BookOpen} label="Knowledge" onClick={() => navigate("/plan")} />
           <ToolButton icon={Wrench} label="Resources" onClick={onOpenMore ?? (() => {})} />
+
         </div>
       </div>
     </div>
