@@ -256,12 +256,22 @@ Deno.serve(async (req) => {
 
     // Auto-create program if not supplied
     if (!program_id) {
+      // Pick a coach as the creator (falls back to any user)
+      const { data: coachRow } = await supabase
+        .from("user_roles").select("user_id").eq("role", "coach").limit(1).maybeSingle();
+      const created_by = coachRow?.user_id ?? body.created_by;
+      if (!created_by) {
+        return new Response(JSON.stringify({ error: "No coach found and created_by not supplied" }),
+          { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
       const { data: prog, error: pErr } = await supabase
         .from("programs")
         .insert({
           name: program_json.program || "M2F Perform 3.0",
           description: "M2F Perform 3.0 — 6 mesocycles × 4 weeks. Physique Build → Strength & Performance.",
           is_published: true,
+          total_days: 0,
+          created_by,
         })
         .select("id")
         .single();
