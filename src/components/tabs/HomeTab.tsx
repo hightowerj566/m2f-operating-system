@@ -151,6 +151,16 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
   const buildEffectiveDone = !nextBuild || overrides.build === true;
 
   const missions = [
+    ...(!hasMacros
+      ? [{
+          key: "set-macros",
+          icon: Calculator,
+          title: "Set your macros",
+          done: false,
+          onClick: () => (onOpenMacros ? onOpenMacros() : onOpenMore?.()),
+          detail: "Dial in calories & your rate of loss/gain",
+        }]
+      : []),
     {
       key: "workout",
       icon: Dumbbell,
