@@ -42,6 +42,7 @@ const App = () => (
           <Route path="/father-athlete-quiz" element={<FatherAthleteQuiz />} />
           <Route path="/readiness" element={<Readiness />} />
           <Route path="/readiness/assessment" element={<FatherAthleteQuiz />} />
+          <Route path="/daily-standards" element={<DailyStandardsPage />} />
           <Route path="/score-reveal" element={<ScoreReveal />} />
           <Route path="/cohort" element={<Cohort />} />
           <Route path="/build-list" element={<BuildList />} />
