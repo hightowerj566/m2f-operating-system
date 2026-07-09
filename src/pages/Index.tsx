@@ -18,6 +18,7 @@ import { MoreTab } from "@/components/tabs/MoreTab";
 import { MacrosTab } from "@/components/tabs/MacrosTab";
 import { ProgressTab } from "@/components/tabs/ProgressTab";
 import { DailyStandardsTab } from "@/components/tabs/DailyStandardsTab";
+import { FitnessToolsTab } from "@/components/tools/FitnessToolsTab";
 import { HomeTab } from "@/components/tabs/HomeTab";
 import { useDueDatePass } from "@/hooks/useM2fOs";
 import { StreakMilestonePopup } from "@/components/streak/StreakMilestonePopup";
@@ -104,6 +105,7 @@ export default function Index() {
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [loadRecommendations, setLoadRecommendations] = useState<LoadRecommendation[]>([]);
   const [standardsStreak, setStandardsStreak] = useState(0);
+  const [showFitnessTools, setShowFitnessTools] = useState(false);
 
   // The displayed program day based on offset
   const displayedDay = Math.min(baseDay + dayOffset, totalDays);
@@ -685,9 +687,9 @@ export default function Index() {
                     <span className="text-primary">📅</span> Day {displayedDay}
                   </div>
                 )}
-                <button onClick={() => handleNavClick("Daily")}
+                <button onClick={() => setShowFitnessTools(true)}
                   className="flex items-center gap-2 bg-secondary text-foreground text-sm font-semibold px-4 py-2 rounded-full border border-border hover:border-primary/40 transition-colors">
-                  <ClipboardList className="w-4 h-4 text-primary" /> Daily Standards
+                  <Wrench className="w-4 h-4 text-primary" /> Fitness Tools
                 </button>
               </div>
             </div>
