@@ -281,7 +281,13 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
       {/* ── 1 · Emotional Countdown Header ── */}
       <div className="px-5 pt-8">
         <p className="text-[11px] font-bold tracking-[0.22em] uppercase text-muted-foreground mb-3">
-          Good to see you, {firstName}
+          Good to see you,{" "}
+          <button
+            onClick={promptForName}
+            className={`underline-offset-2 ${hasRealName ? "hover:underline" : "underline text-primary"}`}
+          >
+            {hasRealName ? firstName : "add your name"}
+          </button>
         </p>
         {arrived ? (
           <h1 className="font-black tracking-tight leading-[0.9] text-foreground text-[64px]">
