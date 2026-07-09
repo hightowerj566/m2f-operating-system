@@ -425,6 +425,39 @@ export type Database = {
         }
         Relationships: []
       }
+      learn_progress: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          id: string
+          last_viewed_at: string
+          lesson_slug: string
+          saved: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          last_viewed_at?: string
+          lesson_slug: string
+          saved?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          last_viewed_at?: string
+          lesson_slug?: string
+          saved?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       macro_adjustments: {
         Row: {
           actual_rate_lb_per_week: number
