@@ -669,8 +669,9 @@ export default function Index() {
           <>
             <div className="px-5 pt-8 pb-4">
               <p className="text-xs font-semibold tracking-widest text-muted-foreground uppercase mb-1">{programName || "NO PROGRAM ASSIGNED"}</p>
-              <h1 className="text-5xl font-black tracking-tight text-foreground mb-4">WORKOUT</h1>
-              <div className="flex gap-3">
+              <h1 className="text-5xl font-black tracking-tight text-foreground mb-1">TODAY</h1>
+              <p className="text-sm text-muted-foreground mb-4">Train. Hold the standards. Own the day.</p>
+              <div className="flex gap-3 flex-wrap">
                 {isCoach ? (
                   <button onClick={() => setShowDayPicker(true)}
                     className="flex items-center gap-2 bg-secondary text-foreground text-sm font-semibold px-4 py-2 rounded-full border border-border hover:border-primary/40 transition-colors">
@@ -681,6 +682,10 @@ export default function Index() {
                     <span className="text-primary">📅</span> Day {displayedDay}
                   </div>
                 )}
+                <button onClick={() => handleNavClick("Daily")}
+                  className="flex items-center gap-2 bg-secondary text-foreground text-sm font-semibold px-4 py-2 rounded-full border border-border hover:border-primary/40 transition-colors">
+                  <ClipboardList className="w-4 h-4 text-primary" /> Daily Standards
+                </button>
               </div>
             </div>
             {user && <TrainingScheduleSelector userId={user.id} programName={programName} programId={programId} onChange={handleScheduleChange} onProgramSwitch={handleProgramSwitch} />}
