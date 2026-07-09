@@ -18,6 +18,10 @@ import DayOne from "./pages/DayOne";
 import WeekReview from "./pages/WeekReview";
 import Onboarding from "./pages/Onboarding";
 import Readiness from "./pages/Readiness";
+import Learn from "./pages/Learn";
+import LearnCategory from "./pages/LearnCategory";
+import LearnLesson from "./pages/LearnLesson";
+import LearnSearch from "./pages/LearnSearch";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
