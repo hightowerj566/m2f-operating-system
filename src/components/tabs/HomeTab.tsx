@@ -85,23 +85,31 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
     },
   });
 
-  // Mission 2: Partner question — locally-acked per day
-  const askKey = `m2f.ask.${todayISO()}`;
-  const [askDone, setAskDone] = useState(false);
-  useEffect(() => { setAskDone(localStorage.getItem(askKey) === "1"); }, [askKey]);
-  const prompt = askHerTonight(new Date(), partnerName);
-  const markAsk = () => {
-    localStorage.setItem(askKey, "1");
-    setAskDone(true);
+  // Per-day mission toggle overrides (allows user to check/uncheck any mission)
+  const overrideKey = (key: string) => `m2f.mission.${key}.${todayISO()}`;
+  const [overrides, setOverrides] = useState<Record<string, boolean>>({});
+  useEffect(() => {
+    const next: Record<string, boolean> = {};
+    ["workout", "nutrition", "ask", "build"].forEach((k) => {
+      next[k] = localStorage.getItem(overrideKey(k)) === "1";
+    });
+    setOverrides(next);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const toggleOverride = (key: string) => {
+    setOverrides((prev) => {
+      const nextVal = !prev[key];
+      if (nextVal) localStorage.setItem(overrideKey(key), "1");
+      else localStorage.removeItem(overrideKey(key));
+      return { ...prev, [key]: nextVal };
+    });
   };
 
-  // Mission 3: Nutrition — locally-acked per day (opens Macros)
-  const nutriKey = `m2f.nutrition.${todayISO()}`;
-  const [nutriDone, setNutriDone] = useState(false);
-  useEffect(() => { setNutriDone(localStorage.getItem(nutriKey) === "1"); }, [nutriKey]);
+  const askDone = overrides.ask === true;
+  const nutriDone = overrides.nutrition === true;
+  const prompt = askHerTonight(new Date(), partnerName);
   const openNutrition = () => {
-    localStorage.setItem(nutriKey, "1");
-    setNutriDone(true);
+    if (!nutriDone) toggleOverride("nutrition");
     if (onOpenMacros) onOpenMacros();
     else onOpenMore?.();
   };
