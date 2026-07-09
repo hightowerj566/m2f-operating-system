@@ -40,6 +40,7 @@ export function useSubscription(userId: string | undefined): SubscriptionState {
   }, [userId]);
 
   useEffect(() => {
+    if (FREE_ACCESS_TEMP) { setLoading(false); return; }
     if (!userId) {
       setLoading(false);
       return;
