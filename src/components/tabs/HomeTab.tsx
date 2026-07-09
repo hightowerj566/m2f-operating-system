@@ -181,11 +181,6 @@ export function HomeTab({ onOpenToday, onOpenProgress, onOpenWorkout, onOpenStan
               Your job today: become 1% more prepared than yesterday.
             </p>
           </>
-            <p className="text-muted-foreground mt-2 text-sm">until everything changes</p>
-            <p className="text-foreground/90 mt-4 text-sm max-w-xs mx-auto leading-relaxed">
-              Your job today: become 1% more prepared than yesterday.
-            </p>
-          </>
         ) : trainingMode ? (
           <>
             <h1 className="text-5xl font-black tracking-tight text-foreground leading-none">BUILD THE MAN</h1>
