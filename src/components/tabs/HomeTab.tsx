@@ -230,10 +230,11 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
         ? "You're on track."
         : "One step today.";
 
-  const bigNumber = arrived ? "Day One+" : (days != null ? `${days}` : "—");
+  const weeksLeft = days != null ? Math.floor(days / 7) : null;
+  const extraDaysLeft = days != null ? days % 7 : null;
   const bigSub = arrived
     ? `${babyName ? `${babyName} is here.` : "She's here."} ${statusLine}`
-    : `Days Until ${babyName || "Baby"} Arrives`;
+    : `Until ${babyName || "Baby"} Arrives`;
 
   return (
     <div className="pb-nav">
