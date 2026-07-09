@@ -1,6 +1,6 @@
-// M2F OS · Home v3 — command center rebuilt around the three-decision rule.
-// Above the fold: Countdown hero → 3 CommandCards (Today / Progress / Next).
-// Deeper Tools sit below the fold.
+// M2F OS · Home — command center matching the Operating System mockup.
+// Header (logo · title · avatar) → greeting + countdown hero → 3 numbered cards
+// (Today / Progress / Next) → horizontal Deeper Tools row.
 
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
@@ -8,43 +8,41 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLatestReadiness } from "@/hooks/useReadiness";
 import {
-  Dumbbell, ClipboardCheck, ChevronRight, Target, Check, Users,
-  Hammer, Heart, MessageCircle, CalendarRange, BookOpen, Flame,
-  TrendingUp, Map, Sunrise,
+  Dumbbell, CheckCircle2, MessageSquare, Home as HomeIcon, ChevronRight,
+  ArrowRight, Flame, Users, Calendar, Star, Clock, Utensils, BookOpen,
+  Wrench, Layers, HeartHandshake, User,
 } from "lucide-react";
-import { useWeeklyMission, useCompleteMission } from "@/hooks/useMissions";
-import { cohortMonthFromDueDate, cohortName, useCohortMemberCount } from "@/hooks/useM2fOs";
+import { useWeeklyMission } from "@/hooks/useMissions";
 import { useBuildList, applyMilestoneBoost, surfaceMilestones } from "@/hooks/useBuildList";
-import { getPhase, daysRemaining as calcDaysRemaining, pregnancyWeek, phaseBrief } from "@/lib/phases";
+import { getPhase, daysRemaining as calcDaysRemaining, pregnancyWeek } from "@/lib/phases";
 import { askHerTonight } from "@/content/fatherhood";
-import { CATEGORIES, countdownParts, daysAsDad } from "@/lib/readiness";
-import { Button } from "@/components/ui/button";
+import { CATEGORIES, daysAsDad } from "@/lib/readiness";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = supabase as any;
-
-const COHORT_MIN_MEMBERS = 10;
 
 interface HomeTabProps {
   onOpenToday: () => void;
   onOpenProgress: () => void;
   onOpenWorkout: () => void;
   onOpenStandards: () => void;
+  onOpenMacros?: () => void;
+  onOpenMore?: () => void;
   programName?: string | null;
 }
 
-export function HomeTab({ onOpenToday, onOpenProgress, onOpenWorkout, onOpenStandards, programName }: HomeTabProps) {
+export function HomeTab({
+  onOpenToday, onOpenProgress, onOpenMacros, onOpenMore, programName,
+}: HomeTabProps) {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { data, isLoading } = useLatestReadiness(user?.id);
+  const { data } = useLatestReadiness(user?.id);
   const { data: buildMilestones = [] } = useBuildList(user?.id);
 
-  const trainingMode = data?.journey === "training" && !data?.dueDate;
   const days = calcDaysRemaining(data?.dueDate);
   const arrived = !!data?.babyArrivedAt;
   const phase = getPhase(days, arrived);
   const week = pregnancyWeek(days);
-  const countdown = countdownParts(data?.dueDate);
   const dadDays = daysAsDad(data?.babyArrivedAt);
 
   const latest = data?.latest ?? null;
@@ -58,24 +56,49 @@ export function HomeTab({ onOpenToday, onOpenProgress, onOpenWorkout, onOpenStan
     ? [...CATEGORIES].sort((a, b) => (byCategory[a.slug] ?? 0) - (byCategory[b.slug] ?? 0))[0]
     : null;
   const { data: weeklyMission } = useWeeklyMission(user?.id, weakestForMission?.id);
-  const completeMission = useCompleteMission(user?.id);
 
   const nextMilestone = surfaceMilestones(buildMilestones, phase && phase.id <= 5 ? phase.id : 5, 1)[0];
+  const nextOpenBuild = buildMilestones.find((m) => !m.completed) ?? null;
   const builtCount = buildMilestones.filter((m) => m.completed).length;
   const buildPct = buildMilestones.length > 0 ? Math.round((builtCount / buildMilestones.length) * 100) : 0;
 
-  const myCohortMonth = cohortMonthFromDueDate(data?.dueDate);
-  const myCohortName = cohortName(myCohortMonth);
-  const { data: cohortCount = 0 } = useCohortMemberCount(myCohortMonth);
+  // Profile: first name + partner
+  const { data: profile } = useQuery({
+    queryKey: ["home-profile", user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data: p } = await db
+        .from("profiles")
+        .select("display_name, first_name, name, partner_name")
+        .eq("user_id", user!.id)
+        .maybeSingle();
+      return p as { display_name?: string; first_name?: string; name?: string; partner_name?: string } | null;
+    },
+  });
 
-  // Today's remaining standards
+  const rawName =
+    profile?.first_name || profile?.display_name || profile?.name ||
+    user?.email?.split("@")[0] || "Dad";
+  const firstName = rawName.split(" ")[0];
+  const greetPrefix = (() => {
+    const h = new Date().getHours();
+    if (h < 12) return "Good morning";
+    if (h < 18) return "Good afternoon";
+    return "Good evening";
+  })();
+
+  // Today's standards
   const today = new Date().toISOString().slice(0, 10);
   const { data: standardsToday } = useQuery({
     queryKey: ["home-standards", user?.id, today],
     enabled: !!user?.id,
     queryFn: async () => {
       const [{ data: defs }, { data: log }, { data: prefs }] = await Promise.all([
-        db.from("standard_definitions").select("id, key, label, emoji, is_global, target_user_id, is_active, sort_order").eq("is_active", true).or(`is_global.eq.true,target_user_id.eq.${user!.id}`).order("sort_order"),
+        db.from("standard_definitions")
+          .select("id, key, label, emoji, is_global, target_user_id, is_active, sort_order")
+          .eq("is_active", true)
+          .or(`is_global.eq.true,target_user_id.eq.${user!.id}`)
+          .order("sort_order"),
         db.from("daily_standards").select("completions").eq("user_id", user!.id).eq("date", today).maybeSingle(),
         db.from("user_standard_prefs").select("standard_definition_id, enabled").eq("user_id", user!.id),
       ]);
@@ -86,11 +109,11 @@ export function HomeTab({ onOpenToday, onOpenProgress, onOpenWorkout, onOpenStan
       const completions = log?.completions ?? {};
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const remaining = active.filter((d: any) => !completions[d.key]);
-      return { total: active.length, done: active.length - remaining.length, next: remaining.slice(0, 3) };
+      return { total: active.length, done: active.length - remaining.length };
     },
   });
 
-  // Standards streak (last 30d simplified)
+  // Standards streak
   const { data: streak = 0 } = useQuery({
     queryKey: ["home-streak", user?.id],
     enabled: !!user?.id,
@@ -124,8 +147,7 @@ export function HomeTab({ onOpenToday, onOpenProgress, onOpenWorkout, onOpenStan
     enabled: !!user?.id,
     queryFn: async () => {
       const start = new Date();
-      const day = start.getDay(); // 0=Sun
-      start.setDate(start.getDate() - day);
+      start.setDate(start.getDate() - start.getDay());
       start.setHours(0, 0, 0, 0);
       const { count } = await db
         .from("workout_feedback")
@@ -136,276 +158,341 @@ export function HomeTab({ onOpenToday, onOpenProgress, onOpenWorkout, onOpenStan
     },
   });
 
-  // Partner name for Ask Her Tonight header
-  const { data: partnerName } = useQuery({
-    queryKey: ["partner-name", user?.id],
+  // Conversations this month (mission completions this calendar month as proxy)
+  const { data: conversationsMonth = 0 } = useQuery({
+    queryKey: ["home-convos-month", user?.id],
     enabled: !!user?.id,
     queryFn: async () => {
-      const { data: p } = await db.from("profiles").select("partner_name").eq("user_id", user!.id).maybeSingle();
-      return (p?.partner_name as string | null) ?? null;
+      const start = new Date();
+      start.setDate(1); start.setHours(0, 0, 0, 0);
+      const { count } = await db
+        .from("user_missions")
+        .select("id", { count: "exact", head: true })
+        .eq("user_id", user!.id)
+        .eq("status", "completed")
+        .gte("completed_at", start.toISOString());
+      return count || 0;
     },
   });
 
+  const partnerName = profile?.partner_name ?? null;
   const prompt = askHerTonight(new Date(), partnerName);
 
-  // Day completion % (workout + standards)
   const standardsPct = standardsToday && standardsToday.total > 0
     ? Math.round((standardsToday.done / standardsToday.total) * 100)
     : 0;
   const dayCompletion = Math.round((standardsPct + (workoutsThisWeek > 0 ? 100 : 0)) / 2);
 
+  const bigDays = arrived ? dadDays ?? 0 : days ?? 0;
+  const bigLabel = arrived ? "DAYS IN" : "DAYS";
+  const bigSub = arrived ? "since everything changed" : "until everything changes";
+
+  const workoutName = phase ? phase.trainingGuidance.split(",")[0] : programName || "Rest & recover";
+
   return (
-    <div className="px-5 pt-8 pb-nav">
-      {/* ── HERO: THE CLOCK ── */}
-      <div className="text-center mb-8">
-        <p className="text-[10px] font-bold tracking-[0.25em] text-muted-foreground uppercase mb-3">
-          Man to Father Operating System
-        </p>
-        {dadDays != null ? (
-          <>
-            <h1 className="text-6xl font-black tracking-tight text-foreground leading-none">DAY {dadDays}</h1>
-            <p className="text-muted-foreground mt-2 text-sm">
-              of being {data?.babyName ? `${data.babyName}'s` : "her"} dad
-            </p>
-          </>
-        ) : countdown ? (
-          <>
-            <h1 className="text-6xl font-black tracking-tight text-foreground leading-none">
-              {countdown.weeks}
-              <span className="text-2xl font-bold text-muted-foreground ml-1">W</span>{" "}
-              {countdown.days}
-              <span className="text-2xl font-bold text-muted-foreground ml-1">D</span>
-            </h1>
-            <p className="text-muted-foreground mt-2 text-sm">until everything changes</p>
-            <p className="text-foreground/90 mt-4 text-sm max-w-xs mx-auto leading-relaxed">
-              Your job today: become 1% more prepared than yesterday.
-            </p>
-          </>
-        ) : trainingMode ? (
-          <>
-            <h1 className="text-5xl font-black tracking-tight text-foreground leading-none">BUILD THE MAN</h1>
-            <p className="text-muted-foreground mt-2 text-sm">{programName || "The rest can wait."}</p>
-          </>
-        ) : (
-          <>
-            <h1 className="text-4xl font-black tracking-tight text-foreground">YOUR SYSTEM NEEDS A DATE</h1>
-            <p className="text-muted-foreground mt-2 mb-4 text-sm">
-              M2F runs on one date. Ninety seconds of setup and the whole system comes alive.
-            </p>
-            <Button onClick={() => navigate("/start")} className="gold-gradient text-primary-foreground font-bold rounded-xl px-8 h-12">
-              Start The Build <ChevronRight className="ml-1 w-4 h-4" />
-            </Button>
-          </>
-        )}
-      </div>
-
-      {/* ── THREE COMMAND CARDS ── */}
-      <div className="space-y-3 mb-8">
-        {/* CARD A · TODAY */}
-        <CommandCard
-          eyebrow="Today"
-          title="What to do right now"
-          icon={Sunrise}
-          onClick={onOpenToday}
-          cta="Open Today"
-        >
-          <div className="grid grid-cols-2 gap-2">
-            <MiniStat label="Workout" value={phase ? phase.trainingGuidance.split(",")[0] : programName || "Set program"} />
-            <MiniStat label="Standards" value={standardsToday ? `${standardsToday.done}/${standardsToday.total}` : "—"} />
-            <MiniStat label="Mission" value={weeklyMission?.status === "completed" ? "Done ✓" : weeklyMission ? "Open" : "—"} />
-            <MiniStat label="Day complete" value={`${dayCompletion}%`} />
-          </div>
-          {standardsToday && standardsToday.next.length > 0 && (
-            <p className="text-xs text-muted-foreground mt-3 truncate">
-              Next: {standardsToday.next.map((s: { emoji: string; label: string }) => `${s.emoji} ${s.label}`).join(" · ")}
-            </p>
-          )}
-        </CommandCard>
-
-        {/* CARD B · PROGRESS */}
-        <CommandCard
-          eyebrow="Progress"
-          title="Am I improving?"
-          icon={TrendingUp}
-          onClick={onOpenProgress}
-          cta="View Progress"
-        >
-          <div className="grid grid-cols-2 gap-2">
-            <MiniStat
-              label="Father Readiness"
-              value={readinessScore != null ? `${readinessScore}%` : "—"}
-              accent={delta != null && delta !== 0 ? (delta > 0 ? `+${delta}` : `${delta}`) : undefined}
-            />
-            <MiniStat label="Standards streak" value={streak > 0 ? `${streak}d 🔥` : "—"} />
-            <MiniStat label="Workouts / wk" value={`${workoutsThisWeek}`} />
-            <MiniStat label="Build list" value={buildMilestones.length > 0 ? `${buildPct}%` : "—"} />
-          </div>
-        </CommandCard>
-
-        {/* CARD C · NEXT */}
-        <CommandCard
-          eyebrow="Next"
-          title="What's coming"
-          icon={Map}
-          onClick={() => navigate("/plan")}
-          cta="See The Road Ahead"
-        >
-          <div className="grid grid-cols-2 gap-2">
-            <MiniStat
-              label={arrived ? "Days as dad" : "Days remaining"}
-              value={arrived ? `${dadDays}` : days != null ? `${days}` : "—"}
-            />
-            <MiniStat label="Phase" value={phase ? phase.name : trainingMode ? "Training" : "—"} />
-            <MiniStat label="Week" value={week ? `${week}` : "—"} />
-            <MiniStat label="Next milestone" value={nextMilestone ? nextMilestone.title : "All built"} />
-          </div>
-          {phase && (
-            <p className="text-xs text-muted-foreground mt-3 leading-relaxed">
-              {phaseBrief(phase, days).split(" — ")[0]}
-            </p>
-          )}
-        </CommandCard>
-      </div>
-
-      {/* ── MISSION (surfaced when active) ── */}
-      {weeklyMission && !trainingMode && weeklyMission.status !== "completed" && (
-        <div className="bg-card border border-primary/40 rounded-2xl p-4 mb-6">
-          <div className="flex items-center gap-2 mb-2">
-            <Target className="w-4 h-4 text-primary" />
-            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-primary">
-              This Week's Mission · {CATEGORIES.find((c) => c.id === weeklyMission.mission.category_id)?.name}
-            </p>
-          </div>
-          <p className="font-bold text-foreground mb-1">{weeklyMission.mission.title}</p>
-          <p className="text-sm text-muted-foreground leading-relaxed mb-3">{weeklyMission.mission.directive}</p>
-          <Button onClick={() => completeMission(weeklyMission.id)} size="sm" className="gold-gradient text-primary-foreground font-bold rounded-lg">
-            Mark Complete <Check className="ml-1 w-4 h-4" />
-          </Button>
+    <div className="pb-nav">
+      {/* ── HEADER ROW ── */}
+      <div className="px-5 pt-5 flex items-center justify-between">
+        <div className="flex items-baseline gap-0 font-black tracking-tight text-lg leading-none">
+          <span className="text-foreground">M2</span>
+          <span className="text-primary">F</span>
         </div>
-      )}
+        <p className="text-[11px] text-muted-foreground leading-tight text-center max-w-[140px]">
+          Man to Father<br />Operating System
+        </p>
+        <button
+          onClick={onOpenMore}
+          aria-label="Profile"
+          className="w-9 h-9 rounded-full bg-secondary border border-border flex items-center justify-center overflow-hidden"
+        >
+          <User className="w-4 h-4 text-muted-foreground" />
+        </button>
+      </div>
 
-      {/* ── ASK HER TONIGHT ── */}
-      {user && !arrived && data?.dueDate && (
-        <div className="bg-card border border-border rounded-2xl p-4 mb-6">
-          <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-muted-foreground flex items-center gap-1.5 mb-2">
-            <MessageCircle className="w-3.5 h-3.5 text-primary" />
-            Ask {partnerName || "her"} tonight
+      {/* ── COUNTDOWN HERO ── */}
+      <div className="px-5 pt-6">
+        <p className="text-[11px] font-bold tracking-[0.22em] uppercase text-muted-foreground mb-2">
+          {greetPrefix}, {firstName}
+        </p>
+        <h1 className="font-black tracking-tight leading-none text-[68px]">
+          <span className="text-foreground">{bigDays}</span>
+          <span className="text-primary ml-2 text-[40px] align-top relative top-3">{bigLabel}</span>
+        </h1>
+        <p className="text-muted-foreground mt-1 text-sm">{bigSub}</p>
+        <div className="mt-4 border-l-2 border-primary pl-3">
+          <p className="text-sm text-foreground/90 leading-snug">
+            Your job today: become 1% more prepared than yesterday.
           </p>
-          <p className="text-sm text-foreground/90 leading-relaxed italic">"{prompt}"</p>
         </div>
-      )}
+      </div>
 
-      {/* ── DEEPER TOOLS ── */}
-      <div className="mt-2">
-        <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-muted-foreground mb-3 px-1">
-          Deeper Tools
-        </p>
-        <div className="space-y-2">
-          <SlimRow icon={Dumbbell} label="Today's Training" sub={phase ? phase.trainingGuidance : programName || ""} onClick={onOpenWorkout} />
-          <SlimRow icon={ClipboardCheck} label="Daily Standards" sub={standardsToday ? `${standardsToday.done}/${standardsToday.total} held today` : "Hold the standard"} onClick={onOpenStandards} />
-          {user && buildMilestones.length > 0 && !trainingMode && (
-            <SlimRow
-              icon={Hammer}
-              label={`Before She Arrives · ${builtCount}/${buildMilestones.length}`}
-              sub={nextMilestone ? `Next: ${nextMilestone.title}` : "Everything's built. Hold the line."}
+      {/* ── 3 COMMAND CARDS ── */}
+      <div className="px-5 pt-6 space-y-4">
+        {/* CARD 1 · TODAY (blue) */}
+        <NumberedCard
+          n={1}
+          title="TODAY"
+          subtitle="Your plan for today"
+          ctaLabel="Open Today"
+          onCta={onOpenToday}
+          tone="blue"
+        >
+          <ul className="divide-y divide-border/60">
+            <TodayRow
+              icon={<Dumbbell className="w-4 h-4 text-primary" />}
+              label="Workout"
+              value={workoutName}
+              onClick={onOpenToday}
+            />
+            <TodayRow
+              icon={<CheckCircle2 className="w-4 h-4 text-emerald-400" />}
+              label="Daily Standards"
+              value={standardsToday ? `${standardsToday.done} / ${standardsToday.total}` : "—"}
+              valueClassName="text-emerald-400 font-bold"
+              onClick={onOpenToday}
+            />
+            <TodayRow
+              icon={<MessageSquare className="w-4 h-4 text-purple-400" />}
+              label="Ask Her Tonight"
+              value={arrived ? "Check in with her" : prompt.length > 26 ? "Have the conversation" : prompt}
+              onClick={onOpenToday}
+            />
+            <TodayRow
+              icon={<HomeIcon className="w-4 h-4 text-amber-400" />}
+              label="Build Task"
+              value={nextOpenBuild?.title ?? (buildMilestones.length ? "All built ✓" : "Set your list")}
               onClick={() => navigate("/build-list")}
             />
-          )}
-          {user && data?.dueDate && !arrived && (
-            <SlimRow icon={Heart} label={`Her & Baby · Week ${week}`} sub="What she's feeling, what baby's doing, your move" onClick={() => navigate("/her-and-baby")} />
-          )}
-          {user && data?.dueDate && (
-            <SlimRow icon={CalendarRange} label="The Plan" sub={days != null ? `Your next ${days} days, plotted` : "The full path"} onClick={() => navigate("/plan")} />
-          )}
-          {user && (arrived || (days != null && days <= 60)) && (
-            <SlimRow icon={BookOpen} label={arrived ? "The First 40 Days" : "The Day One Playbook"} sub={arrived ? "The postpartum operating manual" : "What to do the moment it starts"} onClick={() => navigate("/day-one")} />
-          )}
-          {user && !trainingMode && (
-            <SlimRow icon={Flame} label="Weekly Review" sub="The Sunday scoreboard" onClick={() => navigate("/week-review")} />
-          )}
-          {myCohortName && cohortCount >= COHORT_MIN_MEMBERS && (
-            <SlimRow icon={Users} label={myCohortName} sub={`${cohortCount} men on your exact countdown`} onClick={() => navigate("/cohort")} />
-          )}
-          {trainingMode && (
-            <SlimRow
-              icon={Heart}
-              label="Baby on the way?"
-              sub="Set your due date — the full M2F system switches on"
-              onClick={() => navigate("/start")}
+          </ul>
+          <div className="mt-4 flex items-center gap-3">
+            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-muted-foreground shrink-0">
+              Day Completion
+            </p>
+            <div className="flex-1 h-1.5 rounded-full bg-secondary overflow-hidden">
+              <div className="h-full bg-primary" style={{ width: `${dayCompletion}%` }} />
+            </div>
+            <p className="text-sm font-black text-foreground tabular-nums">{dayCompletion}%</p>
+          </div>
+        </NumberedCard>
+
+        {/* CARD 2 · PROGRESS (green) */}
+        <NumberedCard
+          n={2}
+          title="PROGRESS"
+          subtitle="You vs. yesterday"
+          ctaLabel="View Progress"
+          onCta={onOpenProgress}
+          tone="green"
+        >
+          <div className="grid grid-cols-5 gap-2 pt-1">
+            <ProgressStat
+              value={readinessScore != null ? `${readinessScore}%` : "—"}
+              label="Readiness"
+              accent={delta != null && delta !== 0 ? (delta > 0 ? `+${delta}% this week` : `${delta}% this week`) : undefined}
+              accentPositive={delta != null && delta > 0}
+              icon={<span className="inline-block w-8 h-8 rounded-full border-2 border-emerald-400/70" />}
             />
-          )}
+            <ProgressStat
+              value={`${streak}`}
+              label="Day Streak"
+              icon={<Flame className="w-5 h-5 text-amber-400" />}
+            />
+            <ProgressStat
+              value={`${workoutsThisWeek} / ${phase ? 5 : 4}`}
+              label="Workouts"
+              sub="This Week"
+              icon={<Dumbbell className="w-5 h-5 text-emerald-400" />}
+            />
+            <ProgressStat
+              value={`${buildPct}%`}
+              label="Build List"
+              sub={buildMilestones.length ? `${builtCount} / ${buildMilestones.length} done` : "—"}
+              icon={<HomeIcon className="w-5 h-5 text-amber-400" />}
+            />
+            <ProgressStat
+              value={`${conversationsMonth}`}
+              label="Conversations"
+              sub="This Month"
+              icon={<Users className="w-5 h-5 text-primary" />}
+            />
+          </div>
+        </NumberedCard>
+
+        {/* CARD 3 · NEXT (purple) */}
+        <NumberedCard
+          n={3}
+          title="NEXT"
+          subtitle="What's coming up"
+          ctaLabel="See Road Ahead"
+          onCta={() => navigate("/plan")}
+          tone="purple"
+        >
+          <div className="grid grid-cols-3 gap-3">
+            <NextCol
+              icon={<Calendar className="w-4 h-4 text-purple-400" />}
+              eyebrow="Next Milestone"
+              headline={week ? `Week ${week + 1}` : phase ? phase.name : "—"}
+              sub={nextMilestone?.title ?? "Baby's development continues."}
+            />
+            <NextCol
+              icon={<Star className="w-4 h-4 text-purple-400" />}
+              eyebrow="Focus"
+              headline={weeklyMission?.mission?.title ?? (phase ? phase.name : "Foundation")}
+              sub={weakestForMission ? `Category: ${weakestForMission.name}` : "Hold the standard."}
+            />
+            <NextCol
+              icon={<Clock className="w-4 h-4 text-purple-400" />}
+              eyebrow="Days Remaining"
+              headline={arrived ? `Day ${dadDays}` : `${days ?? "—"}`}
+              sub={arrived ? "The best part is now." : "Stay consistent. Finish strong."}
+            />
+          </div>
+        </NumberedCard>
+      </div>
+
+      {/* ── DEEPER TOOLS ── */}
+      <div className="px-5 pt-8">
+        <p className="text-[10px] font-bold tracking-[0.28em] uppercase text-muted-foreground mb-3">
+          Deeper Tools
+        </p>
+        <div className="grid grid-cols-5 gap-2">
+          <ToolButton icon={Utensils} label="Nutrition" onClick={onOpenMacros ?? onOpenMore ?? (() => {})} />
+          <ToolButton icon={Layers} label="Programs" onClick={onOpenMore ?? (() => {})} />
+          <ToolButton icon={HeartHandshake} label="Coach" onClick={onOpenMore ?? (() => {})} />
+          <ToolButton icon={BookOpen} label="Knowledge" onClick={() => navigate("/plan")} />
+          <ToolButton icon={Wrench} label="Resources" onClick={onOpenMore ?? (() => {})} />
         </div>
       </div>
     </div>
   );
 }
 
-/** CommandCard — one of the three major above-the-fold decisions. */
-function CommandCard({
-  eyebrow,
-  title,
-  icon: Icon,
-  onClick,
-  cta,
-  children,
+/* ─────────────── Components ─────────────── */
+
+type Tone = "blue" | "green" | "purple";
+const TONE: Record<Tone, { border: string; bg: string; badge: string; cta: string; ctaText: string }> = {
+  blue: {
+    border: "border-primary/40",
+    bg: "bg-gradient-to-b from-primary/10 to-transparent",
+    badge: "bg-primary text-primary-foreground",
+    cta: "border-primary/60 hover:border-primary",
+    ctaText: "text-primary",
+  },
+  green: {
+    border: "border-emerald-500/40",
+    bg: "bg-gradient-to-b from-emerald-500/10 to-transparent",
+    badge: "bg-emerald-500 text-black",
+    cta: "border-emerald-500/60 hover:border-emerald-400",
+    ctaText: "text-emerald-400",
+  },
+  purple: {
+    border: "border-purple-500/40",
+    bg: "bg-gradient-to-b from-purple-500/10 to-transparent",
+    badge: "bg-purple-500 text-white",
+    cta: "border-purple-500/60 hover:border-purple-400",
+    ctaText: "text-purple-400",
+  },
+};
+
+function NumberedCard({
+  n, title, subtitle, ctaLabel, onCta, tone, children,
 }: {
-  eyebrow: string;
-  title: string;
-  icon: React.ComponentType<{ className?: string }>;
-  onClick: () => void;
-  cta: string;
-  children: React.ReactNode;
+  n: number; title: string; subtitle: string; ctaLabel: string;
+  onCta: () => void; tone: Tone; children: React.ReactNode;
+}) {
+  const t = TONE[tone];
+  return (
+    <section className={`rounded-2xl border ${t.border} ${t.bg} bg-card/60 backdrop-blur p-4`}>
+      <div className="flex items-start justify-between gap-3 mb-3">
+        <div className="flex items-center gap-3 min-w-0">
+          <span className={`w-8 h-8 rounded-full ${t.badge} flex items-center justify-center font-black text-sm shrink-0`}>
+            {n}
+          </span>
+          <div className="min-w-0">
+            <h2 className="font-black text-foreground tracking-tight text-base leading-tight">{title}</h2>
+            <p className="text-xs text-muted-foreground truncate">{subtitle}</p>
+          </div>
+        </div>
+        <button
+          onClick={onCta}
+          className={`shrink-0 h-9 px-3 rounded-lg border ${t.cta} ${t.ctaText} text-xs font-bold flex items-center gap-1.5 transition-colors`}
+        >
+          {ctaLabel} <ArrowRight className="w-3.5 h-3.5" />
+        </button>
+      </div>
+      {children}
+    </section>
+  );
+}
+
+function TodayRow({
+  icon, label, value, valueClassName, onClick,
+}: {
+  icon: React.ReactNode; label: string; value: string; valueClassName?: string; onClick?: () => void;
 }) {
   return (
-    <div className="bg-card border border-border rounded-2xl p-5 hover:border-primary/40 transition-colors">
-      <div className="flex items-center gap-2 mb-1">
-        <Icon className="w-4 h-4 text-primary" />
-        <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-primary">{eyebrow}</p>
-      </div>
-      <h2 className="text-lg font-black text-foreground mb-4">{title}</h2>
-      {children}
+    <li>
       <button
         onClick={onClick}
-        className="mt-4 w-full h-11 rounded-xl bg-primary text-primary-foreground font-bold text-sm flex items-center justify-center gap-1 hover:bg-primary/90 transition-colors"
+        className="w-full flex items-center gap-3 py-3 text-left min-h-[48px]"
       >
-        {cta} <ChevronRight className="w-4 h-4" />
+        <span className="w-6 flex justify-center shrink-0">{icon}</span>
+        <span className="font-bold text-sm text-foreground flex-1 truncate">{label}</span>
+        <span className={`text-sm text-muted-foreground truncate max-w-[45%] text-right ${valueClassName ?? ""}`}>
+          {value}
+        </span>
+        <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
       </button>
-    </div>
+    </li>
   );
 }
 
-/** MiniStat — a small labeled stat inside a CommandCard. */
-function MiniStat({ label, value, accent }: { label: string; value: string; accent?: string }) {
-  return (
-    <div className="bg-secondary/50 rounded-lg px-3 py-2 min-w-0">
-      <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground truncate">{label}</p>
-      <p className="text-sm font-bold text-foreground truncate">
-        {value}
-        {accent && <span className="ml-1.5 text-[10px] text-primary font-bold">{accent}</span>}
-      </p>
-    </div>
-  );
-}
-
-function SlimRow({
-  icon: Icon,
-  label,
-  sub,
-  onClick,
+function ProgressStat({
+  value, label, sub, accent, accentPositive, icon,
 }: {
-  icon: React.ComponentType<{ className?: string }>;
-  label: string;
-  sub?: string;
-  onClick: () => void;
+  value: string; label: string; sub?: string;
+  accent?: string; accentPositive?: boolean; icon?: React.ReactNode;
 }) {
   return (
-    <button onClick={onClick} className="w-full bg-card border border-border rounded-xl px-4 py-3 flex items-center gap-3 text-left hover:border-primary transition-colors min-h-[56px]">
-      <Icon className="w-4 h-4 text-primary shrink-0" />
-      <span className="flex-1 min-w-0">
-        <span className="block font-bold text-sm truncate">{label}</span>
-        {sub && <span className="block text-xs text-muted-foreground truncate">{sub}</span>}
-      </span>
-      <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
+    <div className="flex flex-col items-center text-center gap-1 min-w-0">
+      <div className="h-6 flex items-center justify-center">{icon}</div>
+      <p className="text-lg font-black text-foreground leading-none tabular-nums">{value}</p>
+      <p className="text-[10px] font-semibold text-foreground/90 leading-tight truncate w-full">{label}</p>
+      {sub && <p className="text-[9px] text-muted-foreground leading-tight truncate w-full">{sub}</p>}
+      {accent && (
+        <p className={`text-[9px] font-bold leading-tight ${accentPositive ? "text-emerald-400" : "text-destructive"}`}>
+          {accent}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function NextCol({
+  icon, eyebrow, headline, sub,
+}: { icon: React.ReactNode; eyebrow: string; headline: string; sub: string }) {
+  return (
+    <div className="min-w-0">
+      <div className="flex items-center gap-1.5 mb-1">
+        {icon}
+        <p className="text-[9px] font-bold tracking-[0.15em] uppercase text-purple-400 truncate">{eyebrow}</p>
+      </div>
+      <p className="font-black text-foreground text-sm leading-tight mb-1">{headline}</p>
+      <p className="text-[11px] text-muted-foreground leading-snug">{sub}</p>
+    </div>
+  );
+}
+
+function ToolButton({
+  icon: Icon, label, onClick,
+}: { icon: React.ComponentType<{ className?: string }>; label: string; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="flex flex-col items-center justify-center gap-1.5 h-16 rounded-xl bg-card border border-border hover:border-primary/40 transition-colors"
+    >
+      <Icon className="w-4 h-4 text-foreground/80" />
+      <span className="text-[10px] font-semibold text-foreground/90">{label}</span>
     </button>
   );
 }

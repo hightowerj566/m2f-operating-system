@@ -653,6 +653,8 @@ export default function Index() {
             onOpenProgress={() => handleNavClick("Progress")}
             onOpenWorkout={() => handleNavClick("Today")}
             onOpenStandards={() => handleNavClick("Daily")}
+            onOpenMacros={() => handleNavClick("Macros")}
+            onOpenMore={() => handleNavClick("More")}
           />
         );
       case "Daily":
