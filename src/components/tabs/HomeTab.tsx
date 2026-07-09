@@ -85,23 +85,31 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
     },
   });
 
-  // Mission 2: Partner question — locally-acked per day
-  const askKey = `m2f.ask.${todayISO()}`;
-  const [askDone, setAskDone] = useState(false);
-  useEffect(() => { setAskDone(localStorage.getItem(askKey) === "1"); }, [askKey]);
-  const prompt = askHerTonight(new Date(), partnerName);
-  const markAsk = () => {
-    localStorage.setItem(askKey, "1");
-    setAskDone(true);
+  // Per-day mission toggle overrides (allows user to check/uncheck any mission)
+  const overrideKey = (key: string) => `m2f.mission.${key}.${todayISO()}`;
+  const [overrides, setOverrides] = useState<Record<string, boolean>>({});
+  useEffect(() => {
+    const next: Record<string, boolean> = {};
+    ["workout", "nutrition", "ask", "build"].forEach((k) => {
+      next[k] = localStorage.getItem(overrideKey(k)) === "1";
+    });
+    setOverrides(next);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const toggleOverride = (key: string) => {
+    setOverrides((prev) => {
+      const nextVal = !prev[key];
+      if (nextVal) localStorage.setItem(overrideKey(key), "1");
+      else localStorage.removeItem(overrideKey(key));
+      return { ...prev, [key]: nextVal };
+    });
   };
 
-  // Mission 3: Nutrition — locally-acked per day (opens Macros)
-  const nutriKey = `m2f.nutrition.${todayISO()}`;
-  const [nutriDone, setNutriDone] = useState(false);
-  useEffect(() => { setNutriDone(localStorage.getItem(nutriKey) === "1"); }, [nutriKey]);
+  const askDone = overrides.ask === true;
+  const nutriDone = overrides.nutrition === true;
+  const prompt = askHerTonight(new Date(), partnerName);
   const openNutrition = () => {
-    localStorage.setItem(nutriKey, "1");
-    setNutriDone(true);
+    if (!nutriDone) toggleOverride("nutrition");
     if (onOpenMacros) onOpenMacros();
     else onOpenMore?.();
   };
@@ -110,12 +118,15 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
   const nextBuild = buildMilestones.find((m) => !m.completed) ?? null;
   const buildDone = !nextBuild;
 
+  const workoutEffectiveDone = workoutDoneToday || overrides.workout === true;
+  const buildEffectiveDone = !nextBuild || overrides.build === true;
+
   const missions = [
     {
       key: "workout",
       icon: Dumbbell,
-      title: workoutDoneToday ? "Workout complete" : "Complete today's workout",
-      done: workoutDoneToday,
+      title: workoutEffectiveDone ? "Workout complete" : "Complete today's workout",
+      done: workoutEffectiveDone,
       onClick: onOpenToday,
     },
     {
@@ -133,14 +144,13 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
         : `Ask ${partnerName || "her"} tonight's question`,
       done: askDone,
       onClick: () => navigate("/her-and-baby"),
-      secondary: askDone ? undefined : { label: "Mark done", onClick: markAsk },
       detail: askDone ? undefined : `"${prompt}"`,
     },
     {
       key: "build",
       icon: HomeIcon,
-      title: buildDone ? "Build list complete" : (nextBuild?.title ?? "Set your build list"),
-      done: buildDone,
+      title: buildEffectiveDone ? "Build list complete" : (nextBuild?.title ?? "Set your build list"),
+      done: buildEffectiveDone,
       onClick: () => navigate("/build-list"),
     },
   ];
@@ -220,10 +230,11 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
         ? "You're on track."
         : "One step today.";
 
-  const bigNumber = arrived ? "Day One+" : (days != null ? `${days}` : "—");
+  const weeksLeft = days != null ? Math.floor(days / 7) : null;
+  const extraDaysLeft = days != null ? days % 7 : null;
   const bigSub = arrived
     ? `${babyName ? `${babyName} is here.` : "She's here."} ${statusLine}`
-    : `Days Until ${babyName || "Baby"} Arrives`;
+    : `Until ${babyName || "Baby"} Arrives`;
 
   return (
     <div className="pb-nav">
@@ -260,9 +271,24 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
         <p className="text-[11px] font-bold tracking-[0.22em] uppercase text-muted-foreground mb-3">
           Good to see you, {firstName}
         </p>
-        <h1 className="font-black tracking-tight leading-[0.9] text-foreground text-[64px]">
-          {bigNumber}
-        </h1>
+        {arrived ? (
+          <h1 className="font-black tracking-tight leading-[0.9] text-foreground text-[64px]">
+            Day One+
+          </h1>
+        ) : days == null ? (
+          <h1 className="font-black tracking-tight leading-[0.9] text-foreground text-[64px]">—</h1>
+        ) : (
+          <div className="flex items-baseline gap-2 flex-wrap">
+            <span className="font-black tracking-tight leading-none text-foreground text-[64px] tabular-nums">
+              {weeksLeft}
+            </span>
+            <span className="font-bold text-muted-foreground text-lg">weeks</span>
+            <span className="font-black tracking-tight leading-none text-foreground text-[40px] tabular-nums ml-1">
+              {extraDaysLeft}
+            </span>
+            <span className="font-bold text-muted-foreground text-lg">days</span>
+          </div>
+        )}
         <p className="text-muted-foreground mt-3 text-[15px] leading-snug">{bigSub}</p>
         {!arrived && week != null && (
           <p className="text-foreground/90 text-sm mt-1">
@@ -316,40 +342,38 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
           <ul className="space-y-2">
             {missions.map((m) => (
               <li key={m.key}>
-                <button
-                  onClick={m.onClick}
-                  className="w-full flex items-center gap-3 py-3 px-3 rounded-xl bg-secondary/40 hover:bg-secondary/60 transition-colors text-left min-h-[56px]"
-                >
-                  <span className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
-                    m.done ? "bg-emerald-500 border-emerald-500" : "border-border"
-                  }`}>
+                <div className="w-full flex items-center gap-3 py-3 px-3 rounded-xl bg-secondary/40 hover:bg-secondary/60 transition-colors text-left min-h-[56px]">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); toggleOverride(m.key); }}
+                    aria-label={m.done ? "Mark incomplete" : "Mark complete"}
+                    className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
+                      m.done ? "bg-emerald-500 border-emerald-500" : "border-border hover:border-primary"
+                    }`}
+                  >
                     {m.done && <Check className="w-3.5 h-3.5 text-black" strokeWidth={3} />}
-                  </span>
-                  <m.icon className={`w-4 h-4 shrink-0 ${m.done ? "text-muted-foreground" : "text-primary"}`} />
-                  <div className="flex-1 min-w-0">
-                    <p className={`text-sm font-semibold leading-tight ${m.done ? "text-muted-foreground line-through" : "text-foreground"}`}>
-                      {m.title}
-                    </p>
-                    {m.detail && (
-                      <p className="text-[11px] text-muted-foreground italic leading-snug mt-0.5 line-clamp-2">
-                        {m.detail}
+                  </button>
+                  <button
+                    onClick={m.onClick}
+                    className="flex-1 min-w-0 flex items-center gap-3 text-left"
+                  >
+                    <m.icon className={`w-4 h-4 shrink-0 ${m.done ? "text-muted-foreground" : "text-primary"}`} />
+                    <div className="flex-1 min-w-0">
+                      <p className={`text-sm font-semibold leading-tight ${m.done ? "text-muted-foreground line-through" : "text-foreground"}`}>
+                        {m.title}
                       </p>
-                    )}
-                  </div>
-                  {m.secondary && !m.done && (
-                    <span
-                      role="button"
-                      onClick={(e) => { e.stopPropagation(); m.secondary!.onClick(); }}
-                      className="text-[11px] font-bold text-primary shrink-0 px-2 py-1 rounded-md border border-primary/40"
-                    >
-                      {m.secondary.label}
-                    </span>
-                  )}
-                  {(!m.secondary || m.done) && <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />}
-                </button>
+                      {m.detail && (
+                        <p className="text-[11px] text-muted-foreground italic leading-snug mt-0.5 line-clamp-2">
+                          {m.detail}
+                        </p>
+                      )}
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
+                  </button>
+                </div>
               </li>
             ))}
           </ul>
+
 
           <button
             onClick={onOpenToday}
