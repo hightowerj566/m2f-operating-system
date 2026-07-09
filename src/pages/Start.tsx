@@ -133,7 +133,7 @@ export default function Start() {
         );
       }
     }
-    navigate(trainingOnly ? "/" : "/readiness");
+    navigate(trainingOnly ? "/" : "/readiness/assessment");
   };
 
   const answerOption = (q: Q, value: string | number | boolean) => {
