@@ -296,14 +296,56 @@ export function HomeTab({
               label="Daily Standards"
               value={standardsToday ? `${standardsToday.done} / ${standardsToday.total}` : "—"}
               valueClassName="text-emerald-400 font-bold"
-              onClick={onOpenToday}
+              expanded={standardsExpanded}
+              onClick={() => setExpanded(standardsExpanded ? null : "standards")}
             />
+            {standardsExpanded && standardsToday && (
+              <li className="py-2 space-y-1">
+                {standardsToday.items.length === 0 && (
+                  <p className="text-xs text-muted-foreground px-2">No standards configured yet.</p>
+                )}
+                {standardsToday.items.map((s) => {
+                  const checked = !!standardsToday.completions[s.key];
+                  return (
+                    <button
+                      key={s.id}
+                      onClick={() => toggleStandard(s.key)}
+                      disabled={savingKey === s.key}
+                      className="w-full flex items-center gap-3 py-2 px-2 rounded-lg hover:bg-secondary/40 transition-colors text-left disabled:opacity-60"
+                    >
+                      <span className={`w-5 h-5 rounded-md border flex items-center justify-center shrink-0 transition-colors ${checked ? "bg-emerald-500 border-emerald-500" : "border-border"}`}>
+                        {checked && <Check className="w-3.5 h-3.5 text-black" strokeWidth={3} />}
+                      </span>
+                      {s.emoji && <span className="text-sm">{s.emoji}</span>}
+                      <span className={`text-sm flex-1 truncate ${checked ? "text-muted-foreground line-through" : "text-foreground"}`}>
+                        {s.label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </li>
+            )}
             <TodayRow
               icon={<MessageSquare className="w-4 h-4 text-purple-400" />}
               label="Ask Her Tonight"
-              value={arrived ? "Check in with her" : prompt.length > 26 ? "Have the conversation" : prompt}
-              onClick={onOpenToday}
+              value={arrived ? "Check in with her" : "Tonight's question"}
+              expanded={askExpanded}
+              onClick={() => setExpanded(askExpanded ? null : "ask")}
             />
+            {askExpanded && !arrived && (
+              <li className="py-3 px-2">
+                <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-purple-400 mb-2">
+                  Ask {partnerName || "her"} tonight
+                </p>
+                <p className="text-sm text-foreground/90 leading-relaxed italic mb-3">"{prompt}"</p>
+                <button
+                  onClick={() => navigate("/her-and-baby")}
+                  className="text-xs font-bold text-purple-400 flex items-center gap-1"
+                >
+                  See her & baby this week <ArrowRight className="w-3 h-3" />
+                </button>
+              </li>
+            )}
             <TodayRow
               icon={<HomeIcon className="w-4 h-4 text-amber-400" />}
               label="Build Task"
