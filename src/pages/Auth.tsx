@@ -2,6 +2,7 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
+import m2fLogo from "@/assets/m2f-logo.png.asset.json";
 
 
 export default function Auth() {
