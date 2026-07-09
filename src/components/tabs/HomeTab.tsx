@@ -284,30 +284,14 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
             {hasRealName ? firstName : "add your name"}
           </button>
         </p>
-        {arrived ? (
-          <h1 className="font-black tracking-tight leading-[0.9] text-foreground text-[64px]">
-            Day One+
-          </h1>
-        ) : days == null ? (
-          <h1 className="font-black tracking-tight leading-[0.9] text-foreground text-[64px]">—</h1>
-        ) : (
-          <div className="flex items-baseline gap-2 flex-wrap">
-            <span className="font-black tracking-tight leading-none text-foreground text-[64px] tabular-nums">
-              {weeksLeft}
-            </span>
-            <span className="font-bold text-muted-foreground text-lg">weeks</span>
-            <span className="font-black tracking-tight leading-none text-foreground text-[40px] tabular-nums ml-1">
-              {extraDaysLeft}
-            </span>
-            <span className="font-bold text-muted-foreground text-lg">days</span>
-          </div>
-        )}
-        <p className="text-muted-foreground mt-3 text-[15px] leading-snug">{bigSub}</p>
-        {!arrived && week != null && (
-          <p className="text-foreground/90 text-sm mt-1">
-            Week {week} · <span className="text-primary font-semibold">{statusLine}</span>
-          </p>
-        )}
+        <Countdown
+          days={days}
+          arrived={arrived}
+          babyArrivedAt={data?.babyArrivedAt}
+          week={week}
+          babyName={babyName}
+          firstName={firstName}
+        />
       </div>
 
       {/* ── 2 · Father Readiness Ring ── */}
