@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { ChevronLeft, ChevronRight, Dumbbell, BarChart2, TrendingUp, Menu, Lock, Sparkles, Check, LayoutDashboard, Home, ClipboardList, CalendarCheck, LineChart } from "lucide-react";
+import { ChevronLeft, ChevronRight, Dumbbell, TrendingUp, Menu, Lock, Sparkles, Check, LayoutDashboard, Home, ClipboardList, Utensils, LineChart } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useSubscription } from "@/hooks/useSubscription";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -57,8 +57,8 @@ interface WorkoutGroup {
 
 const baseNavItems = [
   { icon: Home, label: "Home" },
-  { icon: CalendarCheck, label: "Today" },
-  { icon: BarChart2, label: "Fuel" },
+  { icon: Dumbbell, label: "Today" },
+  { icon: Utensils, label: "Macros" },
   { icon: LineChart, label: "Progress" },
   { icon: Menu, label: "More" },
 ];
