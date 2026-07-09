@@ -14,6 +14,8 @@ import {
   Wrench,
   Baby,
   Download,
+  BarChart2,
+  ClipboardList,
 } from "lucide-react";
 import { format } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
