@@ -266,10 +266,8 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
 
       {/* ── Minimal header ── */}
       <div className="px-5 pt-5 flex items-center justify-between">
-        <div className="flex items-baseline gap-0 font-black tracking-tight text-lg leading-none">
-          <span className="text-foreground">M2</span>
-          <span className="text-primary">F</span>
-        </div>
+        <img src={m2fLogo.url} alt="M2F" className="h-9 w-auto object-contain" />
+
         <button
           onClick={onOpenMore}
           aria-label="Profile"
