@@ -1034,6 +1034,24 @@ export default function Index() {
       )}
       {renderTabContent()}
 
+      {/* Fitness Tools overlay (opens from Today pill) */}
+      {showFitnessTools && (
+        <div className="fixed inset-0 z-50 bg-background overflow-y-auto pb-24">
+          <div className="flex items-center justify-between px-4 pt-4 pb-2 sticky top-0 bg-background z-10 border-b border-border">
+            <button
+              onClick={() => setShowFitnessTools(false)}
+              className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1"
+            >
+              <X className="w-4 h-4" /> Close
+            </button>
+            <p className="text-xs font-bold tracking-widest text-muted-foreground uppercase">Fitness Tools</p>
+            <div className="w-10" />
+          </div>
+          <FitnessToolsTab />
+        </div>
+      )}
+
+
       {/* Streak Milestone Popup */}
       {standardsStreak > 0 && (
         <StreakMilestonePopup streak={standardsStreak} onDismiss={() => {}} />
