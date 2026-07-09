@@ -886,16 +886,6 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
           <ChevronRight className="w-4 h-4 text-muted-foreground" />
         </button>
       )}
-      {onOpenMacros && (
-        <button
-          onClick={onOpenMacros}
-          className="w-full flex items-center gap-3 bg-card border border-border rounded-xl p-4 hover:border-primary/40 transition-all text-left"
-        >
-          <BarChart2 className="w-5 h-5 text-primary" />
-          <span className="flex-1 font-bold text-sm text-foreground">Nutrition & Macros</span>
-          <ChevronRight className="w-4 h-4 text-muted-foreground" />
-        </button>
-      )}
       <button
         onClick={() => setView("programs")}
         className="w-full flex items-center gap-3 bg-card border border-border rounded-xl p-4 hover:border-primary/40 transition-all text-left"
@@ -925,14 +915,6 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
         </div>
       )}
 
-      <button
-        onClick={() => setView("tools")}
-        className="w-full flex items-center gap-3 bg-card border border-border rounded-xl p-4 hover:border-primary/40 transition-all text-left"
-      >
-        <Wrench className="w-5 h-5 text-primary" />
-        <span className="flex-1 font-bold text-sm text-foreground">Fitness Tools</span>
-        <ChevronRight className="w-4 h-4 text-muted-foreground" />
-      </button>
       <button
         onClick={() => setView("graduation")}
         className="w-full flex items-center gap-3 bg-card border border-border rounded-xl p-4 hover:border-primary/40 transition-all text-left"
