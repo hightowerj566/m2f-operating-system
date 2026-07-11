@@ -201,16 +201,11 @@ export function ProgressTab() {
       </div>
 
       {/* Quick Stats Row */}
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-3 gap-2">
         <div className="bg-card border border-border rounded-2xl p-3 text-center">
           <Flame className="w-4 h-4 text-primary mx-auto mb-1" />
-          <p className="text-xl font-black text-foreground">{standardsStreak}</p>
+          <p className="text-xl font-black text-foreground">{workoutStreak}</p>
           <p className="text-[9px] text-muted-foreground font-semibold uppercase">Streak</p>
-        </div>
-        <div className="bg-card border border-border rounded-2xl p-3 text-center">
-          <CheckCircle2 className="w-4 h-4 text-primary mx-auto mb-1" />
-          <p className="text-xl font-black text-foreground">{weeklyStandardsScore}%</p>
-          <p className="text-[9px] text-muted-foreground font-semibold uppercase">Standards</p>
         </div>
         <div className="bg-card border border-border rounded-2xl p-3 text-center">
           <Dumbbell className="w-4 h-4 text-primary mx-auto mb-1" />
@@ -346,32 +341,7 @@ export function ProgressTab() {
         )}
       </div>
 
-      {/* Standards Weekly Breakdown */}
-      {standards.length > 0 && (
-        <div className="bg-card border border-border rounded-2xl p-4 space-y-3">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-              <Award className="w-4 h-4 text-primary" />
-            </div>
-            <p className="text-sm font-bold text-foreground">Standards This Week</p>
-          </div>
-          <div className="grid grid-cols-5 gap-2">
-            {standards.map((s) => {
-              const now = new Date();
-              const cutoff = new Date(now); cutoff.setDate(cutoff.getDate() - 7);
-              const cutoffStr = cutoff.toISOString().split("T")[0];
-              const weekEntries = standardsHistory.filter((h) => h.standard_date >= cutoffStr);
-              const hits = weekEntries.filter((e) => e.completions[s.key]).length;
-              return (
-                <div key={s.key} className="bg-secondary/50 rounded-xl p-2 text-center space-y-0.5">
-                  <span className="text-lg">{s.emoji}</span>
-                  <p className="text-lg font-black text-foreground">{hits}<span className="text-xs text-muted-foreground font-normal">/7</span></p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
     </div>
   );
 }
+

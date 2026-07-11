@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { ChevronLeft, ChevronRight, Dumbbell, TrendingUp, Menu, Lock, Sparkles, Check, LayoutDashboard, Home, ClipboardList, LineChart, Wrench, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Dumbbell, TrendingUp, Menu, Lock, Sparkles, Check, LayoutDashboard, Home, ClipboardList, LineChart, Wrench, X, Map } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useSubscription } from "@/hooks/useSubscription";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -59,7 +59,7 @@ interface WorkoutGroup {
 const baseNavItems = [
   { icon: Home, label: "Home" },
   { icon: Dumbbell, label: "Workout" },
-  { icon: LineChart, label: "Progress" },
+  { icon: Map, label: "Roadmap" },
   { icon: Menu, label: "More" },
 ];
 
@@ -534,6 +534,10 @@ export default function Index() {
   const handleNavClick = (label: string) => {
     if (label === "Coach") {
       navigate("/coach");
+      return;
+    }
+    if (label === "Roadmap") {
+      navigate("/build-list");
       return;
     }
     // Coaches get full access
