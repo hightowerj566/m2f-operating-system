@@ -143,13 +143,14 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
     else onOpenMore?.();
   };
 
-  // Mission 4: Next open build task
-  const nextBuild = buildMilestones.find((m) => !m.completed) ?? null;
-  const buildDone = !nextBuild;
+  // Mission 4: Next open build task — event-driven surfacing (limit = 1).
+  const currentPhaseId = phase && phase.id <= 5 ? phase.id : phase?.id === 6 ? 6 : 5;
+  const nextBuild = surfaceMilestones(buildMilestones, currentPhaseId, 1)[0] ?? null;
 
   const workoutEffectiveDone = workoutDoneToday || overrides.workout === true;
   const buildEffectiveDone = !nextBuild || overrides.build === true;
 
+  // NOTE: Ask Her is no longer a mission — it lives as its own card below.
   const missions = [
     ...(!hasMacros
       ? [{
@@ -174,16 +175,6 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
       title: nutriDone ? "Nutrition logged" : "Log today's nutrition",
       done: nutriDone,
       onClick: openNutrition,
-    },
-    {
-      key: "ask",
-      icon: MessageSquare,
-      title: askDone
-        ? `You asked ${partnerName || "her"} tonight's question`
-        : `Ask ${partnerName || "her"} tonight's question`,
-      done: askDone,
-      onClick: () => navigate("/her-and-baby"),
-      detail: askDone ? undefined : `"${prompt}"`,
     },
     {
       key: "build",
