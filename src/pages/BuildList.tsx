@@ -1,28 +1,19 @@
 // M2F OS · The Build List — Build Roadmap.
-// Campaign-style progression: one phase at a time, grouped by category,
-// with premium Apple-style expand/collapse motion.
+// Campaign-style progression: one phase at a time, with a Required section
+// (drives phase %) and an Optional section (never blocks completion).
+// Phase 6 (Father Mode) unlocks when the due date has passed or baby arrived.
 
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams, Navigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  ChevronLeft, ChevronDown, ChevronRight, Check, Lock, Sparkles, Clock,
+  ChevronLeft, ChevronRight, Check, Lock, Sparkles, Clock,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useLatestReadiness } from "@/hooks/useReadiness";
-import { useBuildList, useToggleMilestone, type BuildMilestone } from "@/hooks/useBuildList";
-import { CATEGORIES } from "@/lib/readiness";
-import { PHASES, getPhase, daysRemaining } from "@/lib/phases";
+import { useBuildList, useToggleMilestone, type BuildMilestone, type MilestonePriority } from "@/hooks/useBuildList";
+import { PHASES, FATHER_MODE, getPhase, daysRemaining } from "@/lib/phases";
 import { BottomNav } from "@/components/BottomNav";
-
-// ─────────────────────────────────────────────
-// Task time estimate — derived, not stored.
-// Small heuristic based on points so the UI feels concrete.
-// ─────────────────────────────────────────────
-function estimatedTime(points: number): string {
-  if (points >= 2) return "30–60 min";
-  return "10–20 min";
-}
 
 type PhaseStatus = "complete" | "active" | "upcoming" | "past-incomplete";
 
@@ -34,10 +25,15 @@ interface PhaseSummary {
   hisJob: string;
   briefing: string;
   items: BuildMilestone[];
+  required: BuildMilestone[];
+  optional: BuildMilestone[];
+  requiredDone: number;
+  requiredTotal: number;
   done: number;
   total: number;
-  pct: number;
+  pct: number; // based on REQUIRED — optional never blocks
   status: PhaseStatus;
+  unlocked: boolean;
 }
 
 export default function BuildList() {
@@ -51,42 +47,62 @@ export default function BuildList() {
   const toggle = useToggleMilestone(user?.id);
 
   const days = daysRemaining(readiness?.dueDate);
-  const phase = getPhase(days, !!readiness?.babyArrivedAt);
-  const currentPhaseId = phase && phase.id <= 5 ? phase.id : 5;
+  const arrived = !!readiness?.babyArrivedAt;
+  const phase = getPhase(days, arrived);
+  // Father Mode unlocks when baby has arrived OR the due date has passed.
+  const fatherModeUnlocked = arrived || (days != null && days === 0);
+  const currentPhaseId = phase?.id === 6 ? 6 : phase && phase.id <= 5 ? phase.id : 5;
+
+  // Include Phase 6 (Father Mode) in the roadmap so its tasks render.
+  const allPhases = useMemo(
+    () => [...PHASES, FATHER_MODE],
+    [],
+  );
 
   // Build per-phase summaries.
   const phases: PhaseSummary[] = useMemo(() => {
-    return PHASES.map((p) => {
+    return allPhases.map((p) => {
       const items = milestones.filter((m) => m.phase === p.id);
+      const required = items.filter((i) => i.required);
+      const optional = items.filter((i) => !i.required);
+      const requiredDone = required.filter((i) => i.completed).length;
+      const requiredTotal = required.length;
       const done = items.filter((i) => i.completed).length;
       const total = items.length;
-      const pct = total ? Math.round((done / total) * 100) : 0;
+      // % is based on REQUIRED; if no required, fall back to all.
+      const pctBase = requiredTotal || total;
+      const pctDone = requiredTotal ? requiredDone : done;
+      const pct = pctBase ? Math.round((pctDone / pctBase) * 100) : 0;
+
+      const unlocked = p.id === 6 ? fatherModeUnlocked : true;
       let status: PhaseStatus;
-      if (total > 0 && done === total) status = "complete";
+      if (requiredTotal > 0 && requiredDone === requiredTotal) status = "complete";
+      else if (!unlocked) status = "upcoming";
       else if (p.id === currentPhaseId) status = "active";
       else if (p.id < currentPhaseId) status = "past-incomplete";
       else status = "upcoming";
+
       return {
         id: p.id, slug: p.slug, name: p.name,
         pregWindow: p.pregWindow, hisJob: p.hisJob, briefing: p.briefing,
-        items, done, total, pct, status,
+        items, required, optional,
+        requiredDone, requiredTotal,
+        done, total, pct, status, unlocked,
       };
     });
-  }, [milestones, currentPhaseId]);
+  }, [milestones, currentPhaseId, allPhases, fatherModeUnlocked]);
 
-  // Which phase is expanded (single-open accordion).
+  // Single-open accordion.
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [initialised, setInitialised] = useState(false);
 
   useEffect(() => {
     if (initialised || phases.length === 0) return;
-    // If a task was requested, expand its phase. Otherwise default to active.
     if (focusTaskId) {
       const found = milestones.find((m) => m.id === focusTaskId);
       if (found) {
         setExpandedId(found.phase);
         setInitialised(true);
-        // scroll after mount
         setTimeout(() => {
           document.getElementById(`task-${focusTaskId}`)?.scrollIntoView({
             behavior: "smooth", block: "center",
@@ -102,25 +118,24 @@ export default function BuildList() {
     setInitialised(true);
   }, [phases, milestones, focusTaskId, initialised]);
 
-  // Phase-complete celebration (one-shot per phase per session).
+  // Phase-complete celebration.
   const [celebrated, setCelebrated] = useState<Set<number>>(new Set());
   const [celebratingPhase, setCelebratingPhase] = useState<PhaseSummary | null>(null);
   useEffect(() => {
     const justFinished = phases.find(
-      (p) => p.total > 0 && p.done === p.total && !celebrated.has(p.id),
+      (p) => p.requiredTotal > 0 && p.requiredDone === p.requiredTotal && !celebrated.has(p.id),
     );
     if (!justFinished || !initialised) return;
-    // Skip celebrating phases that were already complete on first load.
-    if (celebrated.size === 0 && phases.every((p) => p.id !== justFinished.id || p.done === p.total)) {
-      // Mark all currently-complete phases as celebrated silently on first mount.
-      const initial = new Set(phases.filter((p) => p.total > 0 && p.done === p.total).map((p) => p.id));
+    if (celebrated.size === 0) {
+      const initial = new Set(
+        phases.filter((p) => p.requiredTotal > 0 && p.requiredDone === p.requiredTotal).map((p) => p.id),
+      );
       setCelebrated(initial);
       return;
     }
     setCelebratingPhase(justFinished);
     setCelebrated((s) => new Set(s).add(justFinished.id));
-    // Auto-expand the next phase.
-    const next = phases.find((p) => p.id > justFinished.id && p.total > 0);
+    const next = phases.find((p) => p.id > justFinished.id && p.requiredTotal > 0 && p.unlocked);
     const t = setTimeout(() => {
       setCelebratingPhase(null);
       if (next) setExpandedId(next.id);
@@ -131,8 +146,8 @@ export default function BuildList() {
   if (loading) return null;
   if (!user) return <Navigate to="/auth" replace />;
 
-  const overallDone = phases.reduce((s, p) => s + p.done, 0);
-  const overallTotal = phases.reduce((s, p) => s + p.total, 0);
+  const overallDone = phases.reduce((s, p) => s + p.requiredDone, 0);
+  const overallTotal = phases.reduce((s, p) => s + p.requiredTotal, 0);
 
   return (
     <div className="min-h-dvh bg-background text-foreground max-w-md mx-auto px-5 pt-[calc(1.5rem+env(safe-area-inset-top))] pb-[calc(6rem+env(safe-area-inset-bottom))]">
@@ -151,7 +166,7 @@ export default function BuildList() {
           Everything you'll build before your baby arrives.
         </h1>
         <p className="text-muted-foreground text-sm mt-3">
-          {overallDone} of {overallTotal} milestones complete. One phase at a time.
+          {overallDone} of {overallTotal} required milestones complete. One phase at a time.
         </p>
       </header>
 
@@ -159,9 +174,7 @@ export default function BuildList() {
         <p className="text-muted-foreground text-sm text-center py-8">Loading the roadmap…</p>
       ) : (
         <div className="relative pl-6">
-          {/* Timeline spine */}
           <span className="absolute left-[7px] top-2 bottom-2 w-px bg-border" />
-
           <div className="space-y-3">
             {phases.map((p) => (
               <PhaseCard
@@ -179,7 +192,6 @@ export default function BuildList() {
         </div>
       )}
 
-      {/* Phase-complete celebration overlay */}
       <AnimatePresence>
         {celebratingPhase && (
           <motion.div
@@ -222,7 +234,7 @@ export default function BuildList() {
 }
 
 function nextPhaseName(phases: PhaseSummary[], id: number): string | null {
-  const next = phases.find((p) => p.id > id && p.total > 0);
+  const next = phases.find((p) => p.id > id && p.requiredTotal > 0);
   return next?.name ?? null;
 }
 
@@ -246,14 +258,17 @@ function PhaseCard({ phase, expanded, onToggle, onToggleTask, focusTaskId }: Pha
   const isActive = phase.status === "active";
   const isUpcoming = phase.status === "upcoming";
   const isOverdue = phase.status === "past-incomplete";
+  const locked = !phase.unlocked;
 
-  const statusChip = isComplete
-    ? { label: "Complete", cls: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30" }
-    : isActive
-      ? { label: "Active", cls: "bg-primary/15 text-primary border-primary/40" }
-      : isOverdue
-        ? { label: "Overdue", cls: "bg-amber-500/15 text-amber-400 border-amber-500/30" }
-        : { label: "Upcoming", cls: "bg-secondary text-muted-foreground border-border" };
+  const statusChip = locked
+    ? { label: phase.id === 6 ? "Unlocks Day One" : "Upcoming", cls: "bg-secondary text-muted-foreground border-border" }
+    : isComplete
+      ? { label: "Complete", cls: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30" }
+      : isActive
+        ? { label: "Active", cls: "bg-primary/15 text-primary border-primary/40" }
+        : isOverdue
+          ? { label: "Overdue", cls: "bg-amber-500/15 text-amber-400 border-amber-500/30" }
+          : { label: "Upcoming", cls: "bg-secondary text-muted-foreground border-border" };
 
   const dotCls = isComplete
     ? "bg-emerald-500 border-emerald-500"
@@ -265,12 +280,11 @@ function PhaseCard({ phase, expanded, onToggle, onToggleTask, focusTaskId }: Pha
 
   return (
     <div className="relative">
-      {/* Timeline dot */}
       <span
         className={`absolute -left-[26px] top-6 w-4 h-4 rounded-full border-2 ${dotCls} flex items-center justify-center transition-all`}
       >
         {isComplete && <Check className="w-2.5 h-2.5 text-black" strokeWidth={4} />}
-        {isUpcoming && <Lock className="w-2 h-2 text-muted-foreground" />}
+        {(isUpcoming || locked) && <Lock className="w-2 h-2 text-muted-foreground" />}
       </span>
 
       <motion.button
@@ -284,7 +298,7 @@ function PhaseCard({ phase, expanded, onToggle, onToggleTask, focusTaskId }: Pha
               : isActive
                 ? "border-border bg-card hover:border-primary/40"
                 : "border-border bg-card/50"
-        } ${isUpcoming ? "opacity-70" : ""}`}
+        } ${(isUpcoming || locked) ? "opacity-70" : ""}`}
       >
         <div className="flex items-center gap-3">
           <div className="flex-1 min-w-0">
@@ -297,8 +311,7 @@ function PhaseCard({ phase, expanded, onToggle, onToggleTask, focusTaskId }: Pha
             <p className="text-xs text-muted-foreground mt-0.5">{phase.pregWindow}</p>
           </div>
 
-          {/* Progress ring */}
-          {phase.total > 0 && <ProgressRing pct={phase.pct} complete={isComplete} />}
+          {phase.requiredTotal > 0 && <ProgressRing pct={phase.pct} complete={isComplete} />}
 
           <motion.span
             animate={{ rotate: expanded ? 90 : 0 }}
@@ -315,20 +328,14 @@ function PhaseCard({ phase, expanded, onToggle, onToggleTask, focusTaskId }: Pha
           >
             {statusChip.label}
           </span>
-          {phase.total > 0 && (
+          {phase.requiredTotal > 0 && (
             <span className="text-[11px] text-muted-foreground font-semibold tabular-nums">
-              {phase.done}/{phase.total}
-            </span>
-          )}
-          {isUpcoming && (
-            <span className="text-[11px] text-muted-foreground ml-auto">
-              Recommended {phase.pregWindow.split("–")[0].replace("Weeks ", "Week ")}
+              {phase.requiredDone}/{phase.requiredTotal}
             </span>
           )}
         </div>
       </motion.button>
 
-      {/* Expanded body */}
       <AnimatePresence initial={false}>
         {expanded && (
           <motion.div
@@ -344,7 +351,7 @@ function PhaseCard({ phase, expanded, onToggle, onToggleTask, focusTaskId }: Pha
                 phase={phase}
                 onToggleTask={onToggleTask}
                 focusTaskId={focusTaskId}
-                isUpcoming={isUpcoming}
+                disabled={locked}
               />
             </div>
           </motion.div>
@@ -355,59 +362,25 @@ function PhaseCard({ phase, expanded, onToggle, onToggleTask, focusTaskId }: Pha
 }
 
 // ─────────────────────────────────────────────
-// PhaseBody — progress bar + category groups
+// PhaseBody — Required + Optional sections
 // ─────────────────────────────────────────────
 interface PhaseBodyProps {
   phase: PhaseSummary;
   onToggleTask: (id: string, complete: boolean) => void;
   focusTaskId: string | null;
-  isUpcoming: boolean;
+  disabled: boolean;
 }
 
-function PhaseBody({ phase, onToggleTask, focusTaskId, isUpcoming }: PhaseBodyProps) {
-  // Group by readiness category
-  const groups = useMemo(() => {
-    const map = new Map<number, BuildMilestone[]>();
-    for (const m of phase.items) {
-      if (!map.has(m.category_id)) map.set(m.category_id, []);
-      map.get(m.category_id)!.push(m);
-    }
-    return Array.from(map.entries())
-      .map(([catId, items]) => ({
-        cat: CATEGORIES.find((c) => c.id === catId),
-        items,
-        done: items.filter((i) => i.completed).length,
-      }))
-      .filter((g) => g.cat)
-      .sort((a, b) => (a.cat!.id - b.cat!.id));
-  }, [phase.items]);
-
-  // Track expanded categories (default: first one open, or the one holding the focused task)
-  const [openCats, setOpenCats] = useState<Set<number>>(() => {
-    if (focusTaskId) {
-      const focused = phase.items.find((m) => m.id === focusTaskId);
-      if (focused) return new Set([focused.category_id]);
-    }
-    return new Set(groups.slice(0, 1).map((g) => g.cat!.id));
-  });
-
-  const toggleCat = (id: number) =>
-    setOpenCats((prev) => {
-      const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
-      return next;
-    });
-
+function PhaseBody({ phase, onToggleTask, focusTaskId, disabled }: PhaseBodyProps) {
   return (
     <div className="rounded-2xl border border-border bg-secondary/30 p-4">
       <p className="text-xs text-muted-foreground leading-relaxed mb-4">{phase.briefing}</p>
 
-      {/* Progress bar */}
-      {phase.total > 0 && (
+      {phase.requiredTotal > 0 && (
         <div className="mb-5">
           <div className="flex items-baseline justify-between mb-2">
             <p className="text-sm font-black text-foreground">
-              {phase.done} / {phase.total} Complete
+              {phase.requiredDone} / {phase.requiredTotal} Required
             </p>
             <p className="text-xs font-bold text-muted-foreground tabular-nums">{phase.pct}%</p>
           </div>
@@ -416,67 +389,38 @@ function PhaseBody({ phase, onToggleTask, focusTaskId, isUpcoming }: PhaseBodyPr
               initial={{ width: 0 }}
               animate={{ width: `${phase.pct}%` }}
               transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
-              className={`h-full rounded-full ${phase.done === phase.total && phase.total > 0 ? "bg-emerald-500" : "bg-primary"}`}
+              className={`h-full rounded-full ${phase.requiredDone === phase.requiredTotal && phase.requiredTotal > 0 ? "bg-emerald-500" : "bg-primary"}`}
             />
           </div>
         </div>
       )}
 
-      {/* Category groups */}
-      <div className="space-y-2">
-        {groups.map((g) => {
-          const open = openCats.has(g.cat!.id);
-          return (
-            <div key={g.cat!.id} className="rounded-xl bg-background/60 border border-border/60">
-              <button
-                onClick={() => toggleCat(g.cat!.id)}
-                className="w-full flex items-center gap-2 px-3 py-2.5 text-left"
-              >
-                <motion.span
-                  animate={{ rotate: open ? 90 : 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="text-muted-foreground"
-                >
-                  <ChevronRight className="w-3.5 h-3.5" />
-                </motion.span>
-                <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-foreground/90">
-                  {g.cat!.name}
-                </span>
-                <span className="ml-auto text-[10px] text-muted-foreground font-semibold tabular-nums">
-                  {g.done}/{g.items.length}
-                </span>
-              </button>
-              <AnimatePresence initial={false}>
-                {open && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
-                    className="overflow-hidden"
-                  >
-                    <div className="px-2 pb-2 space-y-1.5">
-                      {g.items.map((m) => (
-                        <TaskRow
-                          key={m.id}
-                          milestone={m}
-                          disabled={isUpcoming}
-                          onToggle={() => onToggleTask(m.id, !m.completed)}
-                          highlight={m.id === focusTaskId}
-                        />
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          );
-        })}
-      </div>
+      <TaskSection
+        label="Required"
+        items={phase.required}
+        onToggleTask={onToggleTask}
+        disabled={disabled}
+        focusTaskId={focusTaskId}
+      />
 
-      {isUpcoming && (
+      {phase.optional.length > 0 && (
+        <div className="mt-4">
+          <TaskSection
+            label="Optional"
+            items={phase.optional}
+            onToggleTask={onToggleTask}
+            disabled={disabled}
+            focusTaskId={focusTaskId}
+            muted
+          />
+        </div>
+      )}
+
+      {disabled && (
         <p className="mt-4 text-[11px] text-muted-foreground italic text-center">
-          Preview only — recommended starting {phase.pregWindow.split("–")[0].replace("Weeks ", "Week ")}.
+          {phase.id === 6
+            ? "Unlocks the day she arrives."
+            : "Preview only — recommended starting soon."}
         </p>
       )}
     </div>
@@ -484,7 +428,47 @@ function PhaseBody({ phase, onToggleTask, focusTaskId, isUpcoming }: PhaseBodyPr
 }
 
 // ─────────────────────────────────────────────
-// TaskRow
+// TaskSection
+// ─────────────────────────────────────────────
+interface TaskSectionProps {
+  label: string;
+  items: BuildMilestone[];
+  onToggleTask: (id: string, complete: boolean) => void;
+  disabled: boolean;
+  focusTaskId: string | null;
+  muted?: boolean;
+}
+
+function TaskSection({ label, items, onToggleTask, disabled, focusTaskId, muted }: TaskSectionProps) {
+  if (items.length === 0) return null;
+  const done = items.filter((i) => i.completed).length;
+  return (
+    <div className="rounded-xl bg-background/60 border border-border/60">
+      <div className="flex items-center gap-2 px-3 py-2.5">
+        <span className={`text-[11px] font-bold tracking-[0.2em] uppercase ${muted ? "text-muted-foreground" : "text-foreground/90"}`}>
+          {label}
+        </span>
+        <span className="ml-auto text-[10px] text-muted-foreground font-semibold tabular-nums">
+          {done}/{items.length}
+        </span>
+      </div>
+      <div className="px-2 pb-2 space-y-1.5">
+        {items.map((m) => (
+          <TaskRow
+            key={m.id}
+            milestone={m}
+            disabled={disabled}
+            onToggle={() => onToggleTask(m.id, !m.completed)}
+            highlight={m.id === focusTaskId}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// TaskRow — with priority dot + est_minutes badge
 // ─────────────────────────────────────────────
 interface TaskRowProps {
   milestone: BuildMilestone;
@@ -493,8 +477,15 @@ interface TaskRowProps {
   highlight: boolean;
 }
 
+function priorityDot(p: MilestonePriority): string {
+  if (p === "critical") return "bg-rose-500";
+  if (p === "bonus") return "bg-muted";
+  return "bg-muted-foreground/60";
+}
+
 function TaskRow({ milestone, onToggle, disabled, highlight }: TaskRowProps) {
   const done = milestone.completed;
+  const est = milestone.est_minutes;
   return (
     <div
       id={`task-${milestone.id}`}
@@ -535,26 +526,41 @@ function TaskRow({ milestone, onToggle, disabled, highlight }: TaskRowProps) {
       </button>
 
       <div className="flex-1 min-w-0">
-        <p
-          className={`text-sm font-semibold leading-snug transition-colors ${
-            done ? "text-muted-foreground line-through" : "text-foreground"
-          }`}
-        >
-          {milestone.title}
-        </p>
+        <div className="flex items-center gap-2">
+          <span
+            className={`w-1.5 h-1.5 rounded-full shrink-0 ${priorityDot(milestone.priority)}`}
+            aria-label={`Priority: ${milestone.priority}`}
+          />
+          <p
+            className={`text-sm font-semibold leading-snug transition-colors flex-1 min-w-0 ${
+              done ? "text-muted-foreground line-through" : "text-foreground"
+            }`}
+          >
+            {milestone.title}
+          </p>
+        </div>
         {milestone.detail && (
           <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{milestone.detail}</p>
         )}
-        <p className="text-[10px] text-muted-foreground/80 mt-1.5 flex items-center gap-1">
-          <Clock className="w-3 h-3" /> {estimatedTime(milestone.points)}
-        </p>
+        {milestone.why_it_matters && (
+          <p className="text-[11px] text-foreground/70 mt-1 leading-relaxed italic">
+            {milestone.why_it_matters}
+          </p>
+        )}
+        <div className="mt-1.5 flex items-center gap-2 text-[10px] text-muted-foreground/80">
+          {est != null && (
+            <span className="flex items-center gap-1">
+              <Clock className="w-3 h-3" /> ~{est}m
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );
 }
 
 // ─────────────────────────────────────────────
-// ProgressRing — tiny SVG ring for phase cards
+// ProgressRing
 // ─────────────────────────────────────────────
 function ProgressRing({ pct, complete }: { pct: number; complete: boolean }) {
   const size = 34;
