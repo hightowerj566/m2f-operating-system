@@ -215,6 +215,8 @@ export default function BuildList() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <BottomNav />
     </div>
   );
 }
