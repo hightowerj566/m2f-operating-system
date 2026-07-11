@@ -142,7 +142,7 @@ export default function Index() {
   // Gate: opening Training or Nutrition requires a training profile.
   useEffect(() => {
     if (!onboardingChecked || trainingProfileComplete !== false) return;
-    if (activeNav === "Today") {
+    if (activeNav === "Workout") {
       navigate("/training-profile?next=today", { replace: true });
     } else if (activeNav === "Macros") {
       navigate("/training-profile?next=macros", { replace: true });
@@ -663,9 +663,9 @@ export default function Index() {
         return (
           <HomeTab
             programName={programName}
-            onOpenToday={() => handleNavClick("Today")}
+            onOpenToday={() => handleNavClick("Workout")}
             onOpenProgress={() => handleNavClick("Progress")}
-            onOpenWorkout={() => handleNavClick("Today")}
+            onOpenWorkout={() => handleNavClick("Workout")}
             onOpenStandards={() => handleNavClick("Daily")}
             onOpenMacros={() => handleNavClick("Macros")}
             onOpenMore={() => handleNavClick("More")}
@@ -680,7 +680,7 @@ export default function Index() {
         return <ProgressTab />;
       case "More":
         return <MoreTab tier={tier} subscriptionEnd={subscriptionEnd} cancelAtPeriodEnd={cancelAtPeriodEnd} onRefreshSub={refreshSub} currentProgramId={programId} onProgramChanged={() => window.location.reload()} onOpenStandards={() => handleNavClick("Daily")} onOpenMacros={() => handleNavClick("Macros")} />;
-      case "Today":
+      case "Workout":
       case "Workout":
         return (
           <>
