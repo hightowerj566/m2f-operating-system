@@ -536,6 +536,10 @@ export default function Index() {
       navigate("/coach");
       return;
     }
+    if (label === "Roadmap") {
+      navigate("/build-list");
+      return;
+    }
     // Coaches get full access
     if (isCoach) {
       setActiveNav(label);
