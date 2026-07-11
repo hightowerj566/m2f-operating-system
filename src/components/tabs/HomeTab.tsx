@@ -143,13 +143,14 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
     else onOpenMore?.();
   };
 
-  // Mission 4: Next open build task
-  const nextBuild = buildMilestones.find((m) => !m.completed) ?? null;
-  const buildDone = !nextBuild;
+  // Mission 4: Next open build task — event-driven surfacing (limit = 1).
+  const currentPhaseId = phase && phase.id <= 5 ? phase.id : phase?.id === 6 ? 6 : 5;
+  const nextBuild = surfaceMilestones(buildMilestones, currentPhaseId, 1)[0] ?? null;
 
   const workoutEffectiveDone = workoutDoneToday || overrides.workout === true;
   const buildEffectiveDone = !nextBuild || overrides.build === true;
 
+  // NOTE: Ask Her is no longer a mission — it lives as its own card below.
   const missions = [
     ...(!hasMacros
       ? [{
@@ -174,16 +175,6 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
       title: nutriDone ? "Nutrition logged" : "Log today's nutrition",
       done: nutriDone,
       onClick: openNutrition,
-    },
-    {
-      key: "ask",
-      icon: MessageSquare,
-      title: askDone
-        ? `You asked ${partnerName || "her"} tonight's question`
-        : `Ask ${partnerName || "her"} tonight's question`,
-      done: askDone,
-      onClick: () => navigate("/her-and-baby"),
-      detail: askDone ? undefined : `"${prompt}"`,
     },
     {
       key: "build",
@@ -417,6 +408,37 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
           </button>
         </section>
       </div>
+
+      {/* ── 3.5 · Ask Her Tonight — standalone daily rhythm ── */}
+      <div className="px-5 pt-4">
+        <button
+          onClick={() => {
+            if (!askDone) toggleOverride("ask");
+            navigate("/her-and-baby");
+          }}
+          className="w-full text-left rounded-2xl border border-rose-500/30 bg-gradient-to-b from-rose-500/10 to-transparent bg-card/60 backdrop-blur p-5 active:scale-[0.99] transition-transform"
+        >
+          <div className="flex items-center gap-2 mb-2">
+            <MessageSquare className="w-3.5 h-3.5 text-rose-400" />
+            <p className="text-[10px] font-bold tracking-[0.24em] uppercase text-rose-400">
+              Ask {partnerName || "Her"} Tonight
+            </p>
+            {askDone && (
+              <span className="ml-auto text-[10px] font-bold text-emerald-400 flex items-center gap-1">
+                <Check className="w-3 h-3" strokeWidth={3} /> Done
+              </span>
+            )}
+          </div>
+          <p className={`text-base leading-snug ${askDone ? "text-muted-foreground line-through" : "text-foreground font-semibold"}`}>
+            "{prompt}"
+          </p>
+          <p className="text-[11px] text-muted-foreground mt-2">
+            Rotates daily. This is a rhythm, not a checklist item.
+          </p>
+        </button>
+      </div>
+
+
 
       {/* ── 4 · Today's Lesson ── */}
       {todaysLesson && (

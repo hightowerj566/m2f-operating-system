@@ -152,22 +152,34 @@ describe("build list score math", async () => {
     expect(r.boost).toBe(2); // only the capped gain counts
   });
 
-  it("surfaces overdue, then current phase, then pulls the next phase forward", () => {
+  it("ranks: overdue critical > current critical (nearest week) > current standard > next phase", () => {
+    const mk = (o: Partial<{ id: string; phase: number; priority: string; recommended_week: number | null; sort_order: number; completed: boolean }>) => ({
+      id: o.id!, category_id: 1, phase: o.phase!, title: "", detail: null, points: 1,
+      sort_order: o.sort_order ?? 1, completed: o.completed ?? false,
+      priority: (o.priority ?? "standard") as "critical" | "standard" | "bonus",
+      recommended_week: o.recommended_week ?? null, required: true,
+    });
     const ms = [
-      { id: "a", category_id: 1, phase: 1, title: "", detail: null, points: 1, sort_order: 1, completed: false },
-      { id: "b", category_id: 1, phase: 3, title: "", detail: null, points: 1, sort_order: 1, completed: false },
-      { id: "c", category_id: 1, phase: 4, title: "", detail: null, points: 1, sort_order: 1, completed: false },
-      { id: "d", category_id: 1, phase: 3, title: "", detail: null, points: 1, sort_order: 2, completed: true },
+      mk({ id: "cur-std", phase: 3, priority: "standard", recommended_week: 26 }),
+      mk({ id: "next",    phase: 4, priority: "critical", recommended_week: 33 }),
+      mk({ id: "cur-c2",  phase: 3, priority: "critical", recommended_week: 28 }),
+      mk({ id: "overdue", phase: 1, priority: "critical", recommended_week: 8 }),
+      mk({ id: "cur-c1",  phase: 3, priority: "critical", recommended_week: 25 }),
     ];
-    const top = surfaceMilestones(ms as never, 3, 3);
-    expect(top.map((m) => m.id)).toEqual(["a", "b", "c"]); // overdue P1 first, current P3, then P4 pulled forward
+    const top = surfaceMilestones(ms as never, 3, 5);
+    expect(top.map((m) => m.id)).toEqual(["overdue", "cur-c1", "cur-c2", "cur-std", "next"]);
   });
 
   it("pulls future phases forward when current phase is fully built", () => {
+    const mk = (o: Partial<{ id: string; phase: number; completed: boolean }>) => ({
+      id: o.id!, category_id: 1, phase: o.phase!, title: "", detail: null, points: 1,
+      sort_order: 1, completed: o.completed ?? false,
+      priority: "standard" as const, recommended_week: null, required: true,
+    });
     const ms = [
-      { id: "p3", category_id: 1, phase: 3, title: "", detail: null, points: 1, sort_order: 1, completed: true },
-      { id: "p4", category_id: 1, phase: 4, title: "", detail: null, points: 1, sort_order: 1, completed: false },
-      { id: "p5", category_id: 1, phase: 5, title: "", detail: null, points: 1, sort_order: 1, completed: false },
+      mk({ id: "p3", phase: 3, completed: true }),
+      mk({ id: "p4", phase: 4 }),
+      mk({ id: "p5", phase: 5 }),
     ];
     const top = surfaceMilestones(ms as never, 3, 2);
     expect(top.map((m) => m.id)).toEqual(["p4", "p5"]);

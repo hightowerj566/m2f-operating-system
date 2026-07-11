@@ -152,34 +152,49 @@ export type Database = {
           category_id: number
           created_at: string
           detail: string | null
+          est_minutes: number | null
           id: string
           is_active: boolean
           phase: number
           points: number
+          priority: string
+          recommended_week: number | null
+          required: boolean
           sort_order: number
           title: string
+          why_it_matters: string | null
         }
         Insert: {
           category_id: number
           created_at?: string
           detail?: string | null
+          est_minutes?: number | null
           id?: string
           is_active?: boolean
           phase: number
           points?: number
+          priority?: string
+          recommended_week?: number | null
+          required?: boolean
           sort_order?: number
           title: string
+          why_it_matters?: string | null
         }
         Update: {
           category_id?: number
           created_at?: string
           detail?: string | null
+          est_minutes?: number | null
           id?: string
           is_active?: boolean
           phase?: number
           points?: number
+          priority?: string
+          recommended_week?: number | null
+          required?: boolean
           sort_order?: number
           title?: string
+          why_it_matters?: string | null
         }
         Relationships: [
           {
