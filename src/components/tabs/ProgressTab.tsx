@@ -201,16 +201,11 @@ export function ProgressTab() {
       </div>
 
       {/* Quick Stats Row */}
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-3 gap-2">
         <div className="bg-card border border-border rounded-2xl p-3 text-center">
           <Flame className="w-4 h-4 text-primary mx-auto mb-1" />
-          <p className="text-xl font-black text-foreground">{standardsStreak}</p>
+          <p className="text-xl font-black text-foreground">{workoutStreak}</p>
           <p className="text-[9px] text-muted-foreground font-semibold uppercase">Streak</p>
-        </div>
-        <div className="bg-card border border-border rounded-2xl p-3 text-center">
-          <CheckCircle2 className="w-4 h-4 text-primary mx-auto mb-1" />
-          <p className="text-xl font-black text-foreground">{weeklyStandardsScore}%</p>
-          <p className="text-[9px] text-muted-foreground font-semibold uppercase">Standards</p>
         </div>
         <div className="bg-card border border-border rounded-2xl p-3 text-center">
           <Dumbbell className="w-4 h-4 text-primary mx-auto mb-1" />
