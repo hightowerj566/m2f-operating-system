@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { ChevronLeft, ChevronRight, Dumbbell, TrendingUp, Menu, Lock, Sparkles, Check, LayoutDashboard, Home, ClipboardList, LineChart, Wrench, X, Map } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useSubscription } from "@/hooks/useSubscription";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { ExerciseCard } from "@/components/workout/ExerciseCard";
 import { ConditioningCard, ConditioningBlockCard, isConditioningExercise, parseConditioningBlock } from "@/components/workout/ConditioningCard";
@@ -80,7 +80,18 @@ export default function Index() {
   const isOffline = useOffline();
   const { hasPass } = useDueDatePass(user?.id);
   const navigate = useNavigate();
-  const [activeNav, setActiveNav] = useState("Home");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [activeNav, setActiveNav] = useState(() => searchParams.get("tab") || "Home");
+
+  useEffect(() => {
+    const t = searchParams.get("tab");
+    if (t && t !== activeNav) {
+      setActiveNav(t);
+      searchParams.delete("tab");
+      setSearchParams(searchParams, { replace: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
   const [restTimer, setRestTimer] = useState<{ seconds: number } | null>(null);
   const [pendingNextExercise, setPendingNextExercise] = useState<{ name: string; detail: string; sets: number; reps: number | null; video_url: string | null; video_type: string | null; defaultWeight: number | null } | null>(null);
   const [activeExercise, setActiveExercise] = useState<{ name: string; detail: string; sets: number; reps: number | null; video_url: string | null; video_type: string | null; defaultWeight: number | null } | null>(null);

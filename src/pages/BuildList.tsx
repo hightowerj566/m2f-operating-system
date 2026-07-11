@@ -13,6 +13,7 @@ import { useLatestReadiness } from "@/hooks/useReadiness";
 import { useBuildList, useToggleMilestone, type BuildMilestone } from "@/hooks/useBuildList";
 import { CATEGORIES } from "@/lib/readiness";
 import { PHASES, getPhase, daysRemaining } from "@/lib/phases";
+import { BottomNav } from "@/components/BottomNav";
 
 // ─────────────────────────────────────────────
 // Task time estimate — derived, not stored.
@@ -214,6 +215,8 @@ export default function BuildList() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <BottomNav />
     </div>
   );
 }
