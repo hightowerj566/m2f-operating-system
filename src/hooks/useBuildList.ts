@@ -2,6 +2,12 @@
 // Milestones are one-time, phase-gated, category-mapped. Completing one
 // boosts the live Readiness Score — capped at 10 per category so verified
 // work can fill a category but never overflow it.
+//
+// Field notes:
+// - `recommended_week` — for phases 1–5 this is the pregnancy week; for
+//   phase 6 (Father Mode) it is DAYS after birth (1–40).
+// - `required` — optional tasks never block phase completion.
+// - `priority` — critical | standard | bonus. Drives surfacing + UI dot.
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,6 +15,8 @@ import { CATEGORIES, type CategorySlug } from "@/lib/readiness";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = supabase as any;
+
+export type MilestonePriority = "critical" | "standard" | "bonus";
 
 export interface BuildMilestone {
   id: string;
@@ -18,6 +26,11 @@ export interface BuildMilestone {
   detail: string | null;
   points: number;
   sort_order: number;
+  why_it_matters: string | null;
+  est_minutes: number | null;
+  priority: MilestonePriority;
+  recommended_week: number | null;
+  required: boolean;
   completed: boolean;
   completed_at?: string | null;
 }
@@ -30,7 +43,9 @@ export function useBuildList(userId: string | undefined) {
       const [{ data: milestones }, { data: done }] = await Promise.all([
         db
           .from("build_milestones")
-          .select("id, category_id, phase, title, detail, points, sort_order")
+          .select(
+            "id, category_id, phase, title, detail, points, sort_order, why_it_matters, est_minutes, priority, recommended_week, required",
+          )
           .eq("is_active", true)
           .order("phase")
           .order("sort_order"),
@@ -42,6 +57,8 @@ export function useBuildList(userId: string | undefined) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return milestones.map((m: any) => ({
         ...m,
+        priority: (m.priority ?? "standard") as MilestonePriority,
+        required: m.required ?? true,
         completed: doneMap.has(m.id),
         completed_at: doneMap.get(m.id) ?? null,
       })) as BuildMilestone[];
@@ -91,21 +108,44 @@ export function applyMilestoneBoost(
 }
 
 /**
- * Event-driven surfacing: the current phase's incomplete items first;
- * if the current phase is fully built, the next phase pulls forward.
- * Never shows items from phases already passed unless still incomplete.
+ * Event-driven surfacing (v2). Ranking:
+ *   1. Overdue CRITICAL (earlier phase, priority=critical)
+ *   2. Current phase CRITICAL, nearest recommended_week first
+ *   3. Current phase STANDARD (then bonus)
+ *   4. Next phases pulled forward
+ * Completed items are excluded. Home should pass limit = 1.
  */
 export function surfaceMilestones(
-  milestones: BuildMilestone[],
+  milestones: Pick<
+    BuildMilestone,
+    "id" | "category_id" | "phase" | "title" | "detail" | "points" | "sort_order" | "completed" | "priority" | "recommended_week" | "required"
+  >[],
   currentPhase: number | null,
   limit = 3,
 ): BuildMilestone[] {
   const phase = currentPhase ?? 1;
   const incomplete = milestones.filter((m) => !m.completed);
-  // Overdue (earlier phases) first, then current phase, then future phases pulled forward
+  const priorityWeight = (p: string | undefined) =>
+    p === "critical" ? 0 : p === "standard" ? 1 : 2;
+
+  const bucket = (m: (typeof incomplete)[number]) => {
+    if (m.phase < phase && m.priority === "critical") return 0; // overdue critical
+    if (m.phase === phase && m.priority === "critical") return 1;
+    if (m.phase === phase) return 2; // standard / bonus in current phase
+    if (m.phase > phase) return 3 + (m.phase - phase); // future pull-forward
+    return 5; // overdue non-critical last
+  };
+
   const ranked = [...incomplete].sort((a, b) => {
-    const rank = (m: BuildMilestone) => (m.phase < phase ? 0 : m.phase === phase ? 1 : 2 + (m.phase - phase));
-    return rank(a) - rank(b) || a.sort_order - b.sort_order;
+    const bd = bucket(a) - bucket(b);
+    if (bd !== 0) return bd;
+    // Within a bucket: by recommended_week (nulls last), then priority, then sort_order
+    const aw = a.recommended_week ?? 999;
+    const bw = b.recommended_week ?? 999;
+    if (aw !== bw) return aw - bw;
+    const pd = priorityWeight(a.priority) - priorityWeight(b.priority);
+    if (pd !== 0) return pd;
+    return a.sort_order - b.sort_order;
   });
-  return ranked.slice(0, limit);
+  return ranked.slice(0, limit) as BuildMilestone[];
 }
