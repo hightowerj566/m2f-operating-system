@@ -681,7 +681,6 @@ export default function Index() {
       case "More":
         return <MoreTab tier={tier} subscriptionEnd={subscriptionEnd} cancelAtPeriodEnd={cancelAtPeriodEnd} onRefreshSub={refreshSub} currentProgramId={programId} onProgramChanged={() => window.location.reload()} onOpenStandards={() => handleNavClick("Daily")} onOpenMacros={() => handleNavClick("Macros")} />;
       case "Workout":
-      case "Workout":
         return (
           <>
             <div className="px-5 pt-8 pb-4">
