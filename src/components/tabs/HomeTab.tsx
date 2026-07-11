@@ -190,7 +190,7 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
       icon: HomeIcon,
       title: buildEffectiveDone ? "Build list complete" : (nextBuild?.title ?? "Set your build list"),
       done: buildEffectiveDone,
-      onClick: () => navigate("/build-list"),
+      onClick: () => navigate(nextBuild ? `/build-list?task=${nextBuild.id}` : "/build-list"),
     },
   ];
   const missionsDone = missions.filter((m) => m.done).length;
