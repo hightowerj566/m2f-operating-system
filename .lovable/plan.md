@@ -1,109 +1,118 @@
-# Learn Tab — M2F Fatherhood Education Platform
+# Live Program Schedule — Forge & Rebuild
 
-Swap the Home "❤️ Coach" button for "📚 Learn" (Coach stays reachable via bottom-nav for coaches, and via /coach direct link). Build a full learning experience modeled after MasterClass × Apple Support × Notion.
+Rebuild the training-program system so members follow a live calendar, not a self-serve list of every week. Only two programs use this layout: **Forge** and **Rebuild**.
 
-## 1. Content architecture (all in-app, no backend needed)
+---
 
-New file: `src/content/learn/index.ts` — typed catalog:
-- 7 Categories, each with slug, title, emoji, hero color, short description, list of lessons.
-- Each Lesson: `id`, `slug`, `categorySlug`, `title`, `summary`, `minutes` (3–10), `pregnancyWeekRange` (for recommendations), `sections` (Overview, Why It Matters, Steps, Visual Examples, Common Mistakes, Safety Tips, Action Checklist, Key Takeaways), `related: string[]`.
+## What the member sees
 
-Categories & lesson counts (~65 lessons total, seeded with rich copy — not lorem):
-- 👶 Pregnancy & Baby Development (7)
-- 🏥 Hospital Preparation (9)
-- 👨‍🍼 Newborn Care (11)
-- ❤️ Supporting Your Partner (10)
-- 🏠 Preparing Your Home (8)
-- 💰 Financial Preparation (7)
-- 🧠 Becoming the Father You Want to Be (11)
+- One week at a time, centered on today's date.
+- Header: program name, "Week X of Y", date range, workouts completed / remaining this week.
+- Prev / Next arrows limited to the accessible range.
+- Up to 4 previous weeks are browsable. Older weeks disappear from navigation (data is kept).
+- Next week shows a locked card with unlock date and short message — no exercises, no titles.
+- Unlock happens at **12:00 AM Sunday in the member's timezone**, enforced on the backend.
 
-Split across sibling files per category (`src/content/learn/pregnancy.ts`, etc.) to keep files reasonable, re-exported from `index.ts`.
+## What the coach sees
 
-## 2. Progress storage
+- Scheduler per member: assign Forge or Rebuild, pick start date, view weekly timeline.
+- Per-week actions: edit dates, duplicate, replace, draft/publish, preview as member, pause, resume, end.
+- Status chips: Draft · Scheduled · Current · Locked · Published · Completed · Paused.
+- Publish ≠ Unlock. A published week stays locked until its scheduled Sunday.
+- Full member history remains visible to the coach regardless of the 4-week member limit.
 
-New table `learn_progress` (Lovable Cloud):
+## Rules that must always hold
+
+- Live calendar is the source of truth for "current week" — not workout completion.
+- Missed workouts never delay the next unlock.
+- Paused programs freeze unlocks; resume shifts future weeks forward, past weeks keep original dates.
+- Member cannot reach future content via URL, API, client edits, phone-date changes, or another device.
+- Deleting a member's view of old weeks never deletes their workout history.
+
+---
+
+## Technical section
+
+### Data model (new / changed tables)
+
+```text
+program_assignments (extend existing)
+  + scheduled_start_date date
+  + scheduled_end_date   date
+  + member_timezone      text     (IANA, e.g. America/Denver)
+  + status               enum     draft|scheduled|active|paused|completed|ended
+  + paused_at            timestamptz
+  + resumed_at           timestamptz
+
+scheduled_program_weeks (new)
+  id, assignment_id, source_program_day_range (or week_id),
+  display_week_number int,
+  start_date date, end_date date,
+  unlock_at timestamptz,          -- Sunday 00:00 in member tz, stored as UTC
+  publish_status enum draft|published,
+  access_status enum locked|unlocked|completed,
+  coach_notes text, member_notes text
+
+workout_completions (new or extend workout_logs)
+  scheduled_week_id fk, workout_id, status, completed_at,
+  performance jsonb, member_notes, coach_feedback
+
+schedule_change_log (new)
+  assignment_id, coach_id, field, prev_value jsonb, new_value jsonb,
+  reason text, created_at
 ```
-id uuid pk, user_id uuid, lesson_slug text, completed_at timestamptz,
-saved boolean default false, last_viewed_at timestamptz,
-unique(user_id, lesson_slug)
-```
-RLS: user owns own rows. Grants to `authenticated` + `service_role`.
 
-Hook: `src/hooks/useLearnProgress.ts` — returns `{ completed:Set, saved:Set, recent:Lesson[], toggleComplete, toggleSaved, markViewed, percentByCategory, overallPercent }`.
+RLS: members see rows only where `unlock_at <= now()` AND `display_week_number >= current_week - 4`. Coaches (role check) see all rows. All enforcement in RLS + a security-definer helper `public.week_is_accessible(scheduled_week_id, user_id)`.
 
-## 3. Routes & files
+### Backend logic
 
-```
-/learn                     → LearnHome
-/learn/search              → LearnSearch
-/learn/category/:slug      → CategoryHub
-/learn/lesson/:slug        → LessonPage
-```
+- Postgres function `compute_unlock_at(start_date, week_number, tz)` → returns the Sunday-midnight UTC timestamp for that week in the member's timezone (handles DST).
+- On assignment create: generate `scheduled_program_weeks` rows for all program weeks with `unlock_at` filled.
+- Pause: set `status='paused'`, `paused_at=now()`, null out `unlock_at` for future weeks.
+- Resume(new_start): recompute `unlock_at` and `start_date/end_date` for weeks after `paused_at`.
+- Reschedule: write to `schedule_change_log` before mutating; never touch weeks with `access_status='completed'` unless admin action.
 
-New files:
-- `src/pages/Learn.tsx` (Home)
-- `src/pages/LearnCategory.tsx`
-- `src/pages/LearnLesson.tsx`
-- `src/pages/LearnSearch.tsx`
-- `src/components/learn/LessonCard.tsx`
-- `src/components/learn/CategoryTile.tsx`
-- `src/components/learn/ProgressRing.tsx` (or reuse ReadinessRing)
-- `src/hooks/useLearnProgress.ts`
-- `src/content/learn/*.ts`
+### Two programs
 
-Route wiring in `src/App.tsx`.
+Seed **Forge** and **Rebuild** as the only programs flagged `uses_live_schedule = true`. Existing programs stay on legacy behavior so we don't break other members.
 
-## 4. Screens
+### Frontend
 
-### Learn Home (`/learn`)
-Above the fold (mobile 390×622):
-1. Header: "Learn" + overall completion ring (e.g. 24%) + search icon.
-2. **Continue Learning** — one large card, last viewed lesson w/ resume CTA + progress bar in lesson.
-3. **Recommended this week** — horizontal scroller of 3–5 lessons where `pregnancyWeekRange` includes current week (falls back to Foundation if no due date).
+- New member view: `src/pages/Program.tsx` (replaces current program screen when program uses live schedule).
+  - Header card, prev/next weekly nav, locked-week card, workout list for current week.
+- Coach view: `src/pages/coach/ProgramScheduler.tsx` — assignment picker, weekly timeline, per-week edit sheet, preview-as-member toggle.
+- Shared hooks: `useLiveSchedule(assignmentId)`, `useCurrentWeek(assignmentId)`.
+- Mobile-first, one week visible, horizontal swipe within accessible range only.
 
-Below fold:
-4. **Recently viewed** — horizontal row.
-5. **Saved** — horizontal row (empty state prompts to bookmark).
-6. **Categories** — 2-col grid of 7 tiles, each with emoji, title, `n/total` complete, thin progress bar.
+### Tests (Vitest)
 
-### Category Hub (`/learn/category/:slug`)
-- Hero: emoji, title, one-line "what you'll learn", category progress bar.
-- List of lessons: title, 1-line summary, minutes, completed check, saved bookmark.
+- unlock time math across DST boundaries and multiple timezones
+- 4-week history window (5th week hidden, history preserved)
+- future-week access blocked via direct fetch
+- pause/resume shifts unlocks correctly
+- missed workouts do not delay unlock
 
-### Lesson Page (`/learn/lesson/:slug`)
-Fixed section order rendered from `sections`:
-1. Overview
-2. Why It Matters
-3. Step-by-Step (numbered)
-4. Visual Examples (illustrated callout blocks — use styled cards, no external images)
-5. Common Mistakes
-6. Safety Tips (if present)
-7. Action Checklist (interactive — checked state persists in localStorage per lesson)
-8. Key Takeaways (bulleted)
-9. Related Lessons (chips → navigate)
-10. Sticky bottom bar: Save + Mark Complete.
+---
 
-On mount: `markViewed(slug)`.
+## Build order
 
-### Search (`/learn/search`)
-Fuzzy match on title/summary/keywords, grouped by category.
+1. Migration: extend `program_assignments`, add `scheduled_program_weeks`, `schedule_change_log`, enums, RLS, GRANTs, helper functions.
+2. Seed Forge and Rebuild program shells + `uses_live_schedule` flag.
+3. Assignment creation flow generates scheduled weeks.
+4. Backend access helpers + RLS enforcement + tests.
+5. Member weekly view + locked card.
+6. Coach scheduler dashboard + preview-as-member.
+7. Pause/resume + audit log UI.
+8. Notifications hook points (fire on unlock, not on publish) — wired but delivery deferred.
+9. Mobile QA on iPhone viewport.
 
-## 5. Home tab wiring
+---
 
-`src/components/tabs/HomeTab.tsx` Deeper Tools row:
-- Rename `❤️ Coach` → `📚 Learn`, icon `BookOpen`, `onClick={() => navigate("/learn")}`.
-- Remove the old duplicate `📚 Learn` (currently pointing to `/plan`) — replace it with something distinct or drop, keeping five buttons: 🍴 Nutrition · 💪 Programs · 📈 Readiness · ❤️ Her & Baby · 📚 Learn.
-- Coaches keep bottom-nav Coach tab; direct `/coach` still works.
+## Scope check before I start
 
-## 6. Design
+Two things worth confirming so I don't build the wrong thing:
 
-- Reuse existing dark tokens; each category tile gets a soft accent tint via inline `style={{ backgroundImage: 'linear-gradient(...)' }}` on top of `bg-card/60 backdrop-blur border-white/5`.
-- Large tap targets (min 56px), generous spacing, Instrument-Serif style headings already in project.
-- No hardcoded `text-white` / `bg-black` — semantic tokens only.
+1. **Program content** — Forge and Rebuild need actual weekly workouts. Do you want me to (a) create empty 12-week shells you and the coach fill later, (b) clone the existing M2F Perform content into both as a starting point, or (c) wait for you to provide the week-by-week programming?
+2. **Legacy programs** — should existing members on M2F Perform / Everyday Dad keep the current unrestricted view, or migrate everyone to the live-schedule model?
 
-## 7. Verification
-
-- `bunx tsgo --noEmit`
-- Playwright at 390×844: `/learn`, one category, one lesson — screenshot each, verify Mark Complete moves the ring.
-
-Not in scope: AI tutoring, video, quizzes, certificates. Content is seeded plain-text; can expand later.
+Approve the plan (and answer those two) and I'll start with the migration.
