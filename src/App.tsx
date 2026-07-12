@@ -25,6 +25,8 @@ import LearnCategory from "./pages/LearnCategory";
 import LearnLesson from "./pages/LearnLesson";
 import LearnSearch from "./pages/LearnSearch";
 import NotFound from "./pages/NotFound";
+import LiveProgram from "./pages/LiveProgram";
+import LiveProgramScheduler from "./pages/coach/LiveProgramScheduler";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +59,8 @@ const App = () => (
           <Route path="/learn/search" element={<LearnSearch />} />
           <Route path="/learn/category/:slug" element={<LearnCategory />} />
           <Route path="/learn/lesson/:slug" element={<LearnLesson />} />
+          <Route path="/program" element={<LiveProgram />} />
+          <Route path="/coach/scheduler" element={<LiveProgramScheduler />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

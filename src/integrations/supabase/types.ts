@@ -802,7 +802,13 @@ export type Database = {
           current_day: number
           id: string
           is_active: boolean
+          member_timezone: string
+          paused_at: string | null
           program_id: string
+          resumed_at: string | null
+          scheduled_end_date: string | null
+          scheduled_start_date: string | null
+          status: Database["public"]["Enums"]["assignment_status"]
           updated_at: string
           user_id: string
         }
@@ -812,7 +818,13 @@ export type Database = {
           current_day?: number
           id?: string
           is_active?: boolean
+          member_timezone?: string
+          paused_at?: string | null
           program_id: string
+          resumed_at?: string | null
+          scheduled_end_date?: string | null
+          scheduled_start_date?: string | null
+          status?: Database["public"]["Enums"]["assignment_status"]
           updated_at?: string
           user_id: string
         }
@@ -822,7 +834,13 @@ export type Database = {
           current_day?: number
           id?: string
           is_active?: boolean
+          member_timezone?: string
+          paused_at?: string | null
           program_id?: string
+          resumed_at?: string | null
+          scheduled_end_date?: string | null
+          scheduled_start_date?: string | null
+          status?: Database["public"]["Enums"]["assignment_status"]
           updated_at?: string
           user_id?: string
         }
@@ -882,6 +900,7 @@ export type Database = {
           published_through_day: number | null
           total_days: number
           updated_at: string
+          uses_live_schedule: boolean
         }
         Insert: {
           created_at?: string
@@ -893,6 +912,7 @@ export type Database = {
           published_through_day?: number | null
           total_days?: number
           updated_at?: string
+          uses_live_schedule?: boolean
         }
         Update: {
           created_at?: string
@@ -904,6 +924,7 @@ export type Database = {
           published_through_day?: number | null
           total_days?: number
           updated_at?: string
+          uses_live_schedule?: boolean
         }
         Relationships: []
       }
@@ -927,6 +948,106 @@ export type Database = {
           sort_order?: number
         }
         Relationships: []
+      }
+      schedule_change_log: {
+        Row: {
+          assignment_id: string
+          coach_id: string
+          created_at: string
+          field: string
+          id: string
+          new_value: Json | null
+          prev_value: Json | null
+          reason: string | null
+        }
+        Insert: {
+          assignment_id: string
+          coach_id: string
+          created_at?: string
+          field: string
+          id?: string
+          new_value?: Json | null
+          prev_value?: Json | null
+          reason?: string | null
+        }
+        Update: {
+          assignment_id?: string
+          coach_id?: string
+          created_at?: string
+          field?: string
+          id?: string
+          new_value?: Json | null
+          prev_value?: Json | null
+          reason?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "schedule_change_log_assignment_id_fkey"
+            columns: ["assignment_id"]
+            isOneToOne: false
+            referencedRelation: "program_assignments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scheduled_program_weeks: {
+        Row: {
+          access_status: Database["public"]["Enums"]["week_access_status"]
+          assignment_id: string
+          coach_notes: string | null
+          created_at: string
+          display_week_number: number
+          end_date: string
+          id: string
+          member_notes: string | null
+          publish_status: Database["public"]["Enums"]["week_publish_status"]
+          source_day_end: number | null
+          source_day_start: number | null
+          start_date: string
+          unlock_at: string
+          updated_at: string
+        }
+        Insert: {
+          access_status?: Database["public"]["Enums"]["week_access_status"]
+          assignment_id: string
+          coach_notes?: string | null
+          created_at?: string
+          display_week_number: number
+          end_date: string
+          id?: string
+          member_notes?: string | null
+          publish_status?: Database["public"]["Enums"]["week_publish_status"]
+          source_day_end?: number | null
+          source_day_start?: number | null
+          start_date: string
+          unlock_at: string
+          updated_at?: string
+        }
+        Update: {
+          access_status?: Database["public"]["Enums"]["week_access_status"]
+          assignment_id?: string
+          coach_notes?: string | null
+          created_at?: string
+          display_week_number?: number
+          end_date?: string
+          id?: string
+          member_notes?: string | null
+          publish_status?: Database["public"]["Enums"]["week_publish_status"]
+          source_day_end?: number | null
+          source_day_start?: number | null
+          start_date?: string
+          unlock_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scheduled_program_weeks_assignment_id_fkey"
+            columns: ["assignment_id"]
+            isOneToOne: false
+            referencedRelation: "program_assignments"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       standard_definitions: {
         Row: {
@@ -1256,6 +1377,7 @@ export type Database = {
           exercise_name: string
           id: string
           notes: string | null
+          scheduled_week_id: string | null
           sets: Json
           user_id: string
           workout_date: string
@@ -1265,6 +1387,7 @@ export type Database = {
           exercise_name: string
           id?: string
           notes?: string | null
+          scheduled_week_id?: string | null
           sets?: Json
           user_id: string
           workout_date?: string
@@ -1274,11 +1397,20 @@ export type Database = {
           exercise_name?: string
           id?: string
           notes?: string | null
+          scheduled_week_id?: string | null
           sets?: Json
           user_id?: string
           workout_date?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "workout_logs_scheduled_week_id_fkey"
+            columns: ["scheduled_week_id"]
+            isOneToOne: false
+            referencedRelation: "scheduled_program_weeks"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       workout_programs: {
         Row: {
@@ -1365,6 +1497,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      compute_week_unlock_at: {
+        Args: { _start: string; _tz: string }
+        Returns: string
+      }
+      generate_scheduled_weeks: {
+        Args: { _assignment_id: string }
+        Returns: undefined
+      }
       has_active_subscription: { Args: { _user_id: string }; Returns: boolean }
       has_role: {
         Args: {
@@ -1373,9 +1513,22 @@ export type Database = {
         }
         Returns: boolean
       }
+      week_is_accessible: {
+        Args: { _user_id: string; _week_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       app_role: "coach" | "user"
+      assignment_status:
+        | "draft"
+        | "scheduled"
+        | "active"
+        | "paused"
+        | "completed"
+        | "ended"
+      week_access_status: "locked" | "unlocked" | "completed"
+      week_publish_status: "draft" | "published"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1504,6 +1657,16 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["coach", "user"],
+      assignment_status: [
+        "draft",
+        "scheduled",
+        "active",
+        "paused",
+        "completed",
+        "ended",
+      ],
+      week_access_status: ["locked", "unlocked", "completed"],
+      week_publish_status: ["draft", "published"],
     },
   },
 } as const
