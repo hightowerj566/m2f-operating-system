@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "sdk_version": "0.22.2",
+  "path": "/functions/v1/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://evnsxprzzczwhoobobdw.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "m2f-mcp",
+      "version": "0.1.0",
+      "title": "M2F — Man to Father"
+    },
+    "tools": [
+      {
+        "name": "list_build_milestones",
+        "title": "List Build List milestones",
+        "description": "List the signed-in user's Build List milestones (active tasks) with completion status. Use this to see what fatherhood-prep tasks are active or completed.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "only_incomplete": {
+              "description": "If true, return only milestones not yet completed.",
+              "type": "boolean"
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_readiness_summary",
+        "title": "Get Readiness score",
+        "description": "Return the signed-in user's most recent Father Readiness assessment: total score, category scores, and weakest category.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_current_program_week",
+        "title": "Get current training program week",
+        "description": "Return the signed-in user's active live-schedule training program (Forge or Rebuild) and the currently unlocked week.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
