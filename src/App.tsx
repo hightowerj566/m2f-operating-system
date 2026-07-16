@@ -27,6 +27,7 @@ import LearnSearch from "./pages/LearnSearch";
 import NotFound from "./pages/NotFound";
 import LiveProgram from "./pages/LiveProgram";
 import LiveProgramScheduler from "./pages/coach/LiveProgramScheduler";
+import OAuthConsent from "./pages/OAuthConsent";
 
 const queryClient = new QueryClient();
 
@@ -61,6 +62,8 @@ const App = () => (
           <Route path="/learn/lesson/:slug" element={<LearnLesson />} />
           <Route path="/program" element={<LiveProgram />} />
           <Route path="/coach/scheduler" element={<LiveProgramScheduler />} />
+          <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
+
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
