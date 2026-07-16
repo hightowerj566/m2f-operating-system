@@ -1,8 +1,16 @@
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
 import m2fLogo from "@/assets/m2f-logo.png.asset.json";
+
+function safeNext(raw: string | null): string {
+  if (!raw) return "/";
+  // Only allow same-origin relative paths beginning with a single "/".
+  if (!raw.startsWith("/") || raw.startsWith("//")) return "/";
+  return raw;
+}
+
 
 
 export default function Auth() {
@@ -15,6 +23,8 @@ export default function Auth() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const next = safeNext(searchParams.get("next"));
 
   const [forgotMode, setForgotMode] = useState(false);
 
@@ -43,7 +53,8 @@ export default function Auth() {
         } else {
           localStorage.removeItem("forget-session-flag");
         }
-        navigate("/");
+        // Use full navigation so external OAuth consent flows resume cleanly.
+        window.location.href = next;
       }
     } else {
       const { error } = await supabase.auth.signUp({
@@ -51,7 +62,7 @@ export default function Auth() {
         password,
         options: {
           data: { display_name: displayName },
-          emailRedirectTo: window.location.origin,
+          emailRedirectTo: `${window.location.origin}${next}`,
         },
       });
       if (error) setError(error.message);
@@ -59,6 +70,7 @@ export default function Auth() {
     }
     setLoading(false);
   };
+
 
   return (
     <div className="flex flex-col min-h-dvh bg-background max-w-md mx-auto px-6 justify-center pt-safe pb-safe">
