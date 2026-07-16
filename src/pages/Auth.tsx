@@ -23,6 +23,8 @@ export default function Auth() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const next = safeNext(searchParams.get("next"));
 
   const [forgotMode, setForgotMode] = useState(false);
 
@@ -51,7 +53,8 @@ export default function Auth() {
         } else {
           localStorage.removeItem("forget-session-flag");
         }
-        navigate("/");
+        // Use full navigation so external OAuth consent flows resume cleanly.
+        window.location.href = next;
       }
     } else {
       const { error } = await supabase.auth.signUp({
@@ -59,7 +62,7 @@ export default function Auth() {
         password,
         options: {
           data: { display_name: displayName },
-          emailRedirectTo: window.location.origin,
+          emailRedirectTo: `${window.location.origin}${next}`,
         },
       });
       if (error) setError(error.message);
@@ -67,6 +70,7 @@ export default function Auth() {
     }
     setLoading(false);
   };
+
 
   return (
     <div className="flex flex-col min-h-dvh bg-background max-w-md mx-auto px-6 justify-center pt-safe pb-safe">
