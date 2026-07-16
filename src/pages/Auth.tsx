@@ -1,8 +1,16 @@
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
 import m2fLogo from "@/assets/m2f-logo.png.asset.json";
+
+function safeNext(raw: string | null): string {
+  if (!raw) return "/";
+  // Only allow same-origin relative paths beginning with a single "/".
+  if (!raw.startsWith("/") || raw.startsWith("//")) return "/";
+  return raw;
+}
+
 
 
 export default function Auth() {
