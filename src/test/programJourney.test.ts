@@ -44,7 +44,7 @@ describe("resolveJourney", () => {
     expect(r.stage?.slug).toBe("father-athlete");
   });
 
-  it("prefers guided journey over coach assignment during pregnancy", () => {
+  it("shows coach program as active while keeping guided stage as context", () => {
     const r = resolveJourney({
       dueDate: todayISO(60),
       babyArrivedAt: null,
@@ -53,8 +53,12 @@ describe("resolveJourney", () => {
         assignedAt: new Date().toISOString(), assignedByCoachName: null,
       },
     });
-    expect(r.track).toBe("guided");
+    expect(r.track).toBe("coach");
+    expect(r.coach?.programName).toBe("Coach Prog");
+    // Guided stage still resolved for timeline context
+    expect(r.stage).not.toBeNull();
   });
+
 
   it("falls back to coach lane when neither due nor baby is set", () => {
     const r = resolveJourney({
