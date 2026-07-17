@@ -132,3 +132,111 @@ export function phaseBrief(phase: Phase, daysLeft: number | null): string {
   const head = daysLeft != null && phase.id <= 5 ? `T-minus ${daysLeft} days · Week ${week}` : phase.window;
   return `${head} — ${phase.hisJob}`;
 }
+
+// ─────────────────────────────────────────────
+// Post-birth phases (Era 2 · Father OS).
+// Keyed to baby age in days, counted UP from profiles.baby_arrived_at.
+// Centralized here so future phases (toddler, next pregnancy) slot in
+// by appending to POST_BIRTH_PHASES — no page changes required.
+// ─────────────────────────────────────────────
+
+export interface PostBirthPhase {
+  slug: "survival" | "foundation" | "rhythm" | "growth";
+  name: string;
+  /** Inclusive start, exclusive end, in days of baby age. Infinity = open-ended. */
+  startDay: number;
+  endDay: number;
+  window: string;            // human label, e.g. "Birth – 6 weeks"
+  focus: string;
+  briefing: string;
+  trainingGuidance: string;
+  /** Program slug in content/postBirthTraining.ts */
+  programSlug: string;
+}
+
+export const POST_BIRTH_PHASES: PostBirthPhase[] = [
+  {
+    slug: "survival",
+    name: "SURVIVAL",
+    startDay: 0,
+    endDay: 42,
+    window: "Birth – 6 weeks",
+    focus: "Keep everyone alive. Guard her recovery.",
+    briefing:
+      "Support her recovery, own the feeds and diapers you can, manage sleep in shifts, run the house. Short workouts, walks, water, protein. The bar is on the floor — hit it daily.",
+    trainingGuidance: "Short sessions, low complexity. Walks count. No streak guilt.",
+    programSlug: "new-dad-survival",
+  },
+  {
+    slug: "foundation",
+    name: "FOUNDATION",
+    startDay: 42,
+    endDay: 84,
+    window: "6 – 12 weeks",
+    focus: "Turn chaos into routines.",
+    briefing:
+      "Build the routines: consistent training returns, nutrition steadies, the marriage gets deliberate time, and the house runs on a system. Handle the work transition without disappearing.",
+    trainingGuidance: "Return to structured full-body training. Consistency over intensity.",
+    programSlug: "new-dad-foundation",
+  },
+  {
+    slug: "rhythm",
+    name: "RHYTHM",
+    startDay: 84,
+    endDay: 183,
+    window: "3 – 6 months",
+    focus: "Operate the family, don't just react to it.",
+    briefing:
+      "Family routines lock in. Structured fitness, daily reading and play, weekly relationship check-ins, and the boring money work that protects everyone. Consistency is the whole game.",
+    trainingGuidance: "Structured programming — strength, conditioning, mobility.",
+    programSlug: "father-athlete",
+  },
+  {
+    slug: "growth",
+    name: "GROWTH",
+    startDay: 183,
+    endDay: Infinity,
+    window: "6 – 12 months",
+    focus: "Lead a family with a moving target in it.",
+    briefing:
+      "Baby-proof in waves, run solid foods, keep everyone safe as mobility explodes, and close out year one with milestones, family activities, and long-term fitness locked in.",
+    trainingGuidance: "Full training — strength, hypertrophy, conditioning, long-term health.",
+    programSlug: "father-athlete",
+  },
+];
+
+const MS_DAY = 24 * 60 * 60 * 1000;
+
+/** Baby age in whole days (0 on the birth date). Null if no birth date. */
+export function babyAgeDays(babyArrivedAt: string | Date | null | undefined): number | null {
+  if (!babyArrivedAt) return null;
+  const born =
+    typeof babyArrivedAt === "string" ? new Date(babyArrivedAt + "T00:00:00") : babyArrivedAt;
+  if (isNaN(born.getTime())) return null;
+  return Math.max(0, Math.floor((Date.now() - born.getTime()) / MS_DAY));
+}
+
+/** "3 days old" · "2 weeks old" · "7 weeks old" · "4 months old" · "1 year old" */
+export function babyAgeLabel(ageDays: number | null): string | null {
+  if (ageDays == null) return null;
+  if (ageDays < 14) return `${ageDays} day${ageDays === 1 ? "" : "s"} old`;
+  if (ageDays < 90) {
+    const w = Math.floor(ageDays / 7);
+    return `${w} week${w === 1 ? "" : "s"} old`;
+  }
+  if (ageDays < 365) {
+    const m = Math.floor(ageDays / 30.44);
+    return `${m} month${m === 1 ? "" : "s"} old`;
+  }
+  const y = Math.floor(ageDays / 365);
+  return `${y} year${y === 1 ? "" : "s"} old`;
+}
+
+/** Phase for a given baby age. Users joining after birth land in the right phase automatically. */
+export function getPostBirthPhase(ageDays: number | null): PostBirthPhase | null {
+  if (ageDays == null) return null;
+  return (
+    POST_BIRTH_PHASES.find((p) => ageDays >= p.startDay && ageDays < p.endDay) ??
+    POST_BIRTH_PHASES[POST_BIRTH_PHASES.length - 1]
+  );
+}

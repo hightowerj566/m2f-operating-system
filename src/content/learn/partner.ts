@@ -38,6 +38,7 @@ export const partnerLessons: Lesson[] = [
   }),
   L({
     slug: "physical-recovery",
+    postBirthPhases: ["survival"],
     categorySlug: c,
     title: "Supporting Her Physical Recovery",
     summary: "Weeks of healing. Take load off her body.",
@@ -74,6 +75,7 @@ export const partnerLessons: Lesson[] = [
   }),
   L({
     slug: "communication",
+    postBirthPhases: ["rhythm", "growth"],
     categorySlug: c,
     title: "Communication During Big Change",
     summary: "Short weekly check-ins beat one long fight.",
@@ -105,6 +107,7 @@ export const partnerLessons: Lesson[] = [
   }),
   L({
     slug: "mental-load",
+    postBirthPhases: ["foundation", "rhythm"],
     categorySlug: c,
     title: "The Mental Load",
     summary: "The invisible list she's running. Take half. Own it, not manage it.",
@@ -167,6 +170,7 @@ export const partnerLessons: Lesson[] = [
   }),
   L({
     slug: "relationship-changes",
+    postBirthPhases: ["foundation", "rhythm"],
     categorySlug: c,
     title: "How the Relationship Actually Changes",
     summary: "Roles shift. Sex changes. Priorities move. Name it before it surprises you.",
@@ -198,6 +202,7 @@ export const partnerLessons: Lesson[] = [
   }),
   L({
     slug: "postpartum-support",
+    postBirthPhases: ["survival", "foundation"],
     categorySlug: c,
     title: "Postpartum Support",
     summary: "The first 6 weeks are yours to carry. Protect her sleep, her body, her space.",
@@ -265,6 +270,7 @@ export const partnerLessons: Lesson[] = [
   }),
   L({
     slug: "visitors-partner",
+    postBirthPhases: ["survival"],
     categorySlug: c,
     title: "Managing Visitors for Her Sanity",
     summary: "You are the bouncer. She is the guest of honor.",

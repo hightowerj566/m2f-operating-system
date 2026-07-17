@@ -26,6 +26,7 @@ import LearnLesson from "./pages/LearnLesson";
 import LearnSearch from "./pages/LearnSearch";
 import NotFound from "./pages/NotFound";
 import LiveProgram from "./pages/LiveProgram";
+import PostBirthWorkout from "./pages/PostBirthWorkout";
 import LiveProgramScheduler from "./pages/coach/LiveProgramScheduler";
 import OAuthConsent from "./pages/OAuthConsent";
 
@@ -61,6 +62,7 @@ const App = () => (
           <Route path="/learn/category/:slug" element={<LearnCategory />} />
           <Route path="/learn/lesson/:slug" element={<LearnLesson />} />
           <Route path="/program" element={<LiveProgram />} />
+          <Route path="/post-birth-workout" element={<PostBirthWorkout />} />
           <Route path="/coach/scheduler" element={<LiveProgramScheduler />} />
           <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
 

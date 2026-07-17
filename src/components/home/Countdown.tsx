@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { Baby } from "lucide-react";
+import { babyAgeDays, babyAgeLabel, getPostBirthPhase } from "@/lib/phases";
 
 const MESSAGES = [
   "You're on track.",
@@ -22,18 +23,11 @@ function todaysMessage(): string {
 }
 
 function formatCountUp(arrivedAt: string | Date): { label: string; sub: string } {
-  const start = typeof arrivedAt === "string" ? new Date(arrivedAt) : arrivedAt;
-  const days = Math.floor((Date.now() - start.getTime()) / MS_PER_DAY) + 1;
-
-  if (days < 7) {
-    return { label: `Day ${days} as Dad`, sub: "Welcome to fatherhood." };
-  }
-  if (days < 30) {
-    const weeks = Math.floor(days / 7);
-    return { label: `Week ${weeks} of Fatherhood`, sub: "You're finding your rhythm." };
-  }
-  const months = Math.floor(days / 30);
-  return { label: `Month ${months} as Dad`, sub: "The new chapter is well underway." };
+  const days = babyAgeDays(arrivedAt) ?? 0;
+  const label = babyAgeLabel(days) ?? "";
+  if (days < 14) return { label, sub: "Welcome to fatherhood." };
+  if (days < 90) return { label, sub: "You're finding your rhythm." };
+  return { label, sub: "The new chapter is well underway." };
 }
 
 function pregnancyProgress(daysRemaining: number): number {
@@ -55,6 +49,7 @@ export function Countdown({ days, arrived, babyArrivedAt, week, babyName, firstN
   // ── After birth: count up, not down ──
   if (arrived && babyArrivedAt) {
     const { label, sub } = formatCountUp(babyArrivedAt);
+    const phase = getPostBirthPhase(babyAgeDays(babyArrivedAt));
     return (
       <div className="flex items-start gap-5">
         <div className="relative shrink-0 w-16 h-16 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center animate-gentle-pulse">
@@ -62,11 +57,16 @@ export function Countdown({ days, arrived, babyArrivedAt, week, babyName, firstN
         </div>
         <div className="flex-1 min-w-0">
           <h1 className="font-black tracking-tight leading-[0.9] text-foreground text-[48px]">
-            {label}
+            {babyName ? `${babyName} is ${label}` : label.charAt(0).toUpperCase() + label.slice(1)}
           </h1>
-          <p className="text-muted-foreground mt-2 text-[15px] leading-snug">
-            {babyName ? `${babyName} is here. ${sub}` : sub}
-          </p>
+          {phase && (
+            <p className="mt-2">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-3 py-1 text-[11px] font-bold tracking-[0.18em] uppercase text-primary">
+                {phase.name} · {phase.window}
+              </span>
+            </p>
+          )}
+          <p className="text-muted-foreground mt-2 text-[15px] leading-snug">{sub}</p>
           <p className="text-foreground/70 text-sm mt-2">{message}</p>
         </div>
       </div>

@@ -81,6 +81,12 @@ export function findCategory(slug: string): Category | undefined {
   return LEARN_CATEGORIES.find((c) => c.slug === slug);
 }
 
+/** Post-birth: lessons tagged for the current phase. */
+export function recommendedForPostBirthPhase(phaseSlug: string | null, limit = 5): Lesson[] {
+  if (!phaseSlug) return [];
+  return ALL_LESSONS.filter((l) => l.postBirthPhases?.includes(phaseSlug)).slice(0, limit);
+}
+
 export function recommendedForWeek(week: number | null, limit = 5): Lesson[] {
   if (week == null) {
     return ALL_LESSONS.filter((l) => l.weekRange[0] <= 12).slice(0, limit);

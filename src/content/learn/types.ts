@@ -19,6 +19,8 @@ export interface Lesson {
   weekRange: [number, number];
   keywords?: string[];
   related?: string[];
+  /** Post-birth phases this lesson applies to (survival|foundation|rhythm|growth). */
+  postBirthPhases?: string[];
   sections: LessonSection;
 }
 

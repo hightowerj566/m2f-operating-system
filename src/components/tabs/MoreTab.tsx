@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   LogOut,
   Trophy,
@@ -28,7 +29,7 @@ import { TIERS, type SubscriptionTier } from "@/lib/subscriptionTiers";
 import { ManageSubscriptionView } from "@/components/settings/ManageSubscriptionView";
 import { FitnessToolsTab } from "@/components/tools/FitnessToolsTab";
 import { DUE_DATE_PASS } from "@/lib/subscriptionTiers";
-import { useDueDatePass, recordArrival, joinYearOneWaitlist, useOnWaitlist } from "@/hooks/useM2fOs";
+import { useDueDatePass, recordArrival, clearArrival, joinYearOneWaitlist, useOnWaitlist } from "@/hooks/useM2fOs";
 import { generateKeepsake } from "@/lib/keepsake";
 
 interface MoreTabProps {
@@ -110,6 +111,26 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
   const { data: onWaitlist } = useOnWaitlist(user?.id);
   const [babyName, setBabyName] = useState("");
   const [arrivalDate, setArrivalDate] = useState("");
+  const queryClientArrival = useQueryClient();
+  // Existing arrival, so the form supports UPDATING a wrong/changed date
+  const { data: arrivalProfile } = useQuery({
+    queryKey: ["more-arrival", user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data: p } = await (supabase as any)
+        .from("profiles")
+        .select("baby_name, baby_arrived_at")
+        .eq("user_id", user!.id)
+        .maybeSingle();
+      return p as { baby_name: string | null; baby_arrived_at: string | null } | null;
+    },
+  });
+  useEffect(() => {
+    if (arrivalProfile?.baby_name && !babyName) setBabyName(arrivalProfile.baby_name);
+    if (arrivalProfile?.baby_arrived_at && !arrivalDate) setArrivalDate(arrivalProfile.baby_arrived_at);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [arrivalProfile]);
+  const hasArrival = !!arrivalProfile?.baby_arrived_at;
   const [gradSaving, setGradSaving] = useState(false);
   const [gradSaved, setGradSaved] = useState(false);
   const [buyingPass, setBuyingPass] = useState(false);
@@ -132,9 +153,27 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
     setGradSaving(false);
     if (ok) {
       setGradSaved(true);
-      toast({ title: "Welcome to Day One, Dad. 🎉" });
+      queryClientArrival.invalidateQueries({ queryKey: ["latest-readiness", user.id] });
+      queryClientArrival.invalidateQueries({ queryKey: ["more-arrival", user.id] });
+      toast({ title: hasArrival ? "Arrival date updated." : "Welcome to Day One, Dad. 🎉" });
     } else {
       toast({ title: "Failed to save", variant: "destructive" });
+    }
+  };
+
+  const removeArrival = async () => {
+    if (!user || gradSaving) return;
+    if (!window.confirm("Remove the arrival date and return to pregnancy mode? Your due date and history stay intact.")) return;
+    setGradSaving(true);
+    const ok = await clearArrival(user.id);
+    setGradSaving(false);
+    if (ok) {
+      setArrivalDate("");
+      queryClientArrival.invalidateQueries({ queryKey: ["latest-readiness", user.id] });
+      queryClientArrival.invalidateQueries({ queryKey: ["more-arrival", user.id] });
+      toast({ title: "Arrival date removed." });
+    } else {
+      toast({ title: "Failed to remove", variant: "destructive" });
     }
   };
 
@@ -407,9 +446,11 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
         {!gradSaved ? (
           <div className="bg-card border border-border rounded-2xl p-5 space-y-4">
             <div>
-              <h2 className="text-xl font-black text-foreground">She's here?</h2>
+              <h2 className="text-xl font-black text-foreground">{hasArrival ? "Update arrival details" : "She's here?"}</h2>
               <p className="text-sm text-muted-foreground mt-1">
-                Lock in the day everything changed. Your countdown becomes a count-up.
+                {hasArrival
+                  ? "Arrived early or late, or entered the wrong date? Fix it here."
+                  : "Lock in the day everything changed. Your countdown becomes a count-up."}
               </p>
             </div>
             <div>
@@ -437,8 +478,16 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
               disabled={!babyName.trim() || !arrivalDate || gradSaving}
               className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-bold text-sm hover:bg-primary/90 transition-colors disabled:opacity-50"
             >
-              {gradSaving ? "Saving..." : "She's Here 🎉"}
+              {gradSaving ? "Saving..." : hasArrival ? "Update" : "She's Here 🎉"}
             </button>
+            {hasArrival && (
+              <button
+                onClick={removeArrival}
+                className="w-full py-2.5 rounded-xl bg-secondary border border-border text-muted-foreground font-bold text-xs hover:border-destructive hover:text-destructive transition-colors"
+              >
+                Entered by mistake? Remove arrival date
+              </button>
+            )}
           </div>
         ) : (
           <div className="bg-card border border-primary/40 rounded-2xl p-5 space-y-4 text-center">
