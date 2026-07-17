@@ -32,6 +32,7 @@ import { saveWorkoutFeedback, getWorkoutRecommendations, type LoadRecommendation
 import { getExpressWorkout } from "@/lib/expressEngine";
 import { getWeekAdjustedReps, getWeekTechnique, cleanNotesForWeek, getWeekFromDay } from "@/lib/weekAdjustments";
 import { useOffline } from "@/hooks/useOffline";
+import { loadFlagshipDay } from "@/lib/flagshipWorkoutAdapter";
 
 interface ProgramExercise {
   name: string;
@@ -209,6 +210,19 @@ export default function Index() {
       setGroups([]);
       return;
     }
+
+    // ── Flagship: M2F Guided Journey (code-driven, time-based) ──
+    if (programName === "M2F Guided Journey" && uid) {
+      const flagship = await loadFlagshipDay(uid);
+      if (flagship) {
+        setGroups([{ label: flagship.label, exercises: flagship.exercises }]);
+      } else {
+        setGroups([]);
+      }
+      setLoadRecommendations([]);
+      return;
+    }
+
 
     // ── Express mode: use static JSON instead of DB ──
     if (schedDays === 5 && programName) {
