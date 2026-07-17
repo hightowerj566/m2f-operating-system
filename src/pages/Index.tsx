@@ -33,6 +33,7 @@ import { getExpressWorkout } from "@/lib/expressEngine";
 import { getWeekAdjustedReps, getWeekTechnique, cleanNotesForWeek, getWeekFromDay } from "@/lib/weekAdjustments";
 import { useOffline } from "@/hooks/useOffline";
 import { loadFlagshipDay } from "@/lib/flagshipWorkoutAdapter";
+import { isFlagshipProgram } from "@/lib/training/isFlagshipProgram";
 
 interface ProgramExercise {
   name: string;
@@ -188,22 +189,44 @@ export default function Index() {
         const { data: prog } = await supabase.from("programs").select("name, total_days, published_through_day").eq("id", a.program_id).single();
         let days = (prog as any)?.total_days || 1;
         const publishedThrough = (prog as any)?.published_through_day;
+        const loadedProgramName = prog ? (prog as any).name as string : null;
         if (prog) {
-          setProgramName((prog as any).name);
+          setProgramName(loadedProgramName);
           setTotalDays(publishedThrough != null ? Math.min(days, publishedThrough) : days);
         }
         const savedDay = Math.min(a.current_day || 1, days);
         setBaseDay(savedDay);
-        loadDayWorkout(a.program_id, savedDay, days, prefDays, user.id);
+        loadDayWorkout(a.program_id, savedDay, days, prefDays, user.id, loadedProgramName);
       }
       setAssignmentLoaded(true);
     };
     load();
   }, [user, onboardingChecked]);
 
-  const loadDayWorkout = useCallback(async (pid: string, dayNum: number, total: number, schedDays: number, uid?: string) => {
+  const loadDayWorkout = useCallback(async (
+    pid: string,
+    dayNum: number,
+    total: number,
+    schedDays: number,
+    uid?: string,
+    loadedProgramName?: string | null,
+  ) => {
     const config = getScheduleForDay(dayNum, total, schedDays);
     setScheduleConfig(config);
+
+    const activeProgramName = loadedProgramName ?? programName;
+
+    // The flagship is date-driven and deliberately has no program_days rows.
+    // Resolve it before the legacy schedule engine can misclassify the day.
+    if (isFlagshipProgram(pid, activeProgramName) && uid) {
+      const flagship = await loadFlagshipDay(uid);
+      if (!flagship) {
+        throw new Error("The flagship journey could not resolve the current member day.");
+      }
+      setGroups([{ label: flagship.label, exercises: flagship.exercises }]);
+      setLoadRecommendations([]);
+      return;
+    }
 
     // Rest days – no exercises
     if (config.type === "rest") {
@@ -211,22 +234,9 @@ export default function Index() {
       return;
     }
 
-    // ── Flagship: M2F Guided Journey (code-driven, time-based) ──
-    if (programName === "M2F Guided Journey" && uid) {
-      const flagship = await loadFlagshipDay(uid);
-      if (flagship) {
-        setGroups([{ label: flagship.label, exercises: flagship.exercises }]);
-      } else {
-        setGroups([]);
-      }
-      setLoadRecommendations([]);
-      return;
-    }
-
-
     // ── Express mode: use static JSON instead of DB ──
-    if (schedDays === 5 && programName) {
-      const express = getExpressWorkout(programName, dayNum);
+    if (schedDays === 5 && activeProgramName) {
+      const express = getExpressWorkout(activeProgramName, dayNum);
       if (express) {
         let exercises: ProgramExercise[] = express.exercises;
 
@@ -289,7 +299,7 @@ export default function Index() {
     if (exercises.length > 0) {
       // Apply week-specific rep and detail adjustments for eligible programs
       const week = getWeekFromDay(dayNum);
-      if (programName && ["M2F Perform 2.0", "M2F Rebuild 2.0"].includes(programName)) {
+      if (activeProgramName && ["M2F Perform 2.0", "M2F Rebuild 2.0"].includes(activeProgramName)) {
         exercises = exercises.map(ex => {
           const detail = ex.detail || "";
           const repsStr = ex.reps != null ? String(ex.reps) : "";

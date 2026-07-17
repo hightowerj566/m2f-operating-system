@@ -44,7 +44,15 @@ export default function Programs() {
         </p>
         <div className="flex items-baseline gap-3 flex-wrap">
           <h1 className="text-4xl font-black tracking-tight">
-            {isLoading ? "…" : data?.stage?.name ?? data?.coach?.programName ?? "Journey"}
+            {isLoading
+              ? "…"
+              : data?.track === "coach"
+              ? data.coach?.programName ?? "Coach Program"
+              : data?.flagshipDay.status === "active"
+              ? data.flagshipDay.day.stageName
+              : data?.flagshipDay.status === "post-birth"
+              ? data.flagshipDay.day?.stageName ?? "Father Mode"
+              : "Journey"}
           </h1>
           {data?.track === "coach" && (
             <span className="text-[10px] font-bold tracking-[0.2em] uppercase bg-primary/15 text-primary border border-primary/40 rounded-full px-2.5 py-1">
@@ -67,10 +75,14 @@ export default function Programs() {
           {data.track !== "coach" && (
             <FlagshipTodayCard
               userId={user.id}
-              onStart={() => navigate("/?tab=Workout")}
+              onStart={(version, workoutId) =>
+                navigate(`/programs/workout/${workoutId}?version=${version}`)
+              }
             />
           )}
-          {/* Hero card */}
+          {/* Coach programs keep their database-driven player. Guided members
+              use the strict day card above as the one source of today's work. */}
+          {data.track === "coach" && (
           <div className="mx-5 rounded-2xl border border-border bg-card p-5 mb-6">
             <div className="flex items-baseline justify-between mb-3">
               <div>
@@ -97,18 +109,12 @@ export default function Programs() {
 
             <button
               onClick={() => {
-                if (data.track === "coach") navigate("/?tab=Workout");
-                else if (data.todayWorkout) navigate(`/programs/workout/${data.todayWorkout.slug}`);
+                navigate("/?tab=Workout");
               }}
-              disabled={data.track !== "coach" && !data.todayWorkout}
               className="w-full h-12 rounded-xl bg-primary text-primary-foreground font-black text-sm tracking-wide flex items-center justify-center gap-2 disabled:opacity-40"
             >
               <Dumbbell className="w-4 h-4" />
-              {data.track === "coach"
-                ? `Start Day ${data.coach?.currentDay ?? 1}`
-                : data.todayWorkout
-                ? "Start Today's Workout"
-                : "Rest Day — recovery earns tomorrow"}
+              {`Start Day ${data.coach?.currentDay ?? 1}`}
             </button>
 
 
@@ -132,8 +138,10 @@ export default function Programs() {
               </button>
             </div>
           </div>
+          )}
 
           {/* Week strip */}
+          {data.track === "coach" && (
           <div id="week-strip" className="px-5 mb-8">
             <p className="text-[10px] font-bold tracking-[0.24em] uppercase text-muted-foreground mb-3">
               This Week
@@ -181,6 +189,7 @@ export default function Programs() {
               })}
             </div>
           </div>
+          )}
 
           {/* Timeline */}
           <div className="px-5 mb-6">

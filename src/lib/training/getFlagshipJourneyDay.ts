@@ -4,7 +4,7 @@
 // belong on right now — or the correct pre-program / birth-window /
 // post-birth / needs-due-date state.
 
-import { differenceInCalendarDays, startOfDay, addDays, format } from "date-fns";
+import { differenceInCalendarDays, startOfDay, addDays, format, parseISO } from "date-fns";
 import {
   FLAGSHIP_POST_BIRTH_STAGES,
   PRE_BIRTH_JOURNEY_LENGTH_DAYS,
@@ -14,6 +14,7 @@ import {
   type FlagshipDay,
   type FlagshipPostBirthDay,
 } from "@/lib/training/flagshipJourney";
+import { isFlagshipProgram } from "@/lib/training/isFlagshipProgram";
 
 export interface JourneyResolveInputs {
   dueDate?: string | Date | null;
@@ -70,7 +71,10 @@ export type FlagshipJourneyDayResult =
 
 function toDate(d: string | Date | null | undefined): Date | null {
   if (!d) return null;
-  return typeof d === "string" ? new Date(d) : d;
+  if (d instanceof Date) return d;
+  // A profile date is a calendar date, not a UTC timestamp. `new Date("YYYY-MM-DD")`
+  // parses at UTC midnight and becomes the prior local day west of Greenwich.
+  return /^\d{4}-\d{2}-\d{2}$/.test(d) ? parseISO(d) : new Date(d);
 }
 
 /** Timezone-safe calendar-day diff (positive = target is after ref). */
@@ -90,7 +94,7 @@ export function getFlagshipJourneyDay(
   const dueDate = toDate(input.dueDate);
   const birth = toDate(input.babyArrivedAt);
 
-  if (coach && coach.programName !== "M2F Guided Journey") {
+  if (coach && !isFlagshipProgram(coach.programId, coach.programName)) {
     let flagshipDay: number | null = null;
     if (dueDate) {
       const daysUntil = calendarDaysBetween(dueDate, now);

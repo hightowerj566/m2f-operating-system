@@ -5,6 +5,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { resolveJourney, type CoachAssignmentInput } from "@/lib/programJourney";
+import { getFlagshipJourneyDay } from "@/lib/training/getFlagshipJourneyDay";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = supabase as any;
@@ -51,11 +52,15 @@ export function useMemberProgram(userId: string | undefined) {
         };
       }
 
-      return resolveJourney({
+      const input = {
         dueDate: profile?.due_date ?? null,
         babyArrivedAt: profile?.baby_arrived_at ?? null,
         coachAssignment: coach,
-      });
+      };
+      return {
+        ...resolveJourney(input),
+        flagshipDay: getFlagshipJourneyDay(input),
+      };
     },
   });
 }
