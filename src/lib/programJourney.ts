@@ -249,46 +249,43 @@ function timelineFor(current: JourneyStage | null): ResolvedJourney["timeline"] 
 export function resolveJourney(input: JourneyResolveInput): ResolvedJourney {
   const now = input.now ?? new Date();
 
-  // Coach track wins ONLY when the man is neither expecting nor in the first
-  // post-birth year. That way the guided journey overrides the auto-enrolled
-  // M2F Perform 3.0 for expecting/new fathers, and coach programs still work
-  // for everyone else.
-  const hasDue = !!input.dueDate;
-  const babyAge = babyAgeDays(input.babyArrivedAt);
-  const inGuidedWindow = hasDue || (babyAge != null && babyAge < 365);
+  // Compute the guided journey first so we always have stage + timeline context
+  // (pregnancy week, upcoming stages) — even when a coach program is assigned.
+  let guided: ResolvedJourney | null = null;
+  if (input.babyArrivedAt) guided = resolvePostBirth(now, input.babyArrivedAt);
+  if (!guided && input.dueDate) guided = resolvePreBirth(now, input.dueDate);
 
-  if (inGuidedWindow) {
-    if (input.babyArrivedAt) {
-      const resolved = resolvePostBirth(now, input.babyArrivedAt);
-      if (resolved) return resolved;
-    }
-    if (input.dueDate) {
-      const resolved = resolvePreBirth(now, input.dueDate);
-      if (resolved) return resolved;
-    }
-  }
-
-  // Fall through to coach lane
+  // Coach assignment always wins as the *active program*. Every new user is
+  // auto-enrolled in M2F Perform 3.0, so this is what members should see and
+  // train from. The guided stage/timeline is preserved as background context.
   if (input.coachAssignment) {
+    const weekNum = Math.max(1, Math.ceil(input.coachAssignment.currentDay / 7));
+    const totalWeeks = Math.max(1, Math.ceil(input.coachAssignment.totalDays / 7));
     return {
       track: "coach",
-      stage: null,
-      currentWeek: Math.max(1, Math.ceil(input.coachAssignment.currentDay / 7)),
-      stageTotalWeeks: Math.ceil(input.coachAssignment.totalDays / 7),
-      weekInStage: Math.max(1, Math.ceil(input.coachAssignment.currentDay / 7)),
+      stage: guided?.stage ?? null,
+      currentWeek: weekNum,
+      stageTotalWeeks: totalWeeks,
+      weekInStage: weekNum,
       progressPct: Math.min(
         100,
         Math.round((input.coachAssignment.currentDay / input.coachAssignment.totalDays) * 100),
       ),
       program: null,
       todayWorkout: null,
-      weekSchedule: buildWeeklySchedule(now, () => null),
-      timeline: timelineFor(null),
+      weekSchedule: guided?.weekSchedule ?? buildWeeklySchedule(now, () => null),
+      timeline: guided?.timeline ?? timelineFor(null),
       coach: input.coachAssignment,
-      eraLabel: "Coach Program",
-      eraDetail: input.coachAssignment.programName,
+      eraLabel: input.coachAssignment.programName,
+      eraDetail: guided?.eraDetail
+        ? `${guided.eraDetail} · Day ${input.coachAssignment.currentDay} of ${input.coachAssignment.totalDays}`
+        : `Day ${input.coachAssignment.currentDay} of ${input.coachAssignment.totalDays}`,
     };
   }
+
+  // No coach assignment — fall back to pure guided journey when available.
+  if (guided) return guided;
+
 
   // Nothing to render
   return {
