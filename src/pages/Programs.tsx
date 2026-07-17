@@ -8,6 +8,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { Check, ChevronRight, Dumbbell, Home, LayoutDashboard, Lock, Map, Menu } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useMemberProgram } from "@/hooks/useMemberProgram";
+import { FlagshipTodayCard } from "@/components/programs/FlagshipTodayCard";
 import type { PBWorkout } from "@/content/postBirthTraining";
 
 const isDoneKey = (workout: PBWorkout, dateISO: string) => `m2f.pbworkout.${workout.slug}.${dateISO}`;
