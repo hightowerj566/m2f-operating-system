@@ -43,10 +43,15 @@ describe("getFlagshipJourneyDay", () => {
     else throw new Error("expected active");
   });
 
-  it("0 days → day 252 (final mission-mode)", () => {
-    const r = getFlagshipJourneyDay({ dueDate: dueIn(0), now: NOW });
+  it("1 day until due → day 252 (final mission-mode)", () => {
+    const r = getFlagshipJourneyDay({ dueDate: dueIn(1), now: NOW });
     if (r.status === "active") expect(r.programDay).toBe(252);
     else throw new Error("expected active");
+  });
+
+  it("0 days until due → birth window", () => {
+    const r = getFlagshipJourneyDay({ dueDate: dueIn(0), now: NOW });
+    expect(r.status).toBe("post-due-date");
   });
 
   it("253 days → pre-program onboarding", () => {
