@@ -120,7 +120,7 @@ export function FlagshipTodayCard({
     );
   }
 
-  // active
+  if (resolved.status !== "active") return null;
   const { day, programDay, daysUntilDueDate, pregnancyWeek } = resolved;
   const Icon = ICONS[day.dayType] ?? Dumbbell;
   const workout = day.workoutId ? getFlagshipWorkout(day.workoutId) : null;
