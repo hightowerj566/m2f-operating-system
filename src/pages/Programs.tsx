@@ -34,9 +34,12 @@ export default function Programs() {
   return (
     <div className="min-h-dvh bg-background text-foreground max-w-md mx-auto pb-[calc(6rem+env(safe-area-inset-bottom))]">
       {/* Header */}
-      <div className="px-5 pt-[calc(2rem+env(safe-area-inset-top))] pb-5">
-        <p className="text-xs font-bold tracking-[0.3em] uppercase text-muted-foreground mb-2">
-          Current Program
+      <div className="px-5 pt-[calc(2rem+env(safe-area-inset-top))] pb-3">
+        <div className="inline-flex items-center gap-1.5 mb-3 rounded-full border border-primary/40 bg-primary/10 px-2.5 py-1">
+          <span className="text-[9px] font-black tracking-[0.28em] uppercase text-primary">★ Flagship Program</span>
+        </div>
+        <p className="text-xs font-bold tracking-[0.3em] uppercase text-muted-foreground mb-1">
+          M2F Guided Journey
         </p>
         <div className="flex items-baseline gap-3 flex-wrap">
           <h1 className="text-4xl font-black tracking-tight">
