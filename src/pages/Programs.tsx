@@ -85,13 +85,21 @@ export default function Programs() {
             </div>
 
             <button
-              onClick={() => data.todayWorkout && navigate(`/programs/workout/${data.todayWorkout.slug}`)}
-              disabled={!data.todayWorkout}
+              onClick={() => {
+                if (data.track === "coach") navigate("/?tab=Workout");
+                else if (data.todayWorkout) navigate(`/programs/workout/${data.todayWorkout.slug}`);
+              }}
+              disabled={data.track !== "coach" && !data.todayWorkout}
               className="w-full h-12 rounded-xl bg-primary text-primary-foreground font-black text-sm tracking-wide flex items-center justify-center gap-2 disabled:opacity-40"
             >
               <Dumbbell className="w-4 h-4" />
-              {data.todayWorkout ? "Start Today's Workout" : "Rest Day — recovery earns tomorrow"}
+              {data.track === "coach"
+                ? `Start Day ${data.coach?.currentDay ?? 1}`
+                : data.todayWorkout
+                ? "Start Today's Workout"
+                : "Rest Day — recovery earns tomorrow"}
             </button>
+
 
             <div className="flex gap-2 mt-3">
               {data.stage && (
