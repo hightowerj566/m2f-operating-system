@@ -432,7 +432,15 @@ export default function Coach() {
 
   const loadPrograms = async () => {
     const { data } = await supabase.from("programs").select("*").order("created_at", { ascending: false });
-    if (data) setPrograms(data as any);
+    if (data) {
+      // Pin the flagship "M2F Guided Journey" to the top of the coach's program list.
+      const sorted = [...(data as any[])].sort((a, b) => {
+        if (a.name === "M2F Guided Journey") return -1;
+        if (b.name === "M2F Guided Journey") return 1;
+        return 0;
+      });
+      setPrograms(sorted as any);
+    }
   };
 
   const loadClients = async () => {
