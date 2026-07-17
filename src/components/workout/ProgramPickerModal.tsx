@@ -167,7 +167,7 @@ export function ProgramPickerModal({ userId, onComplete, currentProgramId }: Pro
             </div>
             {currentProgramId && (
               <button
-                onClick={onComplete}
+                onClick={() => onComplete()}
                 className="w-full mt-4 py-2.5 rounded-xl border border-border text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
               >
                 Cancel
