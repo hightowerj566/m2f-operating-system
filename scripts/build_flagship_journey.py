@@ -9,16 +9,188 @@ stage-relative week + day index. Stage weeks that exceed the source
 program's week count wrap to the final available week (deload)."""
 
 import json
+import re
+import unicodedata
 from pathlib import Path
 
 SRC = Path("src/data/m2f_all_training_programs.json")
 OUT = Path("src/data/m2f_flagship_journey.json")
+LIB = Path("src/data/m2f_exercise_library.json")
 
 data = json.loads(SRC.read_text())
+library = json.loads(LIB.read_text())
 pre = data["pre_birth"]
 post = data["post_birth"]
 
 program_by_slug = {p["slug"]: p for p in pre + post}
+
+
+def normalized_name(value):
+    """Stable lookup key for human exercise names; never used as a fuzzy match."""
+    value = unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode()
+    return re.sub(r"[^a-z0-9]+", " ", value.lower()).strip()
+
+
+def slugify(value):
+    return normalized_name(value).replace(" ", "-")
+
+
+def parse_rest_seconds(value):
+    if not value:
+        return 60
+    match = re.search(r"(\d+)", str(value))
+    if not match:
+        return 60
+    amount = int(match.group(1))
+    return amount * 60 if "min" in str(value).lower() else amount
+
+
+def parse_effort(value, label):
+    match = re.search(rf"{label}\s*(\d+(?:\.\d+)?)", str(value or ""), re.I)
+    return float(match.group(1)) if match else None
+
+
+def classify_exercise(name):
+    n = normalized_name(name)
+    if any(x in n for x in ("walk", "bike", "conditioning", "interval", "run", "zone 2")):
+        return "conditioning", "conditioning", ["Cardiovascular system"]
+    if any(x in n for x in ("mobility", "cat cow", "hold", "plank", "dead bug", "rotation")):
+        return "mobility" if "mobility" in n or "cat cow" in n else "core", "mobility", ["Core"]
+    if any(x in n for x in ("row", "pull", "chin")):
+        return "strength", "pull", ["Back", "Biceps"]
+    if any(x in n for x in ("press", "push up", "extension")):
+        return "strength", "push", ["Chest", "Shoulders", "Triceps"]
+    if any(x in n for x in ("squat", "lunge", "deadlift", "hinge", "carry")):
+        return "strength", "lower body", ["Glutes", "Legs", "Core"]
+    return "strength", "accessory", ["Full body"]
+
+
+def infer_equipment(name):
+    n = normalized_name(name)
+    equipment = []
+    for needle, label in (
+        ("barbell", "Barbell"), ("dumbbell", "Dumbbells"),
+        ("band", "Resistance band"), ("cable", "Cable"),
+        ("bike", "Bike"), ("rower", "Rower"), ("sled", "Sled"),
+    ):
+        if needle in n:
+            equipment.append(label)
+    return equipment or ["Bodyweight or available load"]
+
+
+def make_library_exercise(name, samples):
+    category, pattern, muscles = classify_exercise(name)
+    cue = next((s.get("cue") for s in samples if s.get("cue")), "Move with control through a pain-free range.")
+    tempo = next((s.get("tempo") for s in samples if s.get("tempo")), "controlled")
+    rest = next((parse_rest_seconds(s.get("rest")) for s in samples if s.get("rest")), 60)
+    rpe = next((parse_effort(s.get("effort"), "RPE") for s in samples if parse_effort(s.get("effort"), "RPE") is not None), 7)
+    rir = next((parse_effort(s.get("effort"), "RIR") for s in samples if parse_effort(s.get("effort"), "RIR") is not None), max(0, 10 - rpe))
+    return {
+        "id": slugify(name),
+        "name": name,
+        "displayName": name,
+        "aliases": [],
+        "category": category,
+        "exerciseType": "compound" if pattern in ("push", "pull", "lower body") else category,
+        "movementPattern": pattern,
+        "laterality": "bilateral",
+        "planeOfMotion": "sagittal",
+        "primaryMuscles": muscles,
+        "secondaryMuscles": ["Core"],
+        "equipment": infer_equipment(name),
+        "difficulty": "Intermediate",
+        "defaultTempo": tempo,
+        "defaultRestSeconds": rest,
+        "defaultRPE": rpe,
+        "defaultPrescription": {
+            "tempo": tempo,
+            "restSeconds": rest,
+            "targetRPE": rpe,
+            "targetRIR": rir,
+        },
+        "instructions": [
+            cue,
+            "Use a controlled range of motion and maintain stable positioning.",
+            "Stop the set when technique breaks down or pain occurs.",
+        ],
+        "coachingCues": [cue],
+        "commonMistakes": ["Rushing the movement", "Using a load that changes the intended technique"],
+        "regressions": [],
+        "progressions": [],
+        "substitutions": [],
+        "safetyNotes": [
+            "Use a pain-free range of motion.",
+            "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        ],
+        "media": {"videoUrl": "", "thumbnailUrl": ""},
+        "tags": [category, pattern] + muscles,
+        "sourceCue": cue,
+    }
+
+
+def enrich_training_content():
+    """Normalize source prescriptions to stable library references.
+
+    The uploaded seven-program file is intentionally presentation-oriented and
+    originally contained names only. This migration keeps it as the program
+    source while producing one strict runtime schema for the app.
+    """
+    samples_by_name = {}
+    for program in pre + post:
+        for workout in program["workouts"]:
+            for spec in workout["versions"].values():
+                for exercise in spec["exercises"]:
+                    samples_by_name.setdefault(exercise["name"], []).append(exercise)
+                    substitution = exercise.get("substitution")
+                    if substitution:
+                        for option in re.split(r"\s+or\s+", substitution, flags=re.I):
+                            samples_by_name.setdefault(option.strip(), []).append({"name": option.strip()})
+
+    by_name = {normalized_name(e["name"]): e for e in library["exercises"]}
+    ids = {e["id"] for e in library["exercises"]}
+    for name, samples in samples_by_name.items():
+        key = normalized_name(name)
+        if key in by_name:
+            continue
+        created = make_library_exercise(name, samples)
+        base = created["id"]
+        suffix = 2
+        while created["id"] in ids:
+            created["id"] = f"{base}-{suffix}"
+            suffix += 1
+        library["exercises"].append(created)
+        by_name[key] = created
+        ids.add(created["id"])
+
+    for program in pre + post:
+        for workout in program["workouts"]:
+            for version, spec in workout["versions"].items():
+                for index, exercise in enumerate(spec["exercises"], start=1):
+                    resolved = by_name.get(normalized_name(exercise["name"]))
+                    if not resolved:
+                        raise ValueError(f'Exercise "{exercise["name"]}" could not be resolved')
+                    exercise["exerciseId"] = resolved["id"]
+                    exercise["prescriptionId"] = f'{workout["slug"]}:{version}:{index}'
+                    exercise["order"] = index
+                    exercise["restSeconds"] = parse_rest_seconds(exercise.get("rest"))
+                    exercise["targetRPE"] = parse_effort(exercise.get("effort"), "RPE")
+                    exercise["targetRIR"] = parse_effort(exercise.get("effort"), "RIR")
+                    substitution = exercise.get("substitution")
+                    exercise["substitutionIds"] = [] if not substitution else [
+                        by_name[normalized_name(option.strip())]["id"]
+                        for option in re.split(r"\s+or\s+", substitution, flags=re.I)
+                    ]
+                    exercise["tracking"] = {
+                        "trackLoad": True,
+                        "trackReps": True,
+                        "trackRpe": True,
+                    }
+
+    library["exercises"].sort(key=lambda exercise: exercise["id"])
+    library["exerciseCount"] = len(library["exercises"])
+
+
+enrich_training_content()
 
 
 def index_program(prog_slug, week_offset=0):
@@ -381,7 +553,9 @@ out = {
 }
 
 OUT.write_text(json.dumps(out, indent=2))
+LIB.write_text(json.dumps(library, indent=2))
 print(f"Wrote {OUT} · days={len(days_out)} postDays={len(post_days)} workouts={len(workouts_out)}")
+print(f"Wrote {LIB} · exercises={len(library['exercises'])}")
 
 seen = [d["programDay"] for d in days_out]
 assert seen == list(range(1, 253)), "programDay not contiguous 1..252"
@@ -391,4 +565,13 @@ assert seen_pb == list(range(1, 366)), "postpartumDay not contiguous 1..365"
 by_id = {w["slug"] for w in workouts_out.values()}
 missing = [d for d in days_out + post_days if d.get("workoutId") and d["workoutId"] not in by_id]
 assert not missing, f"missing workoutId refs: {missing[:3]}"
+library_ids = {exercise["id"] for exercise in library["exercises"]}
+missing_exercises = [
+    (workout["slug"], version, exercise.get("exerciseId"))
+    for workout in workouts_out.values()
+    for version, spec in workout["versions"].items()
+    for exercise in spec["exercises"]
+    if not exercise.get("exerciseId") or exercise["exerciseId"] not in library_ids
+]
+assert not missing_exercises, f"missing exerciseId refs: {missing_exercises[:3]}"
 print("OK: 252 pre-birth + 365 post-birth days contiguous, all workout refs valid")

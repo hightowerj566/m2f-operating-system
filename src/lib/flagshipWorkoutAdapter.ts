@@ -8,12 +8,12 @@
 import { supabase } from "@/integrations/supabase/client";
 import { getFlagshipJourneyDay } from "@/lib/training/getFlagshipJourneyDay";
 import {
-  getFlagshipWorkout,
   type FlagshipDay,
   type FlagshipPostBirthDay,
-  type FlagshipWorkout,
 } from "@/lib/training/flagshipJourney";
 import type { WorkoutVersion } from "@/content/postBirthTraining";
+import { resolveWorkoutById } from "@/lib/training/resolveWorkout";
+import type { ResolvedWorkoutExercise } from "@/lib/training/types";
 
 interface ProgramExercise {
   name: string;
@@ -56,14 +56,6 @@ export interface FlagshipDayResult {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = supabase as any;
 
-function parseRestSeconds(rest?: string): number | undefined {
-  if (!rest) return undefined;
-  const m = rest.match(/(\d+)/);
-  if (!m) return undefined;
-  const n = Number(m[1]);
-  return /min/i.test(rest) ? n * 60 : n;
-}
-
 function parseReps(reps?: string): number | null {
   if (!reps) return null;
   const rightOfCross = reps.split(/[×x]/).pop() ?? reps;
@@ -71,46 +63,39 @@ function parseReps(reps?: string): number | null {
   return m ? Number(m[1]) : null;
 }
 
-function parseSets(reps?: string, sets?: number): number | null {
-  if (typeof sets === "number") return sets;
-  if (!reps) return null;
-  const m = reps.match(/(\d+)\s*[×x]/);
-  return m ? Number(m[1]) : null;
-}
-
-type SrcExercise = FlagshipWorkout["versions"]["full"]["exercises"][number];
-
-function toProgramExercise(ex: SrcExercise, index: number): ProgramExercise {
-  const detailParts = [ex.effort, ex.cue, ex.substitution && `Sub: ${ex.substitution}`]
+function toProgramExercise(ex: ResolvedWorkoutExercise, index: number): ProgramExercise {
+  const detailParts = [
+    ex.rpe != null && `RPE ${ex.rpe}`,
+    ex.rir != null && `RIR ${ex.rir}`,
+    ex.tempo && `Tempo ${ex.tempo}`,
+    ex.tactileCue,
+    ex.substitutions.length > 0 && `Sub: ${ex.substitutions.map((sub) => sub.name).join(", ")}`,
+  ]
     .filter(Boolean)
     .join(". ");
   return {
-    name: `${index + 1}. ${ex.name}`,
+    name: `${index + 1}. ${ex.displayName}`,
     detail: detailParts,
     type: "exercise",
-    sets: parseSets(ex.reps, ex.sets),
+    sets: typeof ex.sets === "number" ? ex.sets : Number.parseInt(ex.sets, 10) || null,
     reps: parseReps(ex.reps),
     percentage: null,
     seconds: null,
-    video_url: null,
-    video_type: null,
-    rest: parseRestSeconds(ex.rest),
-    rir: null,
+    video_url: ex.videoUrl ?? null,
+    video_type: ex.videoUrl ? "upload" : null,
+    rest: ex.restSeconds,
+    rir: ex.rir != null ? String(ex.rir) : null,
   };
-}
-
-function pickVersion(preferred?: WorkoutVersion): WorkoutVersion {
-  return preferred ?? "full";
 }
 
 function trainingResult(
   day: FlagshipDay | FlagshipPostBirthDay,
-  workout: FlagshipWorkout,
+  workoutId: string,
   version: WorkoutVersion,
   base: FlagshipDayResult["meta"],
 ): FlagshipDayResult {
-  const spec = workout.versions[pickVersion(version)] ?? workout.versions.full;
-  const exercises = spec.exercises.map(toProgramExercise);
+  const workout = resolveWorkoutById(workoutId, version);
+  const exercises = workout.exercises.map(toProgramExercise);
   return {
     label: day.title ?? workout.name,
     exercises,
@@ -212,8 +197,7 @@ export async function loadFlagshipDay(
       status: resolved.status,
     };
     if (day.dayType === "training" && day.workoutId) {
-      const wk = getFlagshipWorkout(day.workoutId);
-      if (wk) return trainingResult(day, wk, version, base);
+      return trainingResult(day, day.workoutId, version, base);
     }
     return nonTrainingResult(day, base);
   }
@@ -233,8 +217,7 @@ export async function loadFlagshipDay(
     status: resolved.status,
   };
   if (day.dayType === "training" && day.workoutId) {
-    const wk = getFlagshipWorkout(day.workoutId);
-    if (wk) return trainingResult(day, wk, version, base);
+    return trainingResult(day, day.workoutId, version, base);
   }
   return nonTrainingResult(day, base);
 }

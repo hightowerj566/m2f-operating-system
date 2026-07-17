@@ -27,7 +27,7 @@ export function FlagshipTodayCard({
   onStart,
 }: {
   userId: string;
-  onStart?: (version: "full" | "express" | "minimum") => void;
+  onStart?: (version: "full" | "express" | "minimum", workoutId: string) => void;
 }) {
   const [state, setState] = useState<{
     dueDate: string | null;
@@ -170,7 +170,7 @@ export function FlagshipTodayCard({
           {(["full", "express", "minimum"] as const).map((v) => (
             <button
               key={v}
-              onClick={() => onStart?.(v)}
+              onClick={() => onStart?.(v, workout.slug)}
               className="h-10 rounded-xl bg-primary text-primary-foreground font-black text-xs uppercase tracking-wider"
             >
               {v}
@@ -179,7 +179,8 @@ export function FlagshipTodayCard({
         </div>
       ) : (
         <button
-          onClick={() => onStart?.("full")}
+          onClick={() => undefined}
+          disabled
           className="w-full h-10 rounded-xl border border-border font-bold text-xs uppercase tracking-wider"
         >
           Mark {day.dayType.replace("-", " ")} complete

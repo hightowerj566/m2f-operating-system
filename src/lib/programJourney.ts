@@ -22,6 +22,7 @@ import {
   preBirthWorkoutsForPregnancyWeek,
 } from "@/content/preBirthTraining";
 import { programForSlug, type PBProgram, type PBWorkout } from "@/content/postBirthTraining";
+import { isFlagshipProgram } from "@/lib/training/isFlagshipProgram";
 
 export type Track = "guided" | "coach";
 
@@ -258,7 +259,10 @@ export function resolveJourney(input: JourneyResolveInput): ResolvedJourney {
   // Coach assignment always wins as the *active program* — EXCEPT when the
   // assigned program is the flagship "M2F Guided Journey", which is itself
   // the time-based track. In that case, render the guided journey directly.
-  if (input.coachAssignment && input.coachAssignment.programName !== "M2F Guided Journey") {
+  if (
+    input.coachAssignment &&
+    !isFlagshipProgram(input.coachAssignment.programId, input.coachAssignment.programName)
+  ) {
     const weekNum = Math.max(1, Math.ceil(input.coachAssignment.currentDay / 7));
     const totalWeeks = Math.max(1, Math.ceil(input.coachAssignment.totalDays / 7));
     return {
