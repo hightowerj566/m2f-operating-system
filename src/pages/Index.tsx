@@ -717,6 +717,10 @@ export default function Index() {
                   className="flex items-center gap-2 bg-secondary text-foreground text-sm font-semibold px-4 py-2 rounded-full border border-border hover:border-primary/40 transition-colors">
                   <Wrench className="w-4 h-4 text-primary" /> Fitness Tools
                 </button>
+                <button onClick={() => setShowProgramPicker(true)}
+                  className="flex items-center gap-2 bg-secondary text-foreground text-sm font-semibold px-4 py-2 rounded-full border border-border hover:border-primary/40 transition-colors">
+                  <Dumbbell className="w-4 h-4 text-primary" /> Switch Program
+                </button>
               </div>
             </div>
             {user && <TrainingScheduleSelector userId={user.id} programName={programName} programId={programId} onChange={handleScheduleChange} onProgramSwitch={handleProgramSwitch} />}
