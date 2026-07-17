@@ -255,10 +255,10 @@ export function resolveJourney(input: JourneyResolveInput): ResolvedJourney {
   if (input.babyArrivedAt) guided = resolvePostBirth(now, input.babyArrivedAt);
   if (!guided && input.dueDate) guided = resolvePreBirth(now, input.dueDate);
 
-  // Coach assignment always wins as the *active program*. Every new user is
-  // auto-enrolled in M2F Perform 3.0, so this is what members should see and
-  // train from. The guided stage/timeline is preserved as background context.
-  if (input.coachAssignment) {
+  // Coach assignment always wins as the *active program* — EXCEPT when the
+  // assigned program is the flagship "M2F Guided Journey", which is itself
+  // the time-based track. In that case, render the guided journey directly.
+  if (input.coachAssignment && input.coachAssignment.programName !== "M2F Guided Journey") {
     const weekNum = Math.max(1, Math.ceil(input.coachAssignment.currentDay / 7));
     const totalWeeks = Math.max(1, Math.ceil(input.coachAssignment.totalDays / 7));
     return {
