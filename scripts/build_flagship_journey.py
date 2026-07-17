@@ -32,9 +32,9 @@ STAGES = [
 ]
 
 POST_STAGES = [
-    ("postbirth-survival", "New Dad Survival", 1, 35),
-    ("postbirth-foundation", "New Dad Foundation", 36, 84),
-    ("postbirth-father-athlete", "Father Athlete", 85, None),
+    ("new-dad-survival", "New Dad Survival", 1, 35),
+    ("new-dad-foundation", "New Dad Foundation", 36, 84),
+    ("father-athlete", "Father Athlete", 85, None),
 ]
 
 # Weekday templates by stage: list of 7 dicts, one per weekday (1..7 = Mon..Sun)

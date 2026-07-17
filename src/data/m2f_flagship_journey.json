@@ -47,19 +47,19 @@
   ],
   "postBirthStages": [
     {
-      "id": "postbirth-survival",
+      "id": "new-dad-survival",
       "name": "New Dad Survival",
       "postpartumDayStart": 1,
       "postpartumDayEnd": 35
     },
     {
-      "id": "postbirth-foundation",
+      "id": "new-dad-foundation",
       "name": "New Dad Foundation",
       "postpartumDayStart": 36,
       "postpartumDayEnd": 84
     },
     {
-      "id": "postbirth-father-athlete",
+      "id": "father-athlete",
       "name": "Father Athlete",
       "postpartumDayStart": 85,
       "postpartumDayEnd": null
