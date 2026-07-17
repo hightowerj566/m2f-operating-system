@@ -8,6 +8,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { Check, ChevronRight, Dumbbell, Home, LayoutDashboard, Lock, Map, Menu } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useMemberProgram } from "@/hooks/useMemberProgram";
+import { FlagshipTodayCard } from "@/components/programs/FlagshipTodayCard";
 import type { PBWorkout } from "@/content/postBirthTraining";
 
 const isDoneKey = (workout: PBWorkout, dateISO: string) => `m2f.pbworkout.${workout.slug}.${dateISO}`;
@@ -62,6 +63,13 @@ export default function Programs() {
         <EmptyState onSet={() => navigate("/?tab=More")} />
       ) : (
         <>
+          {/* Day-based flagship engine */}
+          {data.track !== "coach" && (
+            <FlagshipTodayCard
+              userId={user.id}
+              onStart={() => navigate("/?tab=Workout")}
+            />
+          )}
           {/* Hero card */}
           <div className="mx-5 rounded-2xl border border-border bg-card p-5 mb-6">
             <div className="flex items-baseline justify-between mb-3">
