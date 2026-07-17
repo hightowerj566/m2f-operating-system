@@ -133,13 +133,14 @@ export default function Index() {
   // Check onboarding (fatherhood essentials) status
   const [onboardingChecked, setOnboardingChecked] = useState(false);
   const [trainingProfileComplete, setTrainingProfileComplete] = useState<boolean | null>(null);
+  const [hasJourneyDate, setHasJourneyDate] = useState(false);
 
   useEffect(() => {
     if (!user) return;
     const checkOnboarding = async () => {
       const { data } = await supabase
         .from("profiles")
-        .select("onboarding_complete, training_profile_complete")
+        .select("onboarding_complete, training_profile_complete, due_date, baby_arrived_at")
         .eq("user_id", user.id)
         .single();
       if (data && !(data as any).onboarding_complete) {
@@ -147,6 +148,7 @@ export default function Index() {
         return;
       }
       setTrainingProfileComplete(!!(data as any)?.training_profile_complete);
+      setHasJourneyDate(Boolean((data as any)?.due_date || (data as any)?.baby_arrived_at));
       setOnboardingChecked(true);
     };
     checkOnboarding();
@@ -555,12 +557,14 @@ export default function Index() {
     });
   }, [user]);
 
-  // Show program picker for new subscribers with no assignment
+  // Show program picker only for subscribers who have neither a coach-assigned
+  // program nor a due date. Members with a due date are automatically on the
+  // date-driven Guided Journey — the picker would just loop them.
   useEffect(() => {
-    if (assignmentLoaded && subscribed && !assignmentId && !isCoach) {
+    if (assignmentLoaded && subscribed && !assignmentId && !isCoach && !hasJourneyDate) {
       setShowProgramPicker(true);
     }
-  }, [assignmentLoaded, subscribed, assignmentId, isCoach]);
+  }, [assignmentLoaded, subscribed, assignmentId, isCoach, hasJourneyDate]);
 
   const navItems = isCoach
     ? [...baseNavItems, { icon: LayoutDashboard, label: "Coach" }]
