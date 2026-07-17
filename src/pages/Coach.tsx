@@ -14,6 +14,7 @@ import { CoachReviewCard } from "@/components/coaching/CoachReviewCard";
 import { CoachStandardsManager } from "@/components/coaching/CoachStandardsManager";
 import { LeadsTab } from "@/components/coaching/LeadsTab";
 import { ProgramImporter } from "@/components/coaching/ProgramImporter";
+import { FlagshipProgramView } from "@/components/coaching/FlagshipProgramView";
 import { toast } from "@/hooks/use-toast";
 import { getTierFromProductId, TIERS } from "@/lib/subscriptionTiers";
 
@@ -791,6 +792,10 @@ export default function Coach() {
                       </div>
                     )}
                   </div>
+
+                  {selectedProgram.name === "M2F Guided Journey" && (
+                    <div className="mb-6"><FlagshipProgramView /></div>
+                  )}
 
                   {/* Day calendar grid */}
                   <div className="mb-6">
