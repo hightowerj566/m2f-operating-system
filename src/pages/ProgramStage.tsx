@@ -5,7 +5,9 @@ import { ChevronLeft } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { stageBySlug } from "@/content/journeyStages";
 
-const ROWS: Array<{ key: keyof ReturnType<typeof stageBySlug> extends infer T ? T extends null ? never : keyof NonNullable<T> : never; label: string }> = [
+import type { JourneyStage } from "@/content/journeyStages";
+
+const ROWS: Array<{ key: keyof JourneyStage; label: string }> = [
   { key: "purpose", label: "Purpose" },
   { key: "frequency", label: "Frequency" },
   { key: "split", label: "Weekly split" },
