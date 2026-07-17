@@ -321,34 +321,51 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
     if (!user) return;
     setEnrolling(true);
 
-    // Deactivate all current active assignments
-    await supabase
-      .from("program_assignments")
-      .update({ is_active: false })
-      .eq("user_id", user.id)
-      .eq("is_active", true);
-
-    if (existingAssignment) {
-      // Reactivate existing — resume where they left off
-      await supabase
+    try {
+      // Deactivate all current active assignments
+      const { error: deactivateError } = await supabase
         .from("program_assignments")
-        .update({ is_active: true })
-        .eq("id", existingAssignment.id);
-    } else {
-      // Create new assignment
-      await supabase.from("program_assignments").insert({
-        user_id: user.id,
-        program_id: program.id,
-        current_day: 1,
-        assigned_by: user.id,
-        assigned_at: startDate ? startDate.toISOString() : new Date().toISOString(),
-        is_active: true,
-      });
-    }
+        .update({ is_active: false })
+        .eq("user_id", user.id)
+        .eq("is_active", true);
+      if (deactivateError) throw deactivateError;
 
-    setSelectedProgram(null);
-    setEnrolling(false);
-    if (onProgramChanged) onProgramChanged();
+      if (existingAssignment) {
+        // Reactivate existing — resume where they left off
+        const { error } = await supabase
+          .from("program_assignments")
+          .update({ is_active: true })
+          .eq("id", existingAssignment.id);
+        if (error) throw error;
+      } else {
+        const selectedStart = startDate ?? new Date();
+        // Create new assignment
+        const { error } = await supabase.from("program_assignments").insert({
+          user_id: user.id,
+          program_id: program.id,
+          current_day: 1,
+          assigned_by: user.id,
+          assigned_at: selectedStart.toISOString(),
+          scheduled_start_date: format(selectedStart, "yyyy-MM-dd"),
+          member_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Denver",
+          status: "active",
+          is_active: true,
+        });
+        if (error) throw error;
+      }
+
+      setSelectedProgram(null);
+      if (onProgramChanged) onProgramChanged();
+      toast({ title: "Program selected." });
+    } catch (error) {
+      toast({
+        title: "Program wasn't selected",
+        description: error instanceof Error ? error.message : "Try again in a moment.",
+        variant: "destructive",
+      });
+    } finally {
+      setEnrolling(false);
+    }
   };
 
   const PHASE_INFO: Record<
