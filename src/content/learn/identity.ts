@@ -331,4 +331,42 @@ export const identityLessons: Lesson[] = [
     },
     related: ["identity", "leadership"],
   }),
+
+  L({
+    slug: "returning-to-work",
+    categorySlug: c,
+    title: "Returning to Work Without Disappearing",
+    summary: "How to go back to the job while staying fully in the fight at home.",
+    minutes: 5,
+    weekRange: [38, 42],
+    postBirthPhases: ["survival", "foundation"],
+    keywords: ["work", "paternity leave", "transition", "schedule"],
+    sections: {
+      overview: "The return to work is where a lot of dads quietly check out at home — not from lack of love, from lack of a plan. The fix is deciding in advance what you still own.",
+      whyItMatters: "Her hardest weeks may start when your leave ends. If your contribution collapses to a paycheck, the resentment compounds daily.",
+      steps: [
+        "Before day one back, agree on what stays yours: a night shift block, morning prep, bath night — named, not implied.",
+        "Protect the first and last 30 minutes of the day for the family. Phone stays in the pocket.",
+        "Batch what you can: prep bottles, lay out supplies, and reset the house the night before.",
+        "Set a hard stop time at work for the first month back and treat it like a meeting with your boss.",
+        "Do a Friday check-in: what worked this week, what broke, what shifts next week.",
+      ],
+      commonMistakes: [
+        "Assuming 'I work all day' cancels the second shift at home.",
+        "Letting the commute become decompression time while she's still on the clock.",
+        "Making the arrangement implicit — unspoken splits always feel unfair to someone.",
+      ],
+      actionChecklist: [
+        "Owned duties named and agreed before returning",
+        "Hard stop time set for the first month",
+        "Weekly Friday check-in scheduled",
+      ],
+      keyTakeaways: [
+        "Going back to work changes your hours, not your role.",
+        "Name what you own — implicit splits breed resentment.",
+        "Bookend the workday with present, phone-down family time.",
+      ],
+    },
+    related: ["mental-load"],
+  }),
 ];

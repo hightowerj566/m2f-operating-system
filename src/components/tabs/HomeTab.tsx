@@ -9,13 +9,15 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLatestReadiness } from "@/hooks/useReadiness";
 import { useBuildList, applyMilestoneBoost, surfaceMilestones } from "@/hooks/useBuildList";
-import { getPhase, daysRemaining as calcDaysRemaining, pregnancyWeek } from "@/lib/phases";
+import { getPhase, daysRemaining as calcDaysRemaining, pregnancyWeek, babyAgeDays, getPostBirthPhase } from "@/lib/phases";
 import { askHerTonight } from "@/content/fatherhood";
-import { recommendedForWeek } from "@/content/learn";
+import { recommendedForWeek, recommendedForPostBirthPhase } from "@/content/learn";
 import { useLearnProgress } from "@/hooks/useLearnProgress";
 import m2fLogo from "@/assets/m2f-logo.png.asset.json";
 import { Countdown } from "@/components/home/Countdown";
 import { weeklyContent } from "@/content/weeklyPregnancy";
+import { missionsForPhase, MISSION_CATEGORY_LABELS, type MissionCategory } from "@/content/postBirthMissions";
+import { programForSlug } from "@/content/postBirthTraining";
 import {
   ArrowRight, Check, ChevronRight, Dumbbell, Flame, MessageSquare,
   Home as HomeIcon, Sparkles, BookOpen, Baby, User, Utensils, Heart, Calculator,
@@ -48,6 +50,11 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
   const phase = getPhase(days, arrived);
   const week = pregnancyWeek(days);
   const babyName = data?.babyName ?? null;
+
+  // Post-birth: baby age + current post-birth phase (auto-updates by age)
+  const ageDays = babyAgeDays(data?.babyArrivedAt);
+  const pbPhase = arrived ? getPostBirthPhase(ageDays) : null;
+  const pbMissions = pbPhase ? missionsForPhase(pbPhase.slug) : [];
 
   // Readiness score + delta
   const latest = data?.latest ?? null;
@@ -119,12 +126,14 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
   const [overrides, setOverrides] = useState<Record<string, boolean>>({});
   useEffect(() => {
     const next: Record<string, boolean> = {};
-    ["workout", "nutrition", "ask", "build"].forEach((k) => {
+    const keys = ["workout", "nutrition", "ask", "build", ...pbMissions.map((m) => m.key)];
+    keys.forEach((k) => {
       next[k] = localStorage.getItem(overrideKey(k)) === "1";
     });
     setOverrides(next);
+    // Re-read when the post-birth phase resolves (profile loads async)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [pbPhase?.slug]);
   const toggleOverride = (key: string) => {
     setOverrides((prev) => {
       const nextVal = !prev[key];
@@ -147,11 +156,33 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
   const currentPhaseId = phase && phase.id <= 5 ? phase.id : phase?.id === 6 ? 6 : 5;
   const nextBuild = surfaceMilestones(buildMilestones, currentPhaseId, 1)[0] ?? null;
 
+  // Post-birth workout page writes m2f.pbworkout.<slug>.<date> on completion
+  const pbProgram = pbPhase ? programForSlug(pbPhase.programSlug) : null;
+  const pbWorkoutDone = !!pbProgram?.workouts.some(
+    (w) => localStorage.getItem(`m2f.pbworkout.${w.slug}.${todayISO()}`) === "1",
+  );
   const workoutEffectiveDone = workoutDoneToday || overrides.workout === true;
   const buildEffectiveDone = !nextBuild || overrides.build === true;
 
   // NOTE: Ask Her is no longer a mission — it lives as its own card below.
-  const missions = [
+  // Post-birth: phase-based missions (content/postBirthMissions.ts). The
+  // fitness mission routes to the phase's workout and auto-completes when the
+  // workout page marks today done. Everything else uses the same per-day
+  // localStorage toggle the pregnancy missions use.
+  const postBirthMissions = pbMissions.map((m) => {
+    const isFitness = m.category === "fitness";
+    const done = overrides[m.key] === true || (isFitness && (pbWorkoutDone || workoutDoneToday));
+    return {
+      key: m.key,
+      icon: isFitness ? Dumbbell : m.category === "family" ? Heart : m.category === "baby" ? Baby : HomeIcon,
+      title: m.title,
+      done,
+      onClick: isFitness ? () => navigate("/post-birth-workout") : () => toggleOverride(m.key),
+      detail: `${MISSION_CATEGORY_LABELS[m.category]} · ${m.estMinutes} min — ${m.description}`,
+    };
+  });
+
+  const pregnancyMissions = [
     ...(!hasMacros
       ? [{
           key: "set-macros",
@@ -184,6 +215,19 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
       onClick: () => navigate(nextBuild ? `/build-list?task=${nextBuild.id}` : "/build-list"),
     },
   ];
+  const missions = arrived && postBirthMissions.length > 0 ? postBirthMissions : pregnancyMissions;
+
+  // Post-birth: simple per-category progress (e.g. "Fitness: 1 of 2")
+  const pbCategoryProgress = arrived
+    ? (Object.keys(MISSION_CATEGORY_LABELS) as MissionCategory[])
+        .map((cat) => {
+          const inCat = pbMissions.filter((m) => m.category === cat);
+          if (!inCat.length) return null;
+          const done = inCat.filter((m) => postBirthMissions.find((pm) => pm.key === m.key)?.done).length;
+          return { label: MISSION_CATEGORY_LABELS[cat], done, total: inCat.length };
+        })
+        .filter(Boolean) as { label: string; done: number; total: number }[]
+    : [];
   const missionsDone = missions.filter((m) => m.done).length;
   const allMissionsDone = missionsDone === missions.length;
 
@@ -201,9 +245,12 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
 
   // Today's lesson — one, based on pregnancy week (or earliest gap)
   const todaysLesson = useMemo(() => {
-    const rec = recommendedForWeek(week ?? null, 8);
+    const rec = arrived && pbPhase
+      ? recommendedForPostBirthPhase(pbPhase.slug, 8)
+      : recommendedForWeek(week ?? null, 8);
     return rec.find((l) => !completedLessons.has(l.slug)) ?? rec[0] ?? null;
-  }, [week, completedLessons]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [week, completedLessons, arrived, pbPhase?.slug]);
 
   // Streak (mission-completion streak: at least one of the 3 done)
   const { data: streak = 0 } = useQuery({
@@ -309,7 +356,26 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
         />
       </div>
 
-      {/* ── 2 · Father Readiness Ring ── */}
+      {/* ── 2 · Father Readiness Ring / Post-birth: Fatherhood Progress ── */}
+      {arrived && pbPhase ? (
+        <div className="w-full px-5 pt-8">
+          <div className="rounded-2xl border border-border bg-card/60 backdrop-blur p-5">
+            <p className="text-[10px] font-bold tracking-[0.24em] uppercase text-muted-foreground mb-3">
+              Today's Fatherhood Progress
+            </p>
+            <ul className="space-y-2">
+              {pbCategoryProgress.map((c) => (
+                <li key={c.label} className="flex items-center justify-between">
+                  <p className="text-sm font-semibold text-foreground">{c.label}</p>
+                  <p className={`text-sm font-black tabular-nums ${c.done === c.total ? "text-emerald-400" : "text-muted-foreground"}`}>
+                    {c.done} of {c.total}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ) : (
       <button
         onClick={() => navigate(latest ? "/readiness" : "/readiness/assessment")}
         className="w-full text-left px-5 pt-8"
@@ -348,6 +414,7 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
           <ChevronRight className="w-5 h-5 text-muted-foreground shrink-0" />
         </div>
       </button>
+      )}
 
       {/* ── 3 · Today's Mission Card ── */}
       <div className="px-5 pt-4">

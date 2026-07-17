@@ -128,6 +128,16 @@ export async function recordArrival(userId: string, babyName: string, arrivedAt:
   return !error;
 }
 
+/** Correct a wrongly-entered arrival: clears the birth date and returns the
+ * app to pregnancy mode. Due date and pregnancy history are untouched. */
+export async function clearArrival(userId: string): Promise<boolean> {
+  const { error } = await db
+    .from("profiles")
+    .update({ baby_arrived_at: null })
+    .eq("user_id", userId);
+  return !error;
+}
+
 export async function joinYearOneWaitlist(userId: string, email: string): Promise<boolean> {
   const { error } = await db
     .from("year_one_waitlist")

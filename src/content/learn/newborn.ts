@@ -7,6 +7,7 @@ function L(l: Lesson): Lesson { return l; }
 export const newbornLessons: Lesson[] = [
   L({
     slug: "holding-a-newborn",
+    postBirthPhases: ["survival"],
     categorySlug: c,
     title: "How to Hold a Newborn",
     summary: "Support the head, get comfortable, and stop being afraid of your own daughter.",
@@ -42,6 +43,7 @@ export const newbornLessons: Lesson[] = [
   }),
   L({
     slug: "diaper-changes",
+    postBirthPhases: ["survival"],
     categorySlug: c,
     title: "Diaper Changes, Efficiently",
     summary: "10 diapers a day. Get it under 90 seconds without drama.",
@@ -79,6 +81,7 @@ export const newbornLessons: Lesson[] = [
   }),
   L({
     slug: "swaddling",
+    postBirthPhases: ["survival"],
     categorySlug: c,
     title: "Swaddling Like a Nurse",
     summary: "Tight around the arms, loose at the hips. That's the whole game.",
@@ -116,6 +119,7 @@ export const newbornLessons: Lesson[] = [
   }),
   L({
     slug: "burping",
+    postBirthPhases: ["survival"],
     categorySlug: c,
     title: "Burping a Newborn",
     summary: "Three positions, gentle pats, and patience.",
@@ -147,6 +151,7 @@ export const newbornLessons: Lesson[] = [
   }),
   L({
     slug: "bottle-feeding",
+    postBirthPhases: ["survival", "foundation"],
     categorySlug: c,
     title: "Bottle Feeding",
     summary: "Paced bottle feeding — the technique that protects breastfeeding.",
@@ -216,6 +221,7 @@ export const newbornLessons: Lesson[] = [
   }),
   L({
     slug: "bathing",
+    postBirthPhases: ["survival", "foundation"],
     categorySlug: c,
     title: "Bathing a Newborn",
     summary: "Sponge baths until the cord falls off, then a quick tub.",
@@ -252,6 +258,7 @@ export const newbornLessons: Lesson[] = [
   }),
   L({
     slug: "safe-sleep",
+    postBirthPhases: ["survival", "foundation"],
     categorySlug: c,
     title: "Safe Sleep",
     summary: "ABCs: Alone, on Back, in a Crib. Non-negotiable.",
@@ -289,6 +296,7 @@ export const newbornLessons: Lesson[] = [
   }),
   L({
     slug: "soothing-techniques",
+    postBirthPhases: ["survival", "foundation"],
     categorySlug: c,
     title: "Soothing a Crying Baby",
     summary: "The 5 S's — swaddle, side, shush, swing, suck.",
@@ -325,6 +333,7 @@ export const newbornLessons: Lesson[] = [
   }),
   L({
     slug: "tummy-time",
+    postBirthPhases: ["foundation", "rhythm"],
     categorySlug: c,
     title: "Tummy Time",
     summary: "Short, frequent, awake. Builds neck strength and prevents flat head.",
@@ -356,6 +365,7 @@ export const newbornLessons: Lesson[] = [
   }),
   L({
     slug: "reading-baby-cues",
+    postBirthPhases: ["survival", "foundation"],
     categorySlug: c,
     title: "Reading Baby Cues",
     summary: "Hungry, tired, overstimulated, uncomfortable — learn the tells.",
@@ -383,5 +393,43 @@ export const newbornLessons: Lesson[] = [
       ],
     },
     related: ["soothing-techniques", "safe-sleep"],
+  }),
+
+  L({
+    slug: "newborn-appointments",
+    categorySlug: c,
+    title: "Newborn Appointments: What's Coming",
+    summary: "The first-month checkup schedule, what gets measured, and the questions worth asking.",
+    minutes: 4,
+    weekRange: [36, 42],
+    postBirthPhases: ["survival"],
+    keywords: ["pediatrician", "checkup", "appointments", "weight check"],
+    sections: {
+      overview: "The first month runs on a checkup rhythm: a weight check within 3–5 days of discharge, a two-week visit, and a one-month visit. Knowing the schedule turns appointments from surprises into missions.",
+      whyItMatters: "These visits catch feeding and weight issues early — and showing up prepared with questions makes you a participant, not a passenger.",
+      steps: [
+        "Put every scheduled visit in your phone before you leave the hospital.",
+        "Know your baby's birth weight — weight-gain trend is the headline number at every early visit.",
+        "Keep a running note of questions between visits; sleep-deprived memory is not a system.",
+        "Track feeds and wet/dirty diapers for 24 hours before each visit — it's the first thing they ask.",
+        "Drive at least one visit solo or as the lead parent. Reps build competence.",
+      ],
+      commonMistakes: [
+        "Treating appointments as her job and you as the driver.",
+        "Saving concerns for the next visit instead of calling the nurse line.",
+        "Not writing questions down and blanking in the room.",
+      ],
+      actionChecklist: [
+        "All first-month visits on the calendar",
+        "Pediatrician and nurse line saved in favorites",
+        "Question note started on your phone",
+      ],
+      keyTakeaways: [
+        "The first-month schedule: 3–5 days, 2 weeks, 1 month.",
+        "Weight trend and feeding count are the data they want.",
+        "Prepared questions make you the co-pilot, not the chauffeur.",
+      ],
+    },
+    related: ["reading-baby-cues", "bottle-feeding"],
   }),
 ];
