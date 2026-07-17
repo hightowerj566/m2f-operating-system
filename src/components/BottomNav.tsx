@@ -7,7 +7,7 @@ import { Home, Dumbbell, Map, Menu } from "lucide-react";
 
 const NAV = [
   { icon: Home, label: "Home", route: "/" },
-  { icon: Dumbbell, label: "Workout", route: "/?tab=Workout" },
+  { icon: Dumbbell, label: "Programs", route: "/programs" },
   { icon: Map, label: "Roadmap", route: "/build-list" },
   { icon: Menu, label: "More", route: "/?tab=More" },
 ];
@@ -17,7 +17,8 @@ export function BottomNav() {
   const { pathname } = useLocation();
 
   const activeLabel =
-    pathname.startsWith("/build-list") ? "Roadmap" : "Home"; // Home covers "/" and inner tabs
+    pathname.startsWith("/programs") ? "Programs" :
+    pathname.startsWith("/build-list") ? "Roadmap" : "Home";
 
   return (
     <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-card border-t border-border px-2 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] z-40">
