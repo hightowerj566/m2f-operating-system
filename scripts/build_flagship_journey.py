@@ -1,97 +1,128 @@
 #!/usr/bin/env python3
 """Build src/data/m2f_flagship_journey.json — the day-based flagship engine.
 
-Every integer 1..252 is one program day. Weekday templates map source
-training workouts (from m2f_training_programs.json, keyed by preg week + day
-index 1..5) into training days; other weekdays become active-recovery,
-mobility, optional-training, or rest days per the M2F stage spec.
-"""
+Source of truth: src/data/m2f_all_training_programs.json, which contains
+seven programs (four pre-birth blocks + three post-birth blocks). Each of
+the 252 pre-birth program days and 365 post-birth days is mapped to a
+weekday template, then a training day pulls the correct workout for its
+stage-relative week + day index. Stage weeks that exceed the source
+program's week count wrap to the final available week (deload)."""
+
 import json
 from pathlib import Path
 
-SRC = Path("src/data/m2f_training_programs.json")
+SRC = Path("src/data/m2f_all_training_programs.json")
 OUT = Path("src/data/m2f_flagship_journey.json")
 
 data = json.loads(SRC.read_text())
-pre = data["programs"]["preBirth"]
-post = data["programs"]["postBirth"]
+pre = data["pre_birth"]
+post = data["post_birth"]
 
-# preg week -> {day_index: workout}
-by_week = {}
-for prog in pre:
-    for w in prog["workouts"]:
-        by_week.setdefault(w["week"], {})[w["day"]] = w
+program_by_slug = {p["slug"]: p for p in pre + post}
 
+
+def index_program(prog_slug, week_offset=0):
+    """Return { (stageWeek, day): workout } where stageWeek starts at 1.
+    week_offset lets Mission Mode reuse transform-staging weeks 5..8 as
+    stage weeks 1..4."""
+    out = {}
+    p = program_by_slug[prog_slug]
+    for w in p["workouts"]:
+        stage_week = w["week"] - week_offset
+        if stage_week < 1:
+            continue
+        out[(stage_week, w["day"])] = w
+    return out
+
+
+# id, name, program_day_start, program_day_end, preg_week_start, preg_week_end,
+# program_slug, week_offset, days_per_week, template
 STAGES = [
-    # id, name, program_day_start, program_day_end, preg_week_start, preg_week_end
-    ("prebirth-foundation", "Foundation", 1, 70, 4, 13),
-    ("prebirth-framing", "Framing", 71, 133, 14, 22),
-    ("prebirth-durability", "Durability", 134, 196, 23, 31),
-    ("prebirth-staging", "Staging", 197, 224, 32, 35),
-    ("prebirth-mission-mode", "Mission Mode", 225, 252, 36, 39),
+    {
+        "id": "prebirth-foundation",
+        "name": "Foundation",
+        "start": 1, "end": 70,
+        "pw_start": 4, "pw_end": 13,
+        "program": "transform-foundation",
+        "week_offset": 0,
+        "days_per_week": 5,
+    },
+    {
+        "id": "prebirth-framing",
+        "name": "Framing",
+        "start": 71, "end": 133,
+        "pw_start": 14, "pw_end": 22,
+        "program": "transform-framing",
+        "week_offset": 0,
+        "days_per_week": 5,
+    },
+    {
+        "id": "prebirth-durability",
+        "name": "Durability",
+        "start": 134, "end": 196,
+        "pw_start": 23, "pw_end": 31,
+        "program": "transform-durability",
+        "week_offset": 0,
+        "days_per_week": 4,
+    },
+    {
+        "id": "prebirth-staging",
+        "name": "Staging",
+        "start": 197, "end": 224,
+        "pw_start": 32, "pw_end": 35,
+        "program": "transform-staging",
+        "week_offset": 0,
+        "days_per_week": 4,
+    },
+    {
+        "id": "prebirth-mission-mode",
+        "name": "Mission Mode",
+        "start": 225, "end": 252,
+        "pw_start": 36, "pw_end": 39,
+        "program": "transform-staging",
+        "week_offset": 4,  # reuse weeks 5..8 as stage weeks 1..4
+        "days_per_week": 3,
+    },
 ]
+
+# Weekday templates by days_per_week.
+# 5-day (Mon..Sun): T, T, active-recovery, T, T, T, rest → src_day 1..5
+TPL_5 = [
+    {"kind": "training", "src_day": 1},
+    {"kind": "training", "src_day": 2},
+    {"kind": "active-recovery"},
+    {"kind": "training", "src_day": 3},
+    {"kind": "training", "src_day": 4},
+    {"kind": "training", "src_day": 5},
+    {"kind": "rest"},
+]
+# 4-day: T, T, active-recovery, T, T, optional-training, rest
+TPL_4 = [
+    {"kind": "training", "src_day": 1},
+    {"kind": "training", "src_day": 2},
+    {"kind": "active-recovery"},
+    {"kind": "training", "src_day": 3},
+    {"kind": "training", "src_day": 4},
+    {"kind": "optional-training"},
+    {"kind": "rest"},
+]
+# 3-day: T, rest, T, mobility, T, optional, rest
+TPL_3 = [
+    {"kind": "training", "src_day": 1},
+    {"kind": "rest"},
+    {"kind": "training", "src_day": 2},
+    {"kind": "mobility"},
+    {"kind": "training", "src_day": 3},
+    {"kind": "optional-training"},
+    {"kind": "rest"},
+]
+TEMPLATES = {5: TPL_5, 4: TPL_4, 3: TPL_3}
 
 POST_STAGES = [
     ("new-dad-survival", "New Dad Survival", 1, 35),
     ("new-dad-foundation", "New Dad Foundation", 36, 84),
     ("father-athlete", "Father Athlete", 85, None),
 ]
-
-# Weekday templates by stage: list of 7 dicts, one per weekday (1..7 = Mon..Sun)
-# each entry has: "kind" and optionally "src_day" (index into by_week[preg_week])
-FOUNDATION_TPL = [
-    {"kind": "training", "src_day": 1, "title_hint": "Upper A"},
-    {"kind": "training", "src_day": 2, "title_hint": "Lower A"},
-    {"kind": "active-recovery"},
-    {"kind": "training", "src_day": 3, "title_hint": "Upper B"},
-    {"kind": "training", "src_day": 4, "title_hint": "Lower B"},
-    {"kind": "training", "src_day": 5, "title_hint": "Pump & Athletic"},
-    {"kind": "rest"},
-]
-FRAMING_TPL = [
-    {"kind": "training", "src_day": 1, "title_hint": "Upper Strength"},
-    {"kind": "training", "src_day": 2, "title_hint": "Lower Strength"},
-    {"kind": "active-recovery"},
-    {"kind": "training", "src_day": 3, "title_hint": "Upper Strength + Grip"},
-    {"kind": "training", "src_day": 4, "title_hint": "Lower Strength + Carries"},
-    {"kind": "training", "src_day": 5, "title_hint": "Upper Pump + Athletic"},
-    {"kind": "rest"},
-]
-DURABILITY_TPL = [
-    {"kind": "training", "src_day": 1, "title_hint": "Upper Strength"},
-    {"kind": "training", "src_day": 2, "title_hint": "Lower Strength"},
-    {"kind": "active-recovery"},
-    {"kind": "training", "src_day": 3, "title_hint": "Upper Durability"},
-    {"kind": "training", "src_day": 4, "title_hint": "Lower Durability"},
-    {"kind": "optional-training", "title_hint": "Zone 2 + Core"},
-    {"kind": "rest"},
-]
-STAGING_TPL = [
-    {"kind": "training", "src_day": 1, "title_hint": "Full Body A"},
-    {"kind": "active-recovery"},
-    {"kind": "training", "src_day": 2, "title_hint": "Full Body B"},
-    {"kind": "mobility"},
-    {"kind": "training", "src_day": 3, "title_hint": "Full Body C"},
-    {"kind": "training", "src_day": 4, "title_hint": "Short Pump + Carries"},
-    {"kind": "rest"},
-]
-MISSION_TPL = [
-    {"kind": "training", "src_day": 1, "title_hint": "Full Body A"},
-    {"kind": "rest", "title_hint": "Rest or Walk"},
-    {"kind": "training", "src_day": 2, "title_hint": "Full Body B"},
-    {"kind": "mobility", "title_hint": "Mobility or Rest"},
-    {"kind": "training", "src_day": 3, "title_hint": "Full Body C"},
-    {"kind": "optional-training", "title_hint": "Optional Walk"},
-    {"kind": "rest"},
-]
-
-STAGE_TEMPLATES = {
-    "prebirth-foundation": FOUNDATION_TPL,
-    "prebirth-framing": FRAMING_TPL,
-    "prebirth-durability": DURABILITY_TPL,
-    "prebirth-staging": STAGING_TPL,
-    "prebirth-mission-mode": MISSION_TPL,
-}
 
 
 def recovery_activities():
@@ -127,7 +158,7 @@ def rest_activities():
     }
 
 
-def optional_activities(hint):
+def optional_activities():
     return {
         "activities": [
             {"type": "zone2", "target": "20–30 minutes", "intensity": "moderate"},
@@ -139,105 +170,96 @@ def optional_activities(hint):
     }
 
 
+def max_source_week(program_slug, week_offset):
+    weeks = {w["week"] - week_offset for w in program_by_slug[program_slug]["workouts"] if w["week"] - week_offset >= 1}
+    return max(weeks) if weeks else 1
+
+
 days_out = []
 workouts_out = {}
-stage_day_counters = {s[0]: 0 for s in STAGES}
+stage_day_counters = {s["id"]: 0 for s in STAGES}
+program_indexes = {}
 
 for program_day in range(1, 253):
-    # locate stage
-    stage = next(s for s in STAGES if s[2] <= program_day <= s[3])
-    stage_id, stage_name, s_start, s_end, pw_start, pw_end = stage
-    stage_day_counters[stage_id] += 1
-    stage_day = stage_day_counters[stage_id]
-
+    stage = next(s for s in STAGES if s["start"] <= program_day <= s["end"])
+    stage_day_counters[stage["id"]] += 1
+    stage_day = stage_day_counters[stage["id"]]
     program_week = ((program_day - 1) // 7) + 1
-    weekday = ((program_day - 1) % 7) + 1  # 1..7
-
-    # pregnancy week: within stage advance by 7-day blocks
+    weekday = ((program_day - 1) % 7) + 1
     week_in_stage = ((stage_day - 1) // 7) + 1
-    preg_week = pw_start + week_in_stage - 1
-    if preg_week > pw_end:
-        preg_week = pw_end
 
-    tpl = STAGE_TEMPLATES[stage_id][weekday - 1]
+    preg_week = stage["pw_start"] + week_in_stage - 1
+    if preg_week > stage["pw_end"]:
+        preg_week = stage["pw_end"]
+
+    # cap source week to available
+    key = (stage["program"], stage["week_offset"])
+    if key not in program_indexes:
+        program_indexes[key] = index_program(stage["program"], stage["week_offset"])
+    idx = program_indexes[key]
+    max_wk = max_source_week(stage["program"], stage["week_offset"])
+    src_week = min(week_in_stage, max_wk)
+
+    tpl = TEMPLATES[stage["days_per_week"]][weekday - 1]
     kind = tpl["kind"]
-    hint = tpl.get("title_hint", "")
 
     entry = {
         "programDay": program_day,
-        "relativeDaysToDueDate": 252 - program_day + 1,  # day 1 => 252 days to due
-        "stageId": stage_id,
-        "stageName": stage_name,
+        "relativeDaysToDueDate": 252 - program_day + 1,
+        "stageId": stage["id"],
+        "stageName": stage["name"],
         "stageDay": stage_day,
         "weekNumber": program_week,
         "dayOfWeekInCycle": weekday,
         "pregnancyWeek": preg_week,
         "dayType": kind,
-        "isRequired": kind not in ("optional-training",) and not (
-            stage_id == "prebirth-mission-mode" and preg_week >= 38
+        "isRequired": kind != "optional-training" and not (
+            stage["id"] == "prebirth-mission-mode" and preg_week >= 38
         ),
     }
 
     if kind == "training":
-        src = by_week.get(preg_week, {}).get(tpl["src_day"])
+        src = idx.get((src_week, tpl["src_day"]))
         if src is None:
-            # fallback: closest available src_day in same preg week, else previous preg week
-            wk_map = by_week.get(preg_week) or by_week.get(preg_week - 1) or {}
-            if wk_map:
-                src = wk_map[min(wk_map)]
+            # try later day indexes at same week; else fall back to prior week
+            fallback = None
+            for d in sorted({d for (w, d) in idx.keys() if w == src_week}):
+                fallback = idx[(src_week, d)]
+                if fallback:
+                    break
+            src = fallback
         if src is None:
-            # convert to rest if no source at all
             entry["dayType"] = "rest"
             entry["title"] = "Rest Day"
             entry["objective"] = "Recover from the training week."
             entry.update(rest_activities())
         else:
-            workout_id = src["slug"]
-            entry["workoutId"] = workout_id
-            entry["title"] = f"{hint} · {src['name']}" if hint else src["name"]
+            entry["workoutId"] = src["slug"]
+            entry["title"] = src["name"]
             entry["objective"] = src.get("objective", "")
             entry["estimatedDurationMinutes"] = 45
-            if workout_id not in workouts_out:
-                workouts_out[workout_id] = src
+            workouts_out[src["slug"]] = src
     elif kind == "active-recovery":
         entry["title"] = "Active Recovery"
         entry["objective"] = "Easy movement to recover from training."
         entry.update(recovery_activities())
     elif kind == "mobility":
-        entry["title"] = hint or "Mobility"
+        entry["title"] = "Mobility"
         entry["objective"] = "Restore range of motion and prep the next session."
         entry.update(mobility_activities())
     elif kind == "optional-training":
-        entry["title"] = hint or "Optional Session"
+        entry["title"] = "Optional Session"
         entry["objective"] = "Optional low-intensity conditioning."
-        entry.update(optional_activities(hint))
+        entry.update(optional_activities())
     elif kind == "rest":
-        entry["title"] = hint or "Full Rest"
+        entry["title"] = "Full Rest"
         entry["objective"] = "Recover and prepare for the next cycle."
         entry.update(rest_activities())
 
     days_out.append(entry)
 
-# Post-birth: reuse existing programs as-is, tile weekday template across days.
-POST_TPL = [
-    {"kind": "training", "src_day": 1},
-    {"kind": "training", "src_day": 2},
-    {"kind": "active-recovery"},
-    {"kind": "training", "src_day": 3},
-    {"kind": "training", "src_day": 4},
-    {"kind": "optional-training"},
-    {"kind": "rest"},
-]
 
-post_by_stage = {}
-for prog in post:
-    # collapse workouts by their day field, keep first
-    m = {}
-    for w in prog["workouts"]:
-        m.setdefault(w["day"], w)
-    post_by_stage[prog["slug"]] = m
-
-
+# ---------- Post-birth ----------
 def postpartum_stage(day):
     if day <= 35:
         return "new-dad-survival", "New Dad Survival"
@@ -246,22 +268,47 @@ def postpartum_stage(day):
     return "father-athlete", "Father Athlete"
 
 
+# Index each post-birth program by (week, day). Weeks are relative to program start.
+post_indexes = {}
+for prog in post:
+    m = {}
+    weeks_present = sorted({w["week"] for w in prog["workouts"]})
+    base_week = min(weeks_present) if weeks_present else 1
+    for w in prog["workouts"]:
+        m[(w["week"] - base_week + 1, w["day"])] = w
+    post_indexes[prog["slug"]] = m
+
+
+def stage_days_per_week(stage_id):
+    return {"new-dad-survival": 3, "new-dad-foundation": 4, "father-athlete": 5}[stage_id]
+
+
+def stage_max_week(stage_id):
+    keys = post_indexes[stage_id].keys()
+    return max(k[0] for k in keys) if keys else 1
+
+
 post_days = []
-# Precompute survival first 14 days as recovery/walk only
-for postpartum_day in range(1, 366):  # 1 year worth
+stage_day_counter_pb = {s[0]: 0 for s in POST_STAGES}
+
+for postpartum_day in range(1, 366):
     stage_id, stage_name = postpartum_stage(postpartum_day)
+    stage_day_counter_pb[stage_id] += 1
+    sd = stage_day_counter_pb[stage_id]
     weekday = ((postpartum_day - 1) % 7) + 1
-    tpl = POST_TPL[weekday - 1]
+    dpw = stage_days_per_week(stage_id)
+    tpl = TEMPLATES[dpw][weekday - 1]
+
     entry = {
         "postpartumDay": postpartum_day,
         "stageId": stage_id,
         "stageName": stage_name,
         "dayOfWeekInCycle": weekday,
-        "isRequired": False if stage_id == "new-dad-survival" else tpl["kind"] != "optional-training",
+        "isRequired": False if stage_id == "new-dad-survival" and postpartum_day <= 14 else tpl["kind"] != "optional-training",
         "dayType": tpl["kind"],
     }
+
     if postpartum_day <= 14:
-        # bespoke: recovery + walks only
         entry["dayType"] = "post-birth-recovery" if weekday != 7 else "rest"
         entry["title"] = "Post-birth Recovery"
         entry["objective"] = "Walk as tolerated, sleep when possible, be present."
@@ -272,15 +319,21 @@ for postpartum_day in range(1, 366):  # 1 year worth
         entry["completionCriteria"] = ["Take care of your family and yourself."]
         entry["estimatedDurationMinutes"] = 15
     elif tpl["kind"] == "training":
-        wmap = post_by_stage.get(stage_id, {})
-        src = wmap.get(tpl["src_day"]) or (wmap[min(wmap)] if wmap else None)
+        week_in_stage = ((sd - 1) // 7) + 1
+        max_wk = stage_max_week(stage_id)
+        src_week = ((week_in_stage - 1) % max_wk) + 1  # loop father-athlete indefinitely
+        src = post_indexes[stage_id].get((src_week, tpl["src_day"]))
+        if src is None:
+            # fallback: any available day for this week
+            for d in sorted({d for (w, d) in post_indexes[stage_id].keys() if w == src_week}):
+                src = post_indexes[stage_id][(src_week, d)]
+                break
         if src:
             entry["workoutId"] = src["slug"]
             entry["title"] = src["name"]
             entry["objective"] = src.get("objective", "")
             entry["estimatedDurationMinutes"] = 35
-            if src["slug"] not in workouts_out:
-                workouts_out[src["slug"]] = src
+            workouts_out[src["slug"]] = src
         else:
             entry["dayType"] = "active-recovery"
             entry["title"] = "Active Recovery"
@@ -290,10 +343,14 @@ for postpartum_day in range(1, 366):  # 1 year worth
         entry["title"] = "Active Recovery"
         entry["objective"] = "Easy walk and mobility."
         entry.update(recovery_activities())
+    elif tpl["kind"] == "mobility":
+        entry["title"] = "Mobility"
+        entry["objective"] = "Restore range of motion."
+        entry.update(mobility_activities())
     elif tpl["kind"] == "optional-training":
         entry["title"] = "Optional Session"
         entry["objective"] = "Optional conditioning if life allows."
-        entry.update(optional_activities(""))
+        entry.update(optional_activities())
     else:
         entry["title"] = "Full Rest"
         entry["objective"] = "Recover and be present."
@@ -301,13 +358,16 @@ for postpartum_day in range(1, 366):  # 1 year worth
     post_days.append(entry)
 
 out = {
-    "schemaVersion": "2.0.0",
+    "schemaVersion": "3.0.0",
     "programId": "m2f-flagship-guided-journey",
     "name": "M2F Flagship Guided Journey",
     "preBirthJourneyLengthDays": 252,
     "stages": [
-        {"id": s[0], "name": s[1], "programDayStart": s[2], "programDayEnd": s[3],
-         "pregnancyWeekStart": s[4], "pregnancyWeekEnd": s[5]}
+        {
+            "id": s["id"], "name": s["name"],
+            "programDayStart": s["start"], "programDayEnd": s["end"],
+            "pregnancyWeekStart": s["pw_start"], "pregnancyWeekEnd": s["pw_end"],
+        }
         for s in STAGES
     ],
     "postBirthStages": [
@@ -317,13 +377,18 @@ out = {
     "days": days_out,
     "postBirthDays": post_days,
     "workouts": list(workouts_out.values()),
-    "versionLabels": data.get("versionLabels", {}),
+    "sourceMeta": data.get("meta", {}),
 }
 
 OUT.write_text(json.dumps(out, indent=2))
 print(f"Wrote {OUT} · days={len(days_out)} postDays={len(post_days)} workouts={len(workouts_out)}")
 
-# quick self-check
 seen = [d["programDay"] for d in days_out]
 assert seen == list(range(1, 253)), "programDay not contiguous 1..252"
-print("OK: 252 unique contiguous program days")
+seen_pb = [d["postpartumDay"] for d in post_days]
+assert seen_pb == list(range(1, 366)), "postpartumDay not contiguous 1..365"
+# Every training day must resolve to a workout that exists
+by_id = {w["slug"] for w in workouts_out.values()}
+missing = [d for d in days_out + post_days if d.get("workoutId") and d["workoutId"] not in by_id]
+assert not missing, f"missing workoutId refs: {missing[:3]}"
+print("OK: 252 pre-birth + 365 post-birth days contiguous, all workout refs valid")
