@@ -1,0 +1,5492 @@
+{
+  "schemaVersion": "2.0.0",
+  "product": "M2F",
+  "contentType": "exercise-library",
+  "generatedAt": "2026-07-17T03:03:39.300126+00:00",
+  "exerciseCount": 78,
+  "tempoNotation": {
+    "format": "eccentric-bottom-concentric-top",
+    "X": "move explosively with control",
+    "controlled": "slow, deliberate motion",
+    "self-selected": "natural cadence appropriate to the activity"
+  },
+  "exercises": [
+    {
+      "id": "90-or-90-hip-switches",
+      "name": "90/90 hip switches",
+      "displayName": "90/90 hip switches",
+      "aliases": [],
+      "category": "mobility",
+      "exerciseType": "mobility",
+      "movementPattern": "mobility",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Hips",
+        "Thoracic spine"
+      ],
+      "secondaryMuscles": [
+        "Core"
+      ],
+      "equipment": [
+        "Bodyweight"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "controlled",
+      "defaultRestSeconds": 15,
+      "defaultRPE": 3,
+      "defaultPrescription": {
+        "tempo": "controlled",
+        "restSeconds": 15,
+        "targetRPE": 3,
+        "targetRIR": 7
+      },
+      "instructions": [
+        "Move slowly into a comfortable range.",
+        "Use controlled breathing.",
+        "Avoid forcing the end position.",
+        "Repeat with smooth, pain-free motion."
+      ],
+      "coachingCues": [
+        "Slow breath.",
+        "No pinching.",
+        "Control the range."
+      ],
+      "commonMistakes": [
+        "Forcing range",
+        "Holding the breath",
+        "Moving through joint pain"
+      ],
+      "regressions": [
+        "Seated hip rotations"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Seated hip rotations"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "mobility",
+        "mobility",
+        "Hips",
+        "Thoracic spine"
+      ],
+      "sourceCue": "Move through the hips without forcing range."
+    },
+    {
+      "id": "ab-wheel-or-dead-bug",
+      "name": "Ab wheel or dead bug",
+      "displayName": "Ab wheel or dead bug",
+      "aliases": [],
+      "category": "core",
+      "exerciseType": "core",
+      "movementPattern": "anti-extension/anti-rotation",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Core"
+      ],
+      "secondaryMuscles": [
+        "Hip flexors",
+        "Glutes"
+      ],
+      "equipment": [
+        "Bodyweight or cable"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "controlled",
+      "defaultRestSeconds": 45,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "controlled",
+        "restSeconds": 45,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Brace as though preparing for a light punch.",
+        "Keep ribs and pelvis stacked.",
+        "Move only through the intended joints.",
+        "Stop before the lower back arches or torso rotates."
+      ],
+      "coachingCues": [
+        "Ribs down.",
+        "Brace and breathe.",
+        "Do not rotate."
+      ],
+      "commonMistakes": [
+        "Arching the lower back",
+        "Holding the breath",
+        "Moving too quickly"
+      ],
+      "regressions": [
+        "Long-lever plank"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Long-lever plank"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "core",
+        "anti-extension/anti-rotation",
+        "Core"
+      ],
+      "sourceCue": "Exhale, lock ribs down, and move without spinal extension."
+    },
+    {
+      "id": "alternating-curl-and-close-grip-push-up",
+      "name": "Alternating curl + close-grip push-up",
+      "displayName": "Alternating curl + close-grip push-up",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "horizontal push",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Chest",
+        "Triceps"
+      ],
+      "secondaryMuscles": [
+        "Anterior deltoids",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell, dumbbells, or bodyweight"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set the shoulder blades down and back.",
+        "Lower the load under control to a consistent touch point.",
+        "Keep wrists stacked over elbows.",
+        "Press while maintaining full-body tension."
+      ],
+      "coachingCues": [
+        "Shoulders pinned.",
+        "Touch consistently.",
+        "Press with the feet."
+      ],
+      "commonMistakes": [
+        "Elbows flaring excessively",
+        "Shoulders rolling forward",
+        "Bouncing or rushing the bottom"
+      ],
+      "regressions": [
+        "Band curl"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Band curl",
+        "extension"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "horizontal push",
+        "Chest",
+        "Triceps"
+      ],
+      "sourceCue": "Keep reps clean and continuous."
+    },
+    {
+      "id": "alternating-dumbbell-curl",
+      "name": "Alternating dumbbell curl",
+      "displayName": "Alternating dumbbell curl",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "accessory",
+      "movementPattern": "elbow flexion",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Biceps"
+      ],
+      "secondaryMuscles": [
+        "Forearms"
+      ],
+      "equipment": [
+        "Dumbbells, cable, or bands"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 45,
+      "defaultRPE": 8,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 45,
+        "targetRPE": 8,
+        "targetRIR": 2
+      },
+      "instructions": [
+        "Keep the upper arm quiet.",
+        "Curl without swinging the torso.",
+        "Squeeze at the top.",
+        "Lower fully under control."
+      ],
+      "coachingCues": [
+        "Control every rep.",
+        "Keep tension on the target muscles.",
+        "Stop before form changes."
+      ],
+      "commonMistakes": [
+        "Using momentum",
+        "Losing the target position",
+        "Continuing after technique breaks down"
+      ],
+      "regressions": [
+        "Band curl"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Band curl"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "elbow flexion",
+        "Biceps"
+      ],
+      "sourceCue": "Keep elbows still."
+    },
+    {
+      "id": "back-squat-or-front-squat",
+      "name": "Back squat or front squat",
+      "displayName": "Back squat or front squat",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "squat",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Quadriceps",
+        "Glutes"
+      ],
+      "secondaryMuscles": [
+        "Adductors",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set feet securely and brace before descending.",
+        "Lower under control while keeping the whole foot planted.",
+        "Keep knees tracking with the toes.",
+        "Drive through the floor and finish tall without overextending."
+      ],
+      "coachingCues": [
+        "Brace, sit between the knees.",
+        "Keep the tripod foot.",
+        "Drive the floor away."
+      ],
+      "commonMistakes": [
+        "Heels lifting",
+        "Knees collapsing inward",
+        "Losing the brace at the bottom"
+      ],
+      "regressions": [
+        "Heavy goblet squat"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Heavy goblet squat"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "squat",
+        "Quadriceps",
+        "Glutes"
+      ],
+      "sourceCue": "Brace before descending and keep the whole foot rooted."
+    },
+    {
+      "id": "barbell-bench-press",
+      "name": "Barbell bench press",
+      "displayName": "Barbell bench press",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "horizontal push",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Chest",
+        "Triceps"
+      ],
+      "secondaryMuscles": [
+        "Anterior deltoids",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell, dumbbells, or bodyweight"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set the shoulder blades down and back.",
+        "Lower the load under control to a consistent touch point.",
+        "Keep wrists stacked over elbows.",
+        "Press while maintaining full-body tension."
+      ],
+      "coachingCues": [
+        "Shoulders pinned.",
+        "Touch consistently.",
+        "Press with the feet."
+      ],
+      "commonMistakes": [
+        "Elbows flaring excessively",
+        "Shoulders rolling forward",
+        "Bouncing or rushing the bottom"
+      ],
+      "regressions": [
+        "Dumbbell bench press"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Dumbbell bench press",
+        "weighted push-up"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "horizontal push",
+        "Chest",
+        "Triceps"
+      ],
+      "sourceCue": "Pin shoulder blades, touch low chest, drive feet through the floor."
+    },
+    {
+      "id": "bench-press-or-weighted-push-up",
+      "name": "Bench press or weighted push-up",
+      "displayName": "Bench press or weighted push-up",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "horizontal push",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Chest",
+        "Triceps"
+      ],
+      "secondaryMuscles": [
+        "Anterior deltoids",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell, dumbbells, or bodyweight"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set the shoulder blades down and back.",
+        "Lower the load under control to a consistent touch point.",
+        "Keep wrists stacked over elbows.",
+        "Press while maintaining full-body tension."
+      ],
+      "coachingCues": [
+        "Shoulders pinned.",
+        "Touch consistently.",
+        "Press with the feet."
+      ],
+      "commonMistakes": [
+        "Elbows flaring excessively",
+        "Shoulders rolling forward",
+        "Bouncing or rushing the bottom"
+      ],
+      "regressions": [
+        "Dumbbell"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Dumbbell",
+        "bodyweight equivalent"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "horizontal push",
+        "Chest",
+        "Triceps"
+      ],
+      "sourceCue": "Use repeatable technique and stop before grinding."
+    },
+    {
+      "id": "bike-rower-sled-or-hill-intervals",
+      "name": "Bike, rower, sled, or hill intervals",
+      "displayName": "Bike, rower, sled, or hill intervals",
+      "aliases": [],
+      "category": "conditioning",
+      "exerciseType": "conditioning",
+      "movementPattern": "locomotion",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Cardiovascular system",
+        "Legs"
+      ],
+      "secondaryMuscles": [
+        "Core"
+      ],
+      "equipment": [
+        "Bodyweight"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "self-selected",
+      "defaultRestSeconds": 0,
+      "defaultRPE": 6,
+      "defaultPrescription": {
+        "tempo": "self-selected",
+        "restSeconds": 0,
+        "targetRPE": 6,
+        "targetRIR": 4
+      },
+      "instructions": [
+        "Start at a sustainable pace.",
+        "Maintain relaxed shoulders and rhythmic breathing.",
+        "Keep effort within the prescribed RPE or heart-rate zone.",
+        "Finish feeling capable of continuing."
+      ],
+      "coachingCues": [
+        "Conversational pace.",
+        "Relax the shoulders.",
+        "Finish with more available."
+      ],
+      "commonMistakes": [
+        "Starting too hard",
+        "Ignoring prescribed intensity",
+        "Using poor posture as fatigue rises"
+      ],
+      "regressions": [
+        "Fast step-ups"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Fast step-ups",
+        "brisk incline walk"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "conditioning",
+        "locomotion",
+        "Cardiovascular system",
+        "Legs"
+      ],
+      "sourceCue": "Finish with the same mechanics you started with."
+    },
+    {
+      "id": "carry",
+      "name": "Carry",
+      "displayName": "Carry",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "loaded carry",
+      "movementPattern": "carry",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Grip",
+        "Core",
+        "Traps"
+      ],
+      "secondaryMuscles": [
+        "Glutes",
+        "Shoulders"
+      ],
+      "equipment": [
+        "Dumbbells or kettlebells"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "steady walk",
+      "defaultRestSeconds": 60,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "steady walk",
+        "restSeconds": 60,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Stand tall with ribs stacked over pelvis.",
+        "Crush the handles and keep shoulders level.",
+        "Walk with short, controlled steps.",
+        "Breathe behind the brace without leaning."
+      ],
+      "coachingCues": [
+        "Tall posture.",
+        "Crush the handles.",
+        "Do not lean."
+      ],
+      "commonMistakes": [
+        "Leaning toward or away from the load",
+        "Taking uncontrolled steps",
+        "Losing rib-to-pelvis position"
+      ],
+      "regressions": [],
+      "progressions": [],
+      "substitutions": [],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "carry",
+        "Grip",
+        "Core",
+        "Traps"
+      ],
+      "sourceCue": ""
+    },
+    {
+      "id": "carry-medley",
+      "name": "Carry medley",
+      "displayName": "Carry medley",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "loaded carry",
+      "movementPattern": "carry",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Grip",
+        "Core",
+        "Traps"
+      ],
+      "secondaryMuscles": [
+        "Glutes",
+        "Shoulders"
+      ],
+      "equipment": [
+        "Dumbbells or kettlebells"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "steady walk",
+      "defaultRestSeconds": 60,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "steady walk",
+        "restSeconds": 60,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Stand tall with ribs stacked over pelvis.",
+        "Crush the handles and keep shoulders level.",
+        "Walk with short, controlled steps.",
+        "Breathe behind the brace without leaning."
+      ],
+      "coachingCues": [
+        "Tall posture.",
+        "Crush the handles.",
+        "Do not lean."
+      ],
+      "commonMistakes": [
+        "Leaning toward or away from the load",
+        "Taking uncontrolled steps",
+        "Losing rib-to-pelvis position"
+      ],
+      "regressions": [
+        "Static holds"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Static holds"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "carry",
+        "Grip",
+        "Core",
+        "Traps"
+      ],
+      "sourceCue": "Posture never changes across positions."
+    },
+    {
+      "id": "chest-supported-dumbbell-row",
+      "name": "Chest-supported dumbbell row",
+      "displayName": "Chest-supported dumbbell row",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "horizontal pull",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Lats",
+        "Upper back"
+      ],
+      "secondaryMuscles": [
+        "Biceps",
+        "Rear deltoids"
+      ],
+      "equipment": [
+        "Cable, pull-up bar, or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 90,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 90,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set the torso and keep the ribs down.",
+        "Initiate by moving the shoulder blade, then the elbow.",
+        "Pull toward the lower ribs.",
+        "Pause briefly before returning under control."
+      ],
+      "coachingCues": [
+        "Chest proud.",
+        "Elbow to back pocket.",
+        "Pause, do not shrug."
+      ],
+      "commonMistakes": [
+        "Shrugging",
+        "Using torso momentum",
+        "Cutting the controlled eccentric short"
+      ],
+      "regressions": [
+        "One-arm dumbbell row"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "One-arm dumbbell row"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "horizontal pull",
+        "Lats",
+        "Upper back"
+      ],
+      "sourceCue": "Pull elbows toward back pockets and pause without shrugging."
+    },
+    {
+      "id": "chest-supported-rear-delt-row",
+      "name": "Chest-supported rear-delt row",
+      "displayName": "Chest-supported rear-delt row",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "horizontal pull",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Lats",
+        "Upper back"
+      ],
+      "secondaryMuscles": [
+        "Biceps",
+        "Rear deltoids"
+      ],
+      "equipment": [
+        "Cable, pull-up bar, or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 90,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 90,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set the torso and keep the ribs down.",
+        "Initiate by moving the shoulder blade, then the elbow.",
+        "Pull toward the lower ribs.",
+        "Pause briefly before returning under control."
+      ],
+      "coachingCues": [
+        "Chest proud.",
+        "Elbow to back pocket.",
+        "Pause, do not shrug."
+      ],
+      "commonMistakes": [
+        "Shrugging",
+        "Using torso momentum",
+        "Cutting the controlled eccentric short"
+      ],
+      "regressions": [
+        "Band row"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Band row"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "horizontal pull",
+        "Lats",
+        "Upper back"
+      ],
+      "sourceCue": "Pull wide and pause across the upper back."
+    },
+    {
+      "id": "chest-supported-row",
+      "name": "Chest-supported row",
+      "displayName": "Chest-supported row",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "horizontal pull",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Lats",
+        "Upper back"
+      ],
+      "secondaryMuscles": [
+        "Biceps",
+        "Rear deltoids"
+      ],
+      "equipment": [
+        "Cable, pull-up bar, or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 90,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 90,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set the torso and keep the ribs down.",
+        "Initiate by moving the shoulder blade, then the elbow.",
+        "Pull toward the lower ribs.",
+        "Pause briefly before returning under control."
+      ],
+      "coachingCues": [
+        "Chest proud.",
+        "Elbow to back pocket.",
+        "Pause, do not shrug."
+      ],
+      "commonMistakes": [
+        "Shrugging",
+        "Using torso momentum",
+        "Cutting the controlled eccentric short"
+      ],
+      "regressions": [
+        "One-arm row"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "One-arm row"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "horizontal pull",
+        "Lats",
+        "Upper back"
+      ],
+      "sourceCue": "Pause at the top without shrugging."
+    },
+    {
+      "id": "close-grip-push-up",
+      "name": "Close-grip push-up",
+      "displayName": "Close-grip push-up",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "horizontal push",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Chest",
+        "Triceps"
+      ],
+      "secondaryMuscles": [
+        "Anterior deltoids",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell, dumbbells, or bodyweight"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set the shoulder blades down and back.",
+        "Lower the load under control to a consistent touch point.",
+        "Keep wrists stacked over elbows.",
+        "Press while maintaining full-body tension."
+      ],
+      "coachingCues": [
+        "Shoulders pinned.",
+        "Touch consistently.",
+        "Press with the feet."
+      ],
+      "commonMistakes": [
+        "Elbows flaring excessively",
+        "Shoulders rolling forward",
+        "Bouncing or rushing the bottom"
+      ],
+      "regressions": [
+        "Band pressdown"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Band pressdown"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "horizontal push",
+        "Chest",
+        "Triceps"
+      ],
+      "sourceCue": "Leave reps in reserve."
+    },
+    {
+      "id": "conditioning-circuit",
+      "name": "Conditioning circuit",
+      "displayName": "Conditioning circuit",
+      "aliases": [],
+      "category": "conditioning",
+      "exerciseType": "conditioning",
+      "movementPattern": "locomotion",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Cardiovascular system",
+        "Legs"
+      ],
+      "secondaryMuscles": [
+        "Core"
+      ],
+      "equipment": [
+        "Bodyweight"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "self-selected",
+      "defaultRestSeconds": 0,
+      "defaultRPE": 6,
+      "defaultPrescription": {
+        "tempo": "self-selected",
+        "restSeconds": 0,
+        "targetRPE": 6,
+        "targetRIR": 4
+      },
+      "instructions": [
+        "Start at a sustainable pace.",
+        "Maintain relaxed shoulders and rhythmic breathing.",
+        "Keep effort within the prescribed RPE or heart-rate zone.",
+        "Finish feeling capable of continuing."
+      ],
+      "coachingCues": [
+        "Conversational pace.",
+        "Relax the shoulders.",
+        "Finish with more available."
+      ],
+      "commonMistakes": [
+        "Starting too hard",
+        "Ignoring prescribed intensity",
+        "Using poor posture as fatigue rises"
+      ],
+      "regressions": [
+        "Walk"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Walk"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "conditioning",
+        "locomotion",
+        "Cardiovascular system",
+        "Legs"
+      ],
+      "sourceCue": "Stop before movement quality drops."
+    },
+    {
+      "id": "core-or-carry",
+      "name": "Core or carry",
+      "displayName": "Core or carry",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "loaded carry",
+      "movementPattern": "carry",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Grip",
+        "Core",
+        "Traps"
+      ],
+      "secondaryMuscles": [
+        "Glutes",
+        "Shoulders"
+      ],
+      "equipment": [
+        "Dumbbells or kettlebells"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "steady walk",
+      "defaultRestSeconds": 60,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "steady walk",
+        "restSeconds": 60,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Stand tall with ribs stacked over pelvis.",
+        "Crush the handles and keep shoulders level.",
+        "Walk with short, controlled steps.",
+        "Breathe behind the brace without leaning."
+      ],
+      "coachingCues": [
+        "Tall posture.",
+        "Crush the handles.",
+        "Do not lean."
+      ],
+      "commonMistakes": [
+        "Leaning toward or away from the load",
+        "Taking uncontrolled steps",
+        "Losing rib-to-pelvis position"
+      ],
+      "regressions": [
+        "Plank"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Plank"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "carry",
+        "Grip",
+        "Core",
+        "Traps"
+      ],
+      "sourceCue": "Posture stays unchanged."
+    },
+    {
+      "id": "curl",
+      "name": "Curl",
+      "displayName": "Curl",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "accessory",
+      "movementPattern": "elbow flexion",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Biceps"
+      ],
+      "secondaryMuscles": [
+        "Forearms"
+      ],
+      "equipment": [
+        "Dumbbells, cable, or bands"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 45,
+      "defaultRPE": 8,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 45,
+        "targetRPE": 8,
+        "targetRIR": 2
+      },
+      "instructions": [
+        "Keep the upper arm quiet.",
+        "Curl without swinging the torso.",
+        "Squeeze at the top.",
+        "Lower fully under control."
+      ],
+      "coachingCues": [
+        "Control every rep.",
+        "Keep tension on the target muscles.",
+        "Stop before form changes."
+      ],
+      "commonMistakes": [
+        "Using momentum",
+        "Losing the target position",
+        "Continuing after technique breaks down"
+      ],
+      "regressions": [],
+      "progressions": [],
+      "substitutions": [],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "elbow flexion",
+        "Biceps"
+      ],
+      "sourceCue": ""
+    },
+    {
+      "id": "curl-and-triceps-extension",
+      "name": "Curl + triceps extension",
+      "displayName": "Curl + triceps extension",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "accessory",
+      "movementPattern": "elbow flexion",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Biceps"
+      ],
+      "secondaryMuscles": [
+        "Forearms"
+      ],
+      "equipment": [
+        "Dumbbells, cable, or bands"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 45,
+      "defaultRPE": 8,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 45,
+        "targetRPE": 8,
+        "targetRIR": 2
+      },
+      "instructions": [
+        "Keep the upper arm quiet.",
+        "Curl without swinging the torso.",
+        "Squeeze at the top.",
+        "Lower fully under control."
+      ],
+      "coachingCues": [
+        "Control every rep.",
+        "Keep tension on the target muscles.",
+        "Stop before form changes."
+      ],
+      "commonMistakes": [
+        "Using momentum",
+        "Losing the target position",
+        "Continuing after technique breaks down"
+      ],
+      "regressions": [],
+      "progressions": [],
+      "substitutions": [],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "elbow flexion",
+        "Biceps"
+      ],
+      "sourceCue": ""
+    },
+    {
+      "id": "dead-bug",
+      "name": "Dead bug",
+      "displayName": "Dead bug",
+      "aliases": [],
+      "category": "core",
+      "exerciseType": "core",
+      "movementPattern": "anti-extension/anti-rotation",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Core"
+      ],
+      "secondaryMuscles": [
+        "Hip flexors",
+        "Glutes"
+      ],
+      "equipment": [
+        "Bodyweight or cable"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "controlled",
+      "defaultRestSeconds": 45,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "controlled",
+        "restSeconds": 45,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Brace as though preparing for a light punch.",
+        "Keep ribs and pelvis stacked.",
+        "Move only through the intended joints.",
+        "Stop before the lower back arches or torso rotates."
+      ],
+      "coachingCues": [
+        "Ribs down.",
+        "Brace and breathe.",
+        "Do not rotate."
+      ],
+      "commonMistakes": [
+        "Arching the lower back",
+        "Holding the breath",
+        "Moving too quickly"
+      ],
+      "regressions": [
+        "Plank"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Plank"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "core",
+        "anti-extension/anti-rotation",
+        "Core"
+      ],
+      "sourceCue": "Exhale fully and keep the low back down."
+    },
+    {
+      "id": "dead-bug-or-hanging-knee-raise",
+      "name": "Dead bug or hanging knee raise",
+      "displayName": "Dead bug or hanging knee raise",
+      "aliases": [],
+      "category": "core",
+      "exerciseType": "core",
+      "movementPattern": "anti-extension/anti-rotation",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Core"
+      ],
+      "secondaryMuscles": [
+        "Hip flexors",
+        "Glutes"
+      ],
+      "equipment": [
+        "Bodyweight or cable"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "controlled",
+      "defaultRestSeconds": 45,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "controlled",
+        "restSeconds": 45,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Brace as though preparing for a light punch.",
+        "Keep ribs and pelvis stacked.",
+        "Move only through the intended joints.",
+        "Stop before the lower back arches or torso rotates."
+      ],
+      "coachingCues": [
+        "Ribs down.",
+        "Brace and breathe.",
+        "Do not rotate."
+      ],
+      "commonMistakes": [
+        "Arching the lower back",
+        "Holding the breath",
+        "Moving too quickly"
+      ],
+      "regressions": [
+        "Plank"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Plank"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "core",
+        "anti-extension/anti-rotation",
+        "Core"
+      ],
+      "sourceCue": "Keep ribs stacked."
+    },
+    {
+      "id": "dumbbell-romanian-deadlift",
+      "name": "Dumbbell Romanian deadlift",
+      "displayName": "Dumbbell Romanian deadlift",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "hinge",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Hamstrings",
+        "Glutes"
+      ],
+      "secondaryMuscles": [
+        "Erector spinae",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Brace with ribs stacked over pelvis.",
+        "Push the hips back while maintaining a neutral spine.",
+        "Keep the load close to the body.",
+        "Drive the floor away and finish by squeezing the glutes."
+      ],
+      "coachingCues": [
+        "Hips back.",
+        "Keep the load close.",
+        "Finish with the glutes."
+      ],
+      "commonMistakes": [
+        "Rounding the lower back",
+        "Squatting instead of hinging",
+        "Letting the load drift away"
+      ],
+      "regressions": [
+        "Backpack hip hinge"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Backpack hip hinge"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "hinge",
+        "Hamstrings",
+        "Glutes"
+      ],
+      "sourceCue": "Push hips back and keep weights close."
+    },
+    {
+      "id": "dumbbell-bench-press",
+      "name": "Dumbbell bench press",
+      "displayName": "Dumbbell bench press",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "horizontal push",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Chest",
+        "Triceps"
+      ],
+      "secondaryMuscles": [
+        "Anterior deltoids",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell, dumbbells, or bodyweight"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set the shoulder blades down and back.",
+        "Lower the load under control to a consistent touch point.",
+        "Keep wrists stacked over elbows.",
+        "Press while maintaining full-body tension."
+      ],
+      "coachingCues": [
+        "Shoulders pinned.",
+        "Touch consistently.",
+        "Press with the feet."
+      ],
+      "commonMistakes": [
+        "Elbows flaring excessively",
+        "Shoulders rolling forward",
+        "Bouncing or rushing the bottom"
+      ],
+      "regressions": [
+        "Push-up"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Push-up"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "horizontal push",
+        "Chest",
+        "Triceps"
+      ],
+      "sourceCue": "Control the bottom and keep shoulders packed."
+    },
+    {
+      "id": "dumbbell-curl-and-overhead-triceps-extension",
+      "name": "Dumbbell curl + overhead triceps extension",
+      "displayName": "Dumbbell curl + overhead triceps extension",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "accessory",
+      "movementPattern": "elbow flexion",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Biceps"
+      ],
+      "secondaryMuscles": [
+        "Forearms"
+      ],
+      "equipment": [
+        "Dumbbells, cable, or bands"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 45,
+      "defaultRPE": 8,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 45,
+        "targetRPE": 8,
+        "targetRIR": 2
+      },
+      "instructions": [
+        "Keep the upper arm quiet.",
+        "Curl without swinging the torso.",
+        "Squeeze at the top.",
+        "Lower fully under control."
+      ],
+      "coachingCues": [
+        "Control every rep.",
+        "Keep tension on the target muscles.",
+        "Stop before form changes."
+      ],
+      "commonMistakes": [
+        "Using momentum",
+        "Losing the target position",
+        "Continuing after technique breaks down"
+      ],
+      "regressions": [
+        "Band curl"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Band curl",
+        "close-grip push-up"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "elbow flexion",
+        "Biceps"
+      ],
+      "sourceCue": "Keep upper arms still; chase tension, not momentum."
+    },
+    {
+      "id": "dumbbell-floor-press",
+      "name": "Dumbbell floor press",
+      "displayName": "Dumbbell floor press",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "horizontal push",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Chest",
+        "Triceps"
+      ],
+      "secondaryMuscles": [
+        "Anterior deltoids",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell, dumbbells, or bodyweight"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set the shoulder blades down and back.",
+        "Lower the load under control to a consistent touch point.",
+        "Keep wrists stacked over elbows.",
+        "Press while maintaining full-body tension."
+      ],
+      "coachingCues": [
+        "Shoulders pinned.",
+        "Touch consistently.",
+        "Press with the feet."
+      ],
+      "commonMistakes": [
+        "Elbows flaring excessively",
+        "Shoulders rolling forward",
+        "Bouncing or rushing the bottom"
+      ],
+      "regressions": [
+        "Push-up"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Push-up"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "horizontal push",
+        "Chest",
+        "Triceps"
+      ],
+      "sourceCue": "Pause triceps on the floor and press without losing shoulder position."
+    },
+    {
+      "id": "dumbbell-incline-press",
+      "name": "Dumbbell incline press",
+      "displayName": "Dumbbell incline press",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "horizontal push",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Chest",
+        "Triceps"
+      ],
+      "secondaryMuscles": [
+        "Anterior deltoids",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell, dumbbells, or bodyweight"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set the shoulder blades down and back.",
+        "Lower the load under control to a consistent touch point.",
+        "Keep wrists stacked over elbows.",
+        "Press while maintaining full-body tension."
+      ],
+      "coachingCues": [
+        "Shoulders pinned.",
+        "Touch consistently.",
+        "Press with the feet."
+      ],
+      "commonMistakes": [
+        "Elbows flaring excessively",
+        "Shoulders rolling forward",
+        "Bouncing or rushing the bottom"
+      ],
+      "regressions": [
+        "Push-up"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Push-up"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "horizontal push",
+        "Chest",
+        "Triceps"
+      ],
+      "sourceCue": "Smooth reps; keep one or two in reserve."
+    },
+    {
+      "id": "dumbbell-lateral-raise",
+      "name": "Dumbbell lateral raise",
+      "displayName": "Dumbbell lateral raise",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "accessory",
+      "movementPattern": "shoulder isolation",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Lateral deltoids"
+      ],
+      "secondaryMuscles": [
+        "Traps",
+        "Rotator cuff"
+      ],
+      "equipment": [
+        "Dumbbells, cable, or bands"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 45,
+      "defaultRPE": 8,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 45,
+        "targetRPE": 8,
+        "targetRIR": 2
+      },
+      "instructions": [
+        "Use a light load and soft elbows.",
+        "Move from the shoulder without shrugging.",
+        "Pause briefly at peak tension.",
+        "Lower slowly and maintain control."
+      ],
+      "coachingCues": [
+        "Control every rep.",
+        "Keep tension on the target muscles.",
+        "Stop before form changes."
+      ],
+      "commonMistakes": [
+        "Using momentum",
+        "Losing the target position",
+        "Continuing after technique breaks down"
+      ],
+      "regressions": [
+        "Band lateral raise"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Band lateral raise"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "shoulder isolation",
+        "Lateral deltoids"
+      ],
+      "sourceCue": "Lead with elbows and stop before the traps take over."
+    },
+    {
+      "id": "dumbbell-overhead-press",
+      "name": "Dumbbell overhead press",
+      "displayName": "Dumbbell overhead press",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "vertical push",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Shoulders",
+        "Triceps"
+      ],
+      "secondaryMuscles": [
+        "Upper chest",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "2-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "2-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Brace the trunk and squeeze the glutes.",
+        "Start with forearms vertical.",
+        "Press overhead without flaring the ribs.",
+        "Finish with the arms aligned beside the ears."
+      ],
+      "coachingCues": [
+        "Ribs down.",
+        "Head through.",
+        "Reach tall."
+      ],
+      "commonMistakes": [
+        "Overarching the lower back",
+        "Pressing around the face",
+        "Failing to reach a stable lockout"
+      ],
+      "regressions": [
+        "Half-kneeling one-arm press"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Half-kneeling one-arm press"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "vertical push",
+        "Shoulders",
+        "Triceps"
+      ],
+      "sourceCue": "Stack ribs over pelvis and finish tall."
+    },
+    {
+      "id": "easy-walk",
+      "name": "Easy walk",
+      "displayName": "Easy walk",
+      "aliases": [],
+      "category": "conditioning",
+      "exerciseType": "conditioning",
+      "movementPattern": "locomotion",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Cardiovascular system",
+        "Legs"
+      ],
+      "secondaryMuscles": [
+        "Core"
+      ],
+      "equipment": [
+        "Bodyweight"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "self-selected",
+      "defaultRestSeconds": 0,
+      "defaultRPE": 6,
+      "defaultPrescription": {
+        "tempo": "self-selected",
+        "restSeconds": 0,
+        "targetRPE": 6,
+        "targetRIR": 4
+      },
+      "instructions": [
+        "Start at a sustainable pace.",
+        "Maintain relaxed shoulders and rhythmic breathing.",
+        "Keep effort within the prescribed RPE or heart-rate zone.",
+        "Finish feeling capable of continuing."
+      ],
+      "coachingCues": [
+        "Conversational pace.",
+        "Relax the shoulders.",
+        "Finish with more available."
+      ],
+      "commonMistakes": [
+        "Starting too hard",
+        "Ignoring prescribed intensity",
+        "Using poor posture as fatigue rises"
+      ],
+      "regressions": [
+        "Easy bike"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Easy bike"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "conditioning",
+        "locomotion",
+        "Cardiovascular system",
+        "Legs"
+      ],
+      "sourceCue": "Finish with more energy than you started."
+    },
+    {
+      "id": "farmer-carry",
+      "name": "Farmer carry",
+      "displayName": "Farmer carry",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "loaded carry",
+      "movementPattern": "carry",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Grip",
+        "Core",
+        "Traps"
+      ],
+      "secondaryMuscles": [
+        "Glutes",
+        "Shoulders"
+      ],
+      "equipment": [
+        "Dumbbells or kettlebells"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "steady walk",
+      "defaultRestSeconds": 60,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "steady walk",
+        "restSeconds": 60,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Stand tall with ribs stacked over pelvis.",
+        "Crush the handles and keep shoulders level.",
+        "Walk with short, controlled steps.",
+        "Breathe behind the brace without leaning."
+      ],
+      "coachingCues": [
+        "Tall posture.",
+        "Crush the handles.",
+        "Do not lean."
+      ],
+      "commonMistakes": [
+        "Leaning toward or away from the load",
+        "Taking uncontrolled steps",
+        "Losing rib-to-pelvis position"
+      ],
+      "regressions": [
+        "Suitcase carry"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Suitcase carry"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "carry",
+        "Grip",
+        "Core",
+        "Traps"
+      ],
+      "sourceCue": "Walk quietly with ribs down and hands crushing the handles."
+    },
+    {
+      "id": "farmer-or-suitcase-carry",
+      "name": "Farmer or suitcase carry",
+      "displayName": "Farmer or suitcase carry",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "loaded carry",
+      "movementPattern": "carry",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Grip",
+        "Core",
+        "Traps"
+      ],
+      "secondaryMuscles": [
+        "Glutes",
+        "Shoulders"
+      ],
+      "equipment": [
+        "Dumbbells or kettlebells"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "steady walk",
+      "defaultRestSeconds": 60,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "steady walk",
+        "restSeconds": 60,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Stand tall with ribs stacked over pelvis.",
+        "Crush the handles and keep shoulders level.",
+        "Walk with short, controlled steps.",
+        "Breathe behind the brace without leaning."
+      ],
+      "coachingCues": [
+        "Tall posture.",
+        "Crush the handles.",
+        "Do not lean."
+      ],
+      "commonMistakes": [
+        "Leaning toward or away from the load",
+        "Taking uncontrolled steps",
+        "Losing rib-to-pelvis position"
+      ],
+      "regressions": [
+        "Heavy dumbbell hold"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Heavy dumbbell hold"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "carry",
+        "Grip",
+        "Core",
+        "Traps"
+      ],
+      "sourceCue": "Own posture before adding load."
+    },
+    {
+      "id": "front-squat-or-back-squat",
+      "name": "Front squat or back squat",
+      "displayName": "Front squat or back squat",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "squat",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Quadriceps",
+        "Glutes"
+      ],
+      "secondaryMuscles": [
+        "Adductors",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set feet securely and brace before descending.",
+        "Lower under control while keeping the whole foot planted.",
+        "Keep knees tracking with the toes.",
+        "Drive through the floor and finish tall without overextending."
+      ],
+      "coachingCues": [
+        "Brace, sit between the knees.",
+        "Keep the tripod foot.",
+        "Drive the floor away."
+      ],
+      "commonMistakes": [
+        "Heels lifting",
+        "Knees collapsing inward",
+        "Losing the brace at the bottom"
+      ],
+      "regressions": [
+        "Dumbbell"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Dumbbell",
+        "bodyweight equivalent"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "squat",
+        "Quadriceps",
+        "Glutes"
+      ],
+      "sourceCue": "Use repeatable technique and stop before grinding."
+    },
+    {
+      "id": "front-squat-or-goblet-squat",
+      "name": "Front squat or goblet squat",
+      "displayName": "Front squat or goblet squat",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "squat",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Quadriceps",
+        "Glutes"
+      ],
+      "secondaryMuscles": [
+        "Adductors",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set feet securely and brace before descending.",
+        "Lower under control while keeping the whole foot planted.",
+        "Keep knees tracking with the toes.",
+        "Drive through the floor and finish tall without overextending."
+      ],
+      "coachingCues": [
+        "Brace, sit between the knees.",
+        "Keep the tripod foot.",
+        "Drive the floor away."
+      ],
+      "commonMistakes": [
+        "Heels lifting",
+        "Knees collapsing inward",
+        "Losing the brace at the bottom"
+      ],
+      "regressions": [
+        "Box squat"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Box squat"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "squat",
+        "Quadriceps",
+        "Glutes"
+      ],
+      "sourceCue": "Brace and sit between the hips with a full foot."
+    },
+    {
+      "id": "front-foot-elevated-reverse-lunge",
+      "name": "Front-foot elevated reverse lunge",
+      "displayName": "Front-foot elevated reverse lunge",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "squat",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Quadriceps",
+        "Glutes"
+      ],
+      "secondaryMuscles": [
+        "Adductors",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set feet securely and brace before descending.",
+        "Lower under control while keeping the whole foot planted.",
+        "Keep knees tracking with the toes.",
+        "Drive through the floor and finish tall without overextending."
+      ],
+      "coachingCues": [
+        "Brace, sit between the knees.",
+        "Keep the tripod foot.",
+        "Drive the floor away."
+      ],
+      "commonMistakes": [
+        "Heels lifting",
+        "Knees collapsing inward",
+        "Losing the brace at the bottom"
+      ],
+      "regressions": [
+        "Split squat"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Split squat"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "squat",
+        "Quadriceps",
+        "Glutes"
+      ],
+      "sourceCue": "Keep pressure through the front heel and big toe."
+    },
+    {
+      "id": "goblet-or-front-squat",
+      "name": "Goblet or front squat",
+      "displayName": "Goblet or front squat",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "squat",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Quadriceps",
+        "Glutes"
+      ],
+      "secondaryMuscles": [
+        "Adductors",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set feet securely and brace before descending.",
+        "Lower under control while keeping the whole foot planted.",
+        "Keep knees tracking with the toes.",
+        "Drive through the floor and finish tall without overextending."
+      ],
+      "coachingCues": [
+        "Brace, sit between the knees.",
+        "Keep the tripod foot.",
+        "Drive the floor away."
+      ],
+      "commonMistakes": [
+        "Heels lifting",
+        "Knees collapsing inward",
+        "Losing the brace at the bottom"
+      ],
+      "regressions": [
+        "Garage-gym equivalent"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Garage-gym equivalent"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "squat",
+        "Quadriceps",
+        "Glutes"
+      ],
+      "sourceCue": "Brace first and keep every rep repeatable."
+    },
+    {
+      "id": "goblet-squat",
+      "name": "Goblet squat",
+      "displayName": "Goblet squat",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "squat",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Quadriceps",
+        "Glutes"
+      ],
+      "secondaryMuscles": [
+        "Adductors",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set feet securely and brace before descending.",
+        "Lower under control while keeping the whole foot planted.",
+        "Keep knees tracking with the toes.",
+        "Drive through the floor and finish tall without overextending."
+      ],
+      "coachingCues": [
+        "Brace, sit between the knees.",
+        "Keep the tripod foot.",
+        "Drive the floor away."
+      ],
+      "commonMistakes": [
+        "Heels lifting",
+        "Knees collapsing inward",
+        "Losing the brace at the bottom"
+      ],
+      "regressions": [
+        "Bodyweight box squat"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Bodyweight box squat"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "squat",
+        "Quadriceps",
+        "Glutes"
+      ],
+      "sourceCue": "Move smoothly and keep the torso stacked."
+    },
+    {
+      "id": "hammer-curl-and-lying-triceps-extension",
+      "name": "Hammer curl + lying triceps extension",
+      "displayName": "Hammer curl + lying triceps extension",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "accessory",
+      "movementPattern": "elbow flexion",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Biceps"
+      ],
+      "secondaryMuscles": [
+        "Forearms"
+      ],
+      "equipment": [
+        "Dumbbells, cable, or bands"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 45,
+      "defaultRPE": 8,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 45,
+        "targetRPE": 8,
+        "targetRIR": 2
+      },
+      "instructions": [
+        "Keep the upper arm quiet.",
+        "Curl without swinging the torso.",
+        "Squeeze at the top.",
+        "Lower fully under control."
+      ],
+      "coachingCues": [
+        "Control every rep.",
+        "Keep tension on the target muscles.",
+        "Stop before form changes."
+      ],
+      "commonMistakes": [
+        "Using momentum",
+        "Losing the target position",
+        "Continuing after technique breaks down"
+      ],
+      "regressions": [
+        "Band alternatives"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Band alternatives"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "elbow flexion",
+        "Biceps"
+      ],
+      "sourceCue": "Control the eccentric and keep wrists stacked."
+    },
+    {
+      "id": "hip-and-upper-back-mobility",
+      "name": "Hip + upper-back mobility",
+      "displayName": "Hip + upper-back mobility",
+      "aliases": [],
+      "category": "mobility",
+      "exerciseType": "mobility",
+      "movementPattern": "mobility",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Hips",
+        "Thoracic spine"
+      ],
+      "secondaryMuscles": [
+        "Core"
+      ],
+      "equipment": [
+        "Bodyweight"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "controlled",
+      "defaultRestSeconds": 15,
+      "defaultRPE": 3,
+      "defaultPrescription": {
+        "tempo": "controlled",
+        "restSeconds": 15,
+        "targetRPE": 3,
+        "targetRIR": 7
+      },
+      "instructions": [
+        "Move slowly into a comfortable range.",
+        "Use controlled breathing.",
+        "Avoid forcing the end position.",
+        "Repeat with smooth, pain-free motion."
+      ],
+      "coachingCues": [
+        "Slow breath.",
+        "No pinching.",
+        "Control the range."
+      ],
+      "commonMistakes": [
+        "Forcing range",
+        "Holding the breath",
+        "Moving through joint pain"
+      ],
+      "regressions": [
+        "Any pain-free mobility"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Any pain-free mobility"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "mobility",
+        "mobility",
+        "Hips",
+        "Thoracic spine"
+      ],
+      "sourceCue": "Do not chase intensity."
+    },
+    {
+      "id": "hip-hinge",
+      "name": "Hip hinge",
+      "displayName": "Hip hinge",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "hinge",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Hamstrings",
+        "Glutes"
+      ],
+      "secondaryMuscles": [
+        "Erector spinae",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Brace with ribs stacked over pelvis.",
+        "Push the hips back while maintaining a neutral spine.",
+        "Keep the load close to the body.",
+        "Drive the floor away and finish by squeezing the glutes."
+      ],
+      "coachingCues": [
+        "Hips back.",
+        "Keep the load close.",
+        "Finish with the glutes."
+      ],
+      "commonMistakes": [
+        "Rounding the lower back",
+        "Squatting instead of hinging",
+        "Letting the load drift away"
+      ],
+      "regressions": [
+        "Glute bridge"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Glute bridge"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "hinge",
+        "Hamstrings",
+        "Glutes"
+      ],
+      "sourceCue": "Feel hamstrings, not low back."
+    },
+    {
+      "id": "hip-thrust-or-glute-bridge",
+      "name": "Hip thrust or glute bridge",
+      "displayName": "Hip thrust or glute bridge",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "hinge",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Hamstrings",
+        "Glutes"
+      ],
+      "secondaryMuscles": [
+        "Erector spinae",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Brace with ribs stacked over pelvis.",
+        "Push the hips back while maintaining a neutral spine.",
+        "Keep the load close to the body.",
+        "Drive the floor away and finish by squeezing the glutes."
+      ],
+      "coachingCues": [
+        "Hips back.",
+        "Keep the load close.",
+        "Finish with the glutes."
+      ],
+      "commonMistakes": [
+        "Rounding the lower back",
+        "Squatting instead of hinging",
+        "Letting the load drift away"
+      ],
+      "regressions": [
+        "Dumbbell glute bridge"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Dumbbell glute bridge"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "hinge",
+        "Hamstrings",
+        "Glutes"
+      ],
+      "sourceCue": "Tuck pelvis slightly and finish with glutes, not low back."
+    },
+    {
+      "id": "incline-dumbbell-press",
+      "name": "Incline dumbbell press",
+      "displayName": "Incline dumbbell press",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "accessory",
+      "movementPattern": "other",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Full body"
+      ],
+      "secondaryMuscles": [
+        "Core"
+      ],
+      "equipment": [
+        "Bodyweight"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "2-0-2-0",
+      "defaultRestSeconds": 60,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "2-0-2-0",
+        "restSeconds": 60,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set a stable starting position.",
+        "Move through a controlled, pain-free range.",
+        "Maintain appropriate breathing and bracing.",
+        "Stop the set when technique begins to break down."
+      ],
+      "coachingCues": [
+        "Control every rep.",
+        "Keep tension on the target muscles.",
+        "Stop before form changes."
+      ],
+      "commonMistakes": [
+        "Using momentum",
+        "Losing the target position",
+        "Continuing after technique breaks down"
+      ],
+      "regressions": [
+        "Feet-elevated push-up"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Feet-elevated push-up"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "other",
+        "Full body"
+      ],
+      "sourceCue": "Keep ribs stacked and lower under control."
+    },
+    {
+      "id": "lat-pulldown-or-pull-up",
+      "name": "Lat pulldown or pull-up",
+      "displayName": "Lat pulldown or pull-up",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "vertical pull",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Lats",
+        "Upper back"
+      ],
+      "secondaryMuscles": [
+        "Biceps",
+        "Rear deltoids"
+      ],
+      "equipment": [
+        "Cable, pull-up bar, or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 90,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 90,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Begin from a long-arm position.",
+        "Pull the shoulder blades down before bending the elbows.",
+        "Drive elbows toward the ribs.",
+        "Return to full reach without losing control."
+      ],
+      "coachingCues": [
+        "Shoulders down.",
+        "Elbows to ribs.",
+        "Own the stretch."
+      ],
+      "commonMistakes": [
+        "Pulling only with the arms",
+        "Craning the neck",
+        "Stopping short of full reach"
+      ],
+      "regressions": [
+        "Band pulldown"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Band pulldown"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "vertical pull",
+        "Lats",
+        "Upper back"
+      ],
+      "sourceCue": "Start by pulling shoulder blades down, then drive elbows to ribs."
+    },
+    {
+      "id": "lateral-raise",
+      "name": "Lateral raise",
+      "displayName": "Lateral raise",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "accessory",
+      "movementPattern": "shoulder isolation",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Lateral deltoids"
+      ],
+      "secondaryMuscles": [
+        "Traps",
+        "Rotator cuff"
+      ],
+      "equipment": [
+        "Dumbbells, cable, or bands"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 45,
+      "defaultRPE": 8,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 45,
+        "targetRPE": 8,
+        "targetRIR": 2
+      },
+      "instructions": [
+        "Use a light load and soft elbows.",
+        "Move from the shoulder without shrugging.",
+        "Pause briefly at peak tension.",
+        "Lower slowly and maintain control."
+      ],
+      "coachingCues": [
+        "Control every rep.",
+        "Keep tension on the target muscles.",
+        "Stop before form changes."
+      ],
+      "commonMistakes": [
+        "Using momentum",
+        "Losing the target position",
+        "Continuing after technique breaks down"
+      ],
+      "regressions": [],
+      "progressions": [],
+      "substitutions": [],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "shoulder isolation",
+        "Lateral deltoids"
+      ],
+      "sourceCue": ""
+    },
+    {
+      "id": "lateral-raise-and-rear-delt-fly",
+      "name": "Lateral raise + rear-delt fly",
+      "displayName": "Lateral raise + rear-delt fly",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "accessory",
+      "movementPattern": "shoulder isolation",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Lateral deltoids"
+      ],
+      "secondaryMuscles": [
+        "Traps",
+        "Rotator cuff"
+      ],
+      "equipment": [
+        "Dumbbells, cable, or bands"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 45,
+      "defaultRPE": 8,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 45,
+        "targetRPE": 8,
+        "targetRIR": 2
+      },
+      "instructions": [
+        "Use a light load and soft elbows.",
+        "Move from the shoulder without shrugging.",
+        "Pause briefly at peak tension.",
+        "Lower slowly and maintain control."
+      ],
+      "coachingCues": [
+        "Control every rep.",
+        "Keep tension on the target muscles.",
+        "Stop before form changes."
+      ],
+      "commonMistakes": [
+        "Using momentum",
+        "Losing the target position",
+        "Continuing after technique breaks down"
+      ],
+      "regressions": [],
+      "progressions": [],
+      "substitutions": [],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "shoulder isolation",
+        "Lateral deltoids"
+      ],
+      "sourceCue": ""
+    },
+    {
+      "id": "leg-curl",
+      "name": "Leg curl",
+      "displayName": "Leg curl",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "hinge",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Hamstrings",
+        "Glutes"
+      ],
+      "secondaryMuscles": [
+        "Erector spinae",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Brace with ribs stacked over pelvis.",
+        "Push the hips back while maintaining a neutral spine.",
+        "Keep the load close to the body.",
+        "Drive the floor away and finish by squeezing the glutes."
+      ],
+      "coachingCues": [
+        "Hips back.",
+        "Keep the load close.",
+        "Finish with the glutes."
+      ],
+      "commonMistakes": [
+        "Rounding the lower back",
+        "Squatting instead of hinging",
+        "Letting the load drift away"
+      ],
+      "regressions": [
+        "Slider"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Slider",
+        "stability-ball leg curl"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "hinge",
+        "Hamstrings",
+        "Glutes"
+      ],
+      "sourceCue": "Keep hips extended while heels pull in."
+    },
+    {
+      "id": "mechanical-lateral-raise-drop-set",
+      "name": "Mechanical lateral-raise drop set",
+      "displayName": "Mechanical lateral-raise drop set",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "accessory",
+      "movementPattern": "other",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Full body"
+      ],
+      "secondaryMuscles": [
+        "Core"
+      ],
+      "equipment": [
+        "Bodyweight"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "2-0-2-0",
+      "defaultRestSeconds": 60,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "2-0-2-0",
+        "restSeconds": 60,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set a stable starting position.",
+        "Move through a controlled, pain-free range.",
+        "Maintain appropriate breathing and bracing.",
+        "Stop the set when technique begins to break down."
+      ],
+      "coachingCues": [
+        "Control every rep.",
+        "Keep tension on the target muscles.",
+        "Stop before form changes."
+      ],
+      "commonMistakes": [
+        "Using momentum",
+        "Losing the target position",
+        "Continuing after technique breaks down"
+      ],
+      "regressions": [
+        "Band lateral raise"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Band lateral raise"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "other",
+        "Full body"
+      ],
+      "sourceCue": "Keep tension on delts and avoid swinging."
+    },
+    {
+      "id": "one-arm-cable-or-dumbbell-row",
+      "name": "One-arm cable or dumbbell row",
+      "displayName": "One-arm cable or dumbbell row",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "horizontal pull",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Lats",
+        "Upper back"
+      ],
+      "secondaryMuscles": [
+        "Biceps",
+        "Rear deltoids"
+      ],
+      "equipment": [
+        "Cable, pull-up bar, or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 90,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 90,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set the torso and keep the ribs down.",
+        "Initiate by moving the shoulder blade, then the elbow.",
+        "Pull toward the lower ribs.",
+        "Pause briefly before returning under control."
+      ],
+      "coachingCues": [
+        "Chest proud.",
+        "Elbow to back pocket.",
+        "Pause, do not shrug."
+      ],
+      "commonMistakes": [
+        "Shrugging",
+        "Using torso momentum",
+        "Cutting the controlled eccentric short"
+      ],
+      "regressions": [
+        "Band row"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Band row"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "horizontal pull",
+        "Lats",
+        "Upper back"
+      ],
+      "sourceCue": "Reach long, then pull toward the hip without rotating."
+    },
+    {
+      "id": "one-arm-dumbbell-row",
+      "name": "One-arm dumbbell row",
+      "displayName": "One-arm dumbbell row",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "horizontal pull",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Lats",
+        "Upper back"
+      ],
+      "secondaryMuscles": [
+        "Biceps",
+        "Rear deltoids"
+      ],
+      "equipment": [
+        "Cable, pull-up bar, or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 90,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 90,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set the torso and keep the ribs down.",
+        "Initiate by moving the shoulder blade, then the elbow.",
+        "Pull toward the lower ribs.",
+        "Pause briefly before returning under control."
+      ],
+      "coachingCues": [
+        "Chest proud.",
+        "Elbow to back pocket.",
+        "Pause, do not shrug."
+      ],
+      "commonMistakes": [
+        "Shrugging",
+        "Using torso momentum",
+        "Cutting the controlled eccentric short"
+      ],
+      "regressions": [
+        "Band row"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Band row"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "horizontal pull",
+        "Lats",
+        "Upper back"
+      ],
+      "sourceCue": "Pull toward the hip and pause."
+    },
+    {
+      "id": "one-arm-row",
+      "name": "One-arm row",
+      "displayName": "One-arm row",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "horizontal pull",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Lats",
+        "Upper back"
+      ],
+      "secondaryMuscles": [
+        "Biceps",
+        "Rear deltoids"
+      ],
+      "equipment": [
+        "Cable, pull-up bar, or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 90,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 90,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set the torso and keep the ribs down.",
+        "Initiate by moving the shoulder blade, then the elbow.",
+        "Pull toward the lower ribs.",
+        "Pause briefly before returning under control."
+      ],
+      "coachingCues": [
+        "Chest proud.",
+        "Elbow to back pocket.",
+        "Pause, do not shrug."
+      ],
+      "commonMistakes": [
+        "Shrugging",
+        "Using torso momentum",
+        "Cutting the controlled eccentric short"
+      ],
+      "regressions": [
+        "Band row"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Band row"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "horizontal pull",
+        "Lats",
+        "Upper back"
+      ],
+      "sourceCue": "Keep hips and ribs square."
+    },
+    {
+      "id": "open-book-rotation",
+      "name": "Open book rotation",
+      "displayName": "Open book rotation",
+      "aliases": [],
+      "category": "mobility",
+      "exerciseType": "mobility",
+      "movementPattern": "mobility",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Hips",
+        "Thoracic spine"
+      ],
+      "secondaryMuscles": [
+        "Core"
+      ],
+      "equipment": [
+        "Bodyweight"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "controlled",
+      "defaultRestSeconds": 15,
+      "defaultRPE": 3,
+      "defaultPrescription": {
+        "tempo": "controlled",
+        "restSeconds": 15,
+        "targetRPE": 3,
+        "targetRIR": 7
+      },
+      "instructions": [
+        "Move slowly into a comfortable range.",
+        "Use controlled breathing.",
+        "Avoid forcing the end position.",
+        "Repeat with smooth, pain-free motion."
+      ],
+      "coachingCues": [
+        "Slow breath.",
+        "No pinching.",
+        "Control the range."
+      ],
+      "commonMistakes": [
+        "Forcing range",
+        "Holding the breath",
+        "Moving through joint pain"
+      ],
+      "regressions": [
+        "Quadruped rotation"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Quadruped rotation"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "mobility",
+        "mobility",
+        "Hips",
+        "Thoracic spine"
+      ],
+      "sourceCue": "Follow the hand with the eyes."
+    },
+    {
+      "id": "outdoor-walk",
+      "name": "Outdoor walk",
+      "displayName": "Outdoor walk",
+      "aliases": [],
+      "category": "conditioning",
+      "exerciseType": "conditioning",
+      "movementPattern": "locomotion",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Cardiovascular system",
+        "Legs"
+      ],
+      "secondaryMuscles": [
+        "Core"
+      ],
+      "equipment": [
+        "Bodyweight"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "self-selected",
+      "defaultRestSeconds": 0,
+      "defaultRPE": 6,
+      "defaultPrescription": {
+        "tempo": "self-selected",
+        "restSeconds": 0,
+        "targetRPE": 6,
+        "targetRIR": 4
+      },
+      "instructions": [
+        "Start at a sustainable pace.",
+        "Maintain relaxed shoulders and rhythmic breathing.",
+        "Keep effort within the prescribed RPE or heart-rate zone.",
+        "Finish feeling capable of continuing."
+      ],
+      "coachingCues": [
+        "Conversational pace.",
+        "Relax the shoulders.",
+        "Finish with more available."
+      ],
+      "commonMistakes": [
+        "Starting too hard",
+        "Ignoring prescribed intensity",
+        "Using poor posture as fatigue rises"
+      ],
+      "regressions": [
+        "Walk inside"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Walk inside"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "conditioning",
+        "locomotion",
+        "Cardiovascular system",
+        "Legs"
+      ],
+      "sourceCue": "Sunlight and movement count."
+    },
+    {
+      "id": "overhead-press",
+      "name": "Overhead press",
+      "displayName": "Overhead press",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "vertical push",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Shoulders",
+        "Triceps"
+      ],
+      "secondaryMuscles": [
+        "Upper chest",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "2-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "2-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Brace the trunk and squeeze the glutes.",
+        "Start with forearms vertical.",
+        "Press overhead without flaring the ribs.",
+        "Finish with the arms aligned beside the ears."
+      ],
+      "coachingCues": [
+        "Ribs down.",
+        "Head through.",
+        "Reach tall."
+      ],
+      "commonMistakes": [
+        "Overarching the lower back",
+        "Pressing around the face",
+        "Failing to reach a stable lockout"
+      ],
+      "regressions": [
+        "Pike push-up"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Pike push-up"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "vertical push",
+        "Shoulders",
+        "Triceps"
+      ],
+      "sourceCue": "Keep ribs down."
+    },
+    {
+      "id": "overhead-triceps-extension",
+      "name": "Overhead triceps extension",
+      "displayName": "Overhead triceps extension",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "accessory",
+      "movementPattern": "elbow extension",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Triceps"
+      ],
+      "secondaryMuscles": [
+        "Chest",
+        "Shoulders"
+      ],
+      "equipment": [
+        "Dumbbells, cable, or bodyweight"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 45,
+      "defaultRPE": 8,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 45,
+        "targetRPE": 8,
+        "targetRIR": 2
+      },
+      "instructions": [
+        "Keep the upper arm stable.",
+        "Reach full elbow extension without losing shoulder position.",
+        "Pause at lockout.",
+        "Return under control."
+      ],
+      "coachingCues": [
+        "Control every rep.",
+        "Keep tension on the target muscles.",
+        "Stop before form changes."
+      ],
+      "commonMistakes": [
+        "Using momentum",
+        "Losing the target position",
+        "Continuing after technique breaks down"
+      ],
+      "regressions": [
+        "Close-grip push-up"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Close-grip push-up"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "elbow extension",
+        "Triceps"
+      ],
+      "sourceCue": "Keep ribs down and upper arms vertical."
+    },
+    {
+      "id": "pallof-press",
+      "name": "Pallof press",
+      "displayName": "Pallof press",
+      "aliases": [],
+      "category": "core",
+      "exerciseType": "core",
+      "movementPattern": "anti-extension/anti-rotation",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Core"
+      ],
+      "secondaryMuscles": [
+        "Hip flexors",
+        "Glutes"
+      ],
+      "equipment": [
+        "Bodyweight or cable"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "controlled",
+      "defaultRestSeconds": 45,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "controlled",
+        "restSeconds": 45,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Brace as though preparing for a light punch.",
+        "Keep ribs and pelvis stacked.",
+        "Move only through the intended joints.",
+        "Stop before the lower back arches or torso rotates."
+      ],
+      "coachingCues": [
+        "Ribs down.",
+        "Brace and breathe.",
+        "Do not rotate."
+      ],
+      "commonMistakes": [
+        "Arching the lower back",
+        "Holding the breath",
+        "Moving too quickly"
+      ],
+      "regressions": [
+        "Suitcase hold"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Suitcase hold"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "core",
+        "anti-extension/anti-rotation",
+        "Core"
+      ],
+      "sourceCue": "Do not let the cable rotate the torso."
+    },
+    {
+      "id": "pull",
+      "name": "Pull",
+      "displayName": "Pull",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "horizontal pull",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Lats",
+        "Upper back"
+      ],
+      "secondaryMuscles": [
+        "Biceps",
+        "Rear deltoids"
+      ],
+      "equipment": [
+        "Cable, pull-up bar, or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 90,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 90,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set the torso and keep the ribs down.",
+        "Initiate by moving the shoulder blade, then the elbow.",
+        "Pull toward the lower ribs.",
+        "Pause briefly before returning under control."
+      ],
+      "coachingCues": [
+        "Chest proud.",
+        "Elbow to back pocket.",
+        "Pause, do not shrug."
+      ],
+      "commonMistakes": [
+        "Shrugging",
+        "Using torso momentum",
+        "Cutting the controlled eccentric short"
+      ],
+      "regressions": [],
+      "progressions": [],
+      "substitutions": [],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "horizontal pull",
+        "Lats",
+        "Upper back"
+      ],
+      "sourceCue": ""
+    },
+    {
+      "id": "pull-up-or-pulldown",
+      "name": "Pull-up or pulldown",
+      "displayName": "Pull-up or pulldown",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "vertical pull",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Lats",
+        "Upper back"
+      ],
+      "secondaryMuscles": [
+        "Biceps",
+        "Rear deltoids"
+      ],
+      "equipment": [
+        "Cable, pull-up bar, or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 90,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 90,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Begin from a long-arm position.",
+        "Pull the shoulder blades down before bending the elbows.",
+        "Drive elbows toward the ribs.",
+        "Return to full reach without losing control."
+      ],
+      "coachingCues": [
+        "Shoulders down.",
+        "Elbows to ribs.",
+        "Own the stretch."
+      ],
+      "commonMistakes": [
+        "Pulling only with the arms",
+        "Craning the neck",
+        "Stopping short of full reach"
+      ],
+      "regressions": [
+        "Band pulldown"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Band pulldown"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "vertical pull",
+        "Lats",
+        "Upper back"
+      ],
+      "sourceCue": "Drive elbows toward ribs."
+    },
+    {
+      "id": "push",
+      "name": "Push",
+      "displayName": "Push",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "accessory",
+      "movementPattern": "other",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Full body"
+      ],
+      "secondaryMuscles": [
+        "Core"
+      ],
+      "equipment": [
+        "Bodyweight"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "2-0-2-0",
+      "defaultRestSeconds": 60,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "2-0-2-0",
+        "restSeconds": 60,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set a stable starting position.",
+        "Move through a controlled, pain-free range.",
+        "Maintain appropriate breathing and bracing.",
+        "Stop the set when technique begins to break down."
+      ],
+      "coachingCues": [
+        "Control every rep.",
+        "Keep tension on the target muscles.",
+        "Stop before form changes."
+      ],
+      "commonMistakes": [
+        "Using momentum",
+        "Losing the target position",
+        "Continuing after technique breaks down"
+      ],
+      "regressions": [],
+      "progressions": [],
+      "substitutions": [],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "other",
+        "Full body"
+      ],
+      "sourceCue": ""
+    },
+    {
+      "id": "push-up-or-dumbbell-press",
+      "name": "Push-up or dumbbell press",
+      "displayName": "Push-up or dumbbell press",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "horizontal push",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Chest",
+        "Triceps"
+      ],
+      "secondaryMuscles": [
+        "Anterior deltoids",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell, dumbbells, or bodyweight"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set the shoulder blades down and back.",
+        "Lower the load under control to a consistent touch point.",
+        "Keep wrists stacked over elbows.",
+        "Press while maintaining full-body tension."
+      ],
+      "coachingCues": [
+        "Shoulders pinned.",
+        "Touch consistently.",
+        "Press with the feet."
+      ],
+      "commonMistakes": [
+        "Elbows flaring excessively",
+        "Shoulders rolling forward",
+        "Bouncing or rushing the bottom"
+      ],
+      "regressions": [
+        "Incline push-up"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Incline push-up"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "horizontal push",
+        "Chest",
+        "Triceps"
+      ],
+      "sourceCue": "Leave reps in reserve."
+    },
+    {
+      "id": "push-up-or-press",
+      "name": "Push-up or press",
+      "displayName": "Push-up or press",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "horizontal push",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Chest",
+        "Triceps"
+      ],
+      "secondaryMuscles": [
+        "Anterior deltoids",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell, dumbbells, or bodyweight"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set the shoulder blades down and back.",
+        "Lower the load under control to a consistent touch point.",
+        "Keep wrists stacked over elbows.",
+        "Press while maintaining full-body tension."
+      ],
+      "coachingCues": [
+        "Shoulders pinned.",
+        "Touch consistently.",
+        "Press with the feet."
+      ],
+      "commonMistakes": [
+        "Elbows flaring excessively",
+        "Shoulders rolling forward",
+        "Bouncing or rushing the bottom"
+      ],
+      "regressions": [
+        "Incline push-up"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Incline push-up"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "horizontal push",
+        "Chest",
+        "Triceps"
+      ],
+      "sourceCue": "Stop well before failure."
+    },
+    {
+      "id": "rear-delt-fly",
+      "name": "Rear-delt fly",
+      "displayName": "Rear-delt fly",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "accessory",
+      "movementPattern": "shoulder isolation",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Rear deltoids"
+      ],
+      "secondaryMuscles": [
+        "Traps",
+        "Rotator cuff"
+      ],
+      "equipment": [
+        "Dumbbells, cable, or bands"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 45,
+      "defaultRPE": 8,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 45,
+        "targetRPE": 8,
+        "targetRIR": 2
+      },
+      "instructions": [
+        "Use a light load and soft elbows.",
+        "Move from the shoulder without shrugging.",
+        "Pause briefly at peak tension.",
+        "Lower slowly and maintain control."
+      ],
+      "coachingCues": [
+        "Control every rep.",
+        "Keep tension on the target muscles.",
+        "Stop before form changes."
+      ],
+      "commonMistakes": [
+        "Using momentum",
+        "Losing the target position",
+        "Continuing after technique breaks down"
+      ],
+      "regressions": [
+        "Band pull-apart"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Band pull-apart"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "shoulder isolation",
+        "Rear deltoids"
+      ],
+      "sourceCue": "Reach wide and pause."
+    },
+    {
+      "id": "rear-delt-fly-or-face-pull",
+      "name": "Rear-delt fly or face pull",
+      "displayName": "Rear-delt fly or face pull",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "horizontal pull",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Lats",
+        "Upper back"
+      ],
+      "secondaryMuscles": [
+        "Biceps",
+        "Rear deltoids"
+      ],
+      "equipment": [
+        "Cable, pull-up bar, or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 90,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 90,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set the torso and keep the ribs down.",
+        "Initiate by moving the shoulder blade, then the elbow.",
+        "Pull toward the lower ribs.",
+        "Pause briefly before returning under control."
+      ],
+      "coachingCues": [
+        "Chest proud.",
+        "Elbow to back pocket.",
+        "Pause, do not shrug."
+      ],
+      "commonMistakes": [
+        "Shrugging",
+        "Using torso momentum",
+        "Cutting the controlled eccentric short"
+      ],
+      "regressions": [
+        "Band pull-apart"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Band pull-apart"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "horizontal pull",
+        "Lats",
+        "Upper back"
+      ],
+      "sourceCue": "Move the shoulder blades; do not crank the neck."
+    },
+    {
+      "id": "rear-foot-elevated-split-squat",
+      "name": "Rear-foot elevated split squat",
+      "displayName": "Rear-foot elevated split squat",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "squat",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Quadriceps",
+        "Glutes"
+      ],
+      "secondaryMuscles": [
+        "Adductors",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set feet securely and brace before descending.",
+        "Lower under control while keeping the whole foot planted.",
+        "Keep knees tracking with the toes.",
+        "Drive through the floor and finish tall without overextending."
+      ],
+      "coachingCues": [
+        "Brace, sit between the knees.",
+        "Keep the tripod foot.",
+        "Drive the floor away."
+      ],
+      "commonMistakes": [
+        "Heels lifting",
+        "Knees collapsing inward",
+        "Losing the brace at the bottom"
+      ],
+      "regressions": [
+        "Reverse lunge"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Reverse lunge"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "squat",
+        "Quadriceps",
+        "Glutes"
+      ],
+      "sourceCue": "Drop straight down and drive through the front mid-foot."
+    },
+    {
+      "id": "reverse-lunge",
+      "name": "Reverse lunge",
+      "displayName": "Reverse lunge",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "squat",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Quadriceps",
+        "Glutes"
+      ],
+      "secondaryMuscles": [
+        "Adductors",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set feet securely and brace before descending.",
+        "Lower under control while keeping the whole foot planted.",
+        "Keep knees tracking with the toes.",
+        "Drive through the floor and finish tall without overextending."
+      ],
+      "coachingCues": [
+        "Brace, sit between the knees.",
+        "Keep the tripod foot.",
+        "Drive the floor away."
+      ],
+      "commonMistakes": [
+        "Heels lifting",
+        "Knees collapsing inward",
+        "Losing the brace at the bottom"
+      ],
+      "regressions": [
+        "Split squat"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Split squat"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "squat",
+        "Quadriceps",
+        "Glutes"
+      ],
+      "sourceCue": "Step back softly and stay tall."
+    },
+    {
+      "id": "romanian-deadlift",
+      "name": "Romanian deadlift",
+      "displayName": "Romanian deadlift",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "hinge",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Hamstrings",
+        "Glutes"
+      ],
+      "secondaryMuscles": [
+        "Erector spinae",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Brace with ribs stacked over pelvis.",
+        "Push the hips back while maintaining a neutral spine.",
+        "Keep the load close to the body.",
+        "Drive the floor away and finish by squeezing the glutes."
+      ],
+      "coachingCues": [
+        "Hips back.",
+        "Keep the load close.",
+        "Finish with the glutes."
+      ],
+      "commonMistakes": [
+        "Rounding the lower back",
+        "Squatting instead of hinging",
+        "Letting the load drift away"
+      ],
+      "regressions": [
+        "Dumbbell Romanian deadlift"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Dumbbell Romanian deadlift"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "hinge",
+        "Hamstrings",
+        "Glutes"
+      ],
+      "sourceCue": "Push hips back until hamstrings load; keep the bar close."
+    },
+    {
+      "id": "row",
+      "name": "Row",
+      "displayName": "Row",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "horizontal pull",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Lats",
+        "Upper back"
+      ],
+      "secondaryMuscles": [
+        "Biceps",
+        "Rear deltoids"
+      ],
+      "equipment": [
+        "Cable, pull-up bar, or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 90,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 90,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set the torso and keep the ribs down.",
+        "Initiate by moving the shoulder blade, then the elbow.",
+        "Pull toward the lower ribs.",
+        "Pause briefly before returning under control."
+      ],
+      "coachingCues": [
+        "Chest proud.",
+        "Elbow to back pocket.",
+        "Pause, do not shrug."
+      ],
+      "commonMistakes": [
+        "Shrugging",
+        "Using torso momentum",
+        "Cutting the controlled eccentric short"
+      ],
+      "regressions": [
+        "Band row"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Band row"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "horizontal pull",
+        "Lats",
+        "Upper back"
+      ],
+      "sourceCue": "Pause each rep."
+    },
+    {
+      "id": "secondary-press",
+      "name": "Secondary press",
+      "displayName": "Secondary press",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "horizontal push",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Chest",
+        "Triceps"
+      ],
+      "secondaryMuscles": [
+        "Anterior deltoids",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell, dumbbells, or bodyweight"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set the shoulder blades down and back.",
+        "Lower the load under control to a consistent touch point.",
+        "Keep wrists stacked over elbows.",
+        "Press while maintaining full-body tension."
+      ],
+      "coachingCues": [
+        "Shoulders pinned.",
+        "Touch consistently.",
+        "Press with the feet."
+      ],
+      "commonMistakes": [
+        "Elbows flaring excessively",
+        "Shoulders rolling forward",
+        "Bouncing or rushing the bottom"
+      ],
+      "regressions": [
+        "Push-up"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Push-up",
+        "dumbbell press"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "horizontal push",
+        "Chest",
+        "Triceps"
+      ],
+      "sourceCue": "Control the eccentric."
+    },
+    {
+      "id": "secondary-pull",
+      "name": "Secondary pull",
+      "displayName": "Secondary pull",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "horizontal pull",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Lats",
+        "Upper back"
+      ],
+      "secondaryMuscles": [
+        "Biceps",
+        "Rear deltoids"
+      ],
+      "equipment": [
+        "Cable, pull-up bar, or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 90,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 90,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set the torso and keep the ribs down.",
+        "Initiate by moving the shoulder blade, then the elbow.",
+        "Pull toward the lower ribs.",
+        "Pause briefly before returning under control."
+      ],
+      "coachingCues": [
+        "Chest proud.",
+        "Elbow to back pocket.",
+        "Pause, do not shrug."
+      ],
+      "commonMistakes": [
+        "Shrugging",
+        "Using torso momentum",
+        "Cutting the controlled eccentric short"
+      ],
+      "regressions": [
+        "Row"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Row",
+        "pulldown"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "horizontal pull",
+        "Lats",
+        "Upper back"
+      ],
+      "sourceCue": "Finish with the back, not momentum."
+    },
+    {
+      "id": "side-plank",
+      "name": "Side plank",
+      "displayName": "Side plank",
+      "aliases": [],
+      "category": "core",
+      "exerciseType": "core",
+      "movementPattern": "anti-extension/anti-rotation",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Core"
+      ],
+      "secondaryMuscles": [
+        "Hip flexors",
+        "Glutes"
+      ],
+      "equipment": [
+        "Bodyweight or cable"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "controlled",
+      "defaultRestSeconds": 45,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "controlled",
+        "restSeconds": 45,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Brace as though preparing for a light punch.",
+        "Keep ribs and pelvis stacked.",
+        "Move only through the intended joints.",
+        "Stop before the lower back arches or torso rotates."
+      ],
+      "coachingCues": [
+        "Ribs down.",
+        "Brace and breathe.",
+        "Do not rotate."
+      ],
+      "commonMistakes": [
+        "Arching the lower back",
+        "Holding the breath",
+        "Moving too quickly"
+      ],
+      "regressions": [
+        "Suitcase hold"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Suitcase hold"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "core",
+        "anti-extension/anti-rotation",
+        "Core"
+      ],
+      "sourceCue": "Make a straight line from ear through ankle."
+    },
+    {
+      "id": "single-leg-romanian-deadlift",
+      "name": "Single-leg Romanian deadlift",
+      "displayName": "Single-leg Romanian deadlift",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "hinge",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Hamstrings",
+        "Glutes"
+      ],
+      "secondaryMuscles": [
+        "Erector spinae",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Brace with ribs stacked over pelvis.",
+        "Push the hips back while maintaining a neutral spine.",
+        "Keep the load close to the body.",
+        "Drive the floor away and finish by squeezing the glutes."
+      ],
+      "coachingCues": [
+        "Hips back.",
+        "Keep the load close.",
+        "Finish with the glutes."
+      ],
+      "commonMistakes": [
+        "Rounding the lower back",
+        "Squatting instead of hinging",
+        "Letting the load drift away"
+      ],
+      "regressions": [
+        "Kickstand Romanian deadlift"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Kickstand Romanian deadlift"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "hinge",
+        "Hamstrings",
+        "Glutes"
+      ],
+      "sourceCue": "Keep hips square and reach the free heel backward."
+    },
+    {
+      "id": "single-leg-or-hinge-accessory",
+      "name": "Single-leg or hinge accessory",
+      "displayName": "Single-leg or hinge accessory",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "accessory",
+      "movementPattern": "other",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Full body"
+      ],
+      "secondaryMuscles": [
+        "Core"
+      ],
+      "equipment": [
+        "Bodyweight"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "2-0-2-0",
+      "defaultRestSeconds": 60,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "2-0-2-0",
+        "restSeconds": 60,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set a stable starting position.",
+        "Move through a controlled, pain-free range.",
+        "Maintain appropriate breathing and bracing.",
+        "Stop the set when technique begins to break down."
+      ],
+      "coachingCues": [
+        "Control every rep.",
+        "Keep tension on the target muscles.",
+        "Stop before form changes."
+      ],
+      "commonMistakes": [
+        "Using momentum",
+        "Losing the target position",
+        "Continuing after technique breaks down"
+      ],
+      "regressions": [
+        "Split squat"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Split squat",
+        "Romanian deadlift"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "other",
+        "Full body"
+      ],
+      "sourceCue": "Own balance and range."
+    },
+    {
+      "id": "split-squat",
+      "name": "Split squat",
+      "displayName": "Split squat",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "squat",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Quadriceps",
+        "Glutes"
+      ],
+      "secondaryMuscles": [
+        "Adductors",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Set feet securely and brace before descending.",
+        "Lower under control while keeping the whole foot planted.",
+        "Keep knees tracking with the toes.",
+        "Drive through the floor and finish tall without overextending."
+      ],
+      "coachingCues": [
+        "Brace, sit between the knees.",
+        "Keep the tripod foot.",
+        "Drive the floor away."
+      ],
+      "commonMistakes": [
+        "Heels lifting",
+        "Knees collapsing inward",
+        "Losing the brace at the bottom"
+      ],
+      "regressions": [
+        "Reverse lunge"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Reverse lunge",
+        "hip hinge"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "squat",
+        "Quadriceps",
+        "Glutes"
+      ],
+      "sourceCue": "Own the range before adding load."
+    },
+    {
+      "id": "standing-calf-raise",
+      "name": "Standing calf raise",
+      "displayName": "Standing calf raise",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "accessory",
+      "movementPattern": "ankle plantar flexion",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Calves"
+      ],
+      "secondaryMuscles": [
+        "Foot intrinsics"
+      ],
+      "equipment": [
+        "Bodyweight or dumbbells"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 45,
+      "defaultRPE": 8,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 45,
+        "targetRPE": 8,
+        "targetRIR": 2
+      },
+      "instructions": [
+        "Use a stable base.",
+        "Rise through the ball of the foot.",
+        "Pause at the top.",
+        "Lower into a comfortable stretch."
+      ],
+      "coachingCues": [
+        "Control every rep.",
+        "Keep tension on the target muscles.",
+        "Stop before form changes."
+      ],
+      "commonMistakes": [
+        "Using momentum",
+        "Losing the target position",
+        "Continuing after technique breaks down"
+      ],
+      "regressions": [
+        "Single-leg calf raise"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Single-leg calf raise"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "ankle plantar flexion",
+        "Calves"
+      ],
+      "sourceCue": "Pause in the stretch and finish tall on the big toe."
+    },
+    {
+      "id": "standing-overhead-press",
+      "name": "Standing overhead press",
+      "displayName": "Standing overhead press",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "vertical push",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Shoulders",
+        "Triceps"
+      ],
+      "secondaryMuscles": [
+        "Upper chest",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "2-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "2-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Brace the trunk and squeeze the glutes.",
+        "Start with forearms vertical.",
+        "Press overhead without flaring the ribs.",
+        "Finish with the arms aligned beside the ears."
+      ],
+      "coachingCues": [
+        "Ribs down.",
+        "Head through.",
+        "Reach tall."
+      ],
+      "commonMistakes": [
+        "Overarching the lower back",
+        "Pressing around the face",
+        "Failing to reach a stable lockout"
+      ],
+      "regressions": [
+        "Dumbbell overhead press"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Dumbbell overhead press"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "vertical push",
+        "Shoulders",
+        "Triceps"
+      ],
+      "sourceCue": "Squeeze glutes, stack ribs, and finish with biceps by ears."
+    },
+    {
+      "id": "suitcase-carry",
+      "name": "Suitcase carry",
+      "displayName": "Suitcase carry",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "loaded carry",
+      "movementPattern": "carry",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Grip",
+        "Core",
+        "Traps"
+      ],
+      "secondaryMuscles": [
+        "Glutes",
+        "Shoulders"
+      ],
+      "equipment": [
+        "Dumbbells or kettlebells"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "steady walk",
+      "defaultRestSeconds": 60,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "steady walk",
+        "restSeconds": 60,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Stand tall with ribs stacked over pelvis.",
+        "Crush the handles and keep shoulders level.",
+        "Walk with short, controlled steps.",
+        "Breathe behind the brace without leaning."
+      ],
+      "coachingCues": [
+        "Tall posture.",
+        "Crush the handles.",
+        "Do not lean."
+      ],
+      "commonMistakes": [
+        "Leaning toward or away from the load",
+        "Taking uncontrolled steps",
+        "Losing rib-to-pelvis position"
+      ],
+      "regressions": [
+        "Suitcase hold"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Suitcase hold"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "carry",
+        "Grip",
+        "Core",
+        "Traps"
+      ],
+      "sourceCue": "Resist leaning toward the weight."
+    },
+    {
+      "id": "trap-bar-deadlift-or-romanian-deadlift",
+      "name": "Trap-bar deadlift or Romanian deadlift",
+      "displayName": "Trap-bar deadlift or Romanian deadlift",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "hinge",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Hamstrings",
+        "Glutes"
+      ],
+      "secondaryMuscles": [
+        "Erector spinae",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Brace with ribs stacked over pelvis.",
+        "Push the hips back while maintaining a neutral spine.",
+        "Keep the load close to the body.",
+        "Drive the floor away and finish by squeezing the glutes."
+      ],
+      "coachingCues": [
+        "Hips back.",
+        "Keep the load close.",
+        "Finish with the glutes."
+      ],
+      "commonMistakes": [
+        "Rounding the lower back",
+        "Squatting instead of hinging",
+        "Letting the load drift away"
+      ],
+      "regressions": [
+        "Dumbbell"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Dumbbell",
+        "bodyweight equivalent"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "hinge",
+        "Hamstrings",
+        "Glutes"
+      ],
+      "sourceCue": "Use repeatable technique and stop before grinding."
+    },
+    {
+      "id": "trap-bar-deadlift-or-conventional-deadlift",
+      "name": "Trap-bar deadlift or conventional deadlift",
+      "displayName": "Trap-bar deadlift or conventional deadlift",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "hinge",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Hamstrings",
+        "Glutes"
+      ],
+      "secondaryMuscles": [
+        "Erector spinae",
+        "Core"
+      ],
+      "equipment": [
+        "Barbell or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "3-1-X-1",
+      "defaultRestSeconds": 120,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "3-1-X-1",
+        "restSeconds": 120,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Brace with ribs stacked over pelvis.",
+        "Push the hips back while maintaining a neutral spine.",
+        "Keep the load close to the body.",
+        "Drive the floor away and finish by squeezing the glutes."
+      ],
+      "coachingCues": [
+        "Hips back.",
+        "Keep the load close.",
+        "Finish with the glutes."
+      ],
+      "commonMistakes": [
+        "Rounding the lower back",
+        "Squatting instead of hinging",
+        "Letting the load drift away"
+      ],
+      "regressions": [
+        "Dumbbell Romanian deadlift"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Dumbbell Romanian deadlift"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "hinge",
+        "Hamstrings",
+        "Glutes"
+      ],
+      "sourceCue": "Push the floor away and finish tall without leaning back."
+    },
+    {
+      "id": "weighted-pull-up-or-lat-pulldown",
+      "name": "Weighted pull-up or lat pulldown",
+      "displayName": "Weighted pull-up or lat pulldown",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "vertical pull",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Lats",
+        "Upper back"
+      ],
+      "secondaryMuscles": [
+        "Biceps",
+        "Rear deltoids"
+      ],
+      "equipment": [
+        "Cable, pull-up bar, or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 90,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 90,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Begin from a long-arm position.",
+        "Pull the shoulder blades down before bending the elbows.",
+        "Drive elbows toward the ribs.",
+        "Return to full reach without losing control."
+      ],
+      "coachingCues": [
+        "Shoulders down.",
+        "Elbows to ribs.",
+        "Own the stretch."
+      ],
+      "commonMistakes": [
+        "Pulling only with the arms",
+        "Craning the neck",
+        "Stopping short of full reach"
+      ],
+      "regressions": [
+        "One-arm dumbbell row"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "One-arm dumbbell row"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "vertical pull",
+        "Lats",
+        "Upper back"
+      ],
+      "sourceCue": "Drive elbows down and keep the neck long."
+    },
+    {
+      "id": "weighted-pull-up-or-pulldown",
+      "name": "Weighted pull-up or pulldown",
+      "displayName": "Weighted pull-up or pulldown",
+      "aliases": [],
+      "category": "strength",
+      "exerciseType": "compound",
+      "movementPattern": "vertical pull",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Lats",
+        "Upper back"
+      ],
+      "secondaryMuscles": [
+        "Biceps",
+        "Rear deltoids"
+      ],
+      "equipment": [
+        "Cable, pull-up bar, or dumbbells"
+      ],
+      "difficulty": "Intermediate",
+      "defaultTempo": "2-1-2-1",
+      "defaultRestSeconds": 90,
+      "defaultRPE": 7,
+      "defaultPrescription": {
+        "tempo": "2-1-2-1",
+        "restSeconds": 90,
+        "targetRPE": 7,
+        "targetRIR": 3
+      },
+      "instructions": [
+        "Begin from a long-arm position.",
+        "Pull the shoulder blades down before bending the elbows.",
+        "Drive elbows toward the ribs.",
+        "Return to full reach without losing control."
+      ],
+      "coachingCues": [
+        "Shoulders down.",
+        "Elbows to ribs.",
+        "Own the stretch."
+      ],
+      "commonMistakes": [
+        "Pulling only with the arms",
+        "Craning the neck",
+        "Stopping short of full reach"
+      ],
+      "regressions": [
+        "Dumbbell"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Dumbbell",
+        "bodyweight equivalent"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "strength",
+        "vertical pull",
+        "Lats",
+        "Upper back"
+      ],
+      "sourceCue": "Use repeatable technique and stop before grinding."
+    },
+    {
+      "id": "zone-2-bike-row-or-incline-walk",
+      "name": "Zone 2 bike, row, or incline walk",
+      "displayName": "Zone 2 bike, row, or incline walk",
+      "aliases": [],
+      "category": "conditioning",
+      "exerciseType": "conditioning",
+      "movementPattern": "locomotion",
+      "laterality": "bilateral",
+      "planeOfMotion": "sagittal",
+      "primaryMuscles": [
+        "Cardiovascular system",
+        "Legs"
+      ],
+      "secondaryMuscles": [
+        "Core"
+      ],
+      "equipment": [
+        "Bodyweight"
+      ],
+      "difficulty": "Beginner",
+      "defaultTempo": "self-selected",
+      "defaultRestSeconds": 0,
+      "defaultRPE": 6,
+      "defaultPrescription": {
+        "tempo": "self-selected",
+        "restSeconds": 0,
+        "targetRPE": 6,
+        "targetRIR": 4
+      },
+      "instructions": [
+        "Start at a sustainable pace.",
+        "Maintain relaxed shoulders and rhythmic breathing.",
+        "Keep effort within the prescribed RPE or heart-rate zone.",
+        "Finish feeling capable of continuing."
+      ],
+      "coachingCues": [
+        "Conversational pace.",
+        "Relax the shoulders.",
+        "Finish with more available."
+      ],
+      "commonMistakes": [
+        "Starting too hard",
+        "Ignoring prescribed intensity",
+        "Using poor posture as fatigue rises"
+      ],
+      "regressions": [
+        "Brisk outdoor walk"
+      ],
+      "progressions": [],
+      "substitutions": [
+        "Brisk outdoor walk"
+      ],
+      "safetyNotes": [
+        "Use a pain-free range of motion.",
+        "Stop if sharp pain, dizziness, or unusual symptoms occur.",
+        "Reduce load or choose a listed substitution when technique cannot be maintained."
+      ],
+      "media": {
+        "videoUrl": "",
+        "thumbnailUrl": ""
+      },
+      "tags": [
+        "conditioning",
+        "locomotion",
+        "Cardiovascular system",
+        "Legs"
+      ],
+      "sourceCue": "Breathe rhythmically and finish more energized."
+    }
+  ]
+}
