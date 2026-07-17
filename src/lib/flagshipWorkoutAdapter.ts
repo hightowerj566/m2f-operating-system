@@ -218,6 +218,8 @@ export async function loadFlagshipDay(
     return nonTrainingResult(day, base);
   }
 
+  if (resolved.status !== "active") return null;
+
   // status === "active"
   const day = resolved.day;
   const base: FlagshipDayResult["meta"] = {
