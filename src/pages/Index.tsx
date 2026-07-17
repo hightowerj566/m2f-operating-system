@@ -557,12 +557,14 @@ export default function Index() {
     });
   }, [user]);
 
-  // Show program picker for new subscribers with no assignment
+  // Show program picker only for subscribers who have neither a coach-assigned
+  // program nor a due date. Members with a due date are automatically on the
+  // date-driven Guided Journey — the picker would just loop them.
   useEffect(() => {
-    if (assignmentLoaded && subscribed && !assignmentId && !isCoach) {
+    if (assignmentLoaded && subscribed && !assignmentId && !isCoach && !hasJourneyDate) {
       setShowProgramPicker(true);
     }
-  }, [assignmentLoaded, subscribed, assignmentId, isCoach]);
+  }, [assignmentLoaded, subscribed, assignmentId, isCoach, hasJourneyDate]);
 
   const navItems = isCoach
     ? [...baseNavItems, { icon: LayoutDashboard, label: "Coach" }]
