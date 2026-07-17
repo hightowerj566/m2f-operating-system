@@ -150,10 +150,12 @@ serve(async (req) => {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error("[LIST-SUBSCRIPTIONS] ERROR:", error instanceof Error ? error.message : error);
-    return new Response(JSON.stringify({ error: "An internal error occurred" }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-      status: 500,
-    });
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error("[LIST-SUBSCRIPTIONS] ERROR:", msg);
+    // Return 200 with fallback so the coach dashboard renders instead of crashing.
+    return new Response(
+      JSON.stringify({ subscriptions: [], error: msg, fallback: true }),
+      { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 },
+    );
   }
 });
