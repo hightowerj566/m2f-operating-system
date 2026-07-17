@@ -53,7 +53,7 @@ export default function ProgramStage() {
                 <p className="text-[10px] font-bold tracking-[0.24em] uppercase text-muted-foreground mb-1">
                   {row.label}
                 </p>
-                <p className="text-sm text-foreground/85">{stage[row.key as keyof typeof stage] as string}</p>
+                <p className="text-sm text-foreground/85">{String(stage[row.key])}</p>
               </div>
             ))}
           </div>
