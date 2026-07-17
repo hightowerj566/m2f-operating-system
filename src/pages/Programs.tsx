@@ -63,6 +63,13 @@ export default function Programs() {
         <EmptyState onSet={() => navigate("/?tab=More")} />
       ) : (
         <>
+          {/* Day-based flagship engine */}
+          {data.track !== "coach" && (
+            <FlagshipTodayCard
+              userId={user.id}
+              onStart={() => navigate("/?tab=Workout")}
+            />
+          )}
           {/* Hero card */}
           <div className="mx-5 rounded-2xl border border-border bg-card p-5 mb-6">
             <div className="flex items-baseline justify-between mb-3">
