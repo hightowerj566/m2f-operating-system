@@ -693,6 +693,7 @@ export default function Coach() {
                     className={`w-full text-left px-3 py-2.5 rounded-xl text-sm transition-all ${selectedProgram?.id === p.id ? "bg-primary/10 text-primary font-bold" : "text-foreground hover:bg-secondary"}`}>
                     <p className="font-semibold truncate">
                       {p.name}
+                      {p.name === "M2F Guided Journey" && <span className="ml-1.5 text-[9px] font-bold uppercase text-primary bg-primary/15 border border-primary/40 px-1.5 py-0.5 rounded">Flagship</span>}
                       {!p.is_published && <span className="ml-1.5 text-[9px] font-bold uppercase text-muted-foreground bg-muted px-1.5 py-0.5 rounded">Draft</span>}
                     </p>
                     <p className="text-[10px] text-muted-foreground">{p.total_days} days</p>
