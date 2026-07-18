@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
 
 interface Program {
   id: string;
@@ -15,7 +16,7 @@ interface Program {
 
 interface ProgramPickerModalProps {
   userId: string;
-  onComplete: () => void;
+  onComplete: (assignment?: { id: string; program_id: string; current_day: number; assigned_at: string }) => void;
   currentProgramId?: string | null;
 }
 
@@ -59,33 +60,58 @@ export function ProgramPickerModal({ userId, onComplete, currentProgramId }: Pro
     if (!selected) return;
     setEnrolling(true);
 
-    // Deactivate all current active assignments
-    await supabase
-      .from("program_assignments")
-      .update({ is_active: false })
-      .eq("user_id", userId)
-      .eq("is_active", true);
-
-    if (existingAssignment) {
-      // Reactivate existing assignment — user returns to where they left off
-      await supabase
+    try {
+      // Deactivate all current active assignments
+      const { error: deactivateError } = await supabase
         .from("program_assignments")
-        .update({ is_active: true })
-        .eq("id", existingAssignment.id);
-    } else {
-      // Create new assignment
-      await supabase.from("program_assignments").insert({
-        user_id: userId,
-        program_id: selected.id,
-        current_day: 1,
-        assigned_by: userId,
-        assigned_at: startDate.toISOString(),
-        is_active: true,
+        .update({ is_active: false })
+        .eq("user_id", userId)
+        .eq("is_active", true);
+      if (deactivateError) throw deactivateError;
+
+      let activeAssignment: { id: string; program_id: string; current_day: number; assigned_at: string } | null = null;
+
+      if (existingAssignment) {
+        // Reactivate existing assignment — user returns to where they left off
+        const { data, error } = await supabase
+          .from("program_assignments")
+          .update({ is_active: true })
+          .eq("id", existingAssignment.id)
+          .select("id, program_id, current_day, assigned_at")
+          .single();
+        if (error) throw error;
+        activeAssignment = data as typeof activeAssignment;
+      } else {
+        // Create new assignment
+        const { data, error } = await supabase
+          .from("program_assignments")
+          .insert({
+            user_id: userId,
+            program_id: selected.id,
+            current_day: 1,
+            assigned_by: userId,
+            assigned_at: startDate.toISOString(),
+            scheduled_start_date: format(startDate, "yyyy-MM-dd"),
+            member_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Denver",
+            status: "active",
+            is_active: true,
+          })
+          .select("id, program_id, current_day, assigned_at")
+          .single();
+        if (error) throw error;
+        activeAssignment = data as typeof activeAssignment;
+      }
+
+      setEnrolling(false);
+      onComplete(activeAssignment ?? undefined);
+    } catch (error) {
+      setEnrolling(false);
+      toast({
+        title: "Program wasn't selected",
+        description: error instanceof Error ? error.message : "Try again in a moment.",
+        variant: "destructive",
       });
     }
-
-    setEnrolling(false);
-    onComplete();
   };
 
   return (
@@ -141,7 +167,7 @@ export function ProgramPickerModal({ userId, onComplete, currentProgramId }: Pro
             </div>
             {currentProgramId && (
               <button
-                onClick={onComplete}
+                onClick={() => onComplete()}
                 className="w-full mt-4 py-2.5 rounded-xl border border-border text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
               >
                 Cancel

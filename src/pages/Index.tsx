@@ -1141,10 +1141,28 @@ export default function Index() {
         <ProgramPickerModal
           userId={user.id}
           currentProgramId={programId}
-          onComplete={() => {
+          onComplete={async (assignment) => {
             setShowProgramPicker(false);
-            // Reload assignment data
-            window.location.reload();
+            if (!assignment) return;
+
+            setAssignmentId(assignment.id);
+            setProgramId(assignment.program_id);
+            setBaseDay(assignment.current_day || 1);
+            setDayOffset(0);
+
+            const { data: prog } = await supabase
+              .from("programs")
+              .select("name, total_days, published_through_day")
+              .eq("id", assignment.program_id)
+              .single();
+
+            const days = (prog as any)?.total_days || 1;
+            const publishedThrough = (prog as any)?.published_through_day;
+            const loadedProgramName = prog ? ((prog as any).name as string) : null;
+            setProgramName(loadedProgramName);
+            setTotalDays(publishedThrough != null ? Math.min(days, publishedThrough) : days);
+            loadDayWorkout(assignment.program_id, assignment.current_day || 1, days, trainingDays, user.id, loadedProgramName);
+            toast({ title: "Program selected." });
           }}
         />
       )}
