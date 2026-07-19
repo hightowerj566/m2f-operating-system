@@ -32,6 +32,10 @@ import ProgramWorkout from "./pages/ProgramWorkout";
 import ProgramStage from "./pages/ProgramStage";
 import LiveProgramScheduler from "./pages/coach/LiveProgramScheduler";
 import OAuthConsent from "./pages/OAuthConsent";
+import WeeklyCheckIn from "./pages/WeeklyCheckIn";
+import WeeklyReview from "./pages/WeeklyReview";
+import CoachCheckIns from "./pages/coach/CoachCheckIns";
+import CoachCheckInReview from "./pages/coach/CoachCheckInReview";
 
 const queryClient = new QueryClient();
 
