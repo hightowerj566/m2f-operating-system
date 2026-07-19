@@ -178,6 +178,7 @@ function SidebarNav({ active, onChange, onBack }: { active: string; onChange: (v
     { id: "clients", icon: Users, label: "Clients" },
     { id: "standards", icon: ListChecks, label: "Standards" },
     { id: "leads", icon: ClipboardList, label: "Leads" },
+    { id: "check-ins", icon: ClipboardList, label: "Check-Ins", href: "/coach/check-ins" },
     { id: "billing", icon: CreditCard, label: "Billing" },
   ];
   return (
