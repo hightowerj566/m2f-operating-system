@@ -358,6 +358,13 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
         />
       </div>
 
+      {/* ── 1.5 · Weekly Coaching: check-in status + this week's focus ── */}
+      <div className="w-full px-5 pt-6 space-y-3">
+        <CheckInStatusCard />
+        <WeeklyFocusCard />
+      </div>
+
+
       {/* ── 2 · Father Readiness Ring / Post-birth: Fatherhood Progress ── */}
       {arrived && pbPhase ? (
         <div className="w-full px-5 pt-8">
