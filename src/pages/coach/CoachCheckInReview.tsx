@@ -120,6 +120,17 @@ export default function CoachCheckInReview() {
             <ClientWeeklySnapshot snapshot={snapshot} />
           </Section>
 
+          {/* C2 · Nutrition & Macro Review */}
+          <Section title="Nutrition & Macro Review">
+            <NutritionReviewCard
+              snapshot={snapshot}
+              macros={macros as never}
+              profile={profile as never}
+              nutrition_rating={ci.nutrition_rating}
+              nutrition_notes={ci.nutrition_notes}
+            />
+          </Section>
+
           {/* D · Trends */}
           <Section title="Trends">
             <WeeklyTrendCharts history={history} />
