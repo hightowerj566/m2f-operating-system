@@ -233,6 +233,124 @@ export type Database = {
         }
         Relationships: []
       }
+      coach_weekly_responses: {
+        Row: {
+          check_in_id: string
+          coach_id: string
+          created_at: string
+          draft_saved_at: string | null
+          id: string
+          sent_at: string | null
+          status: string
+          updated_at: string
+          video_duration_seconds: number | null
+          video_storage_path: string | null
+          video_url: string | null
+          written_response: string | null
+        }
+        Insert: {
+          check_in_id: string
+          coach_id: string
+          created_at?: string
+          draft_saved_at?: string | null
+          id?: string
+          sent_at?: string | null
+          status?: string
+          updated_at?: string
+          video_duration_seconds?: number | null
+          video_storage_path?: string | null
+          video_url?: string | null
+          written_response?: string | null
+        }
+        Update: {
+          check_in_id?: string
+          coach_id?: string
+          created_at?: string
+          draft_saved_at?: string | null
+          id?: string
+          sent_at?: string | null
+          status?: string
+          updated_at?: string
+          video_duration_seconds?: number | null
+          video_storage_path?: string | null
+          video_url?: string | null
+          written_response?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "coach_weekly_responses_check_in_id_fkey"
+            columns: ["check_in_id"]
+            isOneToOne: true
+            referencedRelation: "weekly_check_ins"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      coaching_flags: {
+        Row: {
+          check_in_id: string | null
+          coach_note: string | null
+          created_at: string
+          explanation: string
+          flag_type: string
+          id: string
+          resolution_reason: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: Database["public"]["Enums"]["coaching_flag_severity"]
+          source: string
+          status: Database["public"]["Enums"]["coaching_flag_status"]
+          title: string
+          updated_at: string
+          user_id: string
+          week_start: string
+        }
+        Insert: {
+          check_in_id?: string | null
+          coach_note?: string | null
+          created_at?: string
+          explanation: string
+          flag_type: string
+          id?: string
+          resolution_reason?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity: Database["public"]["Enums"]["coaching_flag_severity"]
+          source?: string
+          status?: Database["public"]["Enums"]["coaching_flag_status"]
+          title: string
+          updated_at?: string
+          user_id: string
+          week_start: string
+        }
+        Update: {
+          check_in_id?: string | null
+          coach_note?: string | null
+          created_at?: string
+          explanation?: string
+          flag_type?: string
+          id?: string
+          resolution_reason?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: Database["public"]["Enums"]["coaching_flag_severity"]
+          source?: string
+          status?: Database["public"]["Enums"]["coaching_flag_status"]
+          title?: string
+          updated_at?: string
+          user_id?: string
+          week_start?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "coaching_flags_check_in_id_fkey"
+            columns: ["check_in_id"]
+            isOneToOne: false
+            referencedRelation: "weekly_check_ins"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cohort_posts: {
         Row: {
           cohort_month: string
@@ -1330,6 +1448,285 @@ export type Database = {
         }
         Relationships: []
       }
+      weekly_check_in_snapshots: {
+        Row: {
+          avg_calories: number | null
+          avg_protein_g: number | null
+          baby_age_days: number | null
+          build_tasks_completed: number | null
+          check_in_id: string
+          created_at: string
+          days_until_due: number | null
+          id: string
+          lessons_completed: number | null
+          mission_completed: boolean | null
+          nutrition_compliance_pct: number | null
+          nutrition_days_logged: number | null
+          phase_slug: string | null
+          previous_readiness_score: number | null
+          previous_week_avg_weight: number | null
+          program_id: string | null
+          readiness_delta: number | null
+          readiness_score: number | null
+          snapshot_json: Json
+          standards_completion_pct: number | null
+          weekly_avg_weight: number | null
+          weight_change: number | null
+          workout_compliance_pct: number | null
+          workouts_completed: number | null
+          workouts_scheduled: number | null
+        }
+        Insert: {
+          avg_calories?: number | null
+          avg_protein_g?: number | null
+          baby_age_days?: number | null
+          build_tasks_completed?: number | null
+          check_in_id: string
+          created_at?: string
+          days_until_due?: number | null
+          id?: string
+          lessons_completed?: number | null
+          mission_completed?: boolean | null
+          nutrition_compliance_pct?: number | null
+          nutrition_days_logged?: number | null
+          phase_slug?: string | null
+          previous_readiness_score?: number | null
+          previous_week_avg_weight?: number | null
+          program_id?: string | null
+          readiness_delta?: number | null
+          readiness_score?: number | null
+          snapshot_json?: Json
+          standards_completion_pct?: number | null
+          weekly_avg_weight?: number | null
+          weight_change?: number | null
+          workout_compliance_pct?: number | null
+          workouts_completed?: number | null
+          workouts_scheduled?: number | null
+        }
+        Update: {
+          avg_calories?: number | null
+          avg_protein_g?: number | null
+          baby_age_days?: number | null
+          build_tasks_completed?: number | null
+          check_in_id?: string
+          created_at?: string
+          days_until_due?: number | null
+          id?: string
+          lessons_completed?: number | null
+          mission_completed?: boolean | null
+          nutrition_compliance_pct?: number | null
+          nutrition_days_logged?: number | null
+          phase_slug?: string | null
+          previous_readiness_score?: number | null
+          previous_week_avg_weight?: number | null
+          program_id?: string | null
+          readiness_delta?: number | null
+          readiness_score?: number | null
+          snapshot_json?: Json
+          standards_completion_pct?: number | null
+          weekly_avg_weight?: number | null
+          weight_change?: number | null
+          workout_compliance_pct?: number | null
+          workouts_completed?: number | null
+          workouts_scheduled?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "weekly_check_in_snapshots_check_in_id_fkey"
+            columns: ["check_in_id"]
+            isOneToOne: true
+            referencedRelation: "weekly_check_ins"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      weekly_check_ins: {
+        Row: {
+          acknowledged_at: string | null
+          biggest_struggle: string | null
+          biggest_win: string | null
+          coach_id: string | null
+          created_at: string
+          energy_rating: number | null
+          fatherhood_confidence: number | null
+          fatherhood_task_notes: string | null
+          id: string
+          next_week_concern: string | null
+          nutrition_notes: string | null
+          nutrition_rating: string | null
+          overall_rating: number | null
+          relationship_notes: string | null
+          relationship_rating: number | null
+          response_sent_at: string | null
+          review_started_at: string | null
+          sleep_range: string | null
+          status: Database["public"]["Enums"]["check_in_status"]
+          stress_rating: number | null
+          submitted_at: string | null
+          support_notes: string | null
+          support_type: string | null
+          training_notes: string | null
+          training_rating: string | null
+          updated_at: string
+          user_id: string
+          week_start: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          biggest_struggle?: string | null
+          biggest_win?: string | null
+          coach_id?: string | null
+          created_at?: string
+          energy_rating?: number | null
+          fatherhood_confidence?: number | null
+          fatherhood_task_notes?: string | null
+          id?: string
+          next_week_concern?: string | null
+          nutrition_notes?: string | null
+          nutrition_rating?: string | null
+          overall_rating?: number | null
+          relationship_notes?: string | null
+          relationship_rating?: number | null
+          response_sent_at?: string | null
+          review_started_at?: string | null
+          sleep_range?: string | null
+          status?: Database["public"]["Enums"]["check_in_status"]
+          stress_rating?: number | null
+          submitted_at?: string | null
+          support_notes?: string | null
+          support_type?: string | null
+          training_notes?: string | null
+          training_rating?: string | null
+          updated_at?: string
+          user_id: string
+          week_start: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          biggest_struggle?: string | null
+          biggest_win?: string | null
+          coach_id?: string | null
+          created_at?: string
+          energy_rating?: number | null
+          fatherhood_confidence?: number | null
+          fatherhood_task_notes?: string | null
+          id?: string
+          next_week_concern?: string | null
+          nutrition_notes?: string | null
+          nutrition_rating?: string | null
+          overall_rating?: number | null
+          relationship_notes?: string | null
+          relationship_rating?: number | null
+          response_sent_at?: string | null
+          review_started_at?: string | null
+          sleep_range?: string | null
+          status?: Database["public"]["Enums"]["check_in_status"]
+          stress_rating?: number | null
+          submitted_at?: string | null
+          support_notes?: string | null
+          support_type?: string | null
+          training_notes?: string | null
+          training_rating?: string | null
+          updated_at?: string
+          user_id?: string
+          week_start?: string
+        }
+        Relationships: []
+      }
+      weekly_priorities: {
+        Row: {
+          carried_from_priority_id: string | null
+          category: Database["public"]["Enums"]["priority_category"]
+          check_in_id: string | null
+          coach_id: string
+          coach_note: string | null
+          coach_verified_at: string | null
+          completed_at: string | null
+          completion_criteria: string | null
+          created_at: string
+          description: string | null
+          due_date: string | null
+          id: string
+          linked_entity_id: string | null
+          linked_entity_type: string | null
+          na_reason: string | null
+          response_id: string | null
+          status: Database["public"]["Enums"]["priority_status"]
+          title: string
+          updated_at: string
+          user_id: string
+          week_start: string
+        }
+        Insert: {
+          carried_from_priority_id?: string | null
+          category: Database["public"]["Enums"]["priority_category"]
+          check_in_id?: string | null
+          coach_id: string
+          coach_note?: string | null
+          coach_verified_at?: string | null
+          completed_at?: string | null
+          completion_criteria?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          linked_entity_id?: string | null
+          linked_entity_type?: string | null
+          na_reason?: string | null
+          response_id?: string | null
+          status?: Database["public"]["Enums"]["priority_status"]
+          title: string
+          updated_at?: string
+          user_id: string
+          week_start: string
+        }
+        Update: {
+          carried_from_priority_id?: string | null
+          category?: Database["public"]["Enums"]["priority_category"]
+          check_in_id?: string | null
+          coach_id?: string
+          coach_note?: string | null
+          coach_verified_at?: string | null
+          completed_at?: string | null
+          completion_criteria?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          linked_entity_id?: string | null
+          linked_entity_type?: string | null
+          na_reason?: string | null
+          response_id?: string | null
+          status?: Database["public"]["Enums"]["priority_status"]
+          title?: string
+          updated_at?: string
+          user_id?: string
+          week_start?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "weekly_priorities_carried_from_priority_id_fkey"
+            columns: ["carried_from_priority_id"]
+            isOneToOne: false
+            referencedRelation: "weekly_priorities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "weekly_priorities_check_in_id_fkey"
+            columns: ["check_in_id"]
+            isOneToOne: false
+            referencedRelation: "weekly_check_ins"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "weekly_priorities_response_id_fkey"
+            columns: ["response_id"]
+            isOneToOne: false
+            referencedRelation: "coach_weekly_responses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       workout_feedback: {
         Row: {
           created_at: string
@@ -1527,6 +1924,24 @@ export type Database = {
         | "paused"
         | "completed"
         | "ended"
+      check_in_status:
+        | "draft"
+        | "submitted"
+        | "in_review"
+        | "response_ready"
+        | "acknowledged"
+        | "closed"
+      coaching_flag_severity: "critical" | "medium" | "info"
+      coaching_flag_status: "open" | "reviewing" | "resolved" | "dismissed"
+      priority_category: "fitness" | "nutrition" | "relationship" | "fatherhood"
+      priority_status:
+        | "not_started"
+        | "in_progress"
+        | "completed"
+        | "overdue"
+        | "verified"
+        | "carried_forward"
+        | "not_applicable"
       week_access_status: "locked" | "unlocked" | "completed"
       week_publish_status: "draft" | "published"
     }
@@ -1664,6 +2079,26 @@ export const Constants = {
         "paused",
         "completed",
         "ended",
+      ],
+      check_in_status: [
+        "draft",
+        "submitted",
+        "in_review",
+        "response_ready",
+        "acknowledged",
+        "closed",
+      ],
+      coaching_flag_severity: ["critical", "medium", "info"],
+      coaching_flag_status: ["open", "reviewing", "resolved", "dismissed"],
+      priority_category: ["fitness", "nutrition", "relationship", "fatherhood"],
+      priority_status: [
+        "not_started",
+        "in_progress",
+        "completed",
+        "overdue",
+        "verified",
+        "carried_forward",
+        "not_applicable",
       ],
       week_access_status: ["locked", "unlocked", "completed"],
       week_publish_status: ["draft", "published"],

@@ -178,6 +178,7 @@ function SidebarNav({ active, onChange, onBack }: { active: string; onChange: (v
     { id: "clients", icon: Users, label: "Clients" },
     { id: "standards", icon: ListChecks, label: "Standards" },
     { id: "leads", icon: ClipboardList, label: "Leads" },
+    { id: "check-ins", icon: ClipboardList, label: "Check-Ins", href: "/coach/check-ins" },
     { id: "billing", icon: CreditCard, label: "Billing" },
   ];
   return (
@@ -191,8 +192,8 @@ function SidebarNav({ active, onChange, onBack }: { active: string; onChange: (v
         </h1>
       </div>
       <nav className="flex-1 p-2 space-y-1">
-        {items.map(({ id, icon: Icon, label }) => (
-          <button key={id} onClick={() => onChange(id)}
+        {items.map(({ id, icon: Icon, label, href }: { id: string; icon: any; label: string; href?: string }) => (
+          <button key={id} onClick={() => href ? (window.location.href = href) : onChange(id)}
             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all ${active === id ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary"}`}>
             <Icon className="w-4 h-4" /> {label}
           </button>

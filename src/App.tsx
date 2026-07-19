@@ -32,6 +32,10 @@ import ProgramWorkout from "./pages/ProgramWorkout";
 import ProgramStage from "./pages/ProgramStage";
 import LiveProgramScheduler from "./pages/coach/LiveProgramScheduler";
 import OAuthConsent from "./pages/OAuthConsent";
+import WeeklyCheckIn from "./pages/WeeklyCheckIn";
+import WeeklyReview from "./pages/WeeklyReview";
+import CoachCheckIns from "./pages/coach/CoachCheckIns";
+import CoachCheckInReview from "./pages/coach/CoachCheckInReview";
 
 const queryClient = new QueryClient();
 
@@ -71,6 +75,10 @@ const App = () => (
           <Route path="/post-birth-workout" element={<PostBirthWorkout />} />
           <Route path="/coach/scheduler" element={<LiveProgramScheduler />} />
           <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
+          <Route path="/weekly-check-in" element={<WeeklyCheckIn />} />
+          <Route path="/weekly-review/:weekStart" element={<WeeklyReview />} />
+          <Route path="/coach/check-ins" element={<CoachCheckIns />} />
+          <Route path="/coach/check-ins/:checkInId" element={<CoachCheckInReview />} />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
