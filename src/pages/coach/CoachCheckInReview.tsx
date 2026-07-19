@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useCoachCheckInReview, useBeginReview } from "@/hooks/useCoachCheckIns";
 import { ClientWeeklySnapshot } from "@/components/coaching/ClientWeeklySnapshot";
+import { NutritionReviewCard } from "@/components/coaching/NutritionReviewCard";
 import { CoachingFlagsPanel } from "@/components/coaching/CoachingFlagsPanel";
 import { WeeklyTrendCharts } from "@/components/coaching/WeeklyTrendCharts";
 import { CoachResponseEditor } from "@/components/coaching/CoachResponseEditor";
