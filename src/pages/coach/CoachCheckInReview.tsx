@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useCoachCheckInReview, useBeginReview } from "@/hooks/useCoachCheckIns";
 import { ClientWeeklySnapshot } from "@/components/coaching/ClientWeeklySnapshot";
+import { NutritionReviewCard } from "@/components/coaching/NutritionReviewCard";
 import { CoachingFlagsPanel } from "@/components/coaching/CoachingFlagsPanel";
 import { WeeklyTrendCharts } from "@/components/coaching/WeeklyTrendCharts";
 import { CoachResponseEditor } from "@/components/coaching/CoachResponseEditor";
@@ -117,6 +118,17 @@ export default function CoachCheckInReview() {
           {/* C · Performance Data */}
           <Section title="Performance Data">
             <ClientWeeklySnapshot snapshot={snapshot} />
+          </Section>
+
+          {/* C2 · Nutrition & Macro Review */}
+          <Section title="Nutrition & Macro Review">
+            <NutritionReviewCard
+              snapshot={snapshot}
+              macros={macros as never}
+              profile={profile as never}
+              nutrition_rating={ci.nutrition_rating}
+              nutrition_notes={ci.nutrition_notes}
+            />
           </Section>
 
           {/* D · Trends */}
