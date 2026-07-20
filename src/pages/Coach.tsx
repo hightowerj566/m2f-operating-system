@@ -1406,6 +1406,8 @@ export default function Coach() {
 
         {section === "leads" && <LeadsTab />}
 
+        {section === "invitations" && <InvitationsTab isAdmin={isAdmin} />}
+
         {section === "standards" && <CoachStandardsManager />}
 
         {section === "import" && <ProgramImporter programs={programs} onImported={loadPrograms} />}
