@@ -172,14 +172,17 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
   // workout page marks today done. Everything else uses the same per-day
   // localStorage toggle the pregnancy missions use.
   const postBirthMissions = pbMissions.map((m) => {
-    const isFitness = m.category === "fitness";
-    const done = overrides[m.key] === true || (isFitness && (pbWorkoutDone || workoutDoneToday));
+    // Only the phase's canonical workout mission (key ends "-workout") is
+    // fitness-navigating and auto-completes when a workout is done. Other
+    // "fitness" missions (e.g., sv-walk) stay manual toggles.
+    const isPrimaryWorkout = m.category === "fitness" && m.key.endsWith("-workout");
+    const done = overrides[m.key] === true || (isPrimaryWorkout && (pbWorkoutDone || workoutDoneToday));
     return {
       key: m.key,
-      icon: isFitness ? Dumbbell : m.category === "family" ? Heart : m.category === "baby" ? Baby : HomeIcon,
+      icon: m.category === "fitness" ? Dumbbell : m.category === "family" ? Heart : m.category === "baby" ? Baby : HomeIcon,
       title: m.title,
       done,
-      onClick: isFitness ? () => navigate("/post-birth-workout") : () => toggleOverride(m.key),
+      onClick: isPrimaryWorkout ? () => navigate("/post-birth-workout") : () => toggleOverride(m.key),
       detail: `${MISSION_CATEGORY_LABELS[m.category]} · ${m.estMinutes} min — ${m.description}`,
     };
   });
