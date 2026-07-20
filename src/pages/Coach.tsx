@@ -351,6 +351,7 @@ export default function Coach() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const [isCoach, setIsCoach] = useState<boolean | null>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [section, setSection] = useState("programs");
 
   // Programs
