@@ -7,7 +7,7 @@ import {
   Plus, Trash2, ChevronRight, ChevronLeft, Users, BookOpen, Upload, Youtube,
   Save, X, Copy, GripVertical, Dumbbell, Timer, LayoutDashboard, Weight,
   TrendingUp, UserCircle, ChevronDown, ChevronUp, Settings, ArrowLeft, Link2, Unlink,
-  CreditCard, DollarSign, ClipboardList, TableProperties, ListChecks
+  CreditCard, DollarSign, ClipboardList, TableProperties, ListChecks, Mail
 } from "lucide-react";
 import { ProgramTableView } from "@/components/workout/ProgramTableView";
 import { CoachReviewCard } from "@/components/coaching/CoachReviewCard";
