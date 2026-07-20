@@ -13,6 +13,7 @@ import { ProgramTableView } from "@/components/workout/ProgramTableView";
 import { CoachReviewCard } from "@/components/coaching/CoachReviewCard";
 import { CoachStandardsManager } from "@/components/coaching/CoachStandardsManager";
 import { LeadsTab } from "@/components/coaching/LeadsTab";
+import { InvitationsTab } from "@/components/coaching/InvitationsTab";
 import { ProgramImporter } from "@/components/coaching/ProgramImporter";
 import { FlagshipProgramView } from "@/components/coaching/FlagshipProgramView";
 import { toast } from "@/hooks/use-toast";
