@@ -176,6 +176,7 @@ function SidebarNav({ active, onChange, onBack }: { active: string; onChange: (v
     { id: "import", icon: Upload, label: "Import JSON" },
     { id: "export", icon: TableProperties, label: "Export" },
     { id: "clients", icon: Users, label: "Clients" },
+    { id: "invitations", icon: Mail, label: "Invitations" },
     { id: "standards", icon: ListChecks, label: "Standards" },
     { id: "leads", icon: ClipboardList, label: "Leads" },
     { id: "check-ins", icon: ClipboardList, label: "Check-Ins", href: "/coach/check-ins" },
