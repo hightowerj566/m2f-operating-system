@@ -233,6 +233,51 @@ export type Database = {
         }
         Relationships: []
       }
+      client_invitations: {
+        Row: {
+          accepted_at: string | null
+          accepted_by: string | null
+          assigned_coach_id: string | null
+          created_at: string
+          email: string
+          expires_at: string
+          first_name: string | null
+          id: string
+          invited_by: string
+          role: Database["public"]["Enums"]["app_role"]
+          token: string
+          updated_at: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          assigned_coach_id?: string | null
+          created_at?: string
+          email: string
+          expires_at?: string
+          first_name?: string | null
+          id?: string
+          invited_by: string
+          role?: Database["public"]["Enums"]["app_role"]
+          token: string
+          updated_at?: string
+        }
+        Update: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          assigned_coach_id?: string | null
+          created_at?: string
+          email?: string
+          expires_at?: string
+          first_name?: string | null
+          id?: string
+          invited_by?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          token?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       coach_weekly_responses: {
         Row: {
           check_in_id: string
@@ -797,6 +842,7 @@ export type Database = {
       profiles: {
         Row: {
           age: number | null
+          assigned_coach_id: string | null
           avg_daily_steps: number | null
           baby_arrived_at: string | null
           baby_name: string | null
@@ -833,6 +879,7 @@ export type Database = {
         }
         Insert: {
           age?: number | null
+          assigned_coach_id?: string | null
           avg_daily_steps?: number | null
           baby_arrived_at?: string | null
           baby_name?: string | null
@@ -869,6 +916,7 @@ export type Database = {
         }
         Update: {
           age?: number | null
+          assigned_coach_id?: string | null
           avg_daily_steps?: number | null
           baby_arrived_at?: string | null
           baby_name?: string | null
@@ -1894,6 +1942,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_view_client: {
+        Args: { _client_id: string; _viewer_id: string }
+        Returns: boolean
+      }
       compute_week_unlock_at: {
         Args: { _start: string; _tz: string }
         Returns: string
@@ -1910,6 +1962,8 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_admin: { Args: { _user_id: string }; Returns: boolean }
+      is_coach_or_admin: { Args: { _user_id: string }; Returns: boolean }
       week_is_accessible: {
         Args: { _user_id: string; _week_id: string }
         Returns: boolean
