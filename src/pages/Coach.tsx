@@ -451,11 +451,9 @@ export default function Coach() {
   };
 
   const loadClients = async () => {
-    let query = supabase.from("profiles").select("user_id, display_name, weight_lbs, goal, goal_rate_lb_per_week, assigned_coach_id" as any);
-    if (!isAdmin && user) {
-      query = query.eq("assigned_coach_id" as any, user.id);
-    }
-    const { data } = await query;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const base: any = supabase.from("profiles").select("user_id, display_name, weight_lbs, goal, goal_rate_lb_per_week, assigned_coach_id");
+    const { data } = await (!isAdmin && user ? base.eq("assigned_coach_id", user.id) : base);
     if (data) setClients(data as any);
     const { data: a } = await supabase.from("program_assignments").select("user_id, program_id, current_day, is_active").eq("is_active", true);
     if (a) setAssignments(a as any);
