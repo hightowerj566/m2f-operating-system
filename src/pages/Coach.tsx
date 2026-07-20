@@ -425,7 +425,11 @@ export default function Coach() {
 
   useEffect(() => {
     if (user) {
-      supabase.from("user_roles").select("role").eq("user_id", user.id).eq("role", "coach").maybeSingle().then(({ data }) => setIsCoach(!!data));
+      supabase.from("user_roles").select("role").eq("user_id", user.id).in("role", ["coach", "admin"]).then(({ data }) => {
+        const roles = new Set((data ?? []).map((r: { role: string }) => r.role));
+        setIsAdmin(roles.has("admin"));
+        setIsCoach(roles.has("coach") || roles.has("admin"));
+      });
     }
   }, [user]);
 
