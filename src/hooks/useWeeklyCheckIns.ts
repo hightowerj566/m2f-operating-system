@@ -74,9 +74,17 @@ export function useSaveCheckInDraft() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (fields: Partial<WeeklyCheckIn> & { week_start: string }) => {
+      // Only default to DRAFT when creating; never downgrade a submitted row.
+      const { data: existing } = await db
+        .from("weekly_check_ins")
+        .select("id, status")
+        .eq("user_id", user!.id)
+        .eq("week_start", fields.week_start)
+        .maybeSingle();
+      const status = existing?.status ?? CHECK_IN_STATUS.DRAFT;
       const { data, error } = await db
         .from("weekly_check_ins")
-        .upsert({ user_id: user!.id, status: CHECK_IN_STATUS.DRAFT, ...fields }, { onConflict: "user_id,week_start" })
+        .upsert({ user_id: user!.id, status, ...fields }, { onConflict: "user_id,week_start" })
         .select().single();
       if (error) throw error;
       return data as WeeklyCheckIn;
