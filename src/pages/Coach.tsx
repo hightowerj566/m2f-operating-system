@@ -7,12 +7,13 @@ import {
   Plus, Trash2, ChevronRight, ChevronLeft, Users, BookOpen, Upload, Youtube,
   Save, X, Copy, GripVertical, Dumbbell, Timer, LayoutDashboard, Weight,
   TrendingUp, UserCircle, ChevronDown, ChevronUp, Settings, ArrowLeft, Link2, Unlink,
-  CreditCard, DollarSign, ClipboardList, TableProperties, ListChecks
+  CreditCard, DollarSign, ClipboardList, TableProperties, ListChecks, Mail
 } from "lucide-react";
 import { ProgramTableView } from "@/components/workout/ProgramTableView";
 import { CoachReviewCard } from "@/components/coaching/CoachReviewCard";
 import { CoachStandardsManager } from "@/components/coaching/CoachStandardsManager";
 import { LeadsTab } from "@/components/coaching/LeadsTab";
+import { InvitationsTab } from "@/components/coaching/InvitationsTab";
 import { ProgramImporter } from "@/components/coaching/ProgramImporter";
 import { FlagshipProgramView } from "@/components/coaching/FlagshipProgramView";
 import { toast } from "@/hooks/use-toast";
@@ -176,6 +177,7 @@ function SidebarNav({ active, onChange, onBack }: { active: string; onChange: (v
     { id: "import", icon: Upload, label: "Import JSON" },
     { id: "export", icon: TableProperties, label: "Export" },
     { id: "clients", icon: Users, label: "Clients" },
+    { id: "invitations", icon: Mail, label: "Invitations" },
     { id: "standards", icon: ListChecks, label: "Standards" },
     { id: "leads", icon: ClipboardList, label: "Leads" },
     { id: "check-ins", icon: ClipboardList, label: "Check-Ins", href: "/coach/check-ins" },
@@ -351,6 +353,7 @@ export default function Coach() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const [isCoach, setIsCoach] = useState<boolean | null>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [section, setSection] = useState("programs");
 
   // Programs
@@ -424,7 +427,11 @@ export default function Coach() {
 
   useEffect(() => {
     if (user) {
-      supabase.from("user_roles").select("role").eq("user_id", user.id).eq("role", "coach").maybeSingle().then(({ data }) => setIsCoach(!!data));
+      supabase.from("user_roles").select("role").eq("user_id", user.id).in("role", ["coach", "admin"]).then(({ data }) => {
+        const roles = new Set((data ?? []).map((r: { role: string }) => r.role));
+        setIsAdmin(roles.has("admin"));
+        setIsCoach(roles.has("coach") || roles.has("admin"));
+      });
     }
   }, [user]);
 
@@ -446,7 +453,9 @@ export default function Coach() {
   };
 
   const loadClients = async () => {
-    const { data } = await supabase.from("profiles").select("user_id, display_name, weight_lbs, goal, goal_rate_lb_per_week" as any);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const base: any = supabase.from("profiles").select("user_id, display_name, weight_lbs, goal, goal_rate_lb_per_week, assigned_coach_id");
+    const { data } = await (!isAdmin && user ? base.eq("assigned_coach_id", user.id) : base);
     if (data) setClients(data as any);
     const { data: a } = await supabase.from("program_assignments").select("user_id, program_id, current_day, is_active").eq("is_active", true);
     if (a) setAssignments(a as any);
@@ -1396,6 +1405,8 @@ export default function Coach() {
         )}
 
         {section === "leads" && <LeadsTab />}
+
+        {section === "invitations" && <InvitationsTab isAdmin={isAdmin} />}
 
         {section === "standards" && <CoachStandardsManager />}
 
