@@ -1097,12 +1097,14 @@ export default function Coach() {
                         </span>
                       )}
                     </div>
-                    {/* Coach Role Toggle */}
-                    <button onClick={toggleCoachRole} disabled={togglingCoach}
-                      className={`mt-3 flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${clientIsCoach ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground border border-border"}`}>
-                      <Settings className="w-3 h-3" />
-                      {togglingCoach ? "Updating…" : clientIsCoach ? "Coach ✓" : "Make Coach"}
-                    </button>
+                    {/* Coach Role Toggle — admin only */}
+                    {isAdmin && (
+                      <button onClick={toggleCoachRole} disabled={togglingCoach}
+                        className={`mt-3 flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${clientIsCoach ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground border border-border"}`}>
+                        <Settings className="w-3 h-3" />
+                        {togglingCoach ? "Updating…" : clientIsCoach ? "Coach ✓" : "Make Coach"}
+                      </button>
+                    )}
                   </div>
 
                   {/* Assign Program */}
