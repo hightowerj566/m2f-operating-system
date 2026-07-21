@@ -1954,6 +1954,15 @@ export type Database = {
         Args: { _assignment_id: string }
         Returns: undefined
       }
+      get_invitation_by_token: {
+        Args: { _token: string }
+        Returns: {
+          email: string
+          first_name: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+        }[]
+      }
       has_active_subscription: { Args: { _user_id: string }; Returns: boolean }
       has_role: {
         Args: {
