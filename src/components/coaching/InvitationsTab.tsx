@@ -66,9 +66,19 @@ export function InvitationsTab({ isAdmin }: { isAdmin: boolean }) {
 
   const revoke = async (id: string) => {
     // "Revoke" = expire immediately
-    await supabase.from("client_invitations" as never)
+    const { data, error } = await supabase.from("client_invitations" as never)
       .update({ expires_at: new Date().toISOString() } as never)
-      .eq("id", id);
+      .eq("id", id)
+      .select();
+    if (error || !data || (data as unknown[]).length === 0) {
+      toast({
+        title: "Could not revoke invitation",
+        description: error?.message || "You may not have permission to revoke this invitation.",
+        variant: "destructive",
+      });
+      return;
+    }
+    toast({ title: "Invitation revoked" });
     load();
   };
 

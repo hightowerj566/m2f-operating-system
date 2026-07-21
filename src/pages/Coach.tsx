@@ -482,15 +482,27 @@ export default function Coach() {
 
   const toggleCoachRole = async () => {
     if (!selectedClient) return;
+    if (!isAdmin) {
+      toast({ title: "Only admins can change roles", variant: "destructive" });
+      return;
+    }
     setTogglingCoach(true);
     if (clientIsCoach) {
-      await supabase.from("user_roles").delete().eq("user_id", selectedClient.user_id).eq("role", "coach");
-      setClientIsCoach(false);
-      toast({ title: `${selectedClient.display_name || "User"} removed as coach` });
+      const { error } = await supabase.from("user_roles").delete().eq("user_id", selectedClient.user_id).eq("role", "coach");
+      if (error) {
+        toast({ title: "Could not update role", description: error.message, variant: "destructive" });
+      } else {
+        setClientIsCoach(false);
+        toast({ title: `${selectedClient.display_name || "User"} removed as coach` });
+      }
     } else {
-      await supabase.from("user_roles").insert({ user_id: selectedClient.user_id, role: "coach" });
-      setClientIsCoach(true);
-      toast({ title: `${selectedClient.display_name || "User"} promoted to coach` });
+      const { error } = await supabase.from("user_roles").insert({ user_id: selectedClient.user_id, role: "coach" });
+      if (error) {
+        toast({ title: "Could not update role", description: error.message, variant: "destructive" });
+      } else {
+        setClientIsCoach(true);
+        toast({ title: `${selectedClient.display_name || "User"} promoted to coach` });
+      }
     }
     setTogglingCoach(false);
   };
@@ -1085,12 +1097,14 @@ export default function Coach() {
                         </span>
                       )}
                     </div>
-                    {/* Coach Role Toggle */}
-                    <button onClick={toggleCoachRole} disabled={togglingCoach}
-                      className={`mt-3 flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${clientIsCoach ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground border border-border"}`}>
-                      <Settings className="w-3 h-3" />
-                      {togglingCoach ? "Updating…" : clientIsCoach ? "Coach ✓" : "Make Coach"}
-                    </button>
+                    {/* Coach Role Toggle — admin only */}
+                    {isAdmin && (
+                      <button onClick={toggleCoachRole} disabled={togglingCoach}
+                        className={`mt-3 flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${clientIsCoach ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground border border-border"}`}>
+                        <Settings className="w-3 h-3" />
+                        {togglingCoach ? "Updating…" : clientIsCoach ? "Coach ✓" : "Make Coach"}
+                      </button>
+                    )}
                   </div>
 
                   {/* Assign Program */}
