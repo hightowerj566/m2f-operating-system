@@ -40,15 +40,13 @@ export default function Auth() {
   useEffect(() => {
     if (!inviteToken) return;
     (async () => {
-      const { data, error } = await supabase
-        .from("client_invitations" as never)
-        .select("id, email, first_name, role")
-        .eq("token", inviteToken)
-        .maybeSingle();
-      if (error || !data) {
+      const { data, error } = await (supabase as never as {
+        rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: InvitationPreview[] | null; error: unknown }>;
+      }).rpc("get_invitation_by_token", { _token: inviteToken });
+      const inv = Array.isArray(data) && data.length > 0 ? data[0] : null;
+      if (error || !inv) {
         setInvitationError("This invitation link is invalid, already used, or expired.");
       } else {
-        const inv = data as never as InvitationPreview;
         setInvitation(inv);
         setEmail(inv.email);
         setDisplayName(inv.first_name || "");
