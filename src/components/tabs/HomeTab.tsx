@@ -547,7 +547,42 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
         </div>
       )}
 
+      {/* ── 5 · Pregnancy: Baby size + How to help her ── */}
+      {!arrived && week != null && (() => {
+        const entry = weeklyContent(week);
+        if (!entry) return null;
+        return (
+          <div className="px-5 pt-4 space-y-3">
+            <div className="rounded-2xl border border-border bg-card/60 backdrop-blur p-5">
+              <div className="flex items-center gap-2 mb-2">
+                <Baby className="w-3.5 h-3.5 text-primary" />
+                <p className="text-[10px] font-bold tracking-[0.24em] uppercase text-primary">
+                  Week {entry.week} · Size of a {entry.size}
+                </p>
+              </div>
+              <p className="text-sm text-foreground leading-snug">{entry.baby}</p>
+            </div>
+            <div className="rounded-2xl border border-border bg-card/60 backdrop-blur p-5">
+              <div className="flex items-center gap-2 mb-2">
+                <Heart className="w-3.5 h-3.5 text-primary" />
+                <p className="text-[10px] font-bold tracking-[0.24em] uppercase text-primary">
+                  How {partnerName || "she"} may be feeling
+                </p>
+              </div>
+              <p className="text-sm text-foreground leading-snug">{entry.mom}</p>
+              <div className="mt-3 pt-3 border-t border-border">
+                <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-muted-foreground mb-1">
+                  How to help this week
+                </p>
+                <p className="text-sm text-foreground leading-snug">{entry.help}</p>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
     </div>
+
   );
 }
 
