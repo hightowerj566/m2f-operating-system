@@ -15,14 +15,15 @@ import { recommendedForWeek, recommendedForPostBirthPhase } from "@/content/lear
 import { useLearnProgress } from "@/hooks/useLearnProgress";
 import m2fLogo from "@/assets/m2f-logo.png.asset.json";
 import { Countdown } from "@/components/home/Countdown";
-import { CheckInStatusCard } from "@/components/coaching/CheckInStatusCard";
-import { WeeklyFocusCard } from "@/components/coaching/WeeklyFocusCard";
-import { weeklyContent } from "@/content/weeklyPregnancy";
+import { useWeeklyPriorities, effectiveStatus } from "@/hooks/useWeeklyPriorities";
+import { useCurrentWeeklyCheckIn } from "@/hooks/useWeeklyCheckIns";
+import { CHECK_IN_STATUS } from "@/lib/coaching/coachingConstants";
+import { currentWeekStart, previousWeekStart } from "@/lib/coaching/weekLogic";
 import { missionsForPhase, MISSION_CATEGORY_LABELS, type MissionCategory } from "@/content/postBirthMissions";
 import { programForSlug } from "@/content/postBirthTraining";
 import {
-  ArrowRight, Check, ChevronRight, Dumbbell, Flame, MessageSquare,
-  Home as HomeIcon, Sparkles, BookOpen, Baby, User, Utensils, Heart, Calculator,
+  ArrowRight, Check, ChevronRight, Dumbbell, Flame,
+  Home as HomeIcon, Sparkles, BookOpen, User, Utensils, Heart, Calculator,
 } from "lucide-react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
