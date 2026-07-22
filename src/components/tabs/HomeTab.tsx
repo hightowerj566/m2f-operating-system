@@ -376,15 +376,8 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
         />
       </div>
 
-      {/* ── 1.5 · Compact weekly focus context ── */}
-      {!arrived && (
-        <div className="w-full px-5 pt-5">
-          <WeeklyFocusStrip
-            fallbackLabel={phase ? `${phase.name} · ${phase.focus}` : "Set your due date"}
-            week={week}
-          />
-        </div>
-      )}
+
+
 
 
 
