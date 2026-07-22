@@ -21,6 +21,7 @@ import { CHECK_IN_STATUS } from "@/lib/coaching/coachingConstants";
 import { currentWeekStart, previousWeekStart } from "@/lib/coaching/weekLogic";
 import { missionsForPhase, MISSION_CATEGORY_LABELS, type MissionCategory } from "@/content/postBirthMissions";
 import { programForSlug } from "@/content/postBirthTraining";
+import { weeklyContent } from "@/content/weeklyPregnancy";
 import {
   ArrowRight, Check, ChevronRight, Dumbbell, Flame, MessageSquare,
   Home as HomeIcon, Sparkles, BookOpen, Baby, User, Utensils, Heart, Calculator,
