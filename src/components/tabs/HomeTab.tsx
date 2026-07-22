@@ -15,14 +15,16 @@ import { recommendedForWeek, recommendedForPostBirthPhase } from "@/content/lear
 import { useLearnProgress } from "@/hooks/useLearnProgress";
 import m2fLogo from "@/assets/m2f-logo.png.asset.json";
 import { Countdown } from "@/components/home/Countdown";
-import { CheckInStatusCard } from "@/components/coaching/CheckInStatusCard";
-import { WeeklyFocusCard } from "@/components/coaching/WeeklyFocusCard";
-import { weeklyContent } from "@/content/weeklyPregnancy";
+import { useWeeklyPriorities, effectiveStatus } from "@/hooks/useWeeklyPriorities";
+import { useCurrentWeeklyCheckIn } from "@/hooks/useWeeklyCheckIns";
+import { CHECK_IN_STATUS } from "@/lib/coaching/coachingConstants";
+import { currentWeekStart, previousWeekStart } from "@/lib/coaching/weekLogic";
 import { missionsForPhase, MISSION_CATEGORY_LABELS, type MissionCategory } from "@/content/postBirthMissions";
 import { programForSlug } from "@/content/postBirthTraining";
 import {
   ArrowRight, Check, ChevronRight, Dumbbell, Flame, MessageSquare,
   Home as HomeIcon, Sparkles, BookOpen, Baby, User, Utensils, Heart, Calculator,
+
 } from "lucide-react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -205,19 +207,32 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
       done: workoutEffectiveDone,
       onClick: onOpenToday,
     },
-    {
-      key: "nutrition",
-      icon: Utensils,
-      title: nutriDone ? "Nutrition logged" : "Log today's nutrition",
-      done: nutriDone,
-      onClick: openNutrition,
-    },
+    ...(hasMacros
+      ? [{
+          key: "nutrition",
+          icon: Utensils,
+          title: nutriDone ? "Nutrition logged" : "Log today's nutrition",
+          done: nutriDone,
+          onClick: openNutrition,
+        }]
+      : []),
     {
       key: "build",
       icon: HomeIcon,
       title: buildEffectiveDone ? "Build list complete" : (nextBuild?.title ?? "Set your build list"),
       done: buildEffectiveDone,
       onClick: () => navigate(nextBuild ? `/build-list?task=${nextBuild.id}` : "/build-list"),
+    },
+    {
+      key: "ask",
+      icon: MessageSquare,
+      title: askDone ? `You asked ${partnerName || "her"}` : `Ask ${partnerName || "her"} tonight`,
+      done: askDone,
+      onClick: () => {
+        if (!askDone) toggleOverride("ask");
+        navigate("/her-and-baby");
+      },
+      detail: `"${prompt}"`,
     },
   ];
   const missions = arrived && postBirthMissions.length > 0 ? postBirthMissions : pregnancyMissions;
@@ -361,11 +376,17 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
         />
       </div>
 
-      {/* ── 1.5 · Weekly Coaching: check-in status + this week's focus ── */}
-      <div className="w-full px-5 pt-6 space-y-3">
-        <CheckInStatusCard />
-        <WeeklyFocusCard />
-      </div>
+      {/* ── 1.5 · Compact weekly focus context ── */}
+      {!arrived && (
+        <div className="w-full px-5 pt-5">
+          <WeeklyFocusStrip
+            fallbackLabel={phase ? `${phase.name} · ${phase.focus}` : "Set your due date"}
+            week={week}
+          />
+        </div>
+      )}
+
+
 
 
       {/* ── 2 · Father Readiness Ring / Post-birth: Fatherhood Progress ── */}
@@ -431,17 +452,25 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
       {/* ── 3 · Today's Mission Card ── */}
       <div className="px-5 pt-4">
         <section className="rounded-2xl border border-primary/40 bg-gradient-to-b from-primary/10 to-transparent bg-card/60 backdrop-blur p-5">
-          <div className="flex items-baseline justify-between mb-4">
-            <div>
-              <p className="text-[10px] font-bold tracking-[0.24em] uppercase text-primary">Today's Mission</p>
+          <div className="flex items-baseline justify-between mb-4 gap-3">
+            <div className="min-w-0">
+              <div className="flex items-center gap-2">
+                <p className="text-[10px] font-bold tracking-[0.24em] uppercase text-primary">Today's Mission</p>
+                {streak > 0 && (
+                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-400">
+                    <Flame className="w-3 h-3" /> {streak}d
+                  </span>
+                )}
+              </div>
               <p className="text-foreground font-black text-lg leading-tight mt-0.5">
-                {allMissionsDone ? "You crushed today." : "A few moves. That's it."}
+                {allMissionsDone ? "Today complete. You showed up." : "Do the work your family will feel later."}
               </p>
             </div>
             <p className="text-xs font-bold text-muted-foreground tabular-nums shrink-0">
               {missionsDone} of {missions.length}
             </p>
           </div>
+
 
           <ul className="space-y-2">
             {missions.map((m) => (
@@ -488,34 +517,14 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
         </section>
       </div>
 
-      {/* ── 3.5 · Ask Her Tonight — standalone daily rhythm ── */}
-      <div className="px-5 pt-4">
-        <button
-          onClick={() => {
-            if (!askDone) toggleOverride("ask");
-            navigate("/her-and-baby");
-          }}
-          className="w-full text-left rounded-2xl border border-rose-500/30 bg-gradient-to-b from-rose-500/10 to-transparent bg-card/60 backdrop-blur p-5 active:scale-[0.99] transition-transform"
-        >
-          <div className="flex items-center gap-2 mb-2">
-            <MessageSquare className="w-3.5 h-3.5 text-rose-400" />
-            <p className="text-[10px] font-bold tracking-[0.24em] uppercase text-rose-400">
-              Ask {partnerName || "Her"} Tonight
-            </p>
-            {askDone && (
-              <span className="ml-auto text-[10px] font-bold text-emerald-400 flex items-center gap-1">
-                <Check className="w-3 h-3" strokeWidth={3} /> Done
-              </span>
-            )}
-          </div>
-          <p className={`text-base leading-snug ${askDone ? "text-muted-foreground line-through" : "text-foreground font-semibold"}`}>
-            "{prompt}"
-          </p>
-          <p className="text-[11px] text-muted-foreground mt-2">
-            Rotates daily. This is a rhythm, not a checklist item.
-          </p>
-        </button>
-      </div>
+      {/* ── 3.5 · Compact weekly progress strip ── */}
+      {!arrived && (
+        <div className="px-5 pt-3">
+          <WeeklyProgressStrip />
+        </div>
+      )}
+
+
 
 
 
@@ -544,71 +553,74 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
         </div>
       )}
 
-      {/* ── 5 · Progress Streak ── */}
-      <div className="px-5 pt-4">
-        <button
-          onClick={() => navigate("/readiness")}
-          className="w-full text-left rounded-2xl border border-border bg-card/60 backdrop-blur p-5 flex items-center gap-4 active:scale-[0.99] transition-transform"
-        >
-          <div className="w-12 h-12 rounded-full bg-amber-500/15 border border-amber-500/40 flex items-center justify-center shrink-0">
-            <Flame className="w-6 h-6 text-amber-400" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="font-black text-foreground text-lg leading-tight">
-              {streak > 0 ? `${streak}-Day Progress Streak` : "Start your streak today"}
-            </p>
-            <p className="text-sm text-muted-foreground mt-0.5">
-              {totalMissionsCompleted > 0
-                ? `You've completed ${totalMissionsCompleted} missions. Keep going.`
-                : "One check-in today starts the streak."}
-            </p>
-          </div>
-        </button>
-      </div>
-
-      {/* ── 6 · This Week: Baby + Mom ── */}
-      {(() => {
-        const wk = weeklyContent(week);
-        if (arrived || !wk) return null;
-        return (
-          <div className="px-5 pt-4">
-            <div className="rounded-2xl border border-border bg-card/60 backdrop-blur p-5 space-y-4">
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <Baby className="w-3.5 h-3.5 text-purple-400" />
-                  <p className="text-[10px] font-bold tracking-[0.24em] uppercase text-purple-400">
-                    Week {wk.week} · Baby
-                  </p>
-                </div>
-                <p className="font-black text-foreground text-base leading-tight">
-                  About the size of a {wk.size}.
-                </p>
-                <p className="text-sm text-muted-foreground mt-1.5 leading-snug">{wk.baby}</p>
-              </div>
-
-              <div className="h-px bg-border" />
-
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <Heart className="w-3.5 h-3.5 text-rose-400" />
-                  <p className="text-[10px] font-bold tracking-[0.24em] uppercase text-rose-400">
-                    How to help {partnerName || "her"}
-                  </p>
-                </div>
-                <p className="text-sm text-muted-foreground leading-snug">
-                  <span className="text-foreground/90">{wk.mom}</span>
-                </p>
-                <p className="text-sm text-foreground mt-2 leading-snug font-medium">
-                  → {wk.help}
-                </p>
-              </div>
-            </div>
-          </div>
-        );
-      })()}
     </div>
   );
 }
+
+/* ── Compact weekly focus context row ── */
+function WeeklyFocusStrip({ fallbackLabel, week }: { fallbackLabel: string; week: number | null }) {
+  const navigate = useNavigate();
+  const { checkIn, previousCheckIn } = useCurrentWeeklyCheckIn();
+  const activeWeek =
+    checkIn?.status === CHECK_IN_STATUS.ACKNOWLEDGED ? currentWeekStart() :
+    previousCheckIn?.status === CHECK_IN_STATUS.ACKNOWLEDGED ? previousWeekStart(currentWeekStart()) : null;
+  const { data: priorities } = useWeeklyPriorities(activeWeek ?? undefined);
+  const done = (priorities ?? []).filter((p) => ["completed", "verified"].includes(effectiveStatus(p))).length;
+  const total = priorities?.length ?? 0;
+
+  const onClick = () => navigate(activeWeek ? `/weekly-review/${activeWeek}` : "/coaching");
+  const label = week ? `Week ${week} · ${fallbackLabel.split(" · ").pop()}` : fallbackLabel;
+
+  return (
+    <button
+      onClick={onClick}
+      className="w-full flex items-center justify-between gap-3 rounded-xl border border-border bg-card/60 backdrop-blur px-4 py-3 active:scale-[0.99] transition-transform text-left"
+    >
+      <div className="min-w-0">
+        <p className="text-[10px] font-bold tracking-[0.24em] uppercase text-muted-foreground">This Week</p>
+        <p className="text-sm font-semibold text-foreground leading-tight truncate">{label}</p>
+      </div>
+      <div className="flex items-center gap-2 shrink-0">
+        {total > 0 && (
+          <span className="text-xs font-bold text-muted-foreground tabular-nums">
+            {done} of {total}
+          </span>
+        )}
+        <ChevronRight className="w-4 h-4 text-muted-foreground" />
+      </div>
+    </button>
+  );
+}
+
+/* ── Small weekly progress strip below Today's Mission ── */
+function WeeklyProgressStrip() {
+  const navigate = useNavigate();
+  const { checkIn, previousCheckIn } = useCurrentWeeklyCheckIn();
+  const activeWeek =
+    checkIn?.status === CHECK_IN_STATUS.ACKNOWLEDGED ? currentWeekStart() :
+    previousCheckIn?.status === CHECK_IN_STATUS.ACKNOWLEDGED ? previousWeekStart(currentWeekStart()) : null;
+  const { data: priorities } = useWeeklyPriorities(activeWeek ?? undefined);
+  if (!activeWeek || !priorities?.length) return null;
+  const done = priorities.filter((p) => ["completed", "verified"].includes(effectiveStatus(p))).length;
+  const pct = Math.round((done / priorities.length) * 100);
+  return (
+    <button
+      onClick={() => navigate(`/weekly-review/${activeWeek}`)}
+      className="w-full text-left rounded-xl border border-border bg-card/60 backdrop-blur px-4 py-3 active:scale-[0.99] transition-transform"
+    >
+      <div className="flex items-center justify-between gap-3 mb-2">
+        <p className="text-xs font-semibold text-foreground">
+          This week: {done} of {priorities.length} priorities complete
+        </p>
+        <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
+      </div>
+      <div className="h-1.5 rounded-full bg-secondary overflow-hidden">
+        <div className="h-full bg-primary transition-all" style={{ width: `${pct}%` }} />
+      </div>
+    </button>
+  );
+}
+
 
 /* ── Readiness ring (pure SVG, no deps) ── */
 function ReadinessRing({ pct }: { pct: number }) {
