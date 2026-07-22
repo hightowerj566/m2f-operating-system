@@ -452,17 +452,25 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
       {/* ── 3 · Today's Mission Card ── */}
       <div className="px-5 pt-4">
         <section className="rounded-2xl border border-primary/40 bg-gradient-to-b from-primary/10 to-transparent bg-card/60 backdrop-blur p-5">
-          <div className="flex items-baseline justify-between mb-4">
-            <div>
-              <p className="text-[10px] font-bold tracking-[0.24em] uppercase text-primary">Today's Mission</p>
+          <div className="flex items-baseline justify-between mb-4 gap-3">
+            <div className="min-w-0">
+              <div className="flex items-center gap-2">
+                <p className="text-[10px] font-bold tracking-[0.24em] uppercase text-primary">Today's Mission</p>
+                {streak > 0 && (
+                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-400">
+                    <Flame className="w-3 h-3" /> {streak}d
+                  </span>
+                )}
+              </div>
               <p className="text-foreground font-black text-lg leading-tight mt-0.5">
-                {allMissionsDone ? "You crushed today." : "A few moves. That's it."}
+                {allMissionsDone ? "Today complete. You showed up." : "Do the work your family will feel later."}
               </p>
             </div>
             <p className="text-xs font-bold text-muted-foreground tabular-nums shrink-0">
               {missionsDone} of {missions.length}
             </p>
           </div>
+
 
           <ul className="space-y-2">
             {missions.map((m) => (
