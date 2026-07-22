@@ -207,19 +207,32 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
       done: workoutEffectiveDone,
       onClick: onOpenToday,
     },
-    {
-      key: "nutrition",
-      icon: Utensils,
-      title: nutriDone ? "Nutrition logged" : "Log today's nutrition",
-      done: nutriDone,
-      onClick: openNutrition,
-    },
+    ...(hasMacros
+      ? [{
+          key: "nutrition",
+          icon: Utensils,
+          title: nutriDone ? "Nutrition logged" : "Log today's nutrition",
+          done: nutriDone,
+          onClick: openNutrition,
+        }]
+      : []),
     {
       key: "build",
       icon: HomeIcon,
       title: buildEffectiveDone ? "Build list complete" : (nextBuild?.title ?? "Set your build list"),
       done: buildEffectiveDone,
       onClick: () => navigate(nextBuild ? `/build-list?task=${nextBuild.id}` : "/build-list"),
+    },
+    {
+      key: "ask",
+      icon: MessageSquare,
+      title: askDone ? `You asked ${partnerName || "her"}` : `Ask ${partnerName || "her"} tonight`,
+      done: askDone,
+      onClick: () => {
+        if (!askDone) toggleOverride("ask");
+        navigate("/her-and-baby");
+      },
+      detail: `"${prompt}"`,
     },
   ];
   const missions = arrived && postBirthMissions.length > 0 ? postBirthMissions : pregnancyMissions;
