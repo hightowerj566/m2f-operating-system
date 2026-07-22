@@ -22,8 +22,9 @@ import { currentWeekStart, previousWeekStart } from "@/lib/coaching/weekLogic";
 import { missionsForPhase, MISSION_CATEGORY_LABELS, type MissionCategory } from "@/content/postBirthMissions";
 import { programForSlug } from "@/content/postBirthTraining";
 import {
-  ArrowRight, Check, ChevronRight, Dumbbell, Flame,
-  Home as HomeIcon, Sparkles, BookOpen, User, Utensils, Heart, Calculator,
+  ArrowRight, Check, ChevronRight, Dumbbell, Flame, MessageSquare,
+  Home as HomeIcon, Sparkles, BookOpen, Baby, User, Utensils, Heart, Calculator,
+
 } from "lucide-react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
