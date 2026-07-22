@@ -1,0 +1,2 @@
+CREATE POLICY "Coaches can insert client targets" ON public.macro_targets FOR INSERT TO authenticated WITH CHECK (public.has_role(auth.uid(), 'coach') OR public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Admins can update client targets" ON public.macro_targets FOR UPDATE TO authenticated USING (public.has_role(auth.uid(), 'admin')) WITH CHECK (public.has_role(auth.uid(), 'admin'));
