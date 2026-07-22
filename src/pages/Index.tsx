@@ -32,8 +32,13 @@ import { saveWorkoutFeedback, getWorkoutRecommendations, type LoadRecommendation
 import { getExpressWorkout } from "@/lib/expressEngine";
 import { getWeekAdjustedReps, getWeekTechnique, cleanNotesForWeek, getWeekFromDay } from "@/lib/weekAdjustments";
 import { useOffline } from "@/hooks/useOffline";
-import { loadFlagshipDay } from "@/lib/flagshipWorkoutAdapter";
+import { addDays, startOfDay } from "date-fns";
+import { loadFlagshipDay, type FlagshipDayResult } from "@/lib/flagshipWorkoutAdapter";
 import { isFlagshipProgram } from "@/lib/training/isFlagshipProgram";
+import { loadTrainingContent } from "@/lib/training/loadTrainingContent";
+import { PRE_BIRTH_JOURNEY_LENGTH_DAYS } from "@/lib/training/flagshipJourney";
+import { decideProgramTrack } from "@/lib/programTrackResolver";
+import { FlagshipJourneyCard } from "@/components/workout/FlagshipJourneyCard";
 
 interface ProgramExercise {
   name: string;
@@ -120,20 +125,66 @@ export default function Index() {
   const [standardsStreak, setStandardsStreak] = useState(0);
   const [showFitnessTools, setShowFitnessTools] = useState(false);
 
+  // ── Flagship (M2F Guided Journey) state ──
+  // Kept explicit and separate from the legacy assignment-driven state above.
+  // The flagship is date-driven: it does not require a program_assignments
+  // row, and its "current day" is derived from the member's due date /
+  // baby_arrived_at rather than a stored current_day.
+  const [flagshipDayResult, setFlagshipDayResult] = useState<FlagshipDayResult | null>(null);
+  const [isFlagshipActive, setIsFlagshipActive] = useState(false);
+  const [flagshipDayOffset, setFlagshipDayOffset] = useState(0); // calendar-day offset from today
+  const [flagshipLoadError, setFlagshipLoadError] = useState<string | null>(null);
+  const [flagshipCompletedKeys, setFlagshipCompletedKeys] = useState<Set<string>>(new Set());
+
   // The displayed program day based on offset
-  const displayedDay = Math.min(baseDay + dayOffset, totalDays);
+  const displayedDay = isFlagshipActive
+    ? flagshipDayResult?.meta.programDay ?? flagshipDayResult?.meta.postpartumDay ?? 0
+    : Math.min(baseDay + dayOffset, totalDays);
 
   // The displayed date based on offset
-  const displayedDate = (() => {
-    const d = new Date();
-    d.setDate(d.getDate() + dayOffset);
-    return d;
-  })();
+  const displayedDate = isFlagshipActive
+    ? addDays(startOfDay(new Date()), flagshipDayOffset)
+    : (() => {
+        const d = new Date();
+        d.setDate(d.getDate() + dayOffset);
+        return d;
+      })();
 
   // Check onboarding (fatherhood essentials) status
   const [onboardingChecked, setOnboardingChecked] = useState(false);
   const [trainingProfileComplete, setTrainingProfileComplete] = useState<boolean | null>(null);
   const [hasJourneyDate, setHasJourneyDate] = useState(false);
+
+  // ── Temporary flagship non-training completion store ──
+  // No persistent journey-completion table exists yet. This is a deliberately
+  // isolated, client-only mechanism (localStorage) so non-training flagship
+  // days (rest/recovery/mobility/etc.) can be marked complete without
+  // inventing a fake Supabase schema. Training-day completion continues to
+  // use the real workout-completion system (saveWorkoutFeedback) below.
+  const flagshipCompletionStorageKey = user ? `m2f_flagship_completions_${user.id}` : null;
+  useEffect(() => {
+    if (!flagshipCompletionStorageKey) return;
+    try {
+      const raw = localStorage.getItem(flagshipCompletionStorageKey);
+      setFlagshipCompletedKeys(new Set(raw ? (JSON.parse(raw) as string[]) : []));
+    } catch {
+      setFlagshipCompletedKeys(new Set());
+    }
+  }, [flagshipCompletionStorageKey]);
+
+  const markFlagshipDayComplete = useCallback((contentId: string) => {
+    if (!flagshipCompletionStorageKey) return;
+    setFlagshipCompletedKeys((prev) => {
+      const next = new Set(prev);
+      next.add(contentId);
+      try {
+        localStorage.setItem(flagshipCompletionStorageKey, JSON.stringify([...next]));
+      } catch {
+        // Best-effort only — completion state is non-critical UI sugar here.
+      }
+      return next;
+    });
+  }, [flagshipCompletionStorageKey]);
 
   useEffect(() => {
     if (!user) return;
@@ -164,14 +215,58 @@ export default function Index() {
     }
   }, [activeNav, trainingProfileComplete, onboardingChecked, navigate]);
 
-  // Load assignment + maxes + training days preference
+  // Load a single calendar date of the flagship journey. Clears stale exercise
+  // groups before/while loading so the prior day's workout never flashes or
+  // remains visible, and reports a controlled error state on resolver failure
+  // instead of silently rendering an empty workout.
+  const loadFlagshipJourneyDate = useCallback(async (uid: string, date: Date) => {
+    setFlagshipLoadError(null);
+    setGroups([]);
+    setScheduleConfig(null);
+    setLoadRecommendations([]);
+    try {
+      const result = await loadFlagshipDay(uid, "full", date);
+      if (!result) {
+        throw new Error("The flagship journey resolver returned no result for this date.");
+      }
+      setFlagshipDayResult(result);
+      if (result.exercises.length > 0) {
+        setGroups([{ label: result.label, exercises: result.exercises }]);
+      } else {
+        setGroups([]);
+      }
+    } catch (err) {
+      setFlagshipDayResult(null);
+      setGroups([]);
+      setFlagshipLoadError(
+        "We couldn't load today's journey. Your program data may contain a missing workout or exercise reference.",
+      );
+      if (import.meta.env.DEV) {
+        console.error("[Flagship Journey] resolution failed", {
+          userId: uid,
+          selectedDate: date.toISOString(),
+          error: err instanceof Error ? err.message : err,
+        });
+      }
+    }
+  }, []);
+
+  // Load assignment + maxes + training days preference, then decide which
+  // program track the member is on using the required priority:
+  //   1. Active non-flagship coach assignment
+  //   2. Due-date / baby-arrival-driven flagship Guided Journey (no
+  //      program_assignments row required)
+  //   3. Needs due date (no program at all)
+  // A flagship program_assignments row (if one exists from legacy data) is
+  // never treated as a coach override — isFlagshipProgram() distinguishes it.
   useEffect(() => {
     if (!user || !onboardingChecked) return;
     const load = async () => {
-      // Load maxes and profile in parallel
-      const [{ data: maxData }, { data: profileData }] = await Promise.all([
+      // Load maxes, training-day preference, and journey profile fields in parallel
+      const [{ data: maxData }, { data: profileData }, { data: journeyProfile }] = await Promise.all([
         supabase.from("user_maxes").select("exercise_name, weight_lbs").eq("user_id", user.id),
         supabase.from("profiles").select("training_days_per_week").eq("user_id", user.id).single(),
+        supabase.from("profiles").select("due_date, baby_arrived_at").eq("user_id", user.id).maybeSingle(),
       ]);
       if (maxData) {
         const m: Record<string, number> = {};
@@ -183,29 +278,73 @@ export default function Index() {
         : 6;
       setTrainingDays(prefDays);
 
+      const memberHasJourneyDate = Boolean((journeyProfile as any)?.due_date || (journeyProfile as any)?.baby_arrived_at);
+
       const { data: assignments } = await supabase.from("program_assignments").select("id, current_day, program_id, assigned_at").eq("user_id", user.id).eq("is_active", true).limit(1);
-      if (assignments && assignments.length > 0) {
-        const a = assignments[0] as any;
-        setAssignmentId(a.id);
-        setProgramId(a.program_id);
-        const { data: prog } = await supabase.from("programs").select("name, total_days, published_through_day").eq("id", a.program_id).single();
-        let days = (prog as any)?.total_days || 1;
+      const assignment = assignments && assignments.length > 0 ? (assignments[0] as any) : null;
+
+      let assignmentProgramName: string | null = null;
+      if (assignment) {
+        const { data: prog } = await supabase.from("programs").select("name").eq("id", assignment.program_id).single();
+        assignmentProgramName = prog ? (prog as any).name as string : null;
+      }
+
+      const assignmentIsFlagship = assignment ? isFlagshipProgram(assignment.program_id, assignmentProgramName) : false;
+
+      const track = decideProgramTrack({
+        assignment,
+        assignmentIsFlagship,
+        hasJourneyDate: memberHasJourneyDate,
+      });
+
+      if (track.kind === "coach") {
+        setIsFlagshipActive(false);
+        setFlagshipDayResult(null);
+        setAssignmentId(track.assignmentId);
+        setProgramId(track.programId);
+        const { data: prog } = await supabase.from("programs").select("name, total_days, published_through_day").eq("id", track.programId).single();
+        const days = (prog as any)?.total_days || 1;
         const publishedThrough = (prog as any)?.published_through_day;
         const loadedProgramName = prog ? (prog as any).name as string : null;
         if (prog) {
           setProgramName(loadedProgramName);
           setTotalDays(publishedThrough != null ? Math.min(days, publishedThrough) : days);
         }
-        const savedDay = Math.min(a.current_day || 1, days);
+        const savedDay = Math.min(track.currentDay, days);
         setBaseDay(savedDay);
-        loadDayWorkout(a.program_id, savedDay, days, prefDays, user.id, loadedProgramName);
+        loadLegacyProgramDay(track.programId, savedDay, days, prefDays, user.id, loadedProgramName);
+      } else if (track.kind === "flagship") {
+        // No program_assignments record is required. If one happens to exist
+        // (a flagship assignment row), we keep its id for compatibility but
+        // never use its current_day as the source of truth.
+        const content = loadTrainingContent();
+        setIsFlagshipActive(true);
+        setAssignmentId(track.assignmentId);
+        setProgramId(content.programId);
+        setProgramName(content.programName);
+        setTotalDays(PRE_BIRTH_JOURNEY_LENGTH_DAYS);
+        setBaseDay(1);
+        setDayOffset(0);
+        setFlagshipDayOffset(0);
+        await loadFlagshipJourneyDate(user.id, startOfDay(new Date()));
+      } else {
+        // Needs due date — no program at all yet.
+        setIsFlagshipActive(false);
+        setFlagshipDayResult(null);
+        setAssignmentId(track.assignmentId);
       }
+
+      setHasJourneyDate(memberHasJourneyDate);
       setAssignmentLoaded(true);
     };
     load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, onboardingChecked]);
 
-  const loadDayWorkout = useCallback(async (
+  // Legacy program day loader — handles coach-assigned programs and
+  // legacy program_days content. The flagship Guided Journey no longer flows
+  // through this function; it uses loadFlagshipJourneyDate exclusively.
+  const loadLegacyProgramDay = useCallback(async (
     pid: string,
     dayNum: number,
     total: number,
@@ -217,18 +356,6 @@ export default function Index() {
     setScheduleConfig(config);
 
     const activeProgramName = loadedProgramName ?? programName;
-
-    // The flagship is date-driven and deliberately has no program_days rows.
-    // Resolve it before the legacy schedule engine can misclassify the day.
-    if (isFlagshipProgram(pid, activeProgramName) && uid) {
-      const flagship = await loadFlagshipDay(uid);
-      if (!flagship) {
-        throw new Error("The flagship journey could not resolve the current member day.");
-      }
-      setGroups([{ label: flagship.label, exercises: flagship.exercises }]);
-      setLoadRecommendations([]);
-      return;
-    }
 
     // Rest days – no exercises
     if (config.type === "rest") {
@@ -370,7 +497,7 @@ export default function Index() {
     setDayOffset(0);
     if (assignmentId && programId) {
       await supabase.from("program_assignments").update({ current_day: day }).eq("id", assignmentId);
-      loadDayWorkout(programId, day, totalDays, trainingDays, user?.id);
+      loadLegacyProgramDay(programId, day, totalDays, trainingDays, user?.id);
     }
   };
 
@@ -378,7 +505,7 @@ export default function Index() {
     setTrainingDays(days);
     if (programId) {
       const currentDisplayedDay = baseDay + dayOffset;
-      loadDayWorkout(programId, currentDisplayedDay, totalDays, days, user?.id);
+      loadLegacyProgramDay(programId, currentDisplayedDay, totalDays, days, user?.id);
     }
     toast({ title: "Program adjusted for your training schedule." });
   };
@@ -387,6 +514,12 @@ export default function Index() {
     // Map current displayed day to equivalent position in new program
     const currentDay = baseDay + dayOffset;
     const mappedDay = Math.min(Math.max(1, currentDay), newTotal);
+
+    // This is an explicit user/coach-driven program switch, so it's allowed
+    // to move the member off the flagship (see fix spec §8).
+    setIsFlagshipActive(false);
+    setFlagshipDayResult(null);
+    setFlagshipLoadError(null);
 
     setProgramId(newPid);
     setTotalDays(newTotal);
@@ -418,7 +551,7 @@ export default function Index() {
     setDayOffset(0);
     const newTrainingDays = newTotal <= 84 ? 4 : 6;
     setTrainingDays(newTrainingDays);
-    loadDayWorkout(newPid, mappedDay, newTotal, newTrainingDays, user!.id);
+    loadLegacyProgramDay(newPid, mappedDay, newTotal, newTrainingDays, user!.id);
     toast({ title: `Switched to ${newTrainingDays}-day version.` });
   };
 
@@ -683,21 +816,63 @@ export default function Index() {
     );
   }
 
-  const canGoBack = (baseDay + dayOffset) > 1;
-  const canGoForward = dayOffset < 7 && (baseDay + dayOffset) < totalDays;
+  const FLAGSHIP_NAV_WINDOW_DAYS = 30; // bound how far a member can browse from today
+  const canGoBack = isFlagshipActive
+    ? flagshipDayOffset > -FLAGSHIP_NAV_WINDOW_DAYS
+    : (baseDay + dayOffset) > 1;
+  const canGoForward = isFlagshipActive
+    ? flagshipDayOffset < FLAGSHIP_NAV_WINDOW_DAYS
+    : (dayOffset < 7 && (baseDay + dayOffset) < totalDays);
 
   const prevDay = () => {
-    if (!canGoBack) return;
+    if (!canGoBack || !user) return;
+    if (isFlagshipActive) {
+      const newOffset = flagshipDayOffset - 1;
+      setFlagshipDayOffset(newOffset);
+      loadFlagshipJourneyDate(user.id, addDays(startOfDay(new Date()), newOffset));
+      return;
+    }
     const newOffset = dayOffset - 1;
     setDayOffset(newOffset);
-    if (programId) loadDayWorkout(programId, baseDay + newOffset, totalDays, trainingDays, user?.id);
+    if (programId) loadLegacyProgramDay(programId, baseDay + newOffset, totalDays, trainingDays, user?.id);
   };
 
   const nextDay = () => {
-    if (!canGoForward) return;
+    if (!canGoForward || !user) return;
+    if (isFlagshipActive) {
+      const newOffset = flagshipDayOffset + 1;
+      setFlagshipDayOffset(newOffset);
+      loadFlagshipJourneyDate(user.id, addDays(startOfDay(new Date()), newOffset));
+      return;
+    }
     const newOffset = dayOffset + 1;
     setDayOffset(newOffset);
-    if (programId) loadDayWorkout(programId, baseDay + newOffset, totalDays, trainingDays, user?.id);
+    if (programId) loadLegacyProgramDay(programId, baseDay + newOffset, totalDays, trainingDays, user?.id);
+  };
+
+  // Flagship header identity — never displays the legacy assigned current_day
+  // as the source of truth; always derived from the resolved flagship result.
+  const flagshipHeaderLine = (): string => {
+    if (!flagshipDayResult) return "Loading your journey…";
+    const { meta } = flagshipDayResult;
+    if (meta.status === "needs-due-date") return "Set your due date to unlock your journey";
+    if (meta.status === "pre-program") return flagshipDayResult.label; // "Starts in N days"
+    if (meta.status === "post-due-date") return "Birth Window";
+    if (meta.status === "post-birth") {
+      return `Post-Birth Day ${meta.postpartumDay}${meta.stageName ? ` · ${meta.stageName}` : ""}`;
+    }
+    // active
+    const dayLine = `Day ${meta.programDay}${meta.stageName ? ` · ${meta.stageName}` : ""}`;
+    return dayLine;
+  };
+
+  const flagshipPregnancyWeekLine = (): string | null => {
+    if (!flagshipDayResult) return null;
+    const { meta } = flagshipDayResult;
+    if (meta.status === "active" && meta.pregnancyWeek != null) {
+      return `Pregnancy Week ${meta.pregnancyWeek}`;
+    }
+    return null;
   };
 
   const renderTabContent = () => {
@@ -727,11 +902,23 @@ export default function Index() {
         return (
           <>
             <div className="px-5 pt-8 pb-4">
-              <p className="text-xs font-semibold tracking-widest text-muted-foreground uppercase mb-1">{programName || "NO PROGRAM ASSIGNED"}</p>
-              <h1 className="text-5xl font-black tracking-tight text-foreground mb-1">TODAY</h1>
-              <p className="text-sm text-muted-foreground mb-4">Train. Hold the standards. Own the day.</p>
+              <p className="text-xs font-semibold tracking-widest text-muted-foreground uppercase mb-1">
+                {isFlagshipActive ? "M2F Flagship Guided Journey" : (programName || "NO PROGRAM ASSIGNED")}
+              </p>
+              <h1 className="text-5xl font-black tracking-tight text-foreground mb-1">
+                {isFlagshipActive ? "GUIDED JOURNEY" : "TODAY"}
+              </h1>
+              <p className="text-sm text-muted-foreground mb-4">
+                {isFlagshipActive
+                  ? [flagshipHeaderLine(), flagshipPregnancyWeekLine()].filter(Boolean).join(" · ")
+                  : "Train. Hold the standards. Own the day."}
+              </p>
               <div className="flex gap-3 flex-wrap">
-                {isCoach ? (
+                {isFlagshipActive ? (
+                  <div className="flex items-center gap-2 bg-secondary text-foreground text-sm font-semibold px-4 py-2 rounded-full border border-border">
+                    <span className="text-primary">📅</span> {displayedDay > 0 ? `Day ${displayedDay}` : "—"}
+                  </div>
+                ) : isCoach ? (
                   <button onClick={() => setShowDayPicker(true)}
                     className="flex items-center gap-2 bg-secondary text-foreground text-sm font-semibold px-4 py-2 rounded-full border border-border hover:border-primary/40 transition-colors">
                     <span className="text-primary">📅</span> Day {displayedDay}
@@ -747,15 +934,42 @@ export default function Index() {
                 </button>
               </div>
             </div>
-            {user && <TrainingScheduleSelector userId={user.id} programName={programName} programId={programId} onChange={handleScheduleChange} onProgramSwitch={handleProgramSwitch} />}
+            {/* The training-schedule selector remaps days through the legacy
+                schedule engine, which does not apply to the date-driven
+                flagship journey — hide it rather than let it corrupt journey state. */}
+            {!isFlagshipActive && user && <TrainingScheduleSelector userId={user.id} programName={programName} programId={programId} onChange={handleScheduleChange} onProgramSwitch={handleProgramSwitch} />}
             <div className="flex items-center justify-between px-5 py-3 border-y border-border">
               <button onClick={prevDay} disabled={!canGoBack} className={`p-1 transition-colors ${canGoBack ? 'text-muted-foreground hover:text-foreground' : 'text-muted-foreground/30 cursor-not-allowed'}`}><ChevronLeft className="w-5 h-5" /></button>
-              <span className="text-sm font-bold text-foreground">{dayOffset === 0 ? 'Today' : formatDate(displayedDate)}</span>
+              <span className="text-sm font-bold text-foreground">
+                {isFlagshipActive
+                  ? (flagshipDayOffset === 0 ? 'Today' : formatDate(displayedDate))
+                  : (dayOffset === 0 ? 'Today' : formatDate(displayedDate))}
+              </span>
               <button onClick={nextDay} disabled={!canGoForward} className={`p-1 transition-colors ${canGoForward ? 'text-muted-foreground hover:text-foreground' : 'text-muted-foreground/30 cursor-not-allowed'}`}><ChevronRight className="w-5 h-5" /></button>
             </div>
             <div className="flex-1 overflow-y-auto pb-24 px-4 pt-4 space-y-6">
-              {/* Rest / Optional day display */}
-              {scheduleConfig && (scheduleConfig.type === "rest" || scheduleConfig.type === "optional") && groups.length === 0 ? (
+              {isFlagshipActive && flagshipLoadError ? (
+                <div className="text-center py-12 space-y-3">
+                  <span className="text-4xl">⚠️</span>
+                  <p className="text-base font-black text-foreground">We couldn't load today's journey.</p>
+                  <p className="text-sm text-muted-foreground max-w-xs mx-auto">
+                    Your program data may contain a missing workout or exercise reference.
+                  </p>
+                  <button
+                    onClick={() => user && loadFlagshipJourneyDate(user.id, displayedDate)}
+                    className="mt-2 px-5 py-2 rounded-full bg-primary text-primary-foreground text-sm font-bold"
+                  >
+                    Retry
+                  </button>
+                </div>
+              ) : isFlagshipActive && flagshipDayResult && flagshipDayResult.exercises.length === 0 ? (
+                <FlagshipJourneyCard
+                  result={flagshipDayResult}
+                  completed={flagshipCompletedKeys.has(flagshipDayResult.meta.contentId)}
+                  onMarkComplete={() => markFlagshipDayComplete(flagshipDayResult.meta.contentId)}
+                  onAddDueDate={() => navigate("/training-profile?next=today")}
+                />
+              ) : !isFlagshipActive && scheduleConfig && (scheduleConfig.type === "rest" || scheduleConfig.type === "optional") && groups.length === 0 ? (
                 <div className="text-center py-16 space-y-3">
                   <span className="text-5xl">{scheduleConfig.type === "rest" ? "😴" : "🏃"}</span>
                   <p className="text-lg font-black text-foreground">{scheduleConfig.label}</p>
@@ -1046,7 +1260,7 @@ export default function Index() {
               )}
 
               {/* Complete Workout Button */}
-              {groups.length > 0 && dayOffset === 0 && (
+              {groups.length > 0 && (isFlagshipActive ? flagshipDayOffset === 0 : dayOffset === 0) && (
                 <div className="pb-4">
                   <button
                     onClick={() => {
@@ -1145,6 +1359,8 @@ export default function Index() {
             setShowProgramPicker(false);
             if (!assignment) return;
 
+            setIsFlagshipActive(false);
+            setFlagshipDayResult(null);
             setAssignmentId(assignment.id);
             setProgramId(assignment.program_id);
             setBaseDay(assignment.current_day || 1);
@@ -1161,7 +1377,7 @@ export default function Index() {
             const loadedProgramName = prog ? ((prog as any).name as string) : null;
             setProgramName(loadedProgramName);
             setTotalDays(publishedThrough != null ? Math.min(days, publishedThrough) : days);
-            loadDayWorkout(assignment.program_id, assignment.current_day || 1, days, trainingDays, user.id, loadedProgramName);
+            loadLegacyProgramDay(assignment.program_id, assignment.current_day || 1, days, trainingDays, user.id, loadedProgramName);
             toast({ title: "Program selected." });
           }}
         />
@@ -1255,6 +1471,13 @@ export default function Index() {
           onSubmit={async (difficulty: DifficultyRating) => {
             await saveWorkoutFeedback(user.id, programId, displayedDay, difficulty);
             setWorkoutCompleted(true);
+
+            if (isFlagshipActive) {
+              // The flagship's "current day" is derived from the due date,
+              // never stored — do not touch program_assignments here.
+              toast({ title: "Workout Complete! 💪" });
+              return;
+            }
 
             // Advance to next day in the program
             const nextDay = displayedDay < totalDays ? displayedDay + 1 : displayedDay;

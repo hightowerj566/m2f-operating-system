@@ -50,6 +50,8 @@ export interface FlagshipDayResult {
     daysUntilDueDate?: number;
     pregnancyWeek?: number;
     status: string;
+    /** Stable identity for the resolved content, e.g. "flagship-day-198" or "post-birth-day-12". Used to key completion records — never key completion by "today", since users can browse other dates. */
+    contentId: string;
   };
 }
 
@@ -124,6 +126,7 @@ function nonTrainingResult(
 export async function loadFlagshipDay(
   userId: string,
   version: WorkoutVersion = "full",
+  selectedDate?: Date,
 ): Promise<FlagshipDayResult | null> {
   const { data: profile } = await db
     .from("profiles")
@@ -135,6 +138,7 @@ export async function loadFlagshipDay(
     dueDate: profile?.due_date ?? null,
     babyArrivedAt: profile?.baby_arrived_at ?? null,
     coachAssignment: null,
+    now: selectedDate ?? new Date(),
   });
 
   if (resolved.status === "needs-due-date") {
@@ -147,6 +151,7 @@ export async function loadFlagshipDay(
         stageId: "unset",
         status: resolved.status,
         objective: "Add your due date to unlock the M2F Guided Journey.",
+        contentId: "flagship-needs-due-date",
       },
     };
   }
@@ -162,6 +167,7 @@ export async function loadFlagshipDay(
         status: resolved.status,
         objective:
           "You're early. Use this time for onboarding, baseline assessment, and setup.",
+        contentId: `flagship-pre-program-${resolved.scheduledStartDate}`,
       },
     };
   }
@@ -181,6 +187,7 @@ export async function loadFlagshipDay(
           { type: "mobility", target: "if helpful", intensity: "easy" },
           { type: "rest", target: "prioritize", intensity: "none" },
         ],
+        contentId: `flagship-birth-window-${resolved.daysPastDueDate}`,
       },
     };
   }
@@ -195,6 +202,7 @@ export async function loadFlagshipDay(
       stageId: resolved.stageId,
       stageName: day.stageName,
       status: resolved.status,
+      contentId: resolved.dayContentId,
     };
     if (day.dayType === "training" && day.workoutId) {
       return trainingResult(day, day.workoutId, version, base);
@@ -215,6 +223,7 @@ export async function loadFlagshipDay(
     daysUntilDueDate: resolved.daysUntilDueDate,
     pregnancyWeek: resolved.pregnancyWeek,
     status: resolved.status,
+    contentId: resolved.dayContentId,
   };
   if (day.dayType === "training" && day.workoutId) {
     return trainingResult(day, day.workoutId, version, base);
