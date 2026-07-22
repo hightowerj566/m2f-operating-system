@@ -123,11 +123,14 @@ export default function CoachCheckInReview() {
           {/* C2 · Nutrition & Macro Review */}
           <Section title="Nutrition & Macro Review">
             <NutritionReviewCard
+              userId={ci.user_id}
+              coachId={user?.id ?? null}
               snapshot={snapshot}
               macros={macros as never}
               profile={profile as never}
               nutrition_rating={ci.nutrition_rating}
               nutrition_notes={ci.nutrition_notes}
+              onUpdated={refetch}
             />
           </Section>
 
