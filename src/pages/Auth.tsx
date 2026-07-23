@@ -179,7 +179,7 @@ export default function Auth() {
               disabled={loading}
               className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-bold text-sm hover:bg-primary/90 transition-colors disabled:opacity-50"
             >
-              {loading ? "Setting up…" : "Activate account"}
+              {loading ? "Creating…" : "Create account"}
             </button>
           </form>
         ) : null}
