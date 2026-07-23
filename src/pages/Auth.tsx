@@ -128,9 +128,10 @@ export default function Auth() {
         <div className="flex flex-col items-center mb-8">
           <img src={m2fLogo.url} alt="M2F" className="w-40 h-40 object-contain mb-2" />
           <p className="text-muted-foreground text-sm mt-1">
-            {invitation ? "Set your password to activate your account" : "Invitation"}
+            {invitation ? "Create your account to get started" : "Invitation"}
           </p>
         </div>
+
 
         {invitationError ? (
           <div className="bg-card border border-border rounded-xl p-6 text-center">
