@@ -48,6 +48,7 @@ export default function Auth() {
         setInvitationError("This invitation link is invalid, already used, or expired.");
       } else {
         setInvitation(inv);
+        // Pre-fill as suggestions only — the client can change either field
         setEmail(inv.email);
         setDisplayName(inv.first_name || "");
       }
