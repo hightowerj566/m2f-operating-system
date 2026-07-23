@@ -85,9 +85,11 @@ export default function Auth() {
     if (!invitation) return;
     setError(""); setMessage(""); setLoading(true);
 
+    const signupEmail = email.trim().toLowerCase();
     const { data, error } = await supabase.functions.invoke("accept-invitation", {
       body: {
         token: inviteToken,
+        email: signupEmail,
         password,
         display_name: displayName || invitation.first_name || undefined,
       },
@@ -100,7 +102,7 @@ export default function Auth() {
 
     // Sign in with the just-created credentials
     const { error: signInErr } = await supabase.auth.signInWithPassword({
-      email: invitation.email,
+      email: signupEmail,
       password,
     });
     if (signInErr) {
