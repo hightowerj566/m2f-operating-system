@@ -147,10 +147,6 @@ export default function Auth() {
           </div>
         ) : invitation ? (
           <form onSubmit={handleAcceptInvite} className="space-y-4">
-            <div className="bg-secondary border border-border rounded-xl px-4 py-3">
-              <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Invited email</p>
-              <p className="text-sm text-foreground font-semibold mt-0.5">{invitation.email}</p>
-            </div>
             <input
               type="text"
               placeholder="Your name"
@@ -159,6 +155,15 @@ export default function Auth() {
               className="w-full bg-secondary border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary"
               required
             />
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full bg-secondary border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary"
+              required
+            />
+
             <input
               type="password"
               placeholder="Create a password (min. 8 characters)"
