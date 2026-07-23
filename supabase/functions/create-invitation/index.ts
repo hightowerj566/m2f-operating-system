@@ -88,9 +88,10 @@ Deno.serve(async (req) => {
       .single();
     if (insertErr) return json({ error: insertErr.message }, 500);
 
-    // Build absolute URL if origin present
-    const origin = req.headers.get("origin") || "";
-    const invite_url = origin ? `${origin}/auth?invite=${token}` : `/auth?invite=${token}`;
+    // Always send users to the published production site
+    const PUBLISHED_ORIGIN = "https://man2father.lovable.app";
+    const invite_url = `${PUBLISHED_ORIGIN}/auth?invite=${token}`;
+
 
     return json({ invitation: invite, invite_url });
   } catch (e) {
