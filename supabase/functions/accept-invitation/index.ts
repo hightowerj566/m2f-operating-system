@@ -75,7 +75,7 @@ Deno.serve(async (req) => {
       .update({ accepted_at: new Date().toISOString(), accepted_by: newUserId })
       .eq("id", invite.id);
 
-    return json({ ok: true, email: invite.email });
+    return json({ ok: true, email: signupEmail });
   } catch (e) {
     return json({ error: (e as Error).message }, 500);
   }
