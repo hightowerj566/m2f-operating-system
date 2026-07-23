@@ -13,8 +13,12 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
   try {
-    const { token, password, display_name } = await req.json();
+    const { token, email, password, display_name } = await req.json();
     if (!token || typeof token !== "string") return json({ error: "Missing token" }, 400);
+    const signupEmail = String(email || "").trim().toLowerCase();
+    if (!signupEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(signupEmail)) {
+      return json({ error: "Valid email required" }, 400);
+    }
     if (!password || String(password).length < 8) {
       return json({ error: "Password must be at least 8 characters" }, 400);
     }
@@ -34,13 +38,13 @@ Deno.serve(async (req) => {
       return json({ error: "Invitation expired" }, 410);
     }
 
-    // Create the auth user
+    // Create the auth user with the email THEY provided at signup
     const { data: created, error: createErr } = await admin.auth.admin.createUser({
-      email: invite.email,
+      email: signupEmail,
       password,
       email_confirm: true,
       user_metadata: {
-        display_name: display_name || invite.first_name || invite.email.split("@")[0],
+        display_name: display_name || invite.first_name || signupEmail.split("@")[0],
       },
     });
     if (createErr || !created.user) {
@@ -71,7 +75,7 @@ Deno.serve(async (req) => {
       .update({ accepted_at: new Date().toISOString(), accepted_by: newUserId })
       .eq("id", invite.id);
 
-    return json({ ok: true, email: invite.email });
+    return json({ ok: true, email: signupEmail });
   } catch (e) {
     return json({ error: (e as Error).message }, 500);
   }

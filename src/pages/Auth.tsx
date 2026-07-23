@@ -48,6 +48,7 @@ export default function Auth() {
         setInvitationError("This invitation link is invalid, already used, or expired.");
       } else {
         setInvitation(inv);
+        // Pre-fill as suggestions only — the client can change either field
         setEmail(inv.email);
         setDisplayName(inv.first_name || "");
       }
@@ -84,9 +85,11 @@ export default function Auth() {
     if (!invitation) return;
     setError(""); setMessage(""); setLoading(true);
 
+    const signupEmail = email.trim().toLowerCase();
     const { data, error } = await supabase.functions.invoke("accept-invitation", {
       body: {
         token: inviteToken,
+        email: signupEmail,
         password,
         display_name: displayName || invitation.first_name || undefined,
       },
@@ -99,7 +102,7 @@ export default function Auth() {
 
     // Sign in with the just-created credentials
     const { error: signInErr } = await supabase.auth.signInWithPassword({
-      email: invitation.email,
+      email: signupEmail,
       password,
     });
     if (signInErr) {
@@ -125,9 +128,10 @@ export default function Auth() {
         <div className="flex flex-col items-center mb-8">
           <img src={m2fLogo.url} alt="M2F" className="w-40 h-40 object-contain mb-2" />
           <p className="text-muted-foreground text-sm mt-1">
-            {invitation ? "Set your password to activate your account" : "Invitation"}
+            {invitation ? "Create your account to get started" : "Invitation"}
           </p>
         </div>
+
 
         {invitationError ? (
           <div className="bg-card border border-border rounded-xl p-6 text-center">
@@ -143,10 +147,6 @@ export default function Auth() {
           </div>
         ) : invitation ? (
           <form onSubmit={handleAcceptInvite} className="space-y-4">
-            <div className="bg-secondary border border-border rounded-xl px-4 py-3">
-              <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Invited email</p>
-              <p className="text-sm text-foreground font-semibold mt-0.5">{invitation.email}</p>
-            </div>
             <input
               type="text"
               placeholder="Your name"
@@ -155,6 +155,15 @@ export default function Auth() {
               className="w-full bg-secondary border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary"
               required
             />
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full bg-secondary border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary"
+              required
+            />
+
             <input
               type="password"
               placeholder="Create a password (min. 8 characters)"
@@ -170,7 +179,7 @@ export default function Auth() {
               disabled={loading}
               className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-bold text-sm hover:bg-primary/90 transition-colors disabled:opacity-50"
             >
-              {loading ? "Setting up…" : "Activate account"}
+              {loading ? "Creating…" : "Create account"}
             </button>
           </form>
         ) : null}
