@@ -276,12 +276,11 @@ interface PhaseCardProps {
 function PhaseCard({ phase, expanded, onToggle, onToggleTask, focusTaskId }: PhaseCardProps) {
   const isComplete = phase.status === "complete";
   const isActive = phase.status === "active";
-  const isUpcoming = phase.status === "upcoming";
   const isOverdue = phase.status === "past-incomplete";
-  const locked = !phase.unlocked;
+  const locked = phase.status === "upcoming-locked" || phase.status === "father-mode-locked";
 
   const statusChip = locked
-    ? { label: phase.id === 6 ? "Unlocks Day One" : "Upcoming", cls: "bg-secondary text-muted-foreground border-border" }
+    ? { label: phase.unlockLabel, cls: "bg-secondary text-muted-foreground border-border" }
     : isComplete
       ? { label: "Complete", cls: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30" }
       : isActive
