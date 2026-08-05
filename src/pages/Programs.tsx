@@ -5,11 +5,12 @@
 
 import { useMemo } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { Check, ChevronRight, Dumbbell, Home, LayoutDashboard, Lock, Map, Menu } from "lucide-react";
+import { Check, ChevronRight, Dumbbell, Lock } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useMemberProgram } from "@/hooks/useMemberProgram";
 import { FlagshipTodayCard } from "@/components/programs/FlagshipTodayCard";
 import type { PBWorkout } from "@/content/postBirthTraining";
+import { BottomNav } from "@/components/BottomNav";
 
 const isDoneKey = (workout: PBWorkout, dateISO: string) => `m2f.pbworkout.${workout.slug}.${dateISO}`;
 
@@ -239,7 +240,7 @@ export default function Programs() {
         </>
       )}
 
-      <ProgramsBottomNav />
+      <BottomNav />
     </div>
   );
 }
@@ -261,35 +262,3 @@ function EmptyState({ onSet }: { onSet: () => void }) {
   );
 }
 
-function ProgramsBottomNav() {
-  const navigate = useNavigate();
-  return (
-    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-card border-t border-border px-2 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] z-40">
-      <div className="flex justify-around">
-        {[
-          { icon: Home, label: "Home", route: "/" },
-          { icon: Dumbbell, label: "Programs", route: "/programs", active: true },
-          { icon: Map, label: "Roadmap", route: "/build-list" },
-          { icon: Menu, label: "More", route: "/?tab=More" },
-        ].map(({ icon: Icon, label, route, active }) => (
-          <button
-            key={label}
-            onClick={() => navigate(route)}
-            className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all ${
-              active ? "text-foreground" : "text-muted-foreground"
-            }`}
-          >
-            {active ? (
-              <span className="bg-primary p-2 rounded-xl">
-                <Icon className="w-5 h-5 text-primary-foreground" />
-              </span>
-            ) : (
-              <Icon className="w-5 h-5" />
-            )}
-            <span className="text-[10px] font-medium">{label}</span>
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
