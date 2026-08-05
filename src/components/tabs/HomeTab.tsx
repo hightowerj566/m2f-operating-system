@@ -15,6 +15,8 @@ import { recommendedForWeek, recommendedForPostBirthPhase } from "@/content/lear
 import { useLearnProgress } from "@/hooks/useLearnProgress";
 import m2fLogo from "@/assets/m2f-logo.png.asset.json";
 import { Countdown } from "@/components/home/Countdown";
+import { CoachFocusCard } from "@/components/home/CoachFocusCard";
+import { ThisWeeksRoadmapCard } from "@/components/home/ThisWeeksRoadmapCard";
 import { useWeeklyPriorities, effectiveStatus } from "@/hooks/useWeeklyPriorities";
 import { useCurrentWeeklyCheckIn } from "@/hooks/useWeeklyCheckIns";
 import { CHECK_IN_STATUS } from "@/lib/coaching/coachingConstants";
