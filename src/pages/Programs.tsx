@@ -5,7 +5,7 @@
 
 import { useMemo } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { Check, ChevronRight, Dumbbell, Home, LayoutDashboard, Lock, Map, Menu } from "lucide-react";
+import { Check, ChevronRight, Dumbbell, Lock } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useMemberProgram } from "@/hooks/useMemberProgram";
 import { FlagshipTodayCard } from "@/components/programs/FlagshipTodayCard";
