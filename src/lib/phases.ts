@@ -25,6 +25,8 @@ export const PHASES: Phase[] = [
     name: "FOUNDATION",
     window: "180+ days out",
     pregWindow: "Weeks 4–14",
+    startWeek: 4,
+    endWeek: 14,
     focus: "Build the base",
     herState: "First trimester — exhausted, nauseous, and processing it all. She may not look pregnant; she feels it constantly.",
     hisJob: "Train hard, fix your sleep, learn the money, and carry more of the load at home without being asked.",
@@ -39,6 +41,8 @@ export const PHASES: Phase[] = [
     name: "FRAMING",
     window: "120–180 days out",
     pregWindow: "Weeks 14–23",
+    startWeek: 14,
+    endWeek: 23,
     focus: "Start the preparation",
     herState: "Second trimester — energy is back, the bump is real, and she's nesting. She notices whether you're planning with her or watching her plan.",
     hisJob: "Nursery started, budget built, registry handled together. Training adds carries and grip — dad strength.",
@@ -53,6 +57,8 @@ export const PHASES: Phase[] = [
     name: "DURABILITY",
     window: "60–120 days out",
     pregWindow: "Weeks 23–31",
+    startWeek: 23,
+    endWeek: 32,
     focus: "Get durable, get educated",
     herState: "Late second into third trimester — back pain starts, sleep gets harder, and the reality of delivery is on her mind.",
     hisJob: "CPR done, pediatrician picked, car seat researched, birth plan discussed. You become the calmest person in every room.",
@@ -67,6 +73,8 @@ export const PHASES: Phase[] = [
     name: "STAGING",
     window: "30–60 days out",
     pregWindow: "Weeks 32–36",
+    startWeek: 32,
+    endWeek: 36,
     focus: "Reduce the chaos",
     herState: "She's uncomfortable, swollen, and tired. Sleeping is a project. Small tasks feel enormous to her right now.",
     hisJob: "Bag packed, seat installed, freezer stocked, nursery done, visitors policy locked. Stop chasing PRs.",
@@ -81,6 +89,8 @@ export const PHASES: Phase[] = [
     name: "MISSION MODE",
     window: "Final 30 days",
     pregWindow: "Weeks 36–40+",
+    startWeek: 36,
+    endWeek: 43,
     focus: "Stay ready, stay available",
     herState: "Full term is any day now. She's done being pregnant. Every twinge could be the start. She needs steady, not hyped.",
     hisJob: "Phone charged, truck gassed, plans cancelable. Stay healthy, stay recovered, stay reachable. Support her, no scorekeeping.",
@@ -97,6 +107,10 @@ export const FATHER_MODE: Phase = {
   name: "FATHER MODE",
   window: "She's here",
   pregWindow: "Day One+",
+  // Not used for unlocking (Father Mode gates on arrival/due-date, not a
+  // pregnancy week — see isPhaseUnlocked) — kept only to satisfy the Phase shape.
+  startWeek: 40,
+  endWeek: Infinity,
   focus: "Day One and every day after",
   herState: "She's recovering from the hardest physical event of her life while feeding a newborn around the clock. Her body and hormones are in full rebuild.",
   hisJob: "Walk, eat protein, hydrate, sleep when you can, hold your daughter, run the house, guard her recovery from visitors.",
@@ -133,6 +147,53 @@ export function phaseBrief(phase: Phase, daysLeft: number | null): string {
   const week = pregnancyWeek(daysLeft);
   const head = daysLeft != null && phase.id <= 5 ? `T-minus ${daysLeft} days · Week ${week}` : phase.window;
   return `${head} — ${phase.hisJob}`;
+}
+
+// ─────────────────────────────────────────────
+// Phase unlocking (Build Roadmap gating).
+// A phase unlocks once the client's actual pregnancy week reaches its
+// startWeek. Phase 6 (Father Mode) is the one exception — it unlocks on
+// birth or once the due date has passed, never on a pregnancy week.
+// ─────────────────────────────────────────────
+
+export interface PhaseUnlockContext {
+  /** Client's current pregnancy week (4–42), or null if no due date is set yet. */
+  currentPregnancyWeek: number | null;
+  babyArrived: boolean;
+  /** True once the due date itself has passed (independent of babyArrived). */
+  dueDatePassed: boolean;
+}
+
+/**
+ * Whether the phase with this id is unlocked for the client right now.
+ * - Father Mode (id 6): unlocked on arrival or once the due date has passed.
+ * - Once the baby has arrived, the full pregnancy roadmap (ids 1–5) stays
+ *   accessible regardless of week — the prep window is over either way.
+ * - Otherwise: unlocked once currentPregnancyWeek >= phase.startWeek.
+ * - No due date on file yet: only the first phase is available, so a new
+ *   client always has somewhere to start.
+ */
+export function isPhaseUnlocked(phaseId: number, ctx: PhaseUnlockContext): boolean {
+  if (phaseId === FATHER_MODE.id) return ctx.babyArrived || ctx.dueDatePassed;
+  if (ctx.babyArrived) return true;
+  const cfg = PHASES.find((p) => p.id === phaseId);
+  if (!cfg) return false;
+  if (ctx.currentPregnancyWeek == null) return cfg.id === PHASES[0].id;
+  return ctx.currentPregnancyWeek >= cfg.startWeek;
+}
+
+/** The client-facing unlock label for a still-locked phase, e.g. "Unlocks at Week 28". */
+export function phaseUnlockLabel(phaseId: number): string {
+  if (phaseId === FATHER_MODE.id) return "Unlocks Day One";
+  const cfg = PHASES.find((p) => p.id === phaseId);
+  return cfg ? `Unlocks at Week ${cfg.startWeek}` : "Locked";
+}
+
+/** Set of every phase id (including Father Mode) unlocked for this client right now. */
+export function unlockedPhaseIds(ctx: PhaseUnlockContext): Set<number> {
+  return new Set(
+    [...PHASES, FATHER_MODE].filter((p) => isPhaseUnlocked(p.id, ctx)).map((p) => p.id),
+  );
 }
 
 // ─────────────────────────────────────────────
