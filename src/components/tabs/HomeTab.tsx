@@ -9,7 +9,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLatestReadiness } from "@/hooks/useReadiness";
 import { useBuildList, applyMilestoneBoost, surfaceMilestones } from "@/hooks/useBuildList";
-import { getPhase, daysRemaining as calcDaysRemaining, pregnancyWeek, babyAgeDays, getPostBirthPhase } from "@/lib/phases";
+import { getPhase, daysRemaining as calcDaysRemaining, pregnancyWeek, babyAgeDays, getPostBirthPhase, unlockedPhaseIds } from "@/lib/phases";
 import { askHerTonight } from "@/content/fatherhood";
 import { recommendedForWeek, recommendedForPostBirthPhase } from "@/content/learn";
 import { useLearnProgress } from "@/hooks/useLearnProgress";
