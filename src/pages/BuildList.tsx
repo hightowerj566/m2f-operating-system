@@ -303,12 +303,16 @@ function PhaseCard({ phase, expanded, onToggle, onToggleTask, focusTaskId }: Pha
         className={`absolute -left-[26px] top-6 w-4 h-4 rounded-full border-2 ${dotCls} flex items-center justify-center transition-all`}
       >
         {isComplete && <Check className="w-2.5 h-2.5 text-black" strokeWidth={4} />}
-        {(isUpcoming || locked) && <Lock className="w-2 h-2 text-muted-foreground" />}
+        {locked && <Lock className="w-2 h-2 text-muted-foreground" />}
       </span>
 
       <motion.button
         layout
-        onClick={onToggle}
+        onClick={() => {
+          if (locked) return; // locked phases never expand
+          onToggle();
+        }}
+        aria-disabled={locked}
         className={`w-full text-left rounded-2xl border p-4 transition-colors ${
           expanded
             ? "border-primary/40 bg-card"
@@ -317,7 +321,7 @@ function PhaseCard({ phase, expanded, onToggle, onToggleTask, focusTaskId }: Pha
               : isActive
                 ? "border-border bg-card hover:border-primary/40"
                 : "border-border bg-card/50"
-        } ${(isUpcoming || locked) ? "opacity-70" : ""}`}
+        } ${locked ? "opacity-80" : ""}`}
       >
         <div className="flex items-center gap-3">
           <div className="flex-1 min-w-0">
