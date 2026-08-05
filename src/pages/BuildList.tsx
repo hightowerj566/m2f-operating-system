@@ -112,7 +112,8 @@ export default function BuildList() {
     if (initialised || phases.length === 0) return;
     if (focusTaskId) {
       const found = milestones.find((m) => m.id === focusTaskId);
-      if (found) {
+      const foundPhase = found ? phases.find((p) => p.id === found.phase) : undefined;
+      if (found && foundPhase?.unlocked) {
         setExpandedId(found.phase);
         setInitialised(true);
         setTimeout(() => {
@@ -120,6 +121,13 @@ export default function BuildList() {
             behavior: "smooth", block: "center",
           });
         }, 400);
+        return;
+      }
+      if (found && foundPhase && !foundPhase.unlocked) {
+        // Task belongs to a locked phase — show that phase's lock state,
+        // collapsed, instead of opening or scrolling to the task.
+        setExpandedId(null);
+        setInitialised(true);
         return;
       }
     }
