@@ -152,7 +152,7 @@ describe("build list score math", async () => {
     expect(r.boost).toBe(2); // only the capped gain counts
   });
 
-  it("ranks: overdue critical > current critical (nearest week) > current standard > next phase", () => {
+  it("ranks: overdue critical > current critical (nearest week) > current standard > unlocked next phase", () => {
     const mk = (o: Partial<{ id: string; phase: number; priority: string; recommended_week: number | null; sort_order: number; completed: boolean }>) => ({
       id: o.id!, category_id: 1, phase: o.phase!, title: "", detail: null, points: 1,
       sort_order: o.sort_order ?? 1, completed: o.completed ?? false,
@@ -166,11 +166,12 @@ describe("build list score math", async () => {
       mk({ id: "overdue", phase: 1, priority: "critical", recommended_week: 8 }),
       mk({ id: "cur-c1",  phase: 3, priority: "critical", recommended_week: 25 }),
     ];
-    const top = surfaceMilestones(ms as never, 3, 5);
+    // Week 40 keeps phase 4 (starts week 32) unlocked, so "next" is still pulled forward.
+    const top = surfaceMilestones(ms as never, 3, 40, 5);
     expect(top.map((m) => m.id)).toEqual(["overdue", "cur-c1", "cur-c2", "cur-std", "next"]);
   });
 
-  it("pulls future phases forward when current phase is fully built", () => {
+  it("pulls milestones forward from other UNLOCKED phases only", () => {
     const mk = (o: Partial<{ id: string; phase: number; completed: boolean }>) => ({
       id: o.id!, category_id: 1, phase: o.phase!, title: "", detail: null, points: 1,
       sort_order: 1, completed: o.completed ?? false,
@@ -181,7 +182,85 @@ describe("build list score math", async () => {
       mk({ id: "p4", phase: 4 }),
       mk({ id: "p5", phase: 5 }),
     ];
-    const top = surfaceMilestones(ms as never, 3, 2);
+    // Week 40 unlocks phase 4 (starts 32) and phase 5 (starts 36).
+    const top = surfaceMilestones(ms as never, 3, 40, 2);
     expect(top.map((m) => m.id)).toEqual(["p4", "p5"]);
+  });
+
+  it("never returns milestones from a locked phase", () => {
+    const mk = (o: Partial<{ id: string; phase: number; completed: boolean }>) => ({
+      id: o.id!, category_id: 1, phase: o.phase!, title: "", detail: null, points: 1,
+      sort_order: 1, completed: o.completed ?? false,
+      priority: "standard" as const, recommended_week: null, required: true,
+    });
+    const ms = [
+      mk({ id: "p3", phase: 3, completed: true }),
+      mk({ id: "p4", phase: 4 }), // starts week 32 — locked at week 25
+      mk({ id: "p5", phase: 5 }), // starts week 36 — locked at week 25
+    ];
+    // Week 25 is inside phase 3's window (23–31); phases 4 and 5 haven't started yet.
+    const top = surfaceMilestones(ms as never, 3, 25, 5);
+    expect(top.map((m) => m.id)).toEqual([]);
+  });
+
+  it("recommended-this-week task outranks other current-phase critical work", () => {
+    const mk = (o: Partial<{ id: string; phase: number; priority: string; recommended_week: number | null }>) => ({
+      id: o.id!, category_id: 1, phase: o.phase!, title: "", detail: null, points: 1,
+      sort_order: 1, completed: false,
+      priority: (o.priority ?? "standard") as "critical" | "standard" | "bonus",
+      recommended_week: o.recommended_week ?? null, required: true,
+    });
+    const ms = [
+      mk({ id: "other-critical", phase: 3, priority: "critical", recommended_week: 24 }),
+      mk({ id: "this-week", phase: 3, priority: "standard", recommended_week: 26 }),
+    ];
+    const top = surfaceMilestones(ms as never, 3, 26, 5);
+    expect(top.map((m) => m.id)).toEqual(["this-week", "other-critical"]);
+  });
+
+  it("mid-pregnancy onboarding: a client joining at week 30 sees phases up to and including phase 3, not phase 4", () => {
+    const mk = (o: Partial<{ id: string; phase: number }>) => ({
+      id: `p${o.phase}`, category_id: 1, phase: o.phase!, title: "", detail: null, points: 1,
+      sort_order: 1, completed: false, priority: "standard" as const, recommended_week: null, required: true,
+    });
+    const ms = [mk({ phase: 1 }), mk({ phase: 2 }), mk({ phase: 3 }), mk({ phase: 4 }), mk({ phase: 5 })];
+    const top = surfaceMilestones(ms as never, 3, 30, 10);
+    expect(top.map((m) => m.id).sort()).toEqual(["p1", "p2", "p3"]);
+  });
+
+  it("Father Mode reached (currentPhase 6): leftover pregnancy-phase milestones remain available and surface as overdue", () => {
+    const mk = (o: Partial<{ id: string; phase: number; completed: boolean }>) => ({
+      id: o.id!, category_id: 1, phase: o.phase!, title: "", detail: null, points: 1,
+      sort_order: 1, completed: o.completed ?? false, priority: "standard" as const, recommended_week: null, required: true,
+    });
+    const ms = [
+      mk({ id: "father-task", phase: 6 }),
+      mk({ id: "leftover-pregnancy-task", phase: 5 }),
+    ];
+    const top = surfaceMilestones(ms as never, 6, null, 5);
+    // Both are unlocked (Father Mode reached unlocks the whole roadmap); the
+    // unfinished earlier-phase item ranks as overdue, ahead of the current
+    // Father Mode standard task.
+    expect(top.map((m) => m.id)).toEqual(["leftover-pregnancy-task", "father-task"]);
+  });
+
+  it("Father Mode not yet reached: phase 6 milestones never surface even with a high pregnancy week", () => {
+    const mk = (o: Partial<{ id: string; phase: number }>) => ({
+      id: o.id!, category_id: 1, phase: o.phase!, title: "", detail: null, points: 1,
+      sort_order: 1, completed: false, priority: "critical" as const, recommended_week: null, required: true,
+    });
+    const ms = [mk({ id: "father-task", phase: 6 }), mk({ id: "p5", phase: 5 })];
+    const top = surfaceMilestones(ms as never, 5, 42, 5);
+    expect(top.map((m) => m.id)).toEqual(["p5"]);
+  });
+
+  it("missing due date (no currentPregnancyWeek): only phase 1 milestones surface", () => {
+    const mk = (o: Partial<{ id: string; phase: number }>) => ({
+      id: o.id!, category_id: 1, phase: o.phase!, title: "", detail: null, points: 1,
+      sort_order: 1, completed: false, priority: "standard" as const, recommended_week: null, required: true,
+    });
+    const ms = [mk({ id: "p1", phase: 1 }), mk({ id: "p2", phase: 2 })];
+    const top = surfaceMilestones(ms as never, 1, null, 5);
+    expect(top.map((m) => m.id)).toEqual(["p1"]);
   });
 });
