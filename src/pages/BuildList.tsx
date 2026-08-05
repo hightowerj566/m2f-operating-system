@@ -12,10 +12,13 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { useLatestReadiness } from "@/hooks/useReadiness";
 import { useBuildList, useToggleMilestone, type BuildMilestone, type MilestonePriority } from "@/hooks/useBuildList";
-import { PHASES, FATHER_MODE, getPhase, daysRemaining } from "@/lib/phases";
+import {
+  PHASES, FATHER_MODE, getPhase, daysRemaining, pregnancyWeek,
+  isPhaseUnlocked, phaseUnlockLabel,
+} from "@/lib/phases";
 import { BottomNav } from "@/components/BottomNav";
 
-type PhaseStatus = "complete" | "active" | "upcoming" | "past-incomplete";
+type PhaseStatus = "complete" | "active" | "past-incomplete" | "upcoming-locked" | "father-mode-locked";
 
 interface PhaseSummary {
   id: number;
@@ -34,6 +37,7 @@ interface PhaseSummary {
   pct: number; // based on REQUIRED — optional never blocks
   status: PhaseStatus;
   unlocked: boolean;
+  unlockLabel: string;
 }
 
 export default function BuildList() {
@@ -48,10 +52,15 @@ export default function BuildList() {
 
   const days = daysRemaining(readiness?.dueDate);
   const arrived = !!readiness?.babyArrivedAt;
+  const week = pregnancyWeek(days);
   const phase = getPhase(days, arrived);
   // Father Mode unlocks when baby has arrived OR the due date has passed.
+  // (daysRemaining is clamped at 0, so "days === 0" is the closest signal
+  // this codebase has for "the due date has passed.")
   const fatherModeUnlocked = arrived || (days != null && days === 0);
   const currentPhaseId = phase?.id === 6 ? 6 : phase && phase.id <= 5 ? phase.id : 5;
+
+  const unlockCtx = { currentPregnancyWeek: week, babyArrived: arrived, dueDatePassed: fatherModeUnlocked };
 
   // Include Phase 6 (Father Mode) in the roadmap so its tasks render.
   const allPhases = useMemo(
@@ -59,10 +68,13 @@ export default function BuildList() {
     [],
   );
 
-  // Build per-phase summaries.
+  // Build per-phase summaries. Locked phases never expose their task list,
+  // details, or counts — only name / window / briefing / lock state.
   const phases: PhaseSummary[] = useMemo(() => {
     return allPhases.map((p) => {
-      const items = milestones.filter((m) => m.phase === p.id);
+      const unlocked = isPhaseUnlocked(p.id, unlockCtx);
+      const rawItems = milestones.filter((m) => m.phase === p.id);
+      const items = unlocked ? rawItems : [];
       const required = items.filter((i) => i.required);
       const optional = items.filter((i) => !i.required);
       const requiredDone = required.filter((i) => i.completed).length;
@@ -74,13 +86,11 @@ export default function BuildList() {
       const pctDone = requiredTotal ? requiredDone : done;
       const pct = pctBase ? Math.round((pctDone / pctBase) * 100) : 0;
 
-      const unlocked = p.id === 6 ? fatherModeUnlocked : true;
       let status: PhaseStatus;
-      if (requiredTotal > 0 && requiredDone === requiredTotal) status = "complete";
-      else if (!unlocked) status = "upcoming";
+      if (!unlocked) status = p.id === 6 ? "father-mode-locked" : "upcoming-locked";
+      else if (requiredTotal > 0 && requiredDone === requiredTotal) status = "complete";
       else if (p.id === currentPhaseId) status = "active";
-      else if (p.id < currentPhaseId) status = "past-incomplete";
-      else status = "upcoming";
+      else status = "past-incomplete"; // covers p.id < currentPhaseId, plus the rare unlocked-ahead-of-schedule edge case
 
       return {
         id: p.id, slug: p.slug, name: p.name,
@@ -88,9 +98,11 @@ export default function BuildList() {
         items, required, optional,
         requiredDone, requiredTotal,
         done, total, pct, status, unlocked,
+        unlockLabel: phaseUnlockLabel(p.id),
       };
     });
-  }, [milestones, currentPhaseId, allPhases, fatherModeUnlocked]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [milestones, currentPhaseId, allPhases, week, arrived, fatherModeUnlocked]);
 
   // Single-open accordion.
   const [expandedId, setExpandedId] = useState<number | null>(null);
@@ -100,7 +112,8 @@ export default function BuildList() {
     if (initialised || phases.length === 0) return;
     if (focusTaskId) {
       const found = milestones.find((m) => m.id === focusTaskId);
-      if (found) {
+      const foundPhase = found ? phases.find((p) => p.id === found.phase) : undefined;
+      if (found && foundPhase?.unlocked) {
         setExpandedId(found.phase);
         setInitialised(true);
         setTimeout(() => {
@@ -108,6 +121,13 @@ export default function BuildList() {
             behavior: "smooth", block: "center",
           });
         }, 400);
+        return;
+      }
+      if (found && foundPhase && !foundPhase.unlocked) {
+        // Task belongs to a locked phase — show that phase's lock state,
+        // collapsed, instead of opening or scrolling to the task.
+        setExpandedId(null);
+        setInitialised(true);
         return;
       }
     }
@@ -256,12 +276,11 @@ interface PhaseCardProps {
 function PhaseCard({ phase, expanded, onToggle, onToggleTask, focusTaskId }: PhaseCardProps) {
   const isComplete = phase.status === "complete";
   const isActive = phase.status === "active";
-  const isUpcoming = phase.status === "upcoming";
   const isOverdue = phase.status === "past-incomplete";
-  const locked = !phase.unlocked;
+  const locked = phase.status === "upcoming-locked" || phase.status === "father-mode-locked";
 
   const statusChip = locked
-    ? { label: phase.id === 6 ? "Unlocks Day One" : "Upcoming", cls: "bg-secondary text-muted-foreground border-border" }
+    ? { label: phase.unlockLabel, cls: "bg-secondary text-muted-foreground border-border" }
     : isComplete
       ? { label: "Complete", cls: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30" }
       : isActive
@@ -284,12 +303,16 @@ function PhaseCard({ phase, expanded, onToggle, onToggleTask, focusTaskId }: Pha
         className={`absolute -left-[26px] top-6 w-4 h-4 rounded-full border-2 ${dotCls} flex items-center justify-center transition-all`}
       >
         {isComplete && <Check className="w-2.5 h-2.5 text-black" strokeWidth={4} />}
-        {(isUpcoming || locked) && <Lock className="w-2 h-2 text-muted-foreground" />}
+        {locked && <Lock className="w-2 h-2 text-muted-foreground" />}
       </span>
 
       <motion.button
         layout
-        onClick={onToggle}
+        onClick={() => {
+          if (locked) return; // locked phases never expand
+          onToggle();
+        }}
+        aria-disabled={locked}
         className={`w-full text-left rounded-2xl border p-4 transition-colors ${
           expanded
             ? "border-primary/40 bg-card"
@@ -298,7 +321,7 @@ function PhaseCard({ phase, expanded, onToggle, onToggleTask, focusTaskId }: Pha
               : isActive
                 ? "border-border bg-card hover:border-primary/40"
                 : "border-border bg-card/50"
-        } ${(isUpcoming || locked) ? "opacity-70" : ""}`}
+        } ${locked ? "opacity-80" : ""}`}
       >
         <div className="flex items-center gap-3">
           <div className="flex-1 min-w-0">
@@ -418,9 +441,7 @@ function PhaseBody({ phase, onToggleTask, focusTaskId, disabled }: PhaseBodyProp
 
       {disabled && (
         <p className="mt-4 text-[11px] text-muted-foreground italic text-center">
-          {phase.id === 6
-            ? "Unlocks the day she arrives."
-            : "Preview only — recommended starting soon."}
+          {phase.unlockLabel} — the full task list previews here once it's live.
         </p>
       )}
     </div>

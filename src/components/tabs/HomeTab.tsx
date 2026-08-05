@@ -9,12 +9,14 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLatestReadiness } from "@/hooks/useReadiness";
 import { useBuildList, applyMilestoneBoost, surfaceMilestones } from "@/hooks/useBuildList";
-import { getPhase, daysRemaining as calcDaysRemaining, pregnancyWeek, babyAgeDays, getPostBirthPhase } from "@/lib/phases";
+import { getPhase, daysRemaining as calcDaysRemaining, pregnancyWeek, babyAgeDays, getPostBirthPhase, unlockedPhaseIds } from "@/lib/phases";
 import { askHerTonight } from "@/content/fatherhood";
 import { recommendedForWeek, recommendedForPostBirthPhase } from "@/content/learn";
 import { useLearnProgress } from "@/hooks/useLearnProgress";
 import m2fLogo from "@/assets/m2f-logo.png.asset.json";
 import { Countdown } from "@/components/home/Countdown";
+import { CoachFocusCard } from "@/components/home/CoachFocusCard";
+import { ThisWeeksRoadmapCard } from "@/components/home/ThisWeeksRoadmapCard";
 import { useWeeklyPriorities, effectiveStatus } from "@/hooks/useWeeklyPriorities";
 import { useCurrentWeeklyCheckIn } from "@/hooks/useWeeklyCheckIns";
 import { CHECK_IN_STATUS } from "@/lib/coaching/coachingConstants";
@@ -61,10 +63,20 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
   const pbPhase = arrived ? getPostBirthPhase(ageDays) : null;
   const pbMissions = pbPhase ? missionsForPhase(pbPhase.slug) : [];
 
-  // Readiness score + delta
+  // Readiness score + delta. Only milestones from phases the client has
+  // actually unlocked can boost the score — a locked phase's work isn't
+  // completable, so it must not inflate readiness.
+  const unlockedPhases = useMemo(
+    () => unlockedPhaseIds({ currentPregnancyWeek: week, babyArrived: arrived, dueDatePassed: arrived }),
+    [week, arrived],
+  );
+  const scoringMilestones = useMemo(
+    () => buildMilestones.filter((m) => unlockedPhases.has(m.phase)),
+    [buildMilestones, unlockedPhases],
+  );
   const latest = data?.latest ?? null;
   const byCategory = latest?.byCategory;
-  const live = byCategory ? applyMilestoneBoost(byCategory, buildMilestones) : null;
+  const live = byCategory ? applyMilestoneBoost(byCategory, scoringMilestones) : null;
   const readinessRaw = live ? live.total : latest?.total_score ?? null;
   const readinessPct = readinessRaw != null ? Math.round((readinessRaw / 70) * 100) : null;
   const prevPct = data?.previousTotal != null ? Math.round((data.previousTotal / 70) * 100) : null;
@@ -159,7 +171,9 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
 
   // Mission 4: Next open build task — event-driven surfacing (limit = 1).
   const currentPhaseId = phase && phase.id <= 5 ? phase.id : phase?.id === 6 ? 6 : 5;
-  const nextBuild = surfaceMilestones(buildMilestones, currentPhaseId, 1)[0] ?? null;
+  const nextBuild = surfaceMilestones(buildMilestones, currentPhaseId, week, 1)[0] ?? null;
+  // Up to 3 roadmap milestones for the "This Week's Roadmap" section.
+  const weekRoadmap = surfaceMilestones(buildMilestones, currentPhaseId, week, 3);
 
   // Post-birth workout page writes m2f.pbworkout.<slug>.<date> on completion
   const pbProgram = pbPhase ? programForSlug(pbPhase.programSlug) : null;
@@ -315,7 +329,7 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
   });
 
   // Next milestone
-  const nextMilestone = surfaceMilestones(buildMilestones, phase && phase.id <= 5 ? phase.id : 5, 1)[0];
+  const nextMilestone = surfaceMilestones(buildMilestones, phase && phase.id <= 5 ? phase.id : 5, week, 1)[0];
   const milestoneLabel = nextMilestone?.title ?? (phase ? `${phase.name} · ${phase.focus}` : "Set your due date");
   const milestoneWhen = week ? `Week ${(week ?? 0) + 1}` : phase?.window ?? "";
 
@@ -443,7 +457,17 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
       </button>
       )}
 
-      {/* ── 3 · Today's Mission Card ── */}
+      {/* ── 3 · Coach Focus (personalized weekly prescription) ── */}
+      <div className="px-5 pt-4">
+        <CoachFocusCard />
+      </div>
+
+      {/* ── 4 · This Week's Roadmap (Build List milestones for this week) ── */}
+      <div className="px-5 pt-4">
+        <ThisWeeksRoadmapCard items={weekRoadmap} />
+      </div>
+
+      {/* ── 5 · Today's Mission Card ── */}
       <div className="px-5 pt-4">
         <section className="rounded-2xl border border-primary/40 bg-gradient-to-b from-primary/10 to-transparent bg-card/60 backdrop-blur p-5">
           <div className="flex items-baseline justify-between mb-4 gap-3">

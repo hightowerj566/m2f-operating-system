@@ -12,6 +12,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { CATEGORIES, type CategorySlug } from "@/lib/readiness";
+import { FATHER_MODE, unlockedPhaseIds } from "@/lib/phases";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = supabase as any;
@@ -108,12 +109,20 @@ export function applyMilestoneBoost(
 }
 
 /**
- * Event-driven surfacing (v2). Ranking:
- *   1. Overdue CRITICAL (earlier phase, priority=critical)
- *   2. Current phase CRITICAL, nearest recommended_week first
- *   3. Current phase STANDARD (then bonus)
- *   4. Next phases pulled forward
- * Completed items are excluded. Home should pass limit = 1.
+ * Event-driven surfacing (v3 — week-aware, lock-safe). Ranking:
+ *   1. Overdue CRITICAL (earlier unlocked phase, priority=critical)
+ *   2. Recommended for the client's exact current pregnancy week
+ *   3. Overdue, any priority, from an earlier unlocked phase
+ *   4. Upcoming — recommended within the next 1–2 weeks — if unlocked
+ *   5. Current-phase CRITICAL
+ *   6. Current-phase STANDARD
+ *   7. Current-phase BONUS / any other unlocked phase, pulled forward last
+ *
+ * Milestones from a locked phase are NEVER returned — locking is derived
+ * from currentPregnancyWeek via lib/phases, using currentPhase (as set by
+ * the caller from getPhase()) as the signal for whether Father Mode (and
+ * therefore the full pregnancy roadmap) has been reached. Completed items
+ * are always excluded. Home should pass limit = 1–3.
  */
 export function surfaceMilestones(
   milestones: Pick<
@@ -121,19 +130,40 @@ export function surfaceMilestones(
     "id" | "category_id" | "phase" | "title" | "detail" | "points" | "sort_order" | "completed" | "priority" | "recommended_week" | "required"
   >[],
   currentPhase: number | null,
+  currentPregnancyWeek: number | null = null,
   limit = 3,
 ): BuildMilestone[] {
   const phase = currentPhase ?? 1;
-  const incomplete = milestones.filter((m) => !m.completed);
+  const fatherModeReached = phase === FATHER_MODE.id;
+
+  const unlocked = unlockedPhaseIds({
+    currentPregnancyWeek,
+    babyArrived: fatherModeReached,
+    dueDatePassed: fatherModeReached,
+  });
+
+  const incomplete = milestones.filter((m) => !m.completed && unlocked.has(m.phase));
   const priorityWeight = (p: string | undefined) =>
     p === "critical" ? 0 : p === "standard" ? 1 : 2;
 
+  const isRecommendedThisWeek = (m: (typeof incomplete)[number]) =>
+    currentPregnancyWeek != null && m.recommended_week === currentPregnancyWeek;
+
+  const isUpcomingSoon = (m: (typeof incomplete)[number]) =>
+    currentPregnancyWeek != null &&
+    m.recommended_week != null &&
+    m.recommended_week > currentPregnancyWeek &&
+    m.recommended_week <= currentPregnancyWeek + 2;
+
   const bucket = (m: (typeof incomplete)[number]) => {
     if (m.phase < phase && m.priority === "critical") return 0; // overdue critical
-    if (m.phase === phase && m.priority === "critical") return 1;
-    if (m.phase === phase) return 2; // standard / bonus in current phase
-    if (m.phase > phase) return 3 + (m.phase - phase); // future pull-forward
-    return 5; // overdue non-critical last
+    if (isRecommendedThisWeek(m)) return 1; // recommended for exactly this week
+    if (m.phase < phase) return 2; // overdue, any priority
+    if (isUpcomingSoon(m)) return 3; // recommended within the next 1–2 weeks
+    if (m.phase === phase && m.priority === "critical") return 4;
+    if (m.phase === phase && m.priority === "standard") return 5;
+    if (m.phase === phase) return 6; // bonus in current phase
+    return 7; // future unlocked phase pulled forward, lowest priority
   };
 
   const ranked = [...incomplete].sort((a, b) => {
