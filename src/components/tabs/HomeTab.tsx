@@ -61,10 +61,20 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
   const pbPhase = arrived ? getPostBirthPhase(ageDays) : null;
   const pbMissions = pbPhase ? missionsForPhase(pbPhase.slug) : [];
 
-  // Readiness score + delta
+  // Readiness score + delta. Only milestones from phases the client has
+  // actually unlocked can boost the score — a locked phase's work isn't
+  // completable, so it must not inflate readiness.
+  const unlockedPhases = useMemo(
+    () => unlockedPhaseIds({ currentPregnancyWeek: week, babyArrived: arrived, dueDatePassed: arrived }),
+    [week, arrived],
+  );
+  const scoringMilestones = useMemo(
+    () => buildMilestones.filter((m) => unlockedPhases.has(m.phase)),
+    [buildMilestones, unlockedPhases],
+  );
   const latest = data?.latest ?? null;
   const byCategory = latest?.byCategory;
-  const live = byCategory ? applyMilestoneBoost(byCategory, buildMilestones) : null;
+  const live = byCategory ? applyMilestoneBoost(byCategory, scoringMilestones) : null;
   const readinessRaw = live ? live.total : latest?.total_score ?? null;
   const readinessPct = readinessRaw != null ? Math.round((readinessRaw / 70) * 100) : null;
   const prevPct = data?.previousTotal != null ? Math.round((data.previousTotal / 70) * 100) : null;
