@@ -12,10 +12,13 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { useLatestReadiness } from "@/hooks/useReadiness";
 import { useBuildList, useToggleMilestone, type BuildMilestone, type MilestonePriority } from "@/hooks/useBuildList";
-import { PHASES, FATHER_MODE, getPhase, daysRemaining } from "@/lib/phases";
+import {
+  PHASES, FATHER_MODE, getPhase, daysRemaining, pregnancyWeek,
+  isPhaseUnlocked, phaseUnlockLabel,
+} from "@/lib/phases";
 import { BottomNav } from "@/components/BottomNav";
 
-type PhaseStatus = "complete" | "active" | "upcoming" | "past-incomplete";
+type PhaseStatus = "complete" | "active" | "past-incomplete" | "upcoming-locked" | "father-mode-locked";
 
 interface PhaseSummary {
   id: number;
