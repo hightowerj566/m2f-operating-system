@@ -457,7 +457,17 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
       </button>
       )}
 
-      {/* ── 3 · Today's Mission Card ── */}
+      {/* ── 3 · Coach Focus (personalized weekly prescription) ── */}
+      <div className="px-5 pt-4">
+        <CoachFocusCard />
+      </div>
+
+      {/* ── 4 · This Week's Roadmap (Build List milestones for this week) ── */}
+      <div className="px-5 pt-4">
+        <ThisWeeksRoadmapCard items={weekRoadmap} />
+      </div>
+
+      {/* ── 5 · Today's Mission Card ── */}
       <div className="px-5 pt-4">
         <section className="rounded-2xl border border-primary/40 bg-gradient-to-b from-primary/10 to-transparent bg-card/60 backdrop-blur p-5">
           <div className="flex items-baseline justify-between mb-4 gap-3">
