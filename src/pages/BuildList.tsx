@@ -52,10 +52,15 @@ export default function BuildList() {
 
   const days = daysRemaining(readiness?.dueDate);
   const arrived = !!readiness?.babyArrivedAt;
+  const week = pregnancyWeek(days);
   const phase = getPhase(days, arrived);
   // Father Mode unlocks when baby has arrived OR the due date has passed.
+  // (daysRemaining is clamped at 0, so "days === 0" is the closest signal
+  // this codebase has for "the due date has passed.")
   const fatherModeUnlocked = arrived || (days != null && days === 0);
   const currentPhaseId = phase?.id === 6 ? 6 : phase && phase.id <= 5 ? phase.id : 5;
+
+  const unlockCtx = { currentPregnancyWeek: week, babyArrived: arrived, dueDatePassed: fatherModeUnlocked };
 
   // Include Phase 6 (Father Mode) in the roadmap so its tasks render.
   const allPhases = useMemo(
@@ -63,10 +68,13 @@ export default function BuildList() {
     [],
   );
 
-  // Build per-phase summaries.
+  // Build per-phase summaries. Locked phases never expose their task list,
+  // details, or counts — only name / window / briefing / lock state.
   const phases: PhaseSummary[] = useMemo(() => {
     return allPhases.map((p) => {
-      const items = milestones.filter((m) => m.phase === p.id);
+      const unlocked = isPhaseUnlocked(p.id, unlockCtx);
+      const rawItems = milestones.filter((m) => m.phase === p.id);
+      const items = unlocked ? rawItems : [];
       const required = items.filter((i) => i.required);
       const optional = items.filter((i) => !i.required);
       const requiredDone = required.filter((i) => i.completed).length;
@@ -78,13 +86,11 @@ export default function BuildList() {
       const pctDone = requiredTotal ? requiredDone : done;
       const pct = pctBase ? Math.round((pctDone / pctBase) * 100) : 0;
 
-      const unlocked = p.id === 6 ? fatherModeUnlocked : true;
       let status: PhaseStatus;
-      if (requiredTotal > 0 && requiredDone === requiredTotal) status = "complete";
-      else if (!unlocked) status = "upcoming";
+      if (!unlocked) status = p.id === 6 ? "father-mode-locked" : "upcoming-locked";
+      else if (requiredTotal > 0 && requiredDone === requiredTotal) status = "complete";
       else if (p.id === currentPhaseId) status = "active";
-      else if (p.id < currentPhaseId) status = "past-incomplete";
-      else status = "upcoming";
+      else status = "past-incomplete"; // covers p.id < currentPhaseId, plus the rare unlocked-ahead-of-schedule edge case
 
       return {
         id: p.id, slug: p.slug, name: p.name,
@@ -92,9 +98,11 @@ export default function BuildList() {
         items, required, optional,
         requiredDone, requiredTotal,
         done, total, pct, status, unlocked,
+        unlockLabel: phaseUnlockLabel(p.id),
       };
     });
-  }, [milestones, currentPhaseId, allPhases, fatherModeUnlocked]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [milestones, currentPhaseId, allPhases, week, arrived, fatherModeUnlocked]);
 
   // Single-open accordion.
   const [expandedId, setExpandedId] = useState<number | null>(null);
