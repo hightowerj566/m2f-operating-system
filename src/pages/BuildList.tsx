@@ -441,9 +441,7 @@ function PhaseBody({ phase, onToggleTask, focusTaskId, disabled }: PhaseBodyProp
 
       {disabled && (
         <p className="mt-4 text-[11px] text-muted-foreground italic text-center">
-          {phase.id === 6
-            ? "Unlocks the day she arrives."
-            : "Preview only — recommended starting soon."}
+          {phase.unlockLabel} — the full task list previews here once it's live.
         </p>
       )}
     </div>
