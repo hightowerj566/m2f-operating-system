@@ -12,6 +12,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { CATEGORIES, type CategorySlug } from "@/lib/readiness";
+import { FATHER_MODE, unlockedPhaseIds } from "@/lib/phases";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = supabase as any;
