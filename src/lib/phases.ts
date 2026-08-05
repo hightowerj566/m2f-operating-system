@@ -7,7 +7,9 @@ export interface Phase {
   slug: string;
   name: string;              // internal/brand name
   window: string;            // days-out window
-  pregWindow: string;        // pregnancy-week window (40-week clock)
+  pregWindow: string;        // pregnancy-week window (40-week clock), human display
+  startWeek: number;         // machine-readable pregnancy-week unlock threshold (inclusive)
+  endWeek: number;           // machine-readable pregnancy-week upper bound (exclusive-ish, display only)
   focus: string;             // short focus
   herState: string;          // what she's experiencing
   hisJob: string;            // the concrete this-phase directive
