@@ -37,6 +37,7 @@ interface PhaseSummary {
   pct: number; // based on REQUIRED — optional never blocks
   status: PhaseStatus;
   unlocked: boolean;
+  unlockLabel: string;
 }
 
 export default function BuildList() {
