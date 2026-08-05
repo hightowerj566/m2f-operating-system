@@ -171,7 +171,9 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
 
   // Mission 4: Next open build task — event-driven surfacing (limit = 1).
   const currentPhaseId = phase && phase.id <= 5 ? phase.id : phase?.id === 6 ? 6 : 5;
-  const nextBuild = surfaceMilestones(buildMilestones, currentPhaseId, 1)[0] ?? null;
+  const nextBuild = surfaceMilestones(buildMilestones, currentPhaseId, week, 1)[0] ?? null;
+  // Up to 3 roadmap milestones for the "This Week's Roadmap" section.
+  const weekRoadmap = surfaceMilestones(buildMilestones, currentPhaseId, week, 3);
 
   // Post-birth workout page writes m2f.pbworkout.<slug>.<date> on completion
   const pbProgram = pbPhase ? programForSlug(pbPhase.programSlug) : null;
