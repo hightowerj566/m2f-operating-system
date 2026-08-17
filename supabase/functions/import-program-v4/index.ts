@@ -372,13 +372,33 @@ Deno.serve(async (req) => {
     const data = program_json;
     let targetProgramId = program_id;
 
+    // Normalize the uploaded JSON into weeks -> training days before writing
+    // anything, so a shape we don't understand fails loudly instead of
+    // silently importing a program made entirely of rest days.
+    const weeksAll = collectWeeks(data);
+    const parsedWeeks = weeksAll.map((week, wi) => {
+      const days = readDays(week).filter((day: any) => !isRestDay(day));
+      return {
+        weekNum: week.week || wi + 1,
+        isDeload: `${week.week_label || week.label || ""}`.toLowerCase().includes("deload"),
+        days,
+      };
+    });
+    const totalTrainingDays = parsedWeeks.reduce((sum, w) => sum + w.days.length, 0);
+
+    if (totalTrainingDays === 0) {
+      return new Response(JSON.stringify({
+        error: "No training days found in this JSON. Expected weeks with a days/sessions/workouts array containing exercises.",
+      }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
     // Create program if needed
     if (create_program && !targetProgramId) {
       const name = program_name || data.meta?.program || "Imported Program";
       const desc = data.meta?.goal || data.meta?.phase_name || null;
       const { data: prog, error: progErr } = await supabase
         .from("programs")
-        .insert({ name, description: desc, total_days: 1, created_by: userId || "00000000-0000-0000-0000-000000000000", is_published: false } as any)
+        .insert({ name, description: desc, total_days: 1, created_by: userId || "00000000-0000-0000-0000-000000000000", is_published: true } as any)
         .select().single();
       if (progErr) {
         return new Response(JSON.stringify({ error: `Create program failed: ${progErr.message}` }),
@@ -396,50 +416,41 @@ Deno.serve(async (req) => {
     const allRows: any[] = [];
     let dayNumber = start_day;
 
-    // Process mesocycles
-    const mesocycles = data.mesocycles || [];
-    for (const meso of mesocycles) {
-      const weeks = meso.weeks || [];
-      for (const week of weeks) {
-        const weekNum = week.week || 1;
-        const isDeload = (week.week_label || "").toLowerCase().includes("deload");
-        const trainingDays = week.days || [];
+    for (const week of parsedWeeks) {
+      const { weekNum, isDeload, days: trainingDays } = week;
+      const deloadTag = isDeload ? " [DELOAD]" : "";
 
-        for (let di = 0; di < trainingDays.length; di++) {
-          const td = trainingDays[di];
-          const exercises = convertNewFormatDay(td.exercises || [], td.conditioning || null, weekNum, di + 1);
-          const deloadTag = isDeload ? " [DELOAD]" : "";
-          const label = `Day ${di + 1} — ${td.day_label || `Training Day ${di + 1}`}${deloadTag}`;
-          allRows.push({ program_id: targetProgramId, day_number: dayNumber, label, exercises });
-          results.push(`✅ W${weekNum} D${di + 1} (#${dayNumber}): ${exercises.length} items`);
-          dayNumber++;
-        }
+      for (let di = 0; di < trainingDays.length; di++) {
+        const td = trainingDays[di];
+        const exercises = convertNewFormatDay(readExercises(td), td.conditioning || null, weekNum, di + 1);
+        const label = `Day ${di + 1} — ${td.day_label || td.label || td.name || `Training Day ${di + 1}`}${deloadTag}`;
+        allRows.push({ program_id: targetProgramId, day_number: dayNumber, label, exercises });
+        results.push(`✅ W${weekNum} D${di + 1} (#${dayNumber}): ${exercises.length} items`);
+        dayNumber++;
+      }
 
-        // Fill remaining days with rest/recovery
-        const trainingCount = trainingDays.length;
-        for (let extra = trainingCount; extra < days_per_week; extra++) {
-          const dayInWeek = extra + 1;
-          const isDeloadDay = isDeload;
-          const deloadTag = isDeloadDay ? " [DELOAD]" : "";
-          if (dayInWeek === 6) {
-            allRows.push({
-              program_id: targetProgramId, day_number: dayNumber,
-              label: `Day 6 — Active Recovery${deloadTag}`,
-              exercises: buildRestDay(weekNum, 6),
-            });
-            results.push(`✅ W${weekNum} D6 (#${dayNumber}): Active Recovery`);
-          } else {
-            allRows.push({
-              program_id: targetProgramId, day_number: dayNumber,
-              label: `Day 7 — Rest Day${deloadTag}`,
-              exercises: buildRestDay(weekNum, 7),
-            });
-            results.push(`✅ W${weekNum} D7 (#${dayNumber}): Rest`);
-          }
-          dayNumber++;
+      // Fill remaining days with rest/recovery
+      for (let extra = trainingDays.length; extra < days_per_week; extra++) {
+        const dayInWeek = extra + 1;
+        if (dayInWeek === 6) {
+          allRows.push({
+            program_id: targetProgramId, day_number: dayNumber,
+            label: `Day 6 — Active Recovery${deloadTag}`,
+            exercises: buildRestDay(weekNum, 6),
+          });
+          results.push(`✅ W${weekNum} D6 (#${dayNumber}): Active Recovery`);
+        } else {
+          allRows.push({
+            program_id: targetProgramId, day_number: dayNumber,
+            label: `Day 7 — Rest Day${deloadTag}`,
+            exercises: buildRestDay(weekNum, 7),
+          });
+          results.push(`✅ W${weekNum} D7 (#${dayNumber}): Rest`);
         }
+        dayNumber++;
       }
     }
+
 
     // Batch upsert
     for (let i = 0; i < allRows.length; i += 50) {
