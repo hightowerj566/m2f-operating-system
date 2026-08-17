@@ -274,7 +274,72 @@ function buildRestDay(weekNum: number, dayInWeek: number): any[] {
   ];
 }
 
+// ─── Shape-tolerant readers ────────────────────────────────────────
+// Program JSON in the wild comes in a few shapes. Normalize them all to a
+// flat list of weeks, each with a list of training days.
+function collectWeeks(data: any): any[] {
+  const weeks: any[] = [];
+  const pushWeeks = (arr: any) => {
+    if (Array.isArray(arr)) for (const w of arr) weeks.push(w);
+  };
+
+  pushWeeks(data.weeks);
+  for (const key of ["mesocycles", "phases", "blocks", "cycles", "mesos"]) {
+    const groups = data[key];
+    if (!Array.isArray(groups)) continue;
+    for (const group of groups) {
+      pushWeeks(group.weeks);
+      // Some exports put days directly on the block with no week wrapper.
+      const directDays = readDays(group);
+      if (directDays.length && !Array.isArray(group.weeks)) {
+        weeks.push({ week: group.week || weeks.length + 1, week_label: group.label || group.name, days: directDays });
+      }
+    }
+  }
+
+  // Last resort: days at the very top level.
+  if (weeks.length === 0) {
+    const directDays = readDays(data);
+    if (directDays.length) weeks.push({ week: 1, days: directDays });
+  }
+  return weeks;
+}
+
+function readDays(week: any): any[] {
+  if (!week || typeof week !== "object") return [];
+  for (const key of ["days", "sessions", "workouts", "training_days", "trainingDays"]) {
+    if (Array.isArray(week[key]) && week[key].length > 0) return week[key];
+  }
+  return [];
+}
+
+function readExercises(day: any): any[] {
+  if (!day || typeof day !== "object") return [];
+  for (const key of ["exercises", "movements", "items", "lifts"]) {
+    if (Array.isArray(day[key]) && day[key].length > 0) return day[key];
+  }
+  // Blocks-of-exercises shape: { blocks: [{ role, exercises: [...] }] }
+  const blocks = day.blocks || day.sections || day.groups;
+  if (Array.isArray(blocks)) {
+    const flat: any[] = [];
+    for (const block of blocks) {
+      const inner = readExercises(block);
+      for (const ex of inner) {
+        flat.push({ role: ex.role || block.role || block.name || block.label, ...ex });
+      }
+    }
+    if (flat.length) return flat;
+  }
+  return [];
+}
+
+function isRestDay(day: any): boolean {
+  const label = `${day?.day_label || day?.label || day?.name || ""} ${day?.type || ""}`.toLowerCase();
+  return /rest|off day|recovery/.test(label) && readExercises(day).length === 0;
+}
+
 // ─── Main handler ──────────────────────────────────────────────────
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
