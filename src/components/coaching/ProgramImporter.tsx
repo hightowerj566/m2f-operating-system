@@ -49,15 +49,18 @@ export function ProgramImporter({
         setProgramName(parsed.meta.program + (parsed.meta.phase_name ? ` — ${parsed.meta.phase_name}` : ""));
       }
 
-      // Auto-detect days per week from first week
-      const firstMeso = parsed.mesocycles?.[0];
-      const firstWeek = firstMeso?.weeks?.[0];
-      if (firstWeek?.days?.length) {
-        // Training days + rest/recovery days
-        const trainingDays = firstWeek.days.length;
+      // Auto-detect days per week from the first week we can find
+      const weeks: any[] =
+        parsed.weeks ??
+        (parsed.mesocycles ?? parsed.phases ?? parsed.blocks ?? []).flatMap((m: any) => m.weeks ?? []);
+      const firstWeek = weeks?.[0];
+      const firstDays = firstWeek?.days ?? firstWeek?.sessions ?? firstWeek?.workouts ?? [];
+      if (firstDays.length) {
+        const trainingDays = firstDays.length;
         if (trainingDays <= 5) setDaysPerWeek(7);
         else setDaysPerWeek(trainingDays + 2);
       }
+
 
       setResult(null);
       toast({ title: "JSON loaded", description: `${file.name} parsed successfully` });
