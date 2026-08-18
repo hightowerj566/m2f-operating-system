@@ -7,6 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { ExerciseCard } from "@/components/workout/ExerciseCard";
 import { ConditioningCard, ConditioningBlockCard, isConditioningExercise, parseConditioningBlock } from "@/components/workout/ConditioningCard";
 import { TrainingScheduleSelector } from "@/components/workout/TrainingScheduleSelector";
+import { TimeAvailableSelector } from "@/components/workout/TimeAvailableSelector";
+import { loadTimeBudget, saveTimeBudget, trimItemsForTime, type TimeBudget } from "@/lib/timeBudget";
 import { RestCard } from "@/components/workout/RestCard";
 import { RestTimerModal } from "@/components/workout/RestTimerModal";
 import { ExerciseModal } from "@/components/workout/ExerciseModal";
@@ -124,6 +126,7 @@ export default function Index() {
   const [loadRecommendations, setLoadRecommendations] = useState<LoadRecommendation[]>([]);
   const [standardsStreak, setStandardsStreak] = useState(0);
   const [showFitnessTools, setShowFitnessTools] = useState(false);
+  const [timeBudget, setTimeBudget] = useState<TimeBudget>(() => loadTimeBudget());
 
   // ── Flagship (M2F Guided Journey) state ──
   // Kept explicit and separate from the legacy assignment-driven state above.
@@ -744,10 +747,23 @@ export default function Index() {
     if (data?.url) window.open(data.url, "_blank");
   };
 
+  // Session trimmed to the member's available time. Non-flagship (coach-assigned
+  // and imported) programs only — the flagship journey has its own versions.
+  const displayGroups = useMemo<WorkoutGroup[]>(() => {
+    if (isFlagshipActive) return groups;
+    return groups.map((g) => ({ ...g, exercises: trimItemsForTime(g.exercises, timeBudget) }));
+  }, [groups, timeBudget, isFlagshipActive]);
+  const sessionTrimmed = useMemo(
+    () =>
+      displayGroups.reduce((n, g) => n + g.exercises.length, 0) <
+      groups.reduce((n, g) => n + g.exercises.length, 0),
+    [displayGroups, groups],
+  );
+
   // Build flat exercise list for prev/next navigation in ExerciseModal
   type ExerciseEntry = { name: string; detail: string; sets: number; reps: number | null; video_url: string | null; video_type: string | null; defaultWeight: number | null; restAfter: number };
   const flatExercises = useMemo<ExerciseEntry[]>(() => {
-    const allExercises = groups.flatMap(g => g.exercises);
+    const allExercises = displayGroups.flatMap(g => g.exercises);
     const getLetterGroup = (name: string): string | null => {
       const m = name.match(/^(\d+)?([a-zA-Z])\d*[\.\)\-]/);
       return m ? m[2].toUpperCase() : null;
@@ -938,6 +954,13 @@ export default function Index() {
                 schedule engine, which does not apply to the date-driven
                 flagship journey — hide it rather than let it corrupt journey state. */}
             {!isFlagshipActive && user && <TrainingScheduleSelector userId={user.id} programName={programName} programId={programId} onChange={handleScheduleChange} onProgramSwitch={handleProgramSwitch} />}
+            {!isFlagshipActive && groups.length > 0 && (
+              <TimeAvailableSelector
+                value={timeBudget}
+                trimmed={sessionTrimmed}
+                onChange={(next) => { setTimeBudget(next); saveTimeBudget(next); }}
+              />
+            )}
             <div className="flex items-center justify-between px-5 py-3 border-y border-border">
               <button onClick={prevDay} disabled={!canGoBack} className={`p-1 transition-colors ${canGoBack ? 'text-muted-foreground hover:text-foreground' : 'text-muted-foreground/30 cursor-not-allowed'}`}><ChevronLeft className="w-5 h-5" /></button>
               <span className="text-sm font-bold text-foreground">
@@ -986,8 +1009,8 @@ export default function Index() {
               ) : (
                 <>
                   {/* Warm-Up & Intensity Techniques */}
-                  {groups.length > 0 && (() => {
-                    const allExercises = groups.flatMap(g => g.exercises).filter(e => e.type !== "rest").map(e => ({ name: e.name, detail: e.detail }));
+                  {displayGroups.length > 0 && (() => {
+                    const allExercises = displayGroups.flatMap(g => g.exercises).filter(e => e.type !== "rest").map(e => ({ name: e.name, detail: e.detail }));
                     const programWarmUps = allExercises.filter(e => isWarmUpExercise(e.name));
                     const nonWarmUpExercises = allExercises.filter(e => !isWarmUpExercise(e.name));
                     return allExercises.length > 0 ? (
@@ -997,7 +1020,7 @@ export default function Index() {
                       </div>
                     ) : null;
                   })()}
-                  {groups.map((group) => (
+                  {displayGroups.map((group) => (
                   <div key={group.label}>
                     <p className="text-xs font-bold tracking-widest text-muted-foreground uppercase mb-3 px-1">{group.label}</p>
                     <div className="space-y-2">
@@ -1230,7 +1253,7 @@ export default function Index() {
 
                   {/* Mindset Moment & Dad Mission — always at the very bottom */}
                   {(() => {
-                    const allItems = groups.flatMap(g => g.exercises);
+                    const allItems = displayGroups.flatMap(g => g.exercises);
                     const mindset = allItems.find(ex => ex.type === "mindset");
                     const mission = allItems.find(ex => ex.type === "mission");
                     if (!mindset && !mission) return null;
