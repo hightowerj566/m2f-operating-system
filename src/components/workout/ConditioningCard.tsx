@@ -79,6 +79,7 @@ export function isConditioningExercise(name: string, rir: string | null | undefi
     "box jump", "burpee", "mountain climber",
     "rowing", "ski erg", "stairmaster",
     "saturday conditioning", "sunday conditioning",
+    "active recovery",
   ];
 
   if (conditioningKeywords.some(kw => lowerName.includes(kw))) return true;
