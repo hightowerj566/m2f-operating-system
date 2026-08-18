@@ -954,6 +954,13 @@ export default function Index() {
                 schedule engine, which does not apply to the date-driven
                 flagship journey — hide it rather than let it corrupt journey state. */}
             {!isFlagshipActive && user && <TrainingScheduleSelector userId={user.id} programName={programName} programId={programId} onChange={handleScheduleChange} onProgramSwitch={handleProgramSwitch} />}
+            {!isFlagshipActive && groups.length > 0 && (
+              <TimeAvailableSelector
+                value={timeBudget}
+                trimmed={sessionTrimmed}
+                onChange={(next) => { setTimeBudget(next); saveTimeBudget(next); }}
+              />
+            )}
             <div className="flex items-center justify-between px-5 py-3 border-y border-border">
               <button onClick={prevDay} disabled={!canGoBack} className={`p-1 transition-colors ${canGoBack ? 'text-muted-foreground hover:text-foreground' : 'text-muted-foreground/30 cursor-not-allowed'}`}><ChevronLeft className="w-5 h-5" /></button>
               <span className="text-sm font-bold text-foreground">
