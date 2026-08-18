@@ -747,10 +747,23 @@ export default function Index() {
     if (data?.url) window.open(data.url, "_blank");
   };
 
+  // Session trimmed to the member's available time. Non-flagship (coach-assigned
+  // and imported) programs only — the flagship journey has its own versions.
+  const displayGroups = useMemo<WorkoutGroup[]>(() => {
+    if (isFlagshipActive) return groups;
+    return groups.map((g) => ({ ...g, exercises: trimItemsForTime(g.exercises, timeBudget) }));
+  }, [groups, timeBudget, isFlagshipActive]);
+  const sessionTrimmed = useMemo(
+    () =>
+      displayGroups.reduce((n, g) => n + g.exercises.length, 0) <
+      groups.reduce((n, g) => n + g.exercises.length, 0),
+    [displayGroups, groups],
+  );
+
   // Build flat exercise list for prev/next navigation in ExerciseModal
   type ExerciseEntry = { name: string; detail: string; sets: number; reps: number | null; video_url: string | null; video_type: string | null; defaultWeight: number | null; restAfter: number };
   const flatExercises = useMemo<ExerciseEntry[]>(() => {
-    const allExercises = groups.flatMap(g => g.exercises);
+    const allExercises = displayGroups.flatMap(g => g.exercises);
     const getLetterGroup = (name: string): string | null => {
       const m = name.match(/^(\d+)?([a-zA-Z])\d*[\.\)\-]/);
       return m ? m[2].toUpperCase() : null;
