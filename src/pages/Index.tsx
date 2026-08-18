@@ -1002,8 +1002,8 @@ export default function Index() {
               ) : (
                 <>
                   {/* Warm-Up & Intensity Techniques */}
-                  {groups.length > 0 && (() => {
-                    const allExercises = groups.flatMap(g => g.exercises).filter(e => e.type !== "rest").map(e => ({ name: e.name, detail: e.detail }));
+                  {displayGroups.length > 0 && (() => {
+                    const allExercises = displayGroups.flatMap(g => g.exercises).filter(e => e.type !== "rest").map(e => ({ name: e.name, detail: e.detail }));
                     const programWarmUps = allExercises.filter(e => isWarmUpExercise(e.name));
                     const nonWarmUpExercises = allExercises.filter(e => !isWarmUpExercise(e.name));
                     return allExercises.length > 0 ? (
@@ -1013,7 +1013,7 @@ export default function Index() {
                       </div>
                     ) : null;
                   })()}
-                  {groups.map((group) => (
+                  {displayGroups.map((group) => (
                   <div key={group.label}>
                     <p className="text-xs font-bold tracking-widest text-muted-foreground uppercase mb-3 px-1">{group.label}</p>
                     <div className="space-y-2">
@@ -1246,7 +1246,7 @@ export default function Index() {
 
                   {/* Mindset Moment & Dad Mission — always at the very bottom */}
                   {(() => {
-                    const allItems = groups.flatMap(g => g.exercises);
+                    const allItems = displayGroups.flatMap(g => g.exercises);
                     const mindset = allItems.find(ex => ex.type === "mindset");
                     const mission = allItems.find(ex => ex.type === "mission");
                     if (!mindset && !mission) return null;
