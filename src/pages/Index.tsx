@@ -7,6 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { ExerciseCard } from "@/components/workout/ExerciseCard";
 import { ConditioningCard, ConditioningBlockCard, isConditioningExercise, parseConditioningBlock } from "@/components/workout/ConditioningCard";
 import { TrainingScheduleSelector } from "@/components/workout/TrainingScheduleSelector";
+import { TimeAvailableSelector } from "@/components/workout/TimeAvailableSelector";
+import { loadTimeBudget, saveTimeBudget, trimItemsForTime, type TimeBudget } from "@/lib/timeBudget";
 import { RestCard } from "@/components/workout/RestCard";
 import { RestTimerModal } from "@/components/workout/RestTimerModal";
 import { ExerciseModal } from "@/components/workout/ExerciseModal";
