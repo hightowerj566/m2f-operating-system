@@ -124,6 +124,7 @@ export default function Index() {
   const [loadRecommendations, setLoadRecommendations] = useState<LoadRecommendation[]>([]);
   const [standardsStreak, setStandardsStreak] = useState(0);
   const [showFitnessTools, setShowFitnessTools] = useState(false);
+  const [timeBudget, setTimeBudget] = useState<TimeBudget>(() => loadTimeBudget());
 
   // ── Flagship (M2F Guided Journey) state ──
   // Kept explicit and separate from the legacy assignment-driven state above.
