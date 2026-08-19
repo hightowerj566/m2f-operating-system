@@ -45,7 +45,7 @@ import { FlagshipJourneyCard } from "@/components/workout/FlagshipJourneyCard";
 interface ProgramExercise {
   name: string;
   detail: string;
-  type: "exercise" | "rest" | "mindset" | "mission";
+  type: "exercise" | "conditioning" | "rest" | "mindset" | "mission" | "warmup";
   sets: number | null;
   reps: number | null;
   percentage: number | null;
@@ -565,7 +565,7 @@ export default function Index() {
   /** Render the right card type based on whether the exercise is conditioning */
   const renderExerciseOrConditioning = (ex: ProgramExercise, idx: number | string) => {
     const cleanName = stripPrefix(ex.name);
-    const isCond = isConditioningExercise(ex.name, ex.rir, ex.repsRaw ?? null);
+    const isCond = ex.type === "conditioning" || isConditioningExercise(ex.name, ex.rir, ex.repsRaw ?? null);
     const tapHandler = () => setActiveExercise({
       name: cleanName,
       detail: isCond ? ex.detail : calcWeight(ex),
@@ -1054,7 +1054,7 @@ export default function Index() {
                         let condFinisherStartIdx = filteredExercises.length; // default: no finisher
                         for (let j = filteredExercises.length - 1; j >= 0; j--) {
                           const fEx = filteredExercises[j];
-                          if (isConditioningExercise(fEx.name, fEx.rir, fEx.repsRaw ?? null)) {
+                          if (fEx.type === "conditioning" || isConditioningExercise(fEx.name, fEx.rir, fEx.repsRaw ?? null)) {
                             condFinisherStartIdx = j;
                           } else {
                             break; // stop as soon as we hit a non-conditioning exercise
