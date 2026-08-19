@@ -45,7 +45,7 @@ import { FlagshipJourneyCard } from "@/components/workout/FlagshipJourneyCard";
 interface ProgramExercise {
   name: string;
   detail: string;
-  type: "exercise" | "rest" | "mindset" | "mission";
+  type: "exercise" | "conditioning" | "rest" | "mindset" | "mission" | "warmup";
   sets: number | null;
   reps: number | null;
   percentage: number | null;
@@ -347,6 +347,14 @@ export default function Index() {
   // Legacy program day loader — handles coach-assigned programs and
   // legacy program_days content. The flagship Guided Journey no longer flows
   // through this function; it uses loadFlagshipJourneyDate exclusively.
+  const normalizeImportedExercises = (items: ProgramExercise[]): ProgramExercise[] =>
+    items.map((exercise) => ({
+      ...exercise,
+      repsRaw:
+        exercise.repsRaw ??
+        (typeof exercise.reps === "string" ? exercise.reps : exercise.reps != null ? String(exercise.reps) : null),
+    }));
+
   const loadLegacyProgramDay = useCallback(async (
     pid: string,
     dayNum: number,
@@ -409,7 +417,9 @@ export default function Index() {
     // ── Standard mode: load from DB ──
     // Load primary day
     const { data } = await supabase.from("program_days").select("label, exercises").eq("program_id", pid).eq("day_number", dayNum).single();
-    let exercises: ProgramExercise[] = data ? ((data as any).exercises as ProgramExercise[]) : [];
+    let exercises: ProgramExercise[] = data
+      ? normalizeImportedExercises((data as any).exercises as ProgramExercise[])
+      : [];
     let label = data ? ((data as any).label || `Day ${dayNum}`) : `Day ${dayNum}`;
 
     // Override label if schedule provides one
@@ -420,7 +430,7 @@ export default function Index() {
       for (const mergeDay of config.mergeDays) {
         const { data: mergeData } = await supabase.from("program_days").select("exercises").eq("program_id", pid).eq("day_number", mergeDay).single();
         if (mergeData) {
-          const mergeExercises = (mergeData as any).exercises as ProgramExercise[];
+          const mergeExercises = normalizeImportedExercises((mergeData as any).exercises as ProgramExercise[]);
           // Split core exercises so pos 1 and pos 4 each get half
           const portion = splitMergeExercises(mergeExercises, dayNum);
           exercises = [...exercises, ...portion];
@@ -565,7 +575,7 @@ export default function Index() {
   /** Render the right card type based on whether the exercise is conditioning */
   const renderExerciseOrConditioning = (ex: ProgramExercise, idx: number | string) => {
     const cleanName = stripPrefix(ex.name);
-    const isCond = isConditioningExercise(ex.name, ex.rir, ex.repsRaw ?? null);
+    const isCond = ex.type === "conditioning" || isConditioningExercise(ex.name, ex.rir, ex.repsRaw ?? null);
     const tapHandler = () => setActiveExercise({
       name: cleanName,
       detail: isCond ? ex.detail : calcWeight(ex),
@@ -1054,7 +1064,7 @@ export default function Index() {
                         let condFinisherStartIdx = filteredExercises.length; // default: no finisher
                         for (let j = filteredExercises.length - 1; j >= 0; j--) {
                           const fEx = filteredExercises[j];
-                          if (isConditioningExercise(fEx.name, fEx.rir, fEx.repsRaw ?? null)) {
+                          if (fEx.type === "conditioning" || isConditioningExercise(fEx.name, fEx.rir, fEx.repsRaw ?? null)) {
                             condFinisherStartIdx = j;
                           } else {
                             break; // stop as soon as we hit a non-conditioning exercise
