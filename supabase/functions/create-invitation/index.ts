@@ -52,18 +52,23 @@ Deno.serve(async (req) => {
     if (!isAdmin && role !== "client") return json({ error: "Only admins can invite this role" }, 403);
 
     // If email already belongs to a user, block re-invite
-    const { data: existing } = await admin.auth.admin.listUsers({ page: 1, perPage: 1 });
-    // Better: query auth.users via SQL for exact match
-    const { data: existingUser } = await admin
-      .rpc("get_user_by_email", { _email: email })
-      .maybeSingle()
-      .then(() => ({ data: null }))
-      .catch(() => ({ data: null }));
-    // fallback: direct search
     const { data: authList } = await admin.auth.admin.listUsers({ page: 1, perPage: 1000 });
     if (authList?.users?.some((u) => u.email?.toLowerCase() === email)) {
       return json({ error: "A user with this email already exists" }, 409);
     }
+
+    // Block duplicate pending invitations
+    const { data: pending } = await admin
+      .from("client_invitations")
+      .select("id")
+      .eq("email", email)
+      .is("accepted_at", null)
+      .gt("expires_at", new Date().toISOString())
+      .maybeSingle();
+    if (pending) {
+      return json({ error: "An active invitation already exists for this email. Copy the existing link or revoke it first." }, 409);
+    }
+
 
     // Generate secure token
     const bytes = new Uint8Array(32);
