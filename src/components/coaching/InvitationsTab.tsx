@@ -47,8 +47,20 @@ export function InvitationsTab({ isAdmin }: { isAdmin: boolean }) {
     });
     setCreating(false);
     if (error || (data as { error?: string })?.error) {
-      const msg = (data as { error?: string })?.error || error?.message || "Could not create invitation";
-      toast({ title: "Invitation failed", description: msg, variant: "destructive" });
+      let msg = (data as { error?: string })?.error || "";
+      // functions.invoke hides the response body on non-2xx — read it explicitly
+      const ctx = (error as unknown as { context?: Response })?.context;
+      if (!msg && ctx && typeof ctx.text === "function") {
+        try {
+          const body = await ctx.text();
+          msg = (JSON.parse(body) as { error?: string })?.error || body;
+        } catch { /* ignore */ }
+      }
+      toast({
+        title: "Invitation failed",
+        description: msg || error?.message || "Could not create invitation",
+        variant: "destructive",
+      });
       return;
     }
     const url = (data as { invite_url: string }).invite_url;
@@ -57,6 +69,7 @@ export function InvitationsTab({ isAdmin }: { isAdmin: boolean }) {
     setEmail(""); setFirstName(""); setRole("client");
     load();
   };
+
 
   const copyLink = async (token: string) => {
     await navigator.clipboard.writeText(inviteUrl(token));
