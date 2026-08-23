@@ -16,7 +16,6 @@ import { useLearnProgress } from "@/hooks/useLearnProgress";
 import m2fLogo from "@/assets/m2f-logo.png.asset.json";
 import { Countdown } from "@/components/home/Countdown";
 import { CoachFocusCard } from "@/components/home/CoachFocusCard";
-import { ThisWeeksRoadmapCard } from "@/components/home/ThisWeeksRoadmapCard";
 import { useWeeklyPriorities, effectiveStatus } from "@/hooks/useWeeklyPriorities";
 import { useCurrentWeeklyCheckIn } from "@/hooks/useWeeklyCheckIns";
 import { CHECK_IN_STATUS } from "@/lib/coaching/coachingConstants";
@@ -172,8 +171,6 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
   // Mission 4: Next open build task — event-driven surfacing (limit = 1).
   const currentPhaseId = phase && phase.id <= 5 ? phase.id : phase?.id === 6 ? 6 : 5;
   const nextBuild = surfaceMilestones(buildMilestones, currentPhaseId, week, 1)[0] ?? null;
-  // Up to 3 roadmap milestones for the "This Week's Roadmap" section.
-  const weekRoadmap = surfaceMilestones(buildMilestones, currentPhaseId, week, 3);
 
   // Post-birth workout page writes m2f.pbworkout.<slug>.<date> on completion
   const pbProgram = pbPhase ? programForSlug(pbPhase.programSlug) : null;
@@ -462,12 +459,7 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
         <CoachFocusCard />
       </div>
 
-      {/* ── 4 · This Week's Roadmap (Build List milestones for this week) ── */}
-      <div className="px-5 pt-4">
-        <ThisWeeksRoadmapCard items={weekRoadmap} />
-      </div>
-
-      {/* ── 5 · Today's Mission Card ── */}
+      {/* ── 4 · Today's Mission Card ── */}
       <div className="px-5 pt-4">
         <section className="rounded-2xl border border-primary/40 bg-gradient-to-b from-primary/10 to-transparent bg-card/60 backdrop-blur p-5">
           <div className="flex items-baseline justify-between mb-4 gap-3">
