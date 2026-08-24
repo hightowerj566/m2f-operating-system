@@ -1089,6 +1089,8 @@ export default function Index() {
                                   <ConditioningBlockCard
                                     key={`cond-block-${condFinisherStartIdx}`}
                                     type={block.type}
+                                    title={block.title}
+
                                     duration={block.duration}
                                     exercises={block.exercises}
                                     notes={block.notes}
