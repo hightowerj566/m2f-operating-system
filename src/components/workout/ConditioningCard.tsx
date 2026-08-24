@@ -140,12 +140,20 @@ export function parseConditioningBlock(name: string, detail: string): {
       exercises.push({ label: minuteMatch[1], text: minuteMatch[2].trim() });
       continue;
     }
+    // "• Odd minutes: ..." / "Even minutes: ..." format
+    const parityMatch = line.match(/^[•·\-]?\s*(odd|even)\s*minutes?\s*:\s*(.+)/i);
+    if (parityMatch) {
+      const label = parityMatch[1].toLowerCase() === "odd" ? "Odd" : "Even";
+      exercises.push({ label, text: parityMatch[2].trim() });
+      continue;
+    }
     // Bullet "• text" format
     const bulletMatch = line.match(/^[•·\-]\s*(.+)/);
     if (bulletMatch) {
       exercises.push({ label: `${exercises.length + 1}`, text: bulletMatch[1].trim() });
       continue;
     }
+
     // "N- text" or "N. text" format
     const numMatch = line.match(/^(\d+)\s*[-.)]\s*(.+)/);
     if (numMatch) {
