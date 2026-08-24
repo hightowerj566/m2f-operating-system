@@ -108,21 +108,24 @@ export function getConditioningBlockType(name: string): "EMOM" | "AMRAP" | null 
   return null;
 }
 
-/** Parse an EMOM/AMRAP detail string into structured exercises */
+/** Parse a conditioning block (EMOM / AMRAP / Rounds / Intervals) into structured exercises */
 export function parseConditioningBlock(name: string, detail: string): {
-  type: "EMOM" | "AMRAP";
+  type: "EMOM" | "AMRAP" | "Conditioning";
+  title: string;
   duration: string;
   exercises: { label: string; text: string }[];
   notes: string;
 } | null {
-  const blockType = getConditioningBlockType(name);
-  if (!blockType) return null;
-
   const clean = name.replace(/^\d+[a-zA-Z]?[\.\)\-]\s*/, '');
+  const blockType: "EMOM" | "AMRAP" | "Conditioning" | null =
+    getConditioningBlockType(clean) ??
+    (/\brounds?\b|interval|for time|benchmark/i.test(clean) ? "Conditioning" : null);
+  if (!blockType) return null;
 
   // Extract duration from name like "EMOM 12 Minutes", "AMRAP 8 Minutes", "EMOM 10 min"
   const durMatch = clean.match(/(\d+)\s*(?:min(?:utes?)?)/i);
   const duration = durMatch ? `${durMatch[1]} min` : "";
+
 
   // Parse the detail into individual exercises
   // Formats:
