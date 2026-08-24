@@ -9,14 +9,16 @@ interface ConditioningCardProps {
   onTap: () => void;
 }
 
-/** Multi-exercise conditioning block (EMOM / AMRAP) */
+/** Multi-exercise conditioning block (EMOM / AMRAP / Rounds) */
 interface ConditioningBlockCardProps {
   type: "EMOM" | "AMRAP" | "Conditioning";
+  title?: string;
   duration: string;
   exercises: { label: string; text: string }[];
   notes?: string;
   onTap: () => void;
 }
+
 
 /** Parse conditioning-specific display values from reps string */
 function parseConditioningMeta(reps: string | null, sets: number | null, rest?: number | null) {
