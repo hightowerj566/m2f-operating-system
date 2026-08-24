@@ -9,14 +9,16 @@ interface ConditioningCardProps {
   onTap: () => void;
 }
 
-/** Multi-exercise conditioning block (EMOM / AMRAP) */
+/** Multi-exercise conditioning block (EMOM / AMRAP / Rounds) */
 interface ConditioningBlockCardProps {
   type: "EMOM" | "AMRAP" | "Conditioning";
+  title?: string;
   duration: string;
   exercises: { label: string; text: string }[];
   notes?: string;
   onTap: () => void;
 }
+
 
 /** Parse conditioning-specific display values from reps string */
 function parseConditioningMeta(reps: string | null, sets: number | null, rest?: number | null) {
@@ -108,21 +110,24 @@ export function getConditioningBlockType(name: string): "EMOM" | "AMRAP" | null 
   return null;
 }
 
-/** Parse an EMOM/AMRAP detail string into structured exercises */
+/** Parse a conditioning block (EMOM / AMRAP / Rounds / Intervals) into structured exercises */
 export function parseConditioningBlock(name: string, detail: string): {
-  type: "EMOM" | "AMRAP";
+  type: "EMOM" | "AMRAP" | "Conditioning";
+  title: string;
   duration: string;
   exercises: { label: string; text: string }[];
   notes: string;
 } | null {
-  const blockType = getConditioningBlockType(name);
-  if (!blockType) return null;
-
   const clean = name.replace(/^\d+[a-zA-Z]?[\.\)\-]\s*/, '');
+  const blockType: "EMOM" | "AMRAP" | "Conditioning" | null =
+    getConditioningBlockType(clean) ??
+    (/\brounds?\b|interval|for time|benchmark/i.test(clean) ? "Conditioning" : null);
+  if (!blockType) return null;
 
   // Extract duration from name like "EMOM 12 Minutes", "AMRAP 8 Minutes", "EMOM 10 min"
   const durMatch = clean.match(/(\d+)\s*(?:min(?:utes?)?)/i);
   const duration = durMatch ? `${durMatch[1]} min` : "";
+
 
   // Parse the detail into individual exercises
   // Formats:
@@ -140,12 +145,20 @@ export function parseConditioningBlock(name: string, detail: string): {
       exercises.push({ label: minuteMatch[1], text: minuteMatch[2].trim() });
       continue;
     }
+    // "• Odd minutes: ..." / "Even minutes: ..." format
+    const parityMatch = line.match(/^[•·\-]?\s*(odd|even)\s*minutes?\s*:\s*(.+)/i);
+    if (parityMatch) {
+      const label = parityMatch[1].toLowerCase() === "odd" ? "Odd" : "Even";
+      exercises.push({ label, text: parityMatch[2].trim() });
+      continue;
+    }
     // Bullet "• text" format
     const bulletMatch = line.match(/^[•·\-]\s*(.+)/);
     if (bulletMatch) {
       exercises.push({ label: `${exercises.length + 1}`, text: bulletMatch[1].trim() });
       continue;
     }
+
     // "N- text" or "N. text" format
     const numMatch = line.match(/^(\d+)\s*[-.)]\s*(.+)/);
     if (numMatch) {
@@ -160,18 +173,19 @@ export function parseConditioningBlock(name: string, detail: string): {
 
   return {
     type: blockType,
+    title: clean,
     duration,
     exercises,
     notes: noteLines.join(" ").trim(),
   };
 }
 
-export function ConditioningBlockCard({ type, duration, exercises, notes, onTap }: ConditioningBlockCardProps) {
+export function ConditioningBlockCard({ type, title, duration, exercises, notes, onTap }: ConditioningBlockCardProps) {
   return (
     <button onClick={onTap}
       className="w-full bg-accent/30 border border-accent/50 rounded-xl p-4 hover:border-primary/40 active:scale-[0.98] transition-all text-left">
       {/* Header */}
-      <div className="flex items-center gap-2 mb-3">
+      <div className="flex items-center gap-3 mb-3">
         <div className="w-10 h-10 rounded-lg bg-accent/50 flex-shrink-0 flex items-center justify-center">
           {type === "EMOM" ? (
             <Timer className="w-5 h-5 text-primary" />
@@ -179,11 +193,14 @@ export function ConditioningBlockCard({ type, duration, exercises, notes, onTap 
             <Zap className="w-5 h-5 text-primary" />
           )}
         </div>
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] font-bold text-accent-foreground bg-accent px-2 py-0.5 rounded uppercase">{type}</span>
+        <div className="min-w-0">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-[10px] font-bold text-accent-foreground bg-accent px-2 py-0.5 rounded uppercase">
+              {type === "Conditioning" ? "Conditioning" : type}
+            </span>
             {duration && <span className="text-sm font-bold text-primary">{duration}</span>}
           </div>
+          {title && <p className="text-sm font-bold text-foreground leading-tight mt-1">{title}</p>}
         </div>
       </div>
 
@@ -192,7 +209,9 @@ export function ConditioningBlockCard({ type, duration, exercises, notes, onTap 
         <div className="space-y-1.5 ml-1">
           {exercises.map((ex, idx) => (
             <div key={idx} className="flex items-start gap-2">
-              <span className="text-xs font-bold text-primary/70 w-4 text-right flex-shrink-0">{ex.label}.</span>
+              <span className="text-xs font-bold text-primary/70 flex-shrink-0 min-w-[1.75rem] text-right">
+                {/^\d+$/.test(ex.label) ? `${ex.label}.` : ex.label}
+              </span>
               <span className="text-sm text-foreground leading-snug">{ex.text}</span>
             </div>
           ))}
@@ -208,12 +227,13 @@ export function ConditioningBlockCard({ type, duration, exercises, notes, onTap 
 }
 
 export function ConditioningCard({ name, detail, sets, reps, rest, onTap }: ConditioningCardProps) {
-  // Check if this is an EMOM/AMRAP block that should render as a block card
+  // Check if this is a structured conditioning block (EMOM / AMRAP / Rounds / Intervals)
   const block = parseConditioningBlock(name, detail);
   if (block) {
     return (
       <ConditioningBlockCard
         type={block.type}
+        title={block.title}
         duration={block.duration}
         exercises={block.exercises}
         notes={block.notes}
@@ -221,6 +241,8 @@ export function ConditioningCard({ name, detail, sets, reps, rest, onTap }: Cond
       />
     );
   }
+
+
 
   const meta = parseConditioningMeta(reps, sets, rest);
 
