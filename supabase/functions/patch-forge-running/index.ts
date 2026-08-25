@@ -67,14 +67,14 @@ function zone2(w:number){
 function carry(w:number){
   const m=meso(w);
   if(dl(w)) return [ex('Loaded Capacity — 6 min','6 min continuous, easy pace:\n• 30 m Farmer Carry (moderate)\n• 30 m Suitcase Carry each side (moderate)\nDeload — posture and grip only. No grinding.','6 min')];
-  const blocks={
+  const blocks=({
     1:{t:'Loaded Capacity — 8 min',d:'8 min continuous:\n• 40 m Farmer Carry\n• 40 m Suitcase Carry (20 m each side)\n• Walk 30 s\nProgression this meso: add load week to week, keep distance fixed. Ribs down, tall posture, no leaning.'},
     2:{t:'Loaded Capacity — 8 min',d:'8 min continuous:\n• 50 m Farmer Carry\n• 40 m Suitcase Carry (20 m each side)\n• Walk 30 s\nProgression this meso: distance goes up, load holds. Sled push (40 m) may replace the farmer carry if available.'},
     3:{t:'Loaded Capacity — 9 min',d:'9 min continuous:\n• 40 m Heavy Farmer Carry\n• 40 m Sled Push or Drag (moderate)\n• Walk 30 s\nProgression this meso: load. Grip failing before the trunk means the load is right.'},
     4:{t:'Loaded Capacity — 9 min',d:'9 min continuous:\n• 40 m Farmer Carry (heavy)\n• 40 m Suitcase Carry (20 m each side)\n• 30 m Sled Drag (backward) or ruck walk\nProgression this meso: density — same work, less standing around.'},
     5:{t:'Loaded Capacity — 8 min',d:'8 min continuous:\n• 40 m Farmer Carry (heavy)\n• 40 m Sled Push (moderate)\n• Walk 30 s\nKept short on purpose — this is the peak hypertrophy block. Load, do not extend.'},
     6:{t:'Loaded Capacity — 10 min',d:'10 min continuous:\n• 50 m Heavy Farmer Carry\n• 40 m Sled Push (heavy)\n• 40 m Suitcase Carry (20 m each side)\nProgression this meso: load and density. Log the total load carried — this is testable.'},
-  }[m];
+  } as any)[m];
   return [ex(blocks.t,blocks.d,blocks.t.split('— ')[1])];
 }
 
