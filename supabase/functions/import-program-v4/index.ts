@@ -389,8 +389,11 @@ function readExercises(day: any): any[] {
 
 function isRestDay(day: any): boolean {
   const label = `${day?.day_label || day?.label || day?.name || ""} ${day?.type || ""}`.toLowerCase();
-  return /rest|off day|recovery/.test(label) && readExercises(day).length === 0;
+  return /rest|off day|recovery/.test(label)
+    && readExercises(day).length === 0
+    && readConditioning(day).length === 0;
 }
+
 
 // ─── Main handler ──────────────────────────────────────────────────
 
