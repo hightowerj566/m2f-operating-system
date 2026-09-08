@@ -277,17 +277,13 @@ function convertNewFormatDay(
     });
   }
 
-  // Conditioning block
-  if (conditioning) {
-    const letter = LETTERS[letterIdx++];
-    result.push({
-      name: `${letter}1. ${conditioning.format || conditioning.type || "Conditioning"}`,
-      detail: `${conditioning.description || ""}${conditioning.notes ? ` | ${conditioning.notes}` : ""}`,
-      sets: 1, reps: conditioning.format || null,
-      rir: null, rest: null,
-      type: "conditioning", group: `${letter}${wk}`, superset_label: null,
-    });
+  // Conditioning blocks — always last, before mindset/mission
+  const allConditioning = [...(conditioning || []), ...inlineConditioning];
+  for (const c of allConditioning) {
+    const letter = LETTERS[letterIdx++] || "Z";
+    result.push(conditioningRow(c, letter, wk));
   }
+
 
   // Mindset + Mission
   result.push({
