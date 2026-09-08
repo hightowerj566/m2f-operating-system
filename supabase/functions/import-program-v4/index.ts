@@ -479,7 +479,7 @@ Deno.serve(async (req) => {
 
       for (let di = 0; di < trainingDays.length; di++) {
         const td = trainingDays[di];
-        const exercises = convertNewFormatDay(readExercises(td), td.conditioning || null, weekNum, di + 1);
+        const exercises = convertNewFormatDay(readExercises(td), readConditioning(td), weekNum, di + 1);
         const label = `Day ${di + 1} — ${td.day_label || td.label || td.name || `Training Day ${di + 1}`}${deloadTag}`;
         allRows.push({ program_id: targetProgramId, day_number: dayNumber, label, exercises });
         results.push(`✅ W${weekNum} D${di + 1} (#${dayNumber}): ${exercises.length} items`);
