@@ -93,10 +93,64 @@ function chunkSupersets<T>(items: T[], maxSize = 2): T[][] {
   return chunks;
 }
 
+// ─── Conditioning detection ────────────────────────────────────────
+const COND_RE = /conditioning|cardio|finisher|metcon|zone\s?2|engine|carry|carries|loaded capacity|emom|amrap|interval|sprint|run\b|running|row erg|ruck|circuit|capacity|power block/i;
+
+function isConditioningEntry(ex: any): boolean {
+  const role = `${ex?.role || ""} ${ex?.block || ""} ${ex?.section || ""} ${ex?.category || ""} ${ex?.type || ""}`;
+  if (COND_RE.test(role)) return true;
+  return false;
+}
+
+/** Normalize every shape a JSON export uses for conditioning into a flat list. */
+function readConditioning(day: any): any[] {
+  if (!day || typeof day !== "object") return [];
+  const out: any[] = [];
+  const keys = [
+    "conditioning", "conditioning_block", "conditioning_blocks", "finisher",
+    "finishers", "cardio", "cardio_block", "metcon", "capacity", "engine",
+  ];
+  for (const key of keys) {
+    const val = day[key];
+    if (!val) continue;
+    if (Array.isArray(val)) out.push(...val.filter(Boolean));
+    else if (typeof val === "string") out.push({ description: val });
+    else if (typeof val === "object") out.push(val);
+  }
+  return out;
+}
+
+function conditioningRow(c: any, letter: string, wk: string): any {
+  const title =
+    c.title || c.name || c.exercise || c.format || c.type || c.modality || "Conditioning";
+  const duration = c.duration || c.time || c.length || null;
+  const bodyParts: string[] = [];
+  if (c.description) bodyParts.push(String(c.description));
+  if (Array.isArray(c.exercises)) {
+    for (const item of c.exercises) {
+      if (typeof item === "string") bodyParts.push(`• ${item}`);
+      else if (item?.name) bodyParts.push(`• ${[item.reps, item.name].filter(Boolean).join(" ")}`);
+    }
+  }
+  if (c.coaching_cue) bodyParts.push(String(c.coaching_cue));
+  if (c.notes) bodyParts.push(String(c.notes));
+  return {
+    name: duration && !String(title).includes(String(duration)) ? `${title} — ${duration}` : String(title),
+    detail: bodyParts.join("\n").trim(),
+    sets: c.sets || c.rounds || 1,
+    reps: duration ? String(duration) : (c.reps ? String(c.reps) : null),
+    rir: null,
+    rest: null,
+    type: "conditioning",
+    group: `${letter}${wk}`,
+    superset_label: null,
+  };
+}
+
 // ─── Convert new-format day (flat exercises array) ─────────────────
 function convertNewFormatDay(
   exercises: any[],
-  conditioning: any | null,
+  conditioning: any[],
   weekNum: number,
   dayInWeek: number,
 ): any[] {
@@ -111,10 +165,13 @@ function convertNewFormatDay(
   const coreExercises: any[] = [];
   const calves: any[] = [];
   const frontalPlane: any[] = [];
+  // Conditioning listed inline in the exercise array — never treat it as an accessory lift
+  const inlineConditioning: any[] = [];
 
   for (const ex of exercises) {
     const role = (ex.role || "").toLowerCase();
-    if (role.includes("power primer")) primers.push(ex);
+    if (isConditioningEntry(ex)) inlineConditioning.push(ex);
+    else if (role.includes("power primer")) primers.push(ex);
     else if (role.includes("primary")) primaries.push(ex);
     else if (role.includes("secondary")) secondaries.push(ex);
     else if (role.includes("core")) coreExercises.push(ex);
@@ -122,6 +179,7 @@ function convertNewFormatDay(
     else if (/calf|calves/i.test(ex.pattern || "") || /calf/i.test(ex.name || "")) calves.push(ex);
     else accessories.push(ex);
   }
+
 
   let letterIdx = 0;
 
@@ -219,17 +277,13 @@ function convertNewFormatDay(
     });
   }
 
-  // Conditioning block
-  if (conditioning) {
-    const letter = LETTERS[letterIdx++];
-    result.push({
-      name: `${letter}1. ${conditioning.format || conditioning.type || "Conditioning"}`,
-      detail: `${conditioning.description || ""}${conditioning.notes ? ` | ${conditioning.notes}` : ""}`,
-      sets: 1, reps: conditioning.format || null,
-      rir: null, rest: null,
-      type: "conditioning", group: `${letter}${wk}`, superset_label: null,
-    });
+  // Conditioning blocks — always last, before mindset/mission
+  const allConditioning = [...(conditioning || []), ...inlineConditioning];
+  for (const c of allConditioning) {
+    const letter = LETTERS[letterIdx++] || "Z";
+    result.push(conditioningRow(c, letter, wk));
   }
+
 
   // Mindset + Mission
   result.push({
@@ -335,8 +389,11 @@ function readExercises(day: any): any[] {
 
 function isRestDay(day: any): boolean {
   const label = `${day?.day_label || day?.label || day?.name || ""} ${day?.type || ""}`.toLowerCase();
-  return /rest|off day|recovery/.test(label) && readExercises(day).length === 0;
+  return /rest|off day|recovery/.test(label)
+    && readExercises(day).length === 0
+    && readConditioning(day).length === 0;
 }
+
 
 // ─── Main handler ──────────────────────────────────────────────────
 
@@ -422,10 +479,12 @@ Deno.serve(async (req) => {
 
       for (let di = 0; di < trainingDays.length; di++) {
         const td = trainingDays[di];
-        const exercises = convertNewFormatDay(readExercises(td), td.conditioning || null, weekNum, di + 1);
+        const exercises = convertNewFormatDay(readExercises(td), readConditioning(td), weekNum, di + 1);
         const label = `Day ${di + 1} — ${td.day_label || td.label || td.name || `Training Day ${di + 1}`}${deloadTag}`;
         allRows.push({ program_id: targetProgramId, day_number: dayNumber, label, exercises });
-        results.push(`✅ W${weekNum} D${di + 1} (#${dayNumber}): ${exercises.length} items`);
+        const condCount = exercises.filter((e: any) => e.type === "conditioning").length;
+        results.push(`✅ W${weekNum} D${di + 1} (#${dayNumber}): ${exercises.length} items${condCount ? ` · ${condCount} conditioning` : ""}`);
+
         dayNumber++;
       }
 
