@@ -328,6 +328,46 @@ function buildRestDay(weekNum: number, dayInWeek: number): any[] {
   ];
 }
 
+/** Wednesday: abs + Zone 2 cardio (standard weekly slot 3). */
+function buildAbsCardioDay(weekNum: number, isDeload: boolean): any[] {
+  const mins = isDeload ? "25-30 min" : "35-40 min";
+  return [
+    {
+      name: `Zone 2 Cardio — ${mins}`,
+      detail: "Bike, rower, incline walk or easy jog. Conversational pace the whole way — no surges.",
+      sets: 1, reps: mins, rir: null, rest: null,
+      type: "conditioning", group: null, superset_label: null,
+    },
+    {
+      name: "A1. Hanging Knee Raise", detail: "Control the lower. No swinging.",
+      sets: 3, reps: "12-15", rir: null, rest: null,
+      type: "exercise", group: `AW${weekNum}D3`, superset_label: "Superset",
+    },
+    {
+      name: "A2. Pallof Press", detail: "Resist rotation. Slow out, slow back.",
+      sets: 3, reps: "10/side", rir: null, rest: 60,
+      type: "exercise", group: `AW${weekNum}D3`, superset_label: "Superset",
+    },
+    {
+      name: "B1. Cable Crunch", detail: "Flex through the spine, hips stay put.",
+      sets: 3, reps: "12-15", rir: null, rest: 60,
+      type: "exercise", group: `BW${weekNum}D3`, superset_label: null,
+    },
+    {
+      name: "Mindset Moment", detail: getMindset(weekNum, 3),
+      sets: 1, reps: null, rir: null, rest: null,
+      type: "mindset", group: null, superset_label: null,
+    },
+    {
+      name: "Dad Mission", detail: getMission(weekNum, 3),
+      sets: 1, reps: null, rir: null, rest: null,
+      type: "mission", group: null, superset_label: null,
+    },
+  ];
+}
+
+
+
 // ─── Shape-tolerant readers ────────────────────────────────────────
 // Program JSON in the wild comes in a few shapes. Normalize them all to a
 // flat list of weeks, each with a list of training days.
