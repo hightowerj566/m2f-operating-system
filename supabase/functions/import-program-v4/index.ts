@@ -516,38 +516,52 @@ Deno.serve(async (req) => {
     for (const week of parsedWeeks) {
       const { weekNum, isDeload, days: trainingDays } = week;
       const deloadTag = isDeload ? " [DELOAD]" : "";
+      const weekStart = dayNumber;
+
+      // Standard week template: Mon/Tue lift, Wed abs + Zone 2, Thu/Fri lift,
+      // Sat active recovery, Sun off. Four training days slot into 1,2,4,5.
+      const liftSlots = trainingDays.length === 4 ? [1, 2, 4, 5] : trainingDays.map((_, i) => i + 1);
 
       for (let di = 0; di < trainingDays.length; di++) {
         const td = trainingDays[di];
-        const exercises = convertNewFormatDay(readExercises(td), readConditioning(td), weekNum, di + 1);
-        const label = `Day ${di + 1} — ${td.day_label || td.label || td.name || `Training Day ${di + 1}`}${deloadTag}`;
-        allRows.push({ program_id: targetProgramId, day_number: dayNumber, label, exercises });
+        const slot = liftSlots[di] ?? di + 1;
+        const exercises = convertNewFormatDay(readExercises(td), readConditioning(td), weekNum, slot);
+        const label = `Day ${slot} — ${td.day_label || td.label || td.name || `Training Day ${di + 1}`}${deloadTag}`;
+        allRows.push({ program_id: targetProgramId, day_number: weekStart + slot - 1, label, exercises });
         const condCount = exercises.filter((e: any) => e.type === "conditioning").length;
-        results.push(`✅ W${weekNum} D${di + 1} (#${dayNumber}): ${exercises.length} items${condCount ? ` · ${condCount} conditioning` : ""}`);
-
-        dayNumber++;
+        results.push(`✅ W${weekNum} D${slot} (#${weekStart + slot - 1}): ${exercises.length} items${condCount ? ` · ${condCount} conditioning` : ""}`);
       }
 
-      // Fill remaining days with rest/recovery
-      for (let extra = trainingDays.length; extra < days_per_week; extra++) {
-        const dayInWeek = extra + 1;
-        if (dayInWeek === 6) {
+      // Fill every slot the training days didn't take
+      const used = new Set(liftSlots.slice(0, trainingDays.length));
+      for (let slot = 1; slot <= days_per_week; slot++) {
+        if (used.has(slot)) continue;
+        const dn = weekStart + slot - 1;
+        if (slot === 3) {
           allRows.push({
-            program_id: targetProgramId, day_number: dayNumber,
+            program_id: targetProgramId, day_number: dn,
+            label: `Day 3 — Abs + Cardio (Zone 2)${deloadTag}`,
+            exercises: buildAbsCardioDay(weekNum, isDeload),
+          });
+          results.push(`✅ W${weekNum} D3 (#${dn}): Abs + Cardio (Zone 2)`);
+        } else if (slot === 6) {
+          allRows.push({
+            program_id: targetProgramId, day_number: dn,
             label: `Day 6 — Active Recovery${deloadTag}`,
             exercises: buildRestDay(weekNum, 6),
           });
-          results.push(`✅ W${weekNum} D6 (#${dayNumber}): Active Recovery`);
+          results.push(`✅ W${weekNum} D6 (#${dn}): Active Recovery`);
         } else {
           allRows.push({
-            program_id: targetProgramId, day_number: dayNumber,
-            label: `Day 7 — Rest Day${deloadTag}`,
-            exercises: buildRestDay(weekNum, 7),
+            program_id: targetProgramId, day_number: dn,
+            label: `Day ${slot} — Off${deloadTag}`,
+            exercises: buildRestDay(weekNum, slot),
           });
-          results.push(`✅ W${weekNum} D7 (#${dayNumber}): Rest`);
+          results.push(`✅ W${weekNum} D${slot} (#${dn}): Off`);
         }
-        dayNumber++;
       }
+
+      dayNumber = weekStart + days_per_week;
     }
 
 
