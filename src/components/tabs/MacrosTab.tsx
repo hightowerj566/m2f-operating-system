@@ -102,7 +102,8 @@ export function MacrosTab() {
     supabase.from("profiles").select("height_inches, weight_lbs, age, sex, goal, weekly_checkin_day, body_fat_pct, goal_rate_lb_per_week, avg_daily_steps, training_days_per_week, job_type").eq("user_id", user.id).single().then(({ data }) => {
       if (data) {
         setProfile(data as any);
-        if (!data.height_inches && !data.age) setSetupMode(true);
+        // First visit: force setup until they've chosen a gain/loss rate
+        if ((!data.height_inches && !data.age) || (data as any).goal_rate_lb_per_week == null) setSetupMode(true);
         setFormHeight(data.height_inches ? String(data.height_inches) : "");
         setFormWeight(data.weight_lbs ? String(data.weight_lbs) : "");
         setFormAge(data.age ? String(data.age) : "");
