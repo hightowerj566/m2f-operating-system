@@ -381,6 +381,28 @@ export default function Coach() {
   const [macroForm, setMacroForm] = useState({ calories: 2000, protein_g: 150, carbs_g: 250, fat_g: 65 });
   const [clientCheckIns, setClientCheckIns] = useState<{ check_date: string; compliance: string; actual_calories: number | null; actual_protein_g: number | null; actual_carbs_g: number | null; actual_fat_g: number | null }[]>([]);
   const [clientIsCoach, setClientIsCoach] = useState(false);
+  const [deletingClient, setDeletingClient] = useState(false);
+
+  const deleteClient = async () => {
+    if (!selectedClient) return;
+    const name = selectedClient.display_name || "this client";
+    if (!window.confirm(`Delete ${name}? This permanently removes their account and all their data. This cannot be undone.`)) return;
+    setDeletingClient(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("delete-client", {
+        body: { client_user_id: selectedClient.user_id },
+      });
+      if (error) throw new Error(data?.error || error.message);
+      if (data?.error) throw new Error(data.error);
+      toast({ title: `${name} has been deleted` });
+      setSelectedClient(null);
+      setClients(prev => prev.filter(c => c.user_id !== selectedClient.user_id));
+    } catch (e: any) {
+      toast({ title: "Delete failed", description: e.message, variant: "destructive" });
+    } finally {
+      setDeletingClient(false);
+    }
+  };
   const [togglingCoach, setTogglingCoach] = useState(false);
 
   // Billing
@@ -1411,6 +1433,18 @@ export default function Coach() {
                       className="flex-1 py-3 rounded-xl bg-secondary text-foreground font-bold text-sm hover:bg-secondary/80 transition-colors border border-border disabled:opacity-50">
                       {saving ? "Saving…" : "No Changes"}
                     </button>
+                  </div>
+
+                  {/* Delete Client */}
+                  <div className="pt-4 border-t border-border">
+                    <button onClick={deleteClient} disabled={deletingClient}
+                      className="w-full py-3 rounded-xl border border-destructive/40 text-destructive font-bold text-sm hover:bg-destructive/10 transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
+                      <Trash2 className="w-4 h-4" />
+                      {deletingClient ? "Deleting…" : "Delete Client"}
+                    </button>
+                    <p className="text-[10px] text-muted-foreground text-center mt-2">
+                      Permanently removes this client's account and all their data. Use when they're done with coaching.
+                    </p>
                   </div>
                 </div>
               )}
