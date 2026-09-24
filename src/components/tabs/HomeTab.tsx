@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLatestReadiness } from "@/hooks/useReadiness";
-import { useBuildList, applyMilestoneBoost, surfaceMilestones } from "@/hooks/useBuildList";
+import { useBuildList, applyMilestoneBoost, surfaceMilestones, surfaceInfantMilestones } from "@/hooks/useBuildList";
 import { getPhase, daysRemaining as calcDaysRemaining, pregnancyWeek, babyAgeDays, getPostBirthPhase, unlockedPhaseIds } from "@/lib/phases";
 import { askHerTonight } from "@/content/fatherhood";
 import { recommendedForWeek, recommendedForPostBirthPhase } from "@/content/learn";
@@ -185,21 +185,40 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
   // fitness mission routes to the phase's workout and auto-completes when the
   // workout page marks today done. Everything else uses the same per-day
   // localStorage toggle the pregnancy missions use.
-  const postBirthMissions = pbMissions.map((m) => {
-    // Only the phase's canonical workout mission (key ends "-workout") is
-    // fitness-navigating and auto-completes when a workout is done. Other
-    // "fitness" missions (e.g., sv-walk) stay manual toggles.
-    const isPrimaryWorkout = m.category === "fitness" && m.key.endsWith("-workout");
-    const done = overrides[m.key] === true || (isPrimaryWorkout && (pbWorkoutDone || workoutDoneToday));
-    return {
-      key: m.key,
-      icon: m.category === "fitness" ? Dumbbell : m.category === "family" ? Heart : m.category === "baby" ? Baby : HomeIcon,
-      title: m.title,
-      done,
-      onClick: isPrimaryWorkout ? () => navigate("/post-birth-workout") : () => toggleOverride(m.key),
-      detail: `${MISSION_CATEGORY_LABELS[m.category]} · ${m.estMinutes} min — ${m.description}`,
-    };
-  });
+  // Short daily list (4 max): workout, nutrition, next infant-roadmap task,
+  // and ONE rotating family/baby mission picked by date from the phase pool.
+  const pbWorkoutMission = pbMissions.find((m) => m.category === "fitness" && m.key.endsWith("-workout"));
+  const pbPool = pbMissions.filter((m) => m !== pbWorkoutMission);
+  const dayIndex = Math.floor(Date.now() / 86400000);
+  const pbRotating = pbPool.length ? pbPool[dayIndex % pbPool.length] : undefined;
+  const pbMissionsToday = [pbWorkoutMission, pbRotating].filter(Boolean) as typeof pbMissions;
+  const nextInfantTask = surfaceInfantMilestones(buildMilestones, ageDays, 1)[0] ?? null;
+
+  const postBirthMissions = [
+    ...pbMissionsToday.map((m) => {
+      const isPrimaryWorkout = m === pbWorkoutMission;
+      const done = overrides[m.key] === true || (isPrimaryWorkout && (pbWorkoutDone || workoutDoneToday));
+      return {
+        key: m.key,
+        icon: m.category === "fitness" ? Dumbbell : m.category === "family" ? Heart : m.category === "baby" ? Baby : HomeIcon,
+        title: m.title,
+        done,
+        onClick: isPrimaryWorkout ? () => navigate("/post-birth-workout") : () => toggleOverride(m.key),
+        detail: `${MISSION_CATEGORY_LABELS[m.category]} · ${m.estMinutes} min — ${m.description}`,
+      };
+    }),
+    hasMacros
+      ? { key: "nutrition", icon: Utensils, title: nutriDone ? "Nutrition logged" : "Log today's nutrition", done: nutriDone, onClick: openNutrition, detail: undefined as string | undefined }
+      : { key: "set-macros", icon: Calculator, title: "Set your macros", done: false, onClick: () => (onOpenMacros ? onOpenMacros() : onOpenMore?.()), detail: "Dial in calories & your rate of loss/gain" },
+    {
+      key: "roadmap",
+      icon: Baby,
+      title: nextInfantTask ? nextInfantTask.title : "Roadmap stage complete",
+      done: !nextInfantTask,
+      onClick: () => navigate(nextInfantTask ? `/build-list?task=${nextInfantTask.id}` : "/build-list"),
+      detail: nextInfantTask ? "First-year roadmap" : undefined,
+    },
+  ];
 
   const pregnancyMissions = [
     ...(!hasMacros
@@ -253,7 +272,7 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
   const pbCategoryProgress = arrived
     ? (Object.keys(MISSION_CATEGORY_LABELS) as MissionCategory[])
         .map((cat) => {
-          const inCat = pbMissions.filter((m) => m.category === cat);
+          const inCat = pbMissionsToday.filter((m) => m.category === cat);
           if (!inCat.length) return null;
           const done = inCat.filter((m) => postBirthMissions.find((pm) => pm.key === m.key)?.done).length;
           return { label: MISSION_CATEGORY_LABELS[cat], done, total: inCat.length };

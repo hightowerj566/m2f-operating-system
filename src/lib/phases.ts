@@ -303,3 +303,60 @@ export function getPostBirthPhase(ageDays: number | null): PostBirthPhase | null
     POST_BIRTH_PHASES[POST_BIRTH_PHASES.length - 1]
   );
 }
+
+// ─────────────────────────────────────────────
+// Infant Year Roadmap (replaces the pregnancy roadmap once baby arrives).
+// Phase ids 11–14 in build_milestones. Unlocks by baby age in days.
+// recommended_week on these milestones = baby age in WEEKS.
+// ─────────────────────────────────────────────
+
+export interface InfantPhase extends Phase {
+  startDay: number;
+  endDay: number;
+}
+
+const infant = (
+  id: number, slug: string, name: string, window: string, startDay: number, endDay: number,
+  focus: string, hisJob: string, briefing: string,
+): InfantPhase => ({
+  id, slug, name, window, pregWindow: window, startWeek: 0, endWeek: 0,
+  startDay, endDay, focus, herState: "", hisJob, briefing, trainingGuidance: "", priorityCategories: [],
+});
+
+export const INFANT_PHASES: InfantPhase[] = [
+  infant(11, "infant-survival", "SURVIVAL", "Birth – 6 weeks", 0, 42,
+    "Keep everyone alive. Guard her recovery.",
+    "Own feeds and diapers you can, run the house, guard her recovery, sleep in shifts.",
+    "The bar is on the floor — hit it daily. Every task here protects her recovery or the baby's first checkups."),
+  infant(12, "infant-foundation", "FOUNDATION", "6 – 12 weeks", 42, 84,
+    "Turn chaos into routines.",
+    "Build the bedtime routine, get back to training, and plan the return to work.",
+    "Routines replace survival. What you set up now is what the house runs on for the rest of the year."),
+  infant(13, "infant-rhythm", "RHYTHM", "3 – 6 months", 84, 183,
+    "Run the family on purpose.",
+    "Lock in family routines, protect date time, and handle the money and paperwork.",
+    "Consistency is the whole game. Boring systems now mean fewer emergencies later."),
+  infant(14, "infant-growth", "GROWTH", "6 – 12 months", 183, 366,
+    "Lead a family with a moving target in it.",
+    "Baby-proof, start solid foods, and close out year one strong.",
+    "Mobility explodes. Stay ahead of it and finish the first year with habits that last."),
+];
+
+export function isInfantPhaseUnlocked(phaseId: number, ageDays: number | null): boolean {
+  const p = INFANT_PHASES.find((x) => x.id === phaseId);
+  if (!p) return false;
+  return (ageDays ?? 0) >= p.startDay;
+}
+
+export function currentInfantPhaseId(ageDays: number | null): number {
+  const a = ageDays ?? 0;
+  const p = [...INFANT_PHASES].reverse().find((x) => a >= x.startDay);
+  return (p ?? INFANT_PHASES[0]).id;
+}
+
+export function infantUnlockLabel(phaseId: number): string {
+  const p = INFANT_PHASES.find((x) => x.id === phaseId);
+  if (!p) return "Locked";
+  const weeks = Math.round(p.startDay / 7);
+  return weeks >= 26 ? `Unlocks at ${Math.round(p.startDay / 30.4)} months` : `Unlocks at ${weeks} weeks`;
+}

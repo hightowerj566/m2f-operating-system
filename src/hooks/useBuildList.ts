@@ -12,7 +12,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { CATEGORIES, type CategorySlug } from "@/lib/readiness";
-import { FATHER_MODE, unlockedPhaseIds } from "@/lib/phases";
+import { FATHER_MODE, unlockedPhaseIds, isInfantPhaseUnlocked } from "@/lib/phases";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = supabase as any;
@@ -178,4 +178,26 @@ export function surfaceMilestones(
     return a.sort_order - b.sort_order;
   });
   return ranked.slice(0, limit) as BuildMilestone[];
+}
+
+/** Post-birth surfacing for the Infant Year Roadmap (phases 11–14). */
+export function surfaceInfantMilestones<T extends Pick<BuildMilestone, "phase" | "completed" | "priority" | "recommended_week" | "sort_order">>(
+  milestones: T[],
+  ageDays: number | null,
+  limit = 1,
+): T[] {
+  const ageWeeks = Math.floor((ageDays ?? 0) / 7);
+  const pw = (p: string) => (p === "critical" ? 0 : p === "standard" ? 1 : 2);
+  return milestones
+    .filter((m) => !m.completed && isInfantPhaseUnlocked(m.phase, ageDays))
+    .sort((a, b) => {
+      const ad = (a.recommended_week ?? 99) <= ageWeeks ? 0 : 1;
+      const bd = (b.recommended_week ?? 99) <= ageWeeks ? 0 : 1;
+      if (ad !== bd) return ad - bd;
+      if (a.phase !== b.phase) return a.phase - b.phase;
+      const p = pw(a.priority) - pw(b.priority);
+      if (p) return p;
+      return (a.recommended_week ?? 99) - (b.recommended_week ?? 99) || a.sort_order - b.sort_order;
+    })
+    .slice(0, limit);
 }
