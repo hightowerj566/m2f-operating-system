@@ -272,7 +272,7 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
   const pbCategoryProgress = arrived
     ? (Object.keys(MISSION_CATEGORY_LABELS) as MissionCategory[])
         .map((cat) => {
-          const inCat = pbMissions.filter((m) => m.category === cat);
+          const inCat = pbMissionsToday.filter((m) => m.category === cat);
           if (!inCat.length) return null;
           const done = inCat.filter((m) => postBirthMissions.find((pm) => pm.key === m.key)?.done).length;
           return { label: MISSION_CATEGORY_LABELS[cat], done, total: inCat.length };
