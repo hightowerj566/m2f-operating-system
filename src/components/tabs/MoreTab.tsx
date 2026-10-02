@@ -275,7 +275,7 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
       supabase
         .from("programs")
         .select("id, name, description, total_days")
-        .eq("name", "M2F Forge")
+        .eq("is_published", true)
         .order("name")
         .then(({ data }) => {
           if (data) setPrograms(data as any);
