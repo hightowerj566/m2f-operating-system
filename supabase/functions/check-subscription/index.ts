@@ -19,7 +19,7 @@ serve(async (req) => {
 
   try {
     logStep("Function started");
-    const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
+    const stripeKey = (Deno.env.get("STRIPE_TEST_API_KEY") || Deno.env.get("STRIPE_SECRET_KEY"));
 
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) throw new Error("No authorization header");

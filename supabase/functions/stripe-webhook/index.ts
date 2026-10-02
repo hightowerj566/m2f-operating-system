@@ -17,7 +17,7 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", { apiVersion: "2025-08-27.basil" });
+  const stripe = new Stripe((Deno.env.get("STRIPE_TEST_API_KEY") || Deno.env.get("STRIPE_SECRET_KEY")) || "", { apiVersion: "2025-08-27.basil" });
   const webhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET");
 
   // Service-role client to write to user_subscriptions (bypasses RLS)
