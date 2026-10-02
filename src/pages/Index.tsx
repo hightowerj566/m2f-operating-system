@@ -1568,7 +1568,7 @@ function PricingView({ onCheckout, checkingOut }: {
             <span className="text-3xl font-black text-foreground">${plan.per_month.toFixed(2)}</span>
             <span className="text-sm text-muted-foreground">/month</span>
             <p className="text-sm font-bold text-primary mt-0.5">
-              {yearly ? `$${MEMBERSHIP.annual.total.toFixed(2)} billed annually` : "Billed monthly"}
+              {yearly ? "Billed annually" : "Billed monthly"}
             </p>
           </div>
         </div>
