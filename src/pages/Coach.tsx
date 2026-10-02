@@ -546,7 +546,11 @@ export default function Coach() {
   };
 
   const deleteProgram = async (id: string) => {
-    await supabase.from("programs").delete().eq("id", id);
+    const { error } = await supabase.from("programs").delete().eq("id", id);
+    if (error) {
+      toast({ title: "Couldn't delete program", description: error.message, variant: "destructive" });
+      return;
+    }
     setSelectedProgram(null);
     setDays([]);
     setEditingDay(null);
@@ -782,7 +786,7 @@ export default function Coach() {
                       />
                       <p className="text-xs text-primary font-semibold">{selectedProgram.total_days} day program</p>
                     </div>
-                    <button onClick={() => { if (confirm("Delete this program?")) deleteProgram(selectedProgram.id); }}
+                    <button onClick={() => { if (confirm(`Delete "${selectedProgram.name}"? This permanently removes the program, all its days, and every client assignment to it. This cannot be undone.`)) deleteProgram(selectedProgram.id); }}
                       className="text-destructive/60 hover:text-destructive p-2 rounded-lg hover:bg-destructive/10 transition-colors">
                       <Trash2 className="w-4 h-4" />
                     </button>
