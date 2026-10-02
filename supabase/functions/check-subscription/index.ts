@@ -104,7 +104,7 @@ serve(async (req) => {
       cancelAtPeriodEnd = !!sub.cancel_at_period_end;
       logStep("Valid subscription found", { status: sub.status, cancel_at_period_end: cancelAtPeriodEnd });
       try {
-        const endVal = sub.current_period_end;
+        const endVal = (sub as any).current_period_end ?? (sub.items.data[0] as any)?.current_period_end;
         if (typeof endVal === 'number') {
           subscriptionEnd = new Date(endVal * 1000).toISOString();
         } else if (typeof endVal === 'string') {
