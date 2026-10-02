@@ -32,6 +32,7 @@ export function ProgramPickerModal({ userId, onComplete, currentProgramId }: Pro
     supabase
       .from("programs")
       .select("id, name, description, total_days")
+        .eq("is_published", true)
       .order("name")
       .then(({ data }) => {
         if (data) setPrograms(data as Program[]);

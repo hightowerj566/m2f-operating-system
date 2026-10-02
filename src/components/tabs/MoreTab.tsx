@@ -275,6 +275,7 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
       supabase
         .from("programs")
         .select("id, name, description, total_days")
+        .eq("is_published", true)
         .order("name")
         .then(({ data }) => {
           if (data) setPrograms(data as any);
