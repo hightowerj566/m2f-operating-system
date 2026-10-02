@@ -15,6 +15,13 @@
       "when": 1790267673068,
       "tag": "0001_infant_year_roadmap",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790968838126,
+      "tag": "0002_allow_coach_program_delete",
+      "breakpoints": true
     }
   ]
 }
