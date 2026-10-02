@@ -31,7 +31,7 @@ serve(async (req) => {
 
     const stripe = new Stripe(stripeKey, { apiVersion: "2025-08-27.basil" });
     const customers = await stripe.customers.list({ email: userData.user.email, limit: 1 });
-    if (customers.data.length === 0) throw new Error("No Stripe customer found");
+    if (customers.data.length === 0) return new Response(JSON.stringify({ error: "No billing account found for this email yet. Start a membership first." }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
     const origin = req.headers.get("origin") || "http://localhost:3000";
     const portalSession = await stripe.billingPortal.sessions.create({

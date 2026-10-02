@@ -47,15 +47,14 @@ serve(async (req) => {
     const customerId = customers.data[0].id;
     const subscriptions = await stripe.subscriptions.list({
       customer: customerId,
-      status: "active",
-      limit: 1,
+      limit: 10,
     });
-
-    if (subscriptions.data.length === 0) {
+    // Include trialing members (7-day free trial) — they must be able to cancel too.
+    const subscription = subscriptions.data.find((s) => s.status === "active" || s.status === "trialing");
+    if (!subscription) {
       throw new Error("No active subscription found");
     }
 
-    const subscription = subscriptions.data[0];
     // Cancel at end of period so user keeps access until then
     const updated = await stripe.subscriptions.update(subscription.id, {
       cancel_at_period_end: true,
@@ -65,11 +64,10 @@ serve(async (req) => {
 
     return new Response(JSON.stringify({ 
       success: true,
-      cancel_at: updated.current_period_end 
-        ? new Date(typeof updated.current_period_end === 'number' 
-            ? updated.current_period_end * 1000 
-            : updated.current_period_end).toISOString()
-        : null,
+      cancel_at: (() => {
+        const end = (updated as any).current_period_end ?? (updated.items.data[0] as any)?.current_period_end;
+        return typeof end === "number" ? new Date(end * 1000).toISOString() : null;
+      })(),
     }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });

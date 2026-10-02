@@ -3,7 +3,7 @@ import { CreditCard, Star, X, AlertTriangle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "@/hooks/use-toast";
-import { TIERS, type SubscriptionTier } from "@/lib/subscriptionTiers";
+import { TIERS, MEMBERSHIP, type SubscriptionTier } from "@/lib/subscriptionTiers";
 
 interface ManageSubscriptionViewProps {
   tier: SubscriptionTier;
@@ -33,7 +33,7 @@ export function ManageSubscriptionView({ tier, subscriptionEnd, cancelAtPeriodEn
   const [comments, setComments] = useState("");
   const [cancelling, setCancelling] = useState(false);
 
-  const tierInfo = tier === "performance" ? TIERS.performance : TIERS.base;
+  const tierInfo = { name: "M2F Membership", features: MEMBERSHIP.features as readonly string[] };
 
   const handleStartCancel = () => setStep("review");
 
@@ -208,7 +208,7 @@ export function ManageSubscriptionView({ tier, subscriptionEnd, cancelAtPeriodEn
           </div>
           <div className="flex-1">
             <p className="font-bold text-sm text-foreground">{tierInfo.name}</p>
-            <p className="text-xs text-muted-foreground">${tierInfo.monthly_price}/month</p>
+            <p className="text-xs text-muted-foreground">Annual $24.99/mo or monthly $29.99/mo</p>
           </div>
           {cancelAtPeriodEnd ? (
             <span className="text-[10px] font-bold text-destructive bg-destructive/10 px-2 py-0.5 rounded-full">Cancelled</span>
@@ -249,7 +249,7 @@ export function ManageSubscriptionView({ tier, subscriptionEnd, cancelAtPeriodEn
         </div>
       </div>
 
-      {!cancelAtPeriodEnd && tier === "base" && (
+      {false && (
         <button
           onClick={async () => {
             const { data, error } = await supabase.functions.invoke("create-checkout", {
@@ -267,8 +267,8 @@ export function ManageSubscriptionView({ tier, subscriptionEnd, cancelAtPeriodEn
         onClick={async () => {
           try {
             const { data, error } = await supabase.functions.invoke("customer-portal");
-            if (!error && data?.url) window.open(data.url, "_blank");
-            else toast({ title: "Could not open billing portal", variant: "destructive" });
+            if (!error && data?.url) window.location.href = data.url;
+            else toast({ title: data?.error || "Could not open billing portal", variant: "destructive" });
           } catch {
             toast({ title: "Could not open billing portal", variant: "destructive" });
           }
