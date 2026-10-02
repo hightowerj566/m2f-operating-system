@@ -41,7 +41,7 @@ serve(async (req) => {
     ]);
     if (DUE_DATE_PASS_PRICE_ID) ALLOWED_PRICE_IDS.add(DUE_DATE_PASS_PRICE_ID);
 
-    const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
+    const stripeKey = (Deno.env.get("STRIPE_TEST_API_KEY") || Deno.env.get("STRIPE_SECRET_KEY"));
     if (!stripeKey) throw new Error("STRIPE_SECRET_KEY is not configured");
     const stripe = new Stripe(stripeKey, { apiVersion: "2025-08-27.basil" });
 
