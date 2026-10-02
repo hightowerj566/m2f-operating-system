@@ -5,6 +5,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import m2fLogo from "@/assets/m2f-logo.png.asset.json";
 import { Lock } from "lucide-react";
 
+function searchParams_init(): boolean {
+  return new URLSearchParams(window.location.search).get("mode") === "signup";
+}
+
 function safeNext(raw: string | null): string {
   if (!raw) return "/";
   if (!raw.startsWith("/") || raw.startsWith("//")) return "/";
@@ -27,6 +31,7 @@ export default function Auth() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [forgotMode, setForgotMode] = useState(false);
+  const [signupMode, setSignupMode] = useState(searchParams_init());
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const next = safeNext(searchParams.get("next"));
@@ -66,6 +71,22 @@ export default function Auth() {
       });
       if (error) setError(error.message);
       else setMessage("Check your email for a password reset link.");
+      setLoading(false);
+      return;
+    }
+
+    if (signupMode) {
+      const { data, error } = await supabase.auth.signUp({
+        email: email.trim().toLowerCase(),
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/`,
+          data: { display_name: displayName || email.split("@")[0] },
+        },
+      });
+      if (error) setError(error.message);
+      else if (data.session) window.location.href = "/";
+      else setMessage("Check your email to confirm your account, then sign in to choose your plan.");
       setLoading(false);
       return;
     }
@@ -193,11 +214,21 @@ export default function Auth() {
       <div className="flex flex-col items-center mb-8">
         <img src={m2fLogo.url} alt="M2F" className="w-56 h-56 object-contain mb-2" />
         <p className="text-muted-foreground text-sm mt-1">
-          {forgotMode ? "Reset your password" : "Welcome back"}
+          {forgotMode ? "Reset your password" : signupMode ? "Create your account" : "Welcome back"}
         </p>
       </div>
 
       <form onSubmit={handleSignIn} className="space-y-4">
+        {signupMode && !forgotMode && (
+          <input
+            type="text"
+            placeholder="Your name"
+            value={displayName}
+            onChange={(e) => setDisplayName(e.target.value)}
+            className="w-full bg-secondary border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary"
+            required
+          />
+        )}
         <input
           type="email"
           placeholder="Email"
@@ -209,15 +240,15 @@ export default function Auth() {
         {!forgotMode && (
           <input
             type="password"
-            placeholder="Password"
+            placeholder={signupMode ? "Create a password (min. 8 characters)" : "Password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            minLength={6}
+            minLength={signupMode ? 8 : 6}
             className="w-full bg-secondary border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary"
             required
           />
         )}
-        {!forgotMode && (
+        {!forgotMode && !signupMode && (
           <div className="flex items-center justify-between">
             <label className="flex items-center gap-2 cursor-pointer">
               <Checkbox
@@ -242,7 +273,7 @@ export default function Auth() {
           disabled={loading}
           className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-bold text-sm hover:bg-primary/90 transition-colors disabled:opacity-50"
         >
-          {loading ? "…" : forgotMode ? "Send reset link" : "Sign in"}
+          {loading ? "…" : forgotMode ? "Send reset link" : signupMode ? "Create account" : "Sign in"}
         </button>
       </form>
 
@@ -255,12 +286,13 @@ export default function Auth() {
         </button>
       ) : (
         <div className="mt-8 pt-6 border-t border-border">
-          <div className="flex items-start gap-2 text-xs text-muted-foreground">
-            <Lock className="w-3.5 h-3.5 mt-0.5 shrink-0" />
-            <p>
-              M2F is invite-only. If you don't have an account, ask your coach for an invitation link.
-            </p>
-          </div>
+          <button
+            type="button"
+            onClick={() => { setSignupMode(!signupMode); setError(""); setMessage(""); }}
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors text-center w-full"
+          >
+            {signupMode ? "Already have an account? Sign in" : "New here? Create an account"}
+          </button>
         </div>
       )}
     </div>

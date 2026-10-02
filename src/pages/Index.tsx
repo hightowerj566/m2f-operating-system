@@ -26,7 +26,7 @@ import { useDueDatePass } from "@/hooks/useM2fOs";
 import { StreakMilestonePopup } from "@/components/streak/StreakMilestonePopup";
 import { DayPickerModal } from "@/components/workout/DayPickerModal";
 import { ProgramPickerModal } from "@/components/workout/ProgramPickerModal";
-import { TIERS, PERFORMANCE_ONLY_TABS, getPriceId } from "@/lib/subscriptionTiers";
+import { TIERS, PERFORMANCE_ONLY_TABS, MEMBERSHIP } from "@/lib/subscriptionTiers";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "@/hooks/use-toast";
 import { getScheduleForDay, splitMergeExercises, type ScheduleDayConfig } from "@/lib/scheduleEngine";
@@ -190,7 +190,9 @@ export default function Index() {
   }, [flagshipCompletionStorageKey]);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || subLoading) return;
+    // Unsubscribed members see the subscription page first; onboarding comes after payment.
+    if (!subscribed) { setOnboardingChecked(true); return; }
     const checkOnboarding = async () => {
       const { data } = await supabase
         .from("profiles")
@@ -206,7 +208,7 @@ export default function Index() {
       setOnboardingChecked(true);
     };
     checkOnboarding();
-  }, [user, navigate]);
+  }, [user, navigate, subscribed, subLoading]);
 
   // Gate: opening Training or Nutrition requires a training profile.
   useEffect(() => {
@@ -744,17 +746,18 @@ export default function Index() {
     setActiveNav(label);
   };
 
-  const handleCheckout = async (priceId: string) => {
+  const handleCheckout = async (planOrPriceId: string) => {
     setCheckingOut(true);
+    const isPlan = planOrPriceId === "monthly" || planOrPriceId === "annual";
     const { data, error } = await supabase.functions.invoke("create-checkout", {
-      body: { price_id: priceId },
+      body: isPlan ? { plan: planOrPriceId } : { price_id: planOrPriceId },
     });
     setCheckingOut(false);
     if (error || data?.error) {
       toast({ title: data?.error || "Failed to start checkout", variant: "destructive" });
       return;
     }
-    if (data?.url) window.open(data.url, "_blank");
+    if (data?.url) window.location.href = data.url;
   };
 
   // Session trimmed to the member's available time. Non-flagship (coach-assigned
@@ -1532,101 +1535,55 @@ export default function Index() {
 }
 
 // Pricing page shown to users with no subscription
-function PricingView({ currentTier, onCheckout, checkingOut }: {
+function PricingView({ onCheckout, checkingOut }: {
   currentTier: string | null;
-  onCheckout: (priceId: string) => void;
+  onCheckout: (plan: string) => void;
   checkingOut: boolean;
 }) {
   const { signOut } = useAuth();
   const [yearly, setYearly] = useState(true);
+  const plan = yearly ? MEMBERSHIP.annual : MEMBERSHIP.monthly;
 
   return (
     <div className="px-5 pt-10 pb-8 space-y-6">
       <div className="text-center space-y-2">
-        <h1 className="text-3xl font-black text-foreground">Choose Your Plan</h1>
-        <p className="text-sm text-muted-foreground">Select a plan to get started with your coaching program.</p>
-        <p className="text-xs font-semibold text-primary">All plans include a 7-day free trial</p>
+        <h1 className="text-3xl font-black text-foreground">Start Your Membership</h1>
+        <p className="text-sm text-muted-foreground">Full access to training, nutrition coaching, and your fatherhood roadmap.</p>
+        <p className="text-xs font-semibold text-primary">7-day free trial. Cancel anytime.</p>
       </div>
 
-      {/* Billing Toggle */}
-      <div className="flex items-center justify-center gap-3">
-        <span className={`text-sm font-semibold ${!yearly ? "text-foreground" : "text-muted-foreground"}`}>Monthly</span>
-        <Switch checked={yearly} onCheckedChange={setYearly} />
-        <span className={`text-sm font-semibold ${yearly ? "text-foreground" : "text-muted-foreground"}`}>
-          Annual <span className="text-xs text-primary font-bold">Save more</span>
-        </span>
+      <div className="grid grid-cols-2 gap-1 p-1 bg-secondary rounded-xl">
+        {[{ k: true, l: "Annual" }, { k: false, l: "Monthly" }].map((o) => (
+          <button key={o.l} onClick={() => setYearly(o.k)}
+            className={`py-2 rounded-lg text-sm font-bold transition-colors ${yearly === o.k ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>
+            {o.l}{o.k && <span className="ml-1 text-[10px] font-semibold opacity-80">Save 17%</span>}
+          </button>
+        ))}
       </div>
 
-      {/* Training Only */}
-      <div className="bg-card border border-border rounded-2xl p-5 space-y-4">
+      <div className="bg-card border-2 border-primary rounded-2xl p-5 space-y-4">
         <div>
-          <h3 className="text-lg font-black text-foreground">{TIERS.base.name}</h3>
+          <h3 className="text-lg font-black text-foreground">M2F Membership</h3>
           <div className="mt-1">
-            {yearly ? (
-              <>
-                <span className="text-3xl font-black text-foreground">${Math.round(TIERS.base.yearly_price / 12)}</span>
-                <span className="text-sm text-muted-foreground">/month</span>
-                <p className="text-sm font-bold text-primary mt-0.5">${TIERS.base.yearly_price} total billed annually</p>
-              </>
-            ) : (
-              <>
-                <span className="text-3xl font-black text-foreground">${TIERS.base.monthly_price}</span>
-                <span className="text-sm text-muted-foreground">/month</span>
-              </>
-            )}
+            <span className="text-3xl font-black text-foreground">${plan.per_month.toFixed(2)}</span>
+            <span className="text-sm text-muted-foreground">/month</span>
+            <p className="text-sm font-bold text-primary mt-0.5">
+              {yearly ? `$${MEMBERSHIP.annual.total.toFixed(2)} billed annually` : "Billed monthly"}
+            </p>
           </div>
         </div>
         <div className="space-y-2">
-          {TIERS.base.features.map((f, i) => (
+          {MEMBERSHIP.features.map((f, i) => (
             <div key={i} className="flex items-center gap-2">
               <Check className="w-4 h-4 text-primary shrink-0" />
               <span className="text-sm text-foreground">{f}</span>
             </div>
           ))}
         </div>
-        <button onClick={() => onCheckout(getPriceId("base", yearly))} disabled={checkingOut}
-          className="w-full flex flex-col items-center gap-0.5 py-3 rounded-xl bg-secondary text-foreground font-bold text-sm hover:bg-secondary/80 border border-border transition-colors disabled:opacity-50">
-          <span>{checkingOut ? "Loading..." : "Get Started"}</span>
-          <span className="text-[10px] font-normal text-muted-foreground">Start with 7-day free trial</span>
-        </button>
-      </div>
-
-      {/* Total Transformation */}
-      <div className="bg-card border-2 border-primary rounded-2xl p-5 space-y-4 relative">
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-          <span className="bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
-            Most Popular
-          </span>
-        </div>
-        <div>
-          <h3 className="text-lg font-black text-foreground">{TIERS.performance.name}</h3>
-          <div className="mt-1">
-            {yearly ? (
-              <>
-                <span className="text-3xl font-black text-foreground">${Math.round(TIERS.performance.yearly_price / 12)}</span>
-                <span className="text-sm text-muted-foreground">/month</span>
-                <p className="text-sm font-bold text-primary mt-0.5">${TIERS.performance.yearly_price} total billed annually</p>
-              </>
-            ) : (
-              <>
-                <span className="text-3xl font-black text-foreground">${TIERS.performance.monthly_price}</span>
-                <span className="text-sm text-muted-foreground">/month</span>
-              </>
-            )}
-          </div>
-        </div>
-        <div className="space-y-2">
-          {TIERS.performance.features.map((f, i) => (
-            <div key={i} className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-primary shrink-0" />
-              <span className="text-sm text-foreground">{f}</span>
-            </div>
-          ))}
-        </div>
-        <button onClick={() => onCheckout(getPriceId("performance", yearly))} disabled={checkingOut}
+        <button onClick={() => onCheckout(yearly ? "annual" : "monthly")} disabled={checkingOut}
           className="w-full flex flex-col items-center gap-0.5 py-3 rounded-xl bg-primary text-primary-foreground font-bold text-sm hover:bg-primary/90 transition-colors disabled:opacity-50">
-          <span>{checkingOut ? "Loading..." : "Get Total Transformation"}</span>
-          <span className="text-[10px] font-normal opacity-80">Start with 7-day free trial</span>
+          <span>{checkingOut ? "Loading..." : "Start Free Trial"}</span>
+          <span className="text-[10px] font-normal opacity-80">You won't be charged for 7 days</span>
         </button>
       </div>
 

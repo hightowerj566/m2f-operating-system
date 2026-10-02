@@ -41,14 +41,20 @@ serve(async (req) => {
     ]);
     if (DUE_DATE_PASS_PRICE_ID) ALLOWED_PRICE_IDS.add(DUE_DATE_PASS_PRICE_ID);
 
-    const body = await req.json().catch(() => ({}));
-    const priceId = body.price_id;
-    if (!priceId) throw new Error("price_id is required");
-    if (!ALLOWED_PRICE_IDS.has(priceId)) throw new Error("Invalid price_id");
-    const isDueDatePass = DUE_DATE_PASS_PRICE_ID !== "" && priceId === DUE_DATE_PASS_PRICE_ID;
-    logStep("Price ID validated", { priceId, isDueDatePass });
+    const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
+    if (!stripeKey) throw new Error("STRIPE_SECRET_KEY is not configured");
+    const stripe = new Stripe(stripeKey, { apiVersion: "2025-08-27.basil" });
 
-    const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", { apiVersion: "2025-08-27.basil" });
+    const body = await req.json().catch(() => ({}));
+    let priceId: string | undefined = body.price_id;
+    if (body.plan === "monthly" || body.plan === "annual") {
+      priceId = await resolveMembershipPrice(stripe, body.plan);
+    } else {
+      if (!priceId) throw new Error("price_id or plan is required");
+      if (!ALLOWED_PRICE_IDS.has(priceId)) throw new Error("Invalid price_id");
+    }
+    const isDueDatePass = DUE_DATE_PASS_PRICE_ID !== "" && priceId === DUE_DATE_PASS_PRICE_ID;
+    logStep("Price resolved", { priceId, isDueDatePass });
 
     const customers = await stripe.customers.list({ email: userData.user.email, limit: 1 });
     let customerId: string | undefined;
@@ -83,3 +89,26 @@ serve(async (req) => {
     });
   }
 });
+
+// Membership prices are found by lookup key and created on first use, so no IDs are hardcoded.
+const MEMBERSHIP_PRICES = {
+  monthly: { lookup_key: "m2f_membership_monthly_2999", unit_amount: 2999, interval: "month" as const },
+  annual: { lookup_key: "m2f_membership_annual_29988", unit_amount: 29988, interval: "year" as const },
+};
+
+async function resolveMembershipPrice(stripe: Stripe, plan: "monthly" | "annual"): Promise<string> {
+  const cfg = MEMBERSHIP_PRICES[plan];
+  const found = await stripe.prices.list({ lookup_keys: [cfg.lookup_key], active: true, limit: 1 });
+  if (found.data[0]) return found.data[0].id;
+
+  const products = await stripe.products.search({ query: "metadata['m2f_sku']:'membership'" }).catch(() => ({ data: [] as Stripe.Product[] }));
+  const product = products.data[0] ?? await stripe.products.create({ name: "M2F Membership", metadata: { m2f_sku: "membership" } });
+  const price = await stripe.prices.create({
+    product: product.id,
+    currency: "usd",
+    unit_amount: cfg.unit_amount,
+    recurring: { interval: cfg.interval },
+    lookup_key: cfg.lookup_key,
+  });
+  return price.id;
+}

@@ -13,7 +13,7 @@ interface SubscriptionState {
 
 // TEMP: Free-access flag. Set to `false` to re-enable subscription gating.
 // Search for FREE_ACCESS_TEMP to find every gate we opened up.
-export const FREE_ACCESS_TEMP = true;
+export const FREE_ACCESS_TEMP = false;
 
 export function useSubscription(userId: string | undefined): SubscriptionState {
   const [loading, setLoading] = useState(!FREE_ACCESS_TEMP);
@@ -28,7 +28,7 @@ export function useSubscription(userId: string | undefined): SubscriptionState {
       const { data, error } = await supabase.functions.invoke("check-subscription");
       if (!error && data) {
         setSubscribed(data.subscribed ?? false);
-        setTier(getTierFromProductId(data.product_id ?? null));
+        setTier(getTierFromProductId(data.product_id ?? null) ?? (data.subscribed ? "performance" : null));
         setSubscriptionEnd(data.subscription_end ?? null);
         setCancelAtPeriodEnd(data.cancel_at_period_end ?? false);
       }
@@ -63,7 +63,7 @@ export function useSubscription(userId: string | undefined): SubscriptionState {
           const { data, error } = await supabase.functions.invoke("check-subscription");
           if (!error && data?.subscribed) {
             setSubscribed(true);
-            setTier(getTierFromProductId(data.product_id ?? null));
+            setTier(getTierFromProductId(data.product_id ?? null) ?? (data.subscribed ? "performance" : null));
             setSubscriptionEnd(data.subscription_end ?? null);
             setCancelAtPeriodEnd(data.cancel_at_period_end ?? false);
             setLoading(false);

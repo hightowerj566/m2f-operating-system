@@ -52,3 +52,15 @@ export const DUE_DATE_PASS = {
 
 // Tabs gated behind Performance plan
 export const PERFORMANCE_ONLY_TABS = ["Macros"];
+
+// Single public membership (self-serve signup). Prices are resolved server-side by lookup key.
+export const MEMBERSHIP = {
+  monthly: { per_month: 29.99 },
+  annual: { per_month: 24.99, total: 299.88 },
+  features: [
+    "Full training program with exercise videos",
+    "Nutrition coaching & macro targets",
+    "Weekly check-ins with your coach",
+    "Fatherhood roadmap & daily missions",
+  ],
+} as const;
