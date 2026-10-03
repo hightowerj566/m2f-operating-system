@@ -18,6 +18,8 @@ import {
   INFANT_PHASES, isInfantPhaseUnlocked, currentInfantPhaseId, infantUnlockLabel, babyAgeDays,
 } from "@/lib/phases";
 import { BottomNav } from "@/components/BottomNav";
+import { findLesson } from "@/content/learn";
+import { findGuide } from "@/content/conversations";
 
 type PhaseStatus = "complete" | "active" | "past-incomplete" | "upcoming-locked" | "father-mode-locked";
 
@@ -507,16 +509,49 @@ function priorityDot(p: MilestonePriority): string {
   return "bg-muted-foreground/60";
 }
 
+const TYPE_LABEL: Record<string, { label: string; cta: string }> = {
+  learn: { label: "Learn", cta: "Open Lesson" },
+  talk: { label: "Talk", cta: "Start Conversation" },
+  do: { label: "Do", cta: "" },
+};
+
 function TaskRow({ milestone, onToggle, disabled, highlight }: TaskRowProps) {
+  const navigate = useNavigate();
   const done = milestone.completed;
   const est = milestone.est_minutes;
+  const type = milestone.task_type ?? "do";
+  const lesson = type === "learn" && milestone.lesson_slug ? findLesson(milestone.lesson_slug) : undefined;
+  const guide = type === "talk" && milestone.conversation_guide_slug ? findGuide(milestone.conversation_guide_slug) : undefined;
+  const target = lesson
+    ? `/learn/lesson/${lesson.slug}?task=${milestone.id}`
+    : guide
+      ? `/talk/${guide.slug}?task=${milestone.id}`
+      : null;
+  const interactive = !!target && !disabled;
+  const minutes = lesson?.minutes ?? guide?.minutes ?? est;
+  const pillar = lesson ? "Dad School" : guide ? guide.pillar : "Roadmap";
+
   return (
     <div
       id={`task-${milestone.id}`}
+      role={interactive ? "button" : undefined}
+      tabIndex={interactive ? 0 : undefined}
+      onClick={interactive ? () => navigate(target!) : undefined}
+      onKeyDown={interactive ? (e) => { if (e.key === "Enter") navigate(target!); } : undefined}
       className={`rounded-xl px-3 py-3 flex items-start gap-3 transition-colors ${
         highlight ? "ring-1 ring-primary/50 bg-primary/5" : ""
-      } ${done ? "bg-emerald-500/5" : "hover:bg-secondary/40"}`}
+      } ${done ? "bg-emerald-500/5" : "hover:bg-secondary/40"} ${interactive ? "cursor-pointer" : ""}`}
     >
+      {target ? (
+        <span
+          aria-label={done ? "Completed" : "Not completed"}
+          className={`mt-0.5 w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 ${
+            done ? "bg-emerald-500 border-emerald-500" : "border-border"
+          } ${disabled ? "opacity-50" : ""}`}
+        >
+          {done && <Check className="w-3.5 h-3.5 text-black" strokeWidth={3.5} />}
+        </span>
+      ) : (
       <button
         onClick={() => {
           if (disabled) return;
@@ -548,8 +583,12 @@ function TaskRow({ milestone, onToggle, disabled, highlight }: TaskRowProps) {
           )}
         </AnimatePresence>
       </button>
+      )}
 
       <div className="flex-1 min-w-0">
+        <p className="text-[9px] font-bold tracking-[0.2em] uppercase text-primary/80 mb-0.5">
+          {(target ? TYPE_LABEL[type] : TYPE_LABEL.do).label} · {pillar}
+        </p>
         <div className="flex items-center gap-2">
           <span
             className={`w-1.5 h-1.5 rounded-full shrink-0 ${priorityDot(milestone.priority)}`}
@@ -571,10 +610,16 @@ function TaskRow({ milestone, onToggle, disabled, highlight }: TaskRowProps) {
             {milestone.why_it_matters}
           </p>
         )}
-        <div className="mt-1.5 flex items-center gap-2 text-[10px] text-muted-foreground/80">
-          {est != null && (
+        <div className="mt-1.5 flex items-center gap-3 text-[10px] text-muted-foreground/80">
+          {minutes != null && (
             <span className="flex items-center gap-1">
-              <Clock className="w-3 h-3" /> ~{est}m
+              <Clock className="w-3 h-3" /> {minutes} min{guide ? " conversation" : ""}
+            </span>
+          )}
+          {target && !disabled && (
+            <span className="flex items-center gap-0.5 text-primary font-bold">
+              {done ? (lesson ? "Review Lesson" : "Revisit") : TYPE_LABEL[type].cta}
+              <ChevronRight className="w-3 h-3" />
             </span>
           )}
         </div>
