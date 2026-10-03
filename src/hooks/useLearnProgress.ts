@@ -86,6 +86,12 @@ export function useLearnProgress() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["learn-progress", user?.id] }),
   });
 
+  /** Idempotent: marks a lesson complete without toggling it back off. */
+  async function completeLesson(slug: string) {
+    if (!completed.has(slug)) await upsert(slug, { completed_at: new Date().toISOString() });
+    await qc.invalidateQueries({ queryKey: ["learn-progress", user?.id] });
+  }
+
   return {
     completed,
     saved,
@@ -93,6 +99,7 @@ export function useLearnProgress() {
     savedLessons,
     overallPercent,
     percentByCategory,
+    completeLesson,
     markViewed: (slug: string) => markViewed.mutate(slug),
     toggleComplete: (slug: string) => toggleComplete.mutate(slug),
     toggleSaved: (slug: string) => toggleSaved.mutate(slug),
