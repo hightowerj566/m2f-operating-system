@@ -6,6 +6,7 @@ import { partnerLessons } from "./partner";
 import { homeLessons } from "./home";
 import { financeLessons } from "./finance";
 import { identityLessons } from "./identity";
+import { quickLessons } from "./quick";
 
 export const LEARN_CATEGORIES: Category[] = [
   {
@@ -67,7 +68,8 @@ export const ALL_LESSONS: Lesson[] = [
   ...homeLessons,
   ...financeLessons,
   ...identityLessons,
-];
+  ...quickLessons,
+].filter((l) => l.reviewStatus !== "draft");
 
 export function lessonsByCategory(slug: string): Lesson[] {
   return ALL_LESSONS.filter((l) => l.categorySlug === slug);

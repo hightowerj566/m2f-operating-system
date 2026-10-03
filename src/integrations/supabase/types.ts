@@ -150,49 +150,58 @@ export type Database = {
       build_milestones: {
         Row: {
           category_id: number
+          conversation_guide_slug: string | null
           created_at: string
           detail: string | null
           est_minutes: number | null
           id: string
           is_active: boolean
+          lesson_slug: string | null
           phase: number
           points: number
           priority: string
           recommended_week: number | null
           required: boolean
           sort_order: number
+          task_type: string
           title: string
           why_it_matters: string | null
         }
         Insert: {
           category_id: number
+          conversation_guide_slug?: string | null
           created_at?: string
           detail?: string | null
           est_minutes?: number | null
           id?: string
           is_active?: boolean
+          lesson_slug?: string | null
           phase: number
           points?: number
           priority?: string
           recommended_week?: number | null
           required?: boolean
           sort_order?: number
+          task_type?: string
           title: string
           why_it_matters?: string | null
         }
         Update: {
           category_id?: number
+          conversation_guide_slug?: string | null
           created_at?: string
           detail?: string | null
           est_minutes?: number | null
           id?: string
           is_active?: boolean
+          lesson_slug?: string | null
           phase?: number
           points?: number
           priority?: string
           recommended_week?: number | null
           required?: boolean
           sort_order?: number
+          task_type?: string
           title?: string
           why_it_matters?: string | null
         }
