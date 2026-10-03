@@ -1,7 +1,10 @@
 // Coach/admin sets a client's 1:1 coaching status. Admins: any client.
 // Coaches: their assigned clients, or unassigned clients (Start claims them).
 import { createClient } from "npm:@supabase/supabase-js@2.57.2";
-import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
+};
 import { z } from "npm:zod@3.23.8";
 
 const Body = z.object({
