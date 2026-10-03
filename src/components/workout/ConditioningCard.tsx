@@ -234,7 +234,7 @@ export function ConditioningCard({ name, detail, sets, reps, rest, onTap }: Cond
       <ConditioningBlockCard
         type={block.type}
         title={block.title}
-        duration={block.duration}
+        duration={block.duration || (reps && /\d/.test(reps) ? reps : "")}
         exercises={block.exercises}
         notes={block.notes}
         onTap={onTap}

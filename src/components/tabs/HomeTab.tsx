@@ -70,8 +70,11 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
     [week, arrived],
   );
   const scoringMilestones = useMemo(
-    () => buildMilestones.filter((m) => unlockedPhases.has(m.phase)),
-    [buildMilestones, unlockedPhases],
+    () => buildMilestones.filter((m) =>
+      unlockedPhases.has(m.phase) ||
+      (m.phase >= 11 && m.phase <= 14 && isInfantPhaseUnlocked(m.phase, ageDays)),
+    ),
+    [buildMilestones, unlockedPhases, ageDays],
   );
   const latest = data?.latest ?? null;
   const byCategory = latest?.byCategory;
