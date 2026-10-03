@@ -8,6 +8,8 @@ interface SubscriptionState {
   tier: SubscriptionTier;
   subscriptionEnd: string | null;
   cancelAtPeriodEnd: boolean;
+  isCoachingClient: boolean;
+  accessSource: string | null;
   refresh: () => Promise<void>;
 }
 
@@ -21,6 +23,8 @@ export function useSubscription(userId: string | undefined): SubscriptionState {
   const [tier, setTier] = useState<SubscriptionTier>(FREE_ACCESS_TEMP ? "performance" : null);
   const [subscriptionEnd, setSubscriptionEnd] = useState<string | null>(null);
   const [cancelAtPeriodEnd, setCancelAtPeriodEnd] = useState(false);
+  const [isCoachingClient, setIsCoachingClient] = useState(false);
+  const [accessSource, setAccessSource] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
     if (!userId) return;
@@ -31,6 +35,8 @@ export function useSubscription(userId: string | undefined): SubscriptionState {
         setTier(getTierFromProductId(data.product_id ?? null) ?? (data.subscribed ? "performance" : null));
         setSubscriptionEnd(data.subscription_end ?? null);
         setCancelAtPeriodEnd(data.cancel_at_period_end ?? false);
+        setIsCoachingClient(!!data.coaching_active);
+        setAccessSource(data.access_source ?? null);
       }
     } catch {
       // silent
@@ -81,5 +87,5 @@ export function useSubscription(userId: string | undefined): SubscriptionState {
     }
   }, []);
 
-  return { loading, subscribed, tier, subscriptionEnd, cancelAtPeriodEnd, refresh };
+  return { loading, subscribed, tier, subscriptionEnd, cancelAtPeriodEnd, isCoachingClient, accessSource, refresh };
 }

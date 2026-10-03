@@ -53,6 +53,12 @@ serve(async (req) => {
       .maybeSingle();
     if (coachErr) logStep("Coach lookup error", { message: coachErr.message });
 
+    const { data: prof } = await supabaseAdmin
+      .from("profiles").select("coaching_status").eq("user_id", userData.user.id).maybeSingle();
+    const coachingStatus = (prof?.coaching_status as string | undefined) ?? "none";
+    const coachingActive = coachingStatus === "active";
+    const base = { coaching_status: coachingStatus, coaching_active: coachingActive };
+
     if (coachRole) {
       logStep("Coach bypass — granting Performance tier");
       return new Response(JSON.stringify({
@@ -60,12 +66,22 @@ serve(async (req) => {
         product_id: "prod_U2ua2GJe34qJMp",
         subscription_end: null,
         cancel_at_period_end: false,
+        access_source: "coach_admin",
+        ...base,
       }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
+    // Active 1:1 coaching = complimentary access (Stripe still checked below for source)
+    const coachingResponse = (stripeActive: boolean, extra: Record<string, unknown> = {}) =>
+      new Response(JSON.stringify({
+        subscribed: true, product_id: "prod_U2ua2GJe34qJMp", subscription_end: null, cancel_at_period_end: false,
+        ...extra, access_source: stripeActive ? "coaching_and_stripe" : "coaching", ...base,
+      }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+
     if (!stripeKey) {
+      if (coachingActive) return coachingResponse(false);
       logStep("No STRIPE_SECRET_KEY — returning unsubscribed");
-      return new Response(JSON.stringify({ subscribed: false, product_id: null, subscription_end: null, cancel_at_period_end: false }), {
+      return new Response(JSON.stringify({ ...base, access_source: "none", subscribed: false, product_id: null, subscription_end: null, cancel_at_period_end: false }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
@@ -75,7 +91,8 @@ serve(async (req) => {
 
     if (customers.data.length === 0) {
       logStep("No Stripe customer found");
-      return new Response(JSON.stringify({ subscribed: false, product_id: null, subscription_end: null, cancel_at_period_end: false }), {
+      if (coachingActive) return coachingResponse(false);
+      return new Response(JSON.stringify({ ...base, access_source: "none", subscribed: false, product_id: null, subscription_end: null, cancel_at_period_end: false }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
@@ -119,7 +136,13 @@ serve(async (req) => {
       logStep("No active or trialing subscription");
     }
 
+    if (coachingActive) {
+      return coachingResponse(hasActive, hasActive ? { product_id: productId, subscription_end: subscriptionEnd, cancel_at_period_end: cancelAtPeriodEnd } : {});
+    }
+
     return new Response(JSON.stringify({
+      ...base,
+      access_source: hasActive ? "stripe" : "none",
       subscribed: hasActive,
       product_id: productId,
       subscription_end: subscriptionEnd,
