@@ -5,7 +5,7 @@
 // due date and materialize the readiness assessment so it isn't asked twice.
 
 import { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -25,6 +25,8 @@ const db = supabase as any;
 export default function Onboarding() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const previewCommunity = user?.email?.toLowerCase() === "hightowerj566@gmail.com" && searchParams.get("preview") === "community";
   const { data: questions = [] } = useAssessmentQuestions();
 
   const [firstName, setFirstName] = useState("");
@@ -77,6 +79,7 @@ export default function Onboarding() {
   }
   if (!user) return <Navigate to="/auth" replace />;
 
+  const currentStep = previewCommunity && step === "profile" ? "community" : step;
   const canSubmit = firstName.trim() && dueDate;
 
   /** If a funnel lead exists for this email, materialize it into assessments/scores so Home
@@ -152,6 +155,10 @@ export default function Onboarding() {
   };
 
   const finishOnboarding = async () => {
+    if (previewCommunity) {
+      navigate("/", { replace: true });
+      return;
+    }
     setSaving(true);
     try {
       const { error } = await db.from("profiles")
@@ -168,13 +175,13 @@ export default function Onboarding() {
     }
   };
 
-  if (step === "community" || step === "ready") {
+  if (currentStep === "community" || currentStep === "ready") {
     return (
       <div className="min-h-dvh bg-background flex flex-col pt-safe pb-safe">
         <div className="flex-1 flex flex-col justify-center px-6 max-w-md mx-auto w-full text-center">
           <img src={m2fLogo.url} alt="M2F" className="w-28 h-28 object-contain mx-auto" />
           <p className="text-[11px] font-bold tracking-[0.28em] uppercase text-primary mt-2">Man to Father</p>
-          {step === "community" ? (
+          {currentStep === "community" ? (
             <>
               <h1 className="text-3xl font-black text-foreground mt-6 leading-tight">Don’t Do Fatherhood Alone.</h1>
               <div className="text-sm text-muted-foreground mt-5 space-y-4 leading-relaxed">
