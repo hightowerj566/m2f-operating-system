@@ -17,6 +17,8 @@ import m2fLogo from "@/assets/m2f-logo.png.asset.json";
 import { CATEGORIES, scoreAssessment, type AssessmentQuestion } from "@/lib/readiness";
 import { useAssessmentQuestions } from "@/hooks/useReadiness";
 
+const COMMUNITY_URL = "https://www.facebook.com/share/g/19MNgZXwkw/?mibextid=wwXIfr";
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = supabase as any;
 
@@ -30,6 +32,7 @@ export default function Onboarding() {
   const [dueDate, setDueDate] = useState("");
   const [babyName, setBabyName] = useState("");
   const [saving, setSaving] = useState(false);
+  const [step, setStep] = useState<"profile" | "community" | "ready">("profile");
   const [hydrated, setHydrated] = useState(false);
   const [dueLocked, setDueLocked] = useState(false); // true if funnel already gave us one
 
@@ -134,15 +137,12 @@ export default function Onboarding() {
           partner_name: partnerName.trim() || null,
           due_date: dueDate,
           baby_name: babyName.trim() || null,
-          onboarding_complete: true,
         })
         .eq("user_id", user.id);
       if (error) throw error;
 
       await importLeadAssessment();
-
-      toast({ title: `Welcome, ${firstName.trim()}.`, description: "The clock is running." });
-      navigate("/", { replace: true });
+      setStep("community");
     } catch (err) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       toast({ title: "Couldn't save", description: (err as any)?.message ?? "Try again.", variant: "destructive" });
@@ -150,6 +150,63 @@ export default function Onboarding() {
       setSaving(false);
     }
   };
+
+  const finishOnboarding = async () => {
+    setSaving(true);
+    try {
+      const { error } = await db.from("profiles")
+        .update({ onboarding_complete: true })
+        .eq("user_id", user.id);
+      if (error) throw error;
+      toast({ title: `Welcome, ${firstName.trim()}.`, description: "The clock is running." });
+      navigate("/", { replace: true });
+    } catch (err) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      toast({ title: "Couldn't finish setup", description: (err as any)?.message ?? "Try again.", variant: "destructive" });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (step === "community" || step === "ready") {
+    return (
+      <div className="min-h-dvh bg-background flex flex-col pt-safe pb-safe">
+        <div className="flex-1 flex flex-col justify-center px-6 max-w-md mx-auto w-full text-center">
+          <img src={m2fLogo.url} alt="M2F" className="w-28 h-28 object-contain mx-auto" />
+          <p className="text-[11px] font-bold tracking-[0.28em] uppercase text-primary mt-2">Man to Father</p>
+          {step === "community" ? (
+            <>
+              <h1 className="text-3xl font-black text-foreground mt-6 leading-tight">Don’t Do Fatherhood Alone.</h1>
+              <div className="text-sm text-muted-foreground mt-5 space-y-4 leading-relaxed">
+                <p>The M2F app gives you the plan. The M2F community gives you other dads going through it with you.</p>
+                <p>Join the private M2F Facebook group to ask questions, share wins, get support, and connect with expecting and new dads.</p>
+              </div>
+              <Button
+                onClick={() => {
+                  window.open(COMMUNITY_URL, "_blank", "noopener,noreferrer");
+                  setStep("ready");
+                }}
+                className="w-full mt-9 h-12 rounded-xl font-black text-sm"
+              >
+                Join the M2F Community <ChevronRight className="ml-1 w-4 h-4" />
+              </Button>
+              <Button variant="ghost" onClick={() => setStep("ready")} className="w-full mt-3 text-muted-foreground">
+                I’ll Join Later
+              </Button>
+            </>
+          ) : (
+            <>
+              <h1 className="text-3xl font-black text-foreground mt-6 leading-tight">You’re Ready.</h1>
+              <p className="text-sm text-muted-foreground mt-3">The clock is running. Let’s get to work.</p>
+              <Button onClick={finishOnboarding} disabled={saving} className="w-full mt-9 h-12 rounded-xl font-black text-sm">
+                {saving ? "Finishing setup…" : "Enter the app"} <ChevronRight className="ml-1 w-4 h-4" />
+              </Button>
+            </>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-dvh bg-background flex flex-col pt-safe pb-safe">
@@ -220,7 +277,7 @@ export default function Onboarding() {
           disabled={!canSubmit || saving}
           className="w-full mt-8 h-12 rounded-xl font-black text-sm tracking-wide"
         >
-          {saving ? "Setting up..." : "Enter the app"} <ChevronRight className="ml-1 w-4 h-4" />
+          {saving ? "Setting up..." : "Continue"} <ChevronRight className="ml-1 w-4 h-4" />
         </Button>
 
         <p className="text-xs text-muted-foreground text-center mt-4">
