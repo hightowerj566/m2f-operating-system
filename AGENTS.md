@@ -1,0 +1,1 @@
+- Keep the first-login profile, optional community invitation, and final ready screen in the same onboarding flow; this preserves setup progress until the member explicitly enters the app.

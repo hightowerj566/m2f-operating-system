@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import Onboarding from "@/pages/Onboarding";
 
@@ -35,6 +35,8 @@ beforeEach(() => {
   open.mockClear();
   vi.stubGlobal("open", open);
 });
+
+afterEach(() => vi.unstubAllGlobals());
 
 async function reachCommunity() {
   render(<Onboarding />);
