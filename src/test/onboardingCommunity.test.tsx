@@ -5,13 +5,16 @@ import Onboarding from "@/pages/Onboarding";
 const navigate = vi.fn();
 const update = vi.fn();
 const open = vi.fn();
+let preview = false;
+let email = "dad@example.com";
 
 vi.mock("react-router-dom", () => ({
   Navigate: () => null,
   useNavigate: () => navigate,
+  useSearchParams: () => [new URLSearchParams(preview ? "preview=community" : "")],
 }));
 vi.mock("@/hooks/useAuth", () => ({
-  useAuth: () => ({ user: { id: "member-1", email: "dad@example.com" }, loading: false }),
+  useAuth: () => ({ user: { id: "member-1", email }, loading: false }),
 }));
 vi.mock("@/hooks/useReadiness", () => ({ useAssessmentQuestions: () => ({ data: [] }) }));
 vi.mock("@/hooks/use-toast", () => ({ toast: vi.fn() }));
@@ -33,6 +36,8 @@ beforeEach(() => {
   navigate.mockClear();
   update.mockClear();
   open.mockClear();
+  preview = false;
+  email = "dad@example.com";
   vi.stubGlobal("open", open);
 });
 
@@ -67,5 +72,23 @@ describe("first-login community invitation", () => {
     expect(screen.getByText("You’re Ready.")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /enter the app/i }));
     await waitFor(() => expect(navigate).toHaveBeenCalledWith("/", { replace: true }));
+  });
+
+  it("shows the community directly only for the requested account without changing its setup", async () => {
+    preview = true;
+    email = "hightowerj566@gmail.com";
+    render(<Onboarding />);
+    expect(await screen.findByText("Don’t Do Fatherhood Alone.")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /join later/i }));
+    fireEvent.click(screen.getByRole("button", { name: /enter the app/i }));
+    expect(update).not.toHaveBeenCalled();
+    expect(navigate).toHaveBeenCalledWith("/", { replace: true });
+  });
+
+  it("does not show the preview to another account", async () => {
+    preview = true;
+    render(<Onboarding />);
+    expect(await screen.findByRole("button", { name: /continue/i })).toBeInTheDocument();
+    expect(screen.queryByText("Don’t Do Fatherhood Alone.")).not.toBeInTheDocument();
   });
 });
