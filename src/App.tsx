@@ -23,6 +23,7 @@ import DailyStandardsPage from "./pages/DailyStandards";
 import Learn from "./pages/Learn";
 import LearnCategory from "./pages/LearnCategory";
 import LearnLesson from "./pages/LearnLesson";
+import TalkGuide from "./pages/TalkGuide";
 import LearnSearch from "./pages/LearnSearch";
 import NotFound from "./pages/NotFound";
 import LiveProgram from "./pages/LiveProgram";
