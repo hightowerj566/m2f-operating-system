@@ -61,12 +61,19 @@ Deno.serve(async (req) => {
     }
     await admin.from("user_roles").upsert(rolesToInsert, { onConflict: "user_id,role" });
 
-    // Link to coach
-    if (invite.assigned_coach_id) {
-      await admin
-        .from("profiles")
-        .update({ assigned_coach_id: invite.assigned_coach_id })
-        .eq("user_id", newUserId);
+    // Client invitations = 1:1 coaching: link coach + activate coaching entitlement
+    const isClientInvite = invite.role === "client" || invite.role === "user";
+    if (isClientInvite || invite.assigned_coach_id) {
+      const now = new Date().toISOString();
+      const patch: Record<string, unknown> = {
+        assigned_coach_id: invite.assigned_coach_id ?? invite.invited_by ?? null,
+      };
+      if (isClientInvite) {
+        patch.coaching_status = "active";
+        patch.coaching_started_at = now;
+        patch.coaching_status_changed_at = now;
+      }
+      await admin.from("profiles").update(patch).eq("user_id", newUserId);
     }
 
     // Mark invitation accepted

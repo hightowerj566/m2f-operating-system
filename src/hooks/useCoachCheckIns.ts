@@ -27,7 +27,14 @@ export function useCoachCheckInQueue() {
         .order("submitted_at", { ascending: true })
         .limit(200);
       if (error) throw error;
-      const rows = (checkIns ?? []) as WeeklyCheckIn[];
+      const allRows = (checkIns ?? []) as WeeklyCheckIn[];
+      if (!allRows.length) return [] as CoachQueueRow[];
+      // Only active 1:1 clients appear in the queue; history stays in the DB.
+      const { data: activeProfs } = await db.from("profiles").select("user_id")
+        .in("user_id", Array.from(new Set(allRows.map((r) => r.user_id))))
+        .eq("coaching_status", "active");
+      const activeIds = new Set((activeProfs ?? []).map((p: { user_id: string }) => p.user_id));
+      const rows = allRows.filter((r) => activeIds.has(r.user_id));
       if (!rows.length) return [] as CoachQueueRow[];
 
       const ids = rows.map((r) => r.id);

@@ -16,6 +16,7 @@ import { useLearnProgress } from "@/hooks/useLearnProgress";
 import m2fLogo from "@/assets/m2f-logo.png.asset.json";
 import { Countdown } from "@/components/home/Countdown";
 import { CoachFocusCard } from "@/components/home/CoachFocusCard";
+import { useCoachingStatus } from "@/hooks/useCoachingStatus";
 import { useWeeklyPriorities, effectiveStatus } from "@/hooks/useWeeklyPriorities";
 import { useCurrentWeeklyCheckIn } from "@/hooks/useWeeklyCheckIns";
 import { CHECK_IN_STATUS } from "@/lib/coaching/coachingConstants";
@@ -52,6 +53,7 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
   const { completed: completedLessons, markViewed } = useLearnProgress();
 
   const days = calcDaysRemaining(data?.dueDate);
+  const { isActive: coachingActive } = useCoachingStatus();
   const arrived = !!data?.babyArrivedAt;
   const phase = getPhase(days, arrived);
   const week = pregnancyWeek(days);
@@ -477,9 +479,11 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
       )}
 
       {/* ── 3 · Coach Focus (personalized weekly prescription) ── */}
-      <div className="px-5 pt-4">
-        <CoachFocusCard />
-      </div>
+      {coachingActive && (
+        <div className="px-5 pt-4">
+          <CoachFocusCard />
+        </div>
+      )}
 
       {/* ── 4 · Today's Mission Card ── */}
       <div className="px-5 pt-4">
@@ -550,7 +554,7 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
       </div>
 
       {/* ── 3.5 · Compact weekly progress strip ── */}
-      {!arrived && (
+      {!arrived && coachingActive && (
         <div className="px-5 pt-3">
           <WeeklyProgressStrip />
         </div>

@@ -858,6 +858,9 @@ export type Database = {
           biggest_fear: string | null
           body_composition_category: string | null
           body_fat_pct: number | null
+          coaching_started_at: string | null
+          coaching_status: string
+          coaching_status_changed_at: string | null
           conditioning_level: string | null
           created_at: string
           display_name: string | null
@@ -895,6 +898,9 @@ export type Database = {
           biggest_fear?: string | null
           body_composition_category?: string | null
           body_fat_pct?: number | null
+          coaching_started_at?: string | null
+          coaching_status?: string
+          coaching_status_changed_at?: string | null
           conditioning_level?: string | null
           created_at?: string
           display_name?: string | null
@@ -932,6 +938,9 @@ export type Database = {
           biggest_fear?: string | null
           body_composition_category?: string | null
           body_fat_pct?: number | null
+          coaching_started_at?: string | null
+          coaching_status?: string
+          coaching_status_changed_at?: string | null
           conditioning_level?: string | null
           created_at?: string
           display_name?: string | null
@@ -1972,6 +1981,7 @@ export type Database = {
           role: Database["public"]["Enums"]["app_role"]
         }[]
       }
+      has_active_coaching: { Args: { _user_id: string }; Returns: boolean }
       has_active_subscription: { Args: { _user_id: string }; Returns: boolean }
       has_role: {
         Args: {
