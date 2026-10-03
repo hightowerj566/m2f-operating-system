@@ -36,6 +36,13 @@
       "when": 1790989848573,
       "tag": "0004_roadmap_task_types",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1791026462875,
+      "tag": "0005_coaching_entitlement",
+      "breakpoints": true
     }
   ]
 }
