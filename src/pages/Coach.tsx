@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback, memo } from "react";
+import { ClientAccessPanel } from "@/components/coaching/ClientAccessPanel";
+import { COACHING_STATUS_LABEL, type CoachingStatus } from "@/lib/access";
 import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -56,6 +58,7 @@ interface ClientProfile {
   weight_lbs: number | null;
   goal: string | null;
   goal_rate_lb_per_week: number | null;
+  coaching_status?: string | null;
 }
 
 // ─── Common Exercise Templates ───
@@ -476,7 +479,7 @@ export default function Coach() {
 
   const loadClients = async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const base: any = supabase.from("profiles").select("user_id, display_name, weight_lbs, goal, goal_rate_lb_per_week, assigned_coach_id");
+    const base: any = supabase.from("profiles").select("user_id, display_name, weight_lbs, goal, goal_rate_lb_per_week, assigned_coach_id, coaching_status");
     const { data } = await (!isAdmin && user ? base.eq("assigned_coach_id", user.id) : base);
     if (data) setClients(data as any);
     const { data: a } = await supabase.from("program_assignments").select("user_id, program_id, current_day, is_active").eq("is_active", true);
@@ -1092,6 +1095,9 @@ export default function Coach() {
                       <p className="text-[10px] text-muted-foreground">
                         {prog ? `${prog.name} • Day ${clientAssignment?.current_day}` : "No program"}
                       </p>
+                      <p className="text-[10px] font-semibold text-muted-foreground">
+                        {COACHING_STATUS_LABEL[(c.coaching_status ?? "none") as CoachingStatus]}
+                      </p>
                     </button>
                   );
                 })}
@@ -1132,6 +1138,8 @@ export default function Coach() {
                       </button>
                     )}
                   </div>
+
+                  <ClientAccessPanel clientId={selectedClient.user_id} isAdmin={isAdmin} onChanged={loadClients} />
 
                   {/* Assign Program */}
                   <div className="bg-card border border-border rounded-xl p-4 space-y-3">
