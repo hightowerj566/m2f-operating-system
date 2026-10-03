@@ -32,9 +32,14 @@ export interface BuildMilestone {
   priority: MilestonePriority;
   recommended_week: number | null;
   required: boolean;
+  task_type?: TaskType;
+  lesson_slug?: string | null;
+  conversation_guide_slug?: string | null;
   completed: boolean;
   completed_at?: string | null;
 }
+
+export type TaskType = "do" | "learn" | "talk";
 
 export function useBuildList(userId: string | undefined) {
   return useQuery<BuildMilestone[]>({
@@ -45,7 +50,7 @@ export function useBuildList(userId: string | undefined) {
         db
           .from("build_milestones")
           .select(
-            "id, category_id, phase, title, detail, points, sort_order, why_it_matters, est_minutes, priority, recommended_week, required",
+            "id, category_id, phase, title, detail, points, sort_order, why_it_matters, est_minutes, priority, recommended_week, required, task_type, lesson_slug, conversation_guide_slug",
           )
           .eq("is_active", true)
           .order("phase")
@@ -94,11 +99,17 @@ export function useToggleMilestone(userId: string | undefined) {
  */
 export function applyMilestoneBoost(
   byCategory: Record<CategorySlug, number>,
-  milestones: Pick<BuildMilestone, "category_id" | "points" | "completed">[],
+  milestones: (Pick<BuildMilestone, "category_id" | "points" | "completed"> & { lesson_slug?: string | null })[],
 ): { byCategory: Record<CategorySlug, number>; total: number; boost: number } {
   const adjusted = { ...byCategory };
+  // A lesson linked from several Roadmap tasks only awards points once.
+  const countedLessons = new Set<string>();
   for (const m of milestones) {
     if (!m.completed) continue;
+    if (m.lesson_slug) {
+      if (countedLessons.has(m.lesson_slug)) continue;
+      countedLessons.add(m.lesson_slug);
+    }
     const cat = CATEGORIES.find((c) => c.id === m.category_id);
     if (!cat) continue;
     adjusted[cat.slug] = Math.min(10, (adjusted[cat.slug] ?? 0) + m.points);
