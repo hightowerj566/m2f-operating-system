@@ -9,7 +9,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLatestReadiness } from "@/hooks/useReadiness";
 import { useBuildList, applyMilestoneBoost, surfaceMilestones, surfaceInfantMilestones } from "@/hooks/useBuildList";
-import { getPhase, daysRemaining as calcDaysRemaining, pregnancyWeek, babyAgeDays, getPostBirthPhase, unlockedPhaseIds } from "@/lib/phases";
+import { getPhase, daysRemaining as calcDaysRemaining, pregnancyWeek, babyAgeDays, getPostBirthPhase, unlockedPhaseIds, isInfantPhaseUnlocked } from "@/lib/phases";
 import { askHerTonight } from "@/content/fatherhood";
 import { recommendedForWeek, recommendedForPostBirthPhase } from "@/content/learn";
 import { useLearnProgress } from "@/hooks/useLearnProgress";
@@ -70,8 +70,11 @@ export function HomeTab({ onOpenToday, onOpenMore, onOpenMacros }: HomeTabProps)
     [week, arrived],
   );
   const scoringMilestones = useMemo(
-    () => buildMilestones.filter((m) => unlockedPhases.has(m.phase)),
-    [buildMilestones, unlockedPhases],
+    () => buildMilestones.filter((m) =>
+      unlockedPhases.has(m.phase) ||
+      (m.phase >= 11 && m.phase <= 14 && isInfantPhaseUnlocked(m.phase, ageDays)),
+    ),
+    [buildMilestones, unlockedPhases, ageDays],
   );
   const latest = data?.latest ?? null;
   const byCategory = latest?.byCategory;

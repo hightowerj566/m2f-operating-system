@@ -15,23 +15,28 @@ const NAV = [
   { icon: Menu, label: "More", route: "/?tab=More" },
 ];
 
+let coachCache: { uid: string; isCoach: boolean } | null = null;
+
 const COACH_ITEM = { icon: LayoutDashboard, label: "Coach", route: "/coach" };
 
 export function BottomNav() {
   const navigate = useNavigate();
   const { pathname, search } = useLocation();
   const { user } = useAuth();
-  const [isCoach, setIsCoach] = useState(false);
+  const [isCoach, setIsCoach] = useState(() => !!user && coachCache?.uid === user.id && coachCache.isCoach);
 
   useEffect(() => {
     if (!user) return;
+    if (coachCache?.uid === user.id) { setIsCoach(coachCache.isCoach); return; }
     supabase
       .from("user_roles")
       .select("role")
       .eq("user_id", user.id)
       .eq("role", "coach")
       .then(({ data }) => {
-        if (data && data.length > 0) setIsCoach(true);
+        const c = !!(data && data.length > 0);
+        coachCache = { uid: user.id, isCoach: c };
+        setIsCoach(c);
       });
   }, [user]);
 
