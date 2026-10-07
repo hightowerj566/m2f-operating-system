@@ -28,6 +28,7 @@ import { toast } from "@/hooks/use-toast";
 import { TIERS, type SubscriptionTier } from "@/lib/subscriptionTiers";
 import { ManageSubscriptionView } from "@/components/settings/ManageSubscriptionView";
 import { FitnessToolsTab } from "@/components/tools/FitnessToolsTab";
+import { DemoModeCard } from "@/components/settings/DemoModeCard";
 import { DUE_DATE_PASS } from "@/lib/subscriptionTiers";
 import { useDueDatePass, recordArrival, clearArrival, joinYearOneWaitlist, useOnWaitlist } from "@/hooks/useM2fOs";
 import { generateKeepsake } from "@/lib/keepsake";
@@ -868,6 +869,8 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
   return (
     <div className="px-4 pt-4 pb-nav space-y-2">
       <p className="text-xs font-bold tracking-widest text-muted-foreground uppercase mb-3 px-1">Settings</p>
+
+      {user && <DemoModeCard userId={user.id} email={user.email} />}
 
       {/* Subscription Status */}
       <div className="bg-card border border-border rounded-xl p-4 mb-2">
