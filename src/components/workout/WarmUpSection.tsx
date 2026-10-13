@@ -66,65 +66,37 @@ function detectPatterns(exercises: { name: string }[]) {
 }
 
 function generateWarmUp(p: ReturnType<typeof detectPatterns>): WarmUpMove[] {
-  const moves: WarmUpMove[] = [];
+  // Structure: pulse raiser → 2 mobility → 2 activation → ramp-up sets. 6–7 moves, ~8 min.
   const hasLower = p.squat || p.hinge;
   const hasUpper = p.push || p.pull || p.shoulder;
+  const moves: WarmUpMove[] = [
+    { name: hasLower ? "Bike or Rower — Easy" : "Rower or Jump Rope — Easy", detail: "3 min — build to a light sweat" },
+  ];
 
-  moves.push({ name: "Jumping Jacks", detail: "30 seconds — elevate heart rate" });
+  // Mobility (2)
+  const mobility: WarmUpMove[] = [];
+  if (p.squat) mobility.push({ name: "Deep Bodyweight Squat Hold", detail: "30s — elbows push knees out, chest tall" });
+  if (p.hinge) mobility.push({ name: "Cat-Cow", detail: "8 slow reps — move through the whole spine" });
+  if (hasLower) mobility.push({ name: "Hip 90/90 Switches", detail: "6 each side — open the hips" });
+  if (p.push || p.shoulder) mobility.push({ name: "Wall Slides", detail: "10 reps — arms overhead, ribs down" });
+  if (hasUpper) mobility.push({ name: "Open Book Thoracic Rotation", detail: "6 each side — upper back rotation" });
+  if (!mobility.length) mobility.push({ name: "World's Greatest Stretch", detail: "4 each side — hips, hamstrings, upper back" }, { name: "Inchworms", detail: "5 reps — full body" });
+  moves.push(...mobility.slice(0, 2));
 
-  if (hasLower) {
-    moves.push({ name: "Hip 90/90 Switches", detail: "8 each side — open hip capsule" });
-    moves.push({ name: "Hip Circles (Standing)", detail: "10 each direction — lubricate hip joint" });
-  }
+  // Activation (2)
+  const activation: WarmUpMove[] = [];
+  if (p.hinge) activation.push({ name: "Glute Bridge", detail: "2 × 10 with 2s squeeze — wake up the glutes" });
+  if (p.squat) activation.push({ name: "Bodyweight Reverse Lunge", detail: "6 each leg — controlled" });
+  if (p.pull) activation.push({ name: "Band Pull-Aparts", detail: "15 reps — upper back and rear shoulders" });
+  if (p.push) activation.push({ name: "Scapular Push-Ups", detail: "10 reps — push the floor away at the top" });
+  if (p.shoulder && !p.push) activation.push({ name: "Band External Rotation", detail: "12 each arm — rotator cuff" });
+  if (p.core || p.carry || activation.length < 2) activation.push({ name: "Dead Bugs", detail: "6 each side — slow, lower back flat" });
+  moves.push(...activation.slice(0, 2));
 
-  if (p.squat) {
-    moves.push({ name: "Deep Bodyweight Squat Hold", detail: "30s — sit in bottom position, drive knees out" });
-    moves.push({ name: "Walking Lunges w/ Twist", detail: "6 each leg — hip flexors + thoracic rotation" });
-    moves.push({ name: "Leg Swings (Front-to-Back)", detail: "10 each leg — dynamic hip flexor/hamstring stretch" });
-  }
-
-  if (p.hinge) {
-    moves.push({ name: "Cat-Cow", detail: "10 reps — spinal flexion/extension, wake up posterior chain" });
-    moves.push({ name: "Single-Leg RDL (bodyweight)", detail: "8 each leg — activate glutes + hamstrings" });
-    moves.push({ name: "Glute Bridge Hold", detail: "2 × 10s — fire glutes before hinging" });
-    if (!p.squat) {
-      moves.push({ name: "Leg Swings (Side-to-Side)", detail: "10 each leg — adductor mobility" });
-    }
-  }
-
-  if (p.push || p.shoulder) {
-    moves.push({ name: "Arm Circles", detail: "10 forward + 10 backward — shoulder capsule warm-up" });
-    moves.push({ name: "Scapular Push-Ups", detail: "10 reps — protract/retract, activate serratus" });
-    moves.push({ name: "Wall Slides", detail: "10 reps — scapular upward rotation + shoulder mobility" });
-  }
-
-  if (p.pull) {
-    moves.push({ name: "Band Pull-Aparts", detail: "15 reps — rear delt + mid-trap activation" });
-    moves.push({ name: "Scapular Pull-Up Hangs", detail: "2 × 5 reps — depress/retract scapulae for pulling" });
-    if (!p.push && !p.shoulder) {
-      moves.push({ name: "Arm Circles", detail: "10 forward + 10 backward — shoulder capsule warm-up" });
-    }
-  }
-
-  if (p.shoulder) {
-    moves.push({ name: "Cuban Rotations (light)", detail: "10 reps — external rotation + rotator cuff prep" });
-  }
-
-  if (p.core || hasLower) {
-    moves.push({ name: "Dead Bugs", detail: "8 each side — brace core, anti-extension" });
-  }
-
-  if (p.carry) {
-    moves.push({ name: "Pallof Press Hold", detail: "2 × 10s each side — anti-rotation core brace" });
-  }
-
-  if (!hasUpper && !hasLower) {
-    moves.push({ name: "Inchworms", detail: "6 reps — full body flow" });
-    moves.push({ name: "World's Greatest Stretch", detail: "5 each side — hip, thoracic, hamstring" });
-  }
-
-  moves.push({ name: "Light Set / Empty Bar", detail: "1–2 sets × 8–10 reps of your first exercise at 40–50% — groove the movement pattern" });
-
+  moves.push({
+    name: "Ramp-Up Sets",
+    detail: "First lift: empty bar or light × 8, ~50% × 5, ~70% × 3, ~85% × 1 — then start working sets",
+  });
   return moves;
 }
 
@@ -154,7 +126,7 @@ export function WarmUpSection({ exercises, programWarmUps }: WarmUpSectionProps)
           <span className="text-lg">🔥</span>
           <span className="text-sm font-bold text-foreground">Warm-Up</span>
           <span className="text-[10px] font-semibold text-muted-foreground bg-secondary px-2 py-0.5 rounded-full">
-            {warmUp.length} moves · ~5 min
+            {warmUp.length} moves · ~{Math.max(5, Math.round(warmUp.length * 1.25))} min
           </span>
         </div>
         {expanded ? (
