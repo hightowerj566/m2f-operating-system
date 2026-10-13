@@ -250,8 +250,8 @@ export function ConditioningCard({ name, detail, sets, reps, rest, onTap }: Cond
   let cue = detail
     .replace(/^\d+\s*[×x]\s*[^\s.]+(?:\s*\([^)]+\))?\.\s*/i, "")
     .replace(/,?\s*RIR\s*N\/A/gi, "")
-    .replace(/^[,—–\-\s]+/, "")
-    .replace(/[,—–\-\s]+$/, "")
+    .replace(/^[,—–\-\s·.]+/, "")
+    .replace(/[,—–\-\s·.]+$/, "")
     .trim();
 
   return (

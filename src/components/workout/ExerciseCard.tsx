@@ -90,7 +90,7 @@ function parseIntensity(detail: string): { tags: string[]; cue: string } {
   cue = cue.replace(/,?\s*RIR\s*\d[\d-]*/gi, "").trim();
 
   // Clean up dangling punctuation
-  cue = cue.replace(/^[,—–\-\s]+/, "").replace(/[,—–\-\s]+$/, "").trim();
+  cue = cue.replace(/^[,—–\-\s·.]+/, "").replace(/[,—–\-\s·.]+$/, "").trim();
 
   // Collapse double spaces
   cue = cue.replace(/\s{2,}/g, " ");
@@ -157,7 +157,7 @@ export function ExerciseCard({ name, detail, sets, reps, rir, onTap }: ExerciseC
         <ChevronRight className="w-4 h-4 text-muted-foreground flex-shrink-0" />
       </button>
 
-      {cleanCue && (
+      {cleanCue && /[a-zA-Z0-9]/.test(cleanCue) && (
         <div className="px-3 pb-2">
           <button
             onClick={handleToggleExpand}
