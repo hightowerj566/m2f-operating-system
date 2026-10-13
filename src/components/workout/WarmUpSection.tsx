@@ -25,9 +25,18 @@ const WARMUP_KEYWORDS = [
   "banded ankle", "t-spine", "bird.dog", "90.90",
 ];
 
-export function isWarmUpExercise(name: string, supersetLabel?: string | null): boolean {
-  // Moves programmed inside a superset/tri-set are working sets, never warm-ups.
+export function isWarmUpExercise(
+  name: string,
+  supersetLabel?: string | null,
+  type?: string | null,
+): boolean {
+  // Coach explicitly marked it as warm-up.
+  if (type === "warmup") return true;
+  // Working sets (supersets, labeled A1/F1/CORE1 blocks) and post-workout
+  // conditioning/mobility blocks stay in the workout where they were written.
   if (supersetLabel) return false;
+  if (type === "conditioning") return false;
+  if (/^[A-Za-z]{1,4}\d+[\.\:\)\-]/.test(name.trim())) return false;
   const lower = name.replace(/^\d+[a-zA-Z]?[\.\)\-]\s*/, '').toLowerCase();
   return WARMUP_KEYWORDS.some((kw) => new RegExp(kw, "i").test(lower));
 }
