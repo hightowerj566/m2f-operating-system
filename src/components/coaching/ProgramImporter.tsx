@@ -92,7 +92,15 @@ export function ProgramImporter({
 
       const { data, error } = await supabase.functions.invoke("import-program-v4", { body });
 
-      if (error) throw new Error(error.message);
+      if (error) {
+        let msg = error.message;
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const j = await (error as any).context?.json?.();
+          if (j?.error) msg = j.error;
+        } catch { /* keep generic message */ }
+        throw new Error(msg);
+      }
       if (data?.error) throw new Error(data.error);
 
       setResult(data);
