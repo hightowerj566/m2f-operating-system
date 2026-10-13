@@ -90,7 +90,7 @@ function parseIntensity(detail: string): { tags: string[]; cue: string } {
   cue = cue.replace(/,?\s*RIR\s*\d[\d-]*/gi, "").trim();
 
   // Clean up dangling punctuation
-  cue = cue.replace(/^[,—–\-\s]+/, "").replace(/[,—–\-\s]+$/, "").trim();
+  cue = cue.replace(/^[,—–\-\s·.]+/, "").replace(/[,—–\-\s·.]+$/, "").trim();
 
   // Collapse double spaces
   cue = cue.replace(/\s{2,}/g, " ");

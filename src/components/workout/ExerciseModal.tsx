@@ -305,9 +305,9 @@ export function ExerciseModal({ exercise, programId, dayNumber, onClose, onSwap,
                 <div key={i} className="grid grid-cols-[40px_1fr_1fr] gap-2 items-center">
                   <span className="text-sm font-bold text-muted-foreground text-center">{i + 1}</span>
                   <input type="number" inputMode="decimal" placeholder={lastWeights[i] ? `Last: ${lastWeights[i]}` : (exercise.defaultWeight ? String(exercise.defaultWeight) : "0")} value={set.weight} onChange={e => updateSet(i, "weight", e.target.value)}
-                    className="bg-secondary border border-border rounded-lg px-3 py-2 text-sm text-center text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors" />
+                    className="w-full min-w-0 bg-secondary border border-border rounded-lg px-3 py-2 text-sm text-center text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors" />
                   <input type="number" inputMode="numeric" placeholder="0" value={set.reps} onChange={e => updateSet(i, "reps", e.target.value)}
-                    className="bg-secondary border border-border rounded-lg px-3 py-2 text-sm text-center text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors" />
+                    className="w-full min-w-0 bg-secondary border border-border rounded-lg px-3 py-2 text-sm text-center text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors" />
                 </div>
               ))}
               <button onClick={() => setSets(prev => [...prev, { weight: "", reps: exercise.reps ? String(exercise.reps) : "" }])}
