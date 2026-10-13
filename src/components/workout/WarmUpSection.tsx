@@ -105,7 +105,8 @@ export function WarmUpSection({ exercises, programWarmUps }: WarmUpSectionProps)
 
   const warmUp = useMemo(() => {
     // Use program-embedded warm-ups if available
-    if (programWarmUps && programWarmUps.length > 0) {
+    // Use the coach-written warm-up only when it's a real routine (3+ moves)
+    if (programWarmUps && programWarmUps.length >= 3) {
       return programWarmUps.map((w) => ({
         name: w.name.replace(/^\d+[a-zA-Z]?[\.\)\-]\s*/, ''),
         detail: w.detail,
