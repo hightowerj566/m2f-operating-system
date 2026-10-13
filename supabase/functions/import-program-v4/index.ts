@@ -428,12 +428,58 @@ function readExercises(day: any): any[] {
 }
 
 function isRestDay(day: any): boolean {
+  if (day?.is_rest_day === true || `${day?.day_type || ""}`.toLowerCase() === "rest") return true;
   const label = `${day?.day_label || day?.label || day?.name || ""} ${day?.type || ""}`.toLowerCase();
   return /rest|off day|recovery/.test(label)
     && readExercises(day).length === 0
     && readConditioning(day).length === 0;
 }
 
+
+// ─── Grouped-blocks format: blocks [{ group, format, rounds, exercises:[{exercise,sets,reps}] }]
+function isGroupedBlocksDay(day: any): boolean {
+  return Array.isArray(day?.blocks) && day.blocks.some((b: any) => b?.group && b?.format);
+}
+
+function convertGroupedBlocks(day: any, weekNum: number, slot: number): any[] {
+  const wk = `W${weekNum}D${slot}`;
+  const rows: any[] = [];
+  for (const b of day.blocks) {
+    const letter = String(b.group || "X").toUpperCase();
+    const exs = Array.isArray(b.exercises) ? b.exercises : [];
+    if (exs.length) {
+      const fmt = String(b.format || "");
+      const label = exs.length > 1 ? fmt.replace(/\b\w/g, (c: string) => c.toUpperCase()) : null;
+      exs.forEach((ex: any, i: number) => {
+        const name = ex.exercise || ex.name || "Exercise";
+        const detail = [i === 0 ? b.instructions : null, ex.tempo ? `Tempo ${ex.tempo}` : null, b.target_rpe ? `RPE ${b.target_rpe}` : null, ex.notes]
+          .filter(Boolean).join(" · ");
+        rows.push({
+          name: `${letter}${i + 1}. ${name}`,
+          detail,
+          sets: ex.sets || b.rounds || 3,
+          reps: ex.reps != null ? String(ex.reps) : null,
+          rir: null,
+          rest: i === exs.length - 1 ? (b.rest_after_round_seconds || 60) : 0,
+          type: "exercise",
+          group: `${letter}${wk}`,
+          superset_label: label,
+        });
+      });
+    } else {
+      const dur = Array.isArray(b.duration_minutes) ? `${b.duration_minutes.join("–")} min` : b.duration_minutes ? `${b.duration_minutes} min` : null;
+      const title = b.session || (String(b.format).toLowerCase() === "metcon" ? "Metcon" : String(b.format || "Conditioning").replace(/\b\w/g, (c: string) => c.toUpperCase()));
+      rows.push(conditioningRow({
+        title, duration: dur,
+        description: [b.details, b.intensity, b.recovery ? `Recovery: ${b.recovery}` : null, b.status].filter(Boolean).join("\n"),
+      }, letter, wk));
+    }
+  }
+  if (day.mobility_separate) {
+    rows.push({ name: `Mobility — ${day.mobility_separate}`, detail: "", sets: 1, reps: null, rir: null, rest: null, type: "conditioning", group: `M${wk}`, superset_label: null });
+  }
+  return rows;
+}
 
 // ─── Main handler ──────────────────────────────────────────────────
 
@@ -525,8 +571,10 @@ Deno.serve(async (req) => {
       for (let di = 0; di < trainingDays.length; di++) {
         const td = trainingDays[di];
         const slot = liftSlots[di] ?? di + 1;
-        const exercises = convertNewFormatDay(readExercises(td), readConditioning(td), weekNum, slot);
-        const label = `Day ${slot} — ${td.day_label || td.label || td.name || `Training Day ${di + 1}`}${deloadTag}`;
+        const exercises = isGroupedBlocksDay(td)
+          ? convertGroupedBlocks(td, weekNum, slot)
+          : convertNewFormatDay(readExercises(td), readConditioning(td), weekNum, slot);
+        const label = `Day ${slot} — ${td.day_label || td.label || td.name || td.focus || `Training Day ${di + 1}`}${deloadTag}`;
         allRows.push({ program_id: targetProgramId, day_number: weekStart + slot - 1, label, exercises });
         const condCount = exercises.filter((e: any) => e.type === "conditioning").length;
         results.push(`✅ W${weekNum} D${slot} (#${weekStart + slot - 1}): ${exercises.length} items${condCount ? ` · ${condCount} conditioning` : ""}`);
