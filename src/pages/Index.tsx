@@ -1023,9 +1023,9 @@ export default function Index() {
                 <>
                   {/* Warm-Up & Intensity Techniques */}
                   {displayGroups.length > 0 && (() => {
-                    const allExercises = displayGroups.flatMap(g => g.exercises).filter(e => e.type !== "rest").map(e => ({ name: e.name, detail: e.detail }));
-                    const programWarmUps = allExercises.filter(e => isWarmUpExercise(e.name));
-                    const nonWarmUpExercises = allExercises.filter(e => !isWarmUpExercise(e.name));
+                    const allExercises = displayGroups.flatMap(g => g.exercises).filter(e => e.type !== "rest").map(e => ({ name: e.name, detail: e.detail, ss: (e as any).superset_label as string | null | undefined }));
+                    const programWarmUps = allExercises.filter(e => isWarmUpExercise(e.name, e.ss)).map(({ name, detail }) => ({ name, detail }));
+                    const nonWarmUpExercises = allExercises.filter(e => !isWarmUpExercise(e.name, e.ss)).map(({ name, detail }) => ({ name, detail }));
                     return allExercises.length > 0 ? (
                       <div className="space-y-2">
                         <WarmUpSection exercises={nonWarmUpExercises} programWarmUps={programWarmUps.length > 0 ? programWarmUps : undefined} />
@@ -1060,7 +1060,7 @@ export default function Index() {
                         };
 
                         // Group exercises by their letter prefix
-                        const filteredExercises = exercises.filter(ex => ex.type !== "mindset" && ex.type !== "mission" && !isWarmUpExercise(ex.name));
+                        const filteredExercises = exercises.filter(ex => ex.type !== "mindset" && ex.type !== "mission" && !isWarmUpExercise(ex.name, (ex as any).superset_label));
 
                         // ── Pre-scan: find the trailing conditioning finisher block ──
                         // Only exercises at the END of the list get grouped into one card.

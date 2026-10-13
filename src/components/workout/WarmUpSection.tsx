@@ -25,7 +25,9 @@ const WARMUP_KEYWORDS = [
   "banded ankle", "t-spine", "bird.dog", "90.90",
 ];
 
-export function isWarmUpExercise(name: string): boolean {
+export function isWarmUpExercise(name: string, supersetLabel?: string | null): boolean {
+  // Moves programmed inside a superset/tri-set are working sets, never warm-ups.
+  if (supersetLabel) return false;
   const lower = name.replace(/^\d+[a-zA-Z]?[\.\)\-]\s*/, '').toLowerCase();
   return WARMUP_KEYWORDS.some((kw) => new RegExp(kw, "i").test(lower));
 }
