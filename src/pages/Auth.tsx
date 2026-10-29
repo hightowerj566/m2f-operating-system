@@ -86,7 +86,7 @@ export default function Auth() {
       });
       if (error) setError(error.message);
       else if (data.session) window.location.href = "/";
-      else setMessage("Check your email to confirm your account, then sign in to choose your plan.");
+      else setMessage("Check your email to confirm your account, then sign in to get started.");
       setLoading(false);
       return;
     }

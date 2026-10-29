@@ -191,8 +191,8 @@ export default function Index() {
 
   useEffect(() => {
     if (!user || subLoading) return;
-    // Unsubscribed members see the subscription page first; onboarding comes after payment.
-    if (!subscribed) { setOnboardingChecked(true); return; }
+    // Members land in the app first; subscription is only asked for when they
+    // touch a locked feature (the upgrade modal handles that).
     const checkOnboarding = async () => {
       const { data } = await supabase
         .from("profiles")
@@ -832,18 +832,6 @@ export default function Index() {
   if (!user) return <Navigate to="/auth" replace />;
   if (!onboardingChecked) return <div className="flex items-center justify-center min-h-dvh bg-background"><div className="text-muted-foreground">Loading...</div></div>;
 
-  // No subscription → show pricing (coaches bypass)
-  if (!subscribed && !isCoach) {
-    return (
-      <div className="flex flex-col min-h-dvh bg-background max-w-md mx-auto pt-safe">
-        <PricingView
-          currentTier={tier}
-          onCheckout={handleCheckout}
-          checkingOut={checkingOut}
-        />
-      </div>
-    );
-  }
 
   const FLAGSHIP_NAV_WINDOW_DAYS = 30; // bound how far a member can browse from today
   const canGoBack = isFlagshipActive
