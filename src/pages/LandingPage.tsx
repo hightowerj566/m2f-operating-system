@@ -60,21 +60,21 @@ const pillars = [
   },
   {
     number: "02",
-    icon: Salad,
-    title: "Father Fuel",
-    text: "Set personalized nutrition targets and track your food, body weight, and progress. Human coaching is separate.",
-  },
-  {
-    number: "03",
     icon: HeartHandshake,
     title: "Partner Strong",
     text: "Make time for practical partner support and meaningful conversations with linked conversation guides.",
   },
   {
-    number: "04",
+    number: "03",
     icon: Map,
-    title: "M2F Roadmap",
+    title: "Fatherhood Prep",
     text: "Follow stage-based preparation tasks, daily missions, and linked lessons from pregnancy through your baby’s first year.",
+  },
+  {
+    number: "04",
+    icon: Salad,
+    title: "Father Fuel",
+    text: "Set personalized nutrition targets and track your food, body weight, and progress. Human coaching is separate.",
   },
 ];
 
