@@ -18,7 +18,6 @@ import {
   Target,
   Users,
 } from "lucide-react";
-import m2fLogo from "@/assets/m2f-logo.png.asset.json";
 import heroImage from "@/assets/father-ready-hero.jpg";
 import { MEMBERSHIP } from "@/lib/subscriptionTiers";
 
@@ -116,11 +115,11 @@ export default function LandingPage() {
     <div className="min-h-screen overflow-hidden bg-background font-marketing text-foreground">
       <header className="sticky top-0 z-50 border-b border-border/70 bg-background/95 backdrop-blur-md">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:px-8">
-          <Link to="/" className="flex items-center gap-3" aria-label="Man to Father home">
-            <img src={m2fLogo.url} alt="" className="h-12 w-12 object-contain" />
-            <div>
-              <span className="block font-display text-xl font-bold uppercase leading-none tracking-[0.16em]">Man to Father</span>
-              <span className="mt-1 block text-[9px] font-bold uppercase tracking-[0.28em] text-primary">Strength for what matters</span>
+          <Link to="/" className="flex items-center gap-2 sm:gap-3" aria-label="Man to Father home">
+            <img src="/favicon.png" alt="" className="h-12 w-12 shrink-0 object-contain" />
+            <div className="whitespace-nowrap">
+              <span className="block font-display text-lg font-bold uppercase leading-none tracking-[0.16em] sm:text-xl">Man to Father</span>
+              <span className="mt-1 block text-[8px] font-bold uppercase tracking-[0.24em] text-primary sm:text-[9px] sm:tracking-[0.28em]">Strength for what matters</span>
             </div>
           </Link>
 
@@ -136,7 +135,7 @@ export default function LandingPage() {
             </Link>
             <Link
               to="/auth?mode=signup"
-              className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-xs font-extrabold text-primary-foreground transition-colors hover:bg-primary/90 sm:px-5 sm:text-sm"
+              className="inline-flex items-center gap-2 whitespace-nowrap rounded-lg bg-primary px-4 py-2.5 text-xs font-extrabold text-primary-foreground transition-colors hover:bg-primary/90 sm:px-5 sm:text-sm"
             >
               Start free <ArrowRight className="h-4 w-4" />
             </Link>
@@ -389,7 +388,7 @@ export default function LandingPage() {
 
         <section className="px-5 pb-24 sm:px-8">
           <div className="mx-auto max-w-5xl border-t border-primary/40 pt-16 text-center">
-            <img src={m2fLogo.url} alt="Man to Father" className="mx-auto h-24 w-24 object-contain" loading="lazy" />
+            <img src="/favicon.png" alt="Man to Father" className="mx-auto h-24 w-24 object-contain" loading="lazy" />
             <h2 className="mt-6 font-display text-5xl font-bold uppercase leading-[0.95] sm:text-7xl">Your family does not need a perfect dad.<br /><span className="text-primary">They need a prepared one.</span></h2>
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
               <Link to="/father-athlete-quiz" className="inline-flex min-h-14 items-center justify-center gap-2 rounded-lg bg-primary px-7 font-extrabold text-primary-foreground transition-colors hover:bg-primary/90">
@@ -406,7 +405,7 @@ export default function LandingPage() {
       <footer className="border-t border-border px-5 py-8 sm:px-8">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-5 text-center sm:flex-row sm:text-left">
           <div className="flex items-center gap-3">
-            <img src={m2fLogo.url} alt="" className="h-10 w-10 object-contain" loading="lazy" />
+            <img src="/favicon.png" alt="" className="h-10 w-10 object-contain" loading="lazy" />
             <div><p className="font-display text-lg font-bold uppercase tracking-[0.14em]">Man to Father</p><p className="text-xs text-muted-foreground">Faith. Family. Fitness. Service.</p></div>
           </div>
           <div className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs font-semibold text-muted-foreground">
