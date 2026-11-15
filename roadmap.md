@@ -1,6 +1,6 @@
 # Current tasks
 
-- [ ] Correct public-page product pillars and unsupported information; verify on desktop and mobile.
+- [x] Correct public-page product pillars to Father Forge, Partner Strong, Fatherhood Prep, and Father Fuel; correct unsupported information and verify on desktop and mobile.
 
 - [x] Add device-local member recognition, login redirection, and a clear control; verify returning-member and new-device flows.
 
