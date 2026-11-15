@@ -187,7 +187,6 @@ export default function LandingPage() {
                   width={1200}
                   height={1200}
                   className="aspect-[4/5] w-full object-cover object-center sm:aspect-[5/5] lg:aspect-[4/5]"
-                  fetchPriority="high"
                 />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background via-background/90 to-transparent px-6 pb-6 pt-24 sm:px-8 sm:pb-8">
                   <p className="text-[10px] font-extrabold uppercase tracking-[0.24em] text-primary">Your due date becomes the plan</p>
