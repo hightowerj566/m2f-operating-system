@@ -1,6 +1,8 @@
 import { useAuth } from "@/hooks/useAuth";
 import Index from "@/pages/Index";
 import LandingPage from "@/pages/LandingPage";
+import { Navigate } from "react-router-dom";
+import { isRecognizedMemberDevice } from "@/lib/memberDevice";
 
 export default function Home() {
   const { user, loading } = useAuth();
@@ -13,5 +15,7 @@ export default function Home() {
     );
   }
 
-  return user ? <Index /> : <LandingPage />;
+  if (user) return <Index />;
+  if (isRecognizedMemberDevice()) return <Navigate to="/auth?next=%2F" replace />;
+  return <LandingPage />;
 }

@@ -4,6 +4,8 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
 import m2fLogo from "@/assets/m2f-logo.png.asset.json";
 import { Lock } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { clearMemberDevice, isRecognizedMemberDevice, rememberMemberDevice } from "@/lib/memberDevice";
 
 function searchParams_init(): boolean {
   return new URLSearchParams(window.location.search).get("mode") === "signup";
@@ -27,6 +29,7 @@ export default function Auth() {
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [rememberMe, setRememberMe] = useState(true);
+  const [recognizedDevice, setRecognizedDevice] = useState(isRecognizedMemberDevice);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -85,7 +88,10 @@ export default function Auth() {
         },
       });
       if (error) setError(error.message);
-      else if (data.session) window.location.href = "/";
+      else if (data.session) {
+        rememberMemberDevice();
+        window.location.href = "/";
+      }
       else setMessage("Check your email to confirm your account, then sign in to get started.");
       setLoading(false);
       return;
@@ -94,6 +100,7 @@ export default function Auth() {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) setError(error.message);
     else {
+      rememberMemberDevice();
       if (!rememberMe) localStorage.setItem("forget-session-flag", "true");
       else localStorage.removeItem("forget-session-flag");
       window.location.href = next;
@@ -131,6 +138,7 @@ export default function Auth() {
       setLoading(false);
       return;
     }
+    rememberMemberDevice();
     window.location.href = "/onboarding";
   };
 
@@ -294,6 +302,22 @@ export default function Auth() {
             {signupMode ? "Already have an account? Sign in" : "New here? Create an account"}
           </button>
         </div>
+      )}
+      {recognizedDevice && !signupMode && !forgotMode && (
+        <Button
+          variant="ghost"
+          className="mt-4 text-muted-foreground whitespace-normal h-auto"
+          onClick={() => {
+            if (!clearMemberDevice()) {
+              setError("Could not forget this device. Check your browser storage settings.");
+              return;
+            }
+            setRecognizedDevice(false);
+            navigate("/", { replace: true });
+          }}
+        >
+          Forget this device
+        </Button>
       )}
     </div>
   );
