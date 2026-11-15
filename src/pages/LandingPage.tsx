@@ -130,14 +130,11 @@ export default function LandingPage() {
           </nav>
 
           <div className="flex items-center gap-2 sm:gap-4">
-            <Link to="/auth" className="hidden px-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground sm:block">
-              Sign in
-            </Link>
             <Link
-              to="/auth?mode=signup"
+              to="/auth"
               className="inline-flex items-center gap-2 whitespace-nowrap rounded-lg bg-primary px-4 py-2.5 text-xs font-extrabold text-primary-foreground transition-colors hover:bg-primary/90 sm:px-5 sm:text-sm"
             >
-              Start free <ArrowRight className="h-4 w-4" />
+              Log in <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>
