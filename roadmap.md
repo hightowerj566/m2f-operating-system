@@ -1,5 +1,7 @@
 # Current tasks
 
+- [ ] Correct public-page product pillars and unsupported information; verify on desktop and mobile.
+
 - [x] Add device-local member recognition, login redirection, and a clear control; verify returning-member and new-device flows.
 
 - [x] Domain approach: keep man2father.app as the single public/app site; an optional .com can redirect here later.

@@ -5,9 +5,7 @@ import {
   BookOpen,
   Check,
   ChevronRight,
-  Cross,
   Dumbbell,
-  HandHeart,
   HeartHandshake,
   LineChart,
   Map,
@@ -16,7 +14,6 @@ import {
   ShieldCheck,
   Sparkles,
   Target,
-  Users,
 } from "lucide-react";
 import heroImage from "@/assets/father-ready-hero.jpg";
 import { MEMBERSHIP } from "@/lib/subscriptionTiers";
@@ -57,27 +54,27 @@ const features = [
 const pillars = [
   {
     number: "01",
-    icon: Cross,
-    title: "Faith",
-    text: "Build the convictions and character your family can count on when life gets hard.",
+    icon: Dumbbell,
+    title: "Father Forge",
+    text: "Build strength and fitness with structured workouts, exercise videos, and training progress tracking.",
   },
   {
     number: "02",
-    icon: Users,
-    title: "Family",
-    text: "Show up prepared, present, and ready to lead—not just physically, but emotionally.",
+    icon: Salad,
+    title: "Father Fuel",
+    text: "Set personalized nutrition targets and track your food, body weight, and progress. Human coaching is separate.",
   },
   {
     number: "03",
-    icon: Dumbbell,
-    title: "Fitness",
-    text: "Build the strength, energy, and discipline to carry the responsibility in front of you.",
+    icon: HeartHandshake,
+    title: "Partner Strong",
+    text: "Make time for practical partner support and meaningful conversations with linked conversation guides.",
   },
   {
     number: "04",
-    icon: HandHeart,
-    title: "Service",
-    text: "Put your strength to work for your partner, your children, and the people around you.",
+    icon: Map,
+    title: "M2F Roadmap",
+    text: "Follow stage-based preparation tasks, daily missions, and linked lessons from pregnancy through your baby’s first year.",
   },
 ];
 
@@ -169,7 +166,7 @@ export default function LandingPage() {
                 </Link>
               </div>
               <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-xs font-semibold text-muted-foreground">
-                <span className="inline-flex items-center gap-1.5"><Check className="h-4 w-4 text-primary" /> Free 2-minute assessment</span>
+                <span className="inline-flex items-center gap-1.5"><Check className="h-4 w-4 text-primary" /> Free readiness assessment</span>
                 <span className="inline-flex items-center gap-1.5"><Check className="h-4 w-4 text-primary" /> No account required</span>
               </div>
             </div>
@@ -253,9 +250,9 @@ export default function LandingPage() {
         <section id="pillars" className="scroll-mt-24 px-5 py-20 sm:px-8 sm:py-28">
           <div className="mx-auto max-w-7xl">
             <div className="max-w-3xl">
-              <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-primary">What we stand on</p>
+              <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-primary">Your fatherhood preparation</p>
               <h2 className="mt-4 font-display text-5xl font-bold uppercase leading-[0.95] sm:text-6xl">Four pillars. <span className="text-primary">One standard.</span></h2>
-              <p className="mt-5 text-lg leading-relaxed text-muted-foreground">This is not about becoming a perfect man. It is about becoming a dependable one.</p>
+              <p className="mt-5 text-lg leading-relaxed text-muted-foreground">Training, nutrition, partner support, and a roadmap for becoming a prepared father. Your Readiness Score measures seven areas separately: physical, mindset, knowledge, home, relationship, finances, and habits.</p>
             </div>
             <div className="mt-12 grid border-l border-t border-border sm:grid-cols-2 lg:grid-cols-4">
               {pillars.map((pillar) => (
@@ -264,7 +261,7 @@ export default function LandingPage() {
                     <pillar.icon className="h-8 w-8 text-primary" strokeWidth={1.5} />
                     <span className="font-display text-4xl font-bold text-secondary">{pillar.number}</span>
                   </div>
-                  <h3 className="mt-10 font-display text-4xl font-bold uppercase">{pillar.title}</h3>
+                  <h3 className="mt-10 break-words font-display text-3xl font-bold uppercase">{pillar.title}</h3>
                   <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{pillar.text}</p>
                 </article>
               ))}
@@ -290,7 +287,7 @@ export default function LandingPage() {
                 >
                   Take the free assessment <ArrowRight className="h-5 w-5" />
                 </Link>
-                <p className="mt-3 text-center text-xs font-semibold text-muted-foreground">2 minutes. Instant breakdown.</p>
+                <p className="mt-3 text-center text-xs font-semibold text-muted-foreground">14 scored questions + 3 training questions.</p>
               </div>
             </div>
           </div>
@@ -373,7 +370,7 @@ export default function LandingPage() {
               </details>
               <details className="group py-5">
                 <summary className="cursor-pointer list-none font-display text-2xl font-bold uppercase">Do I need a full gym?</summary>
-                <p className="mt-3 leading-relaxed text-muted-foreground">Your training setup is part of your profile, and available programs can be matched to the equipment and time you have.</p>
+                <p className="mt-3 leading-relaxed text-muted-foreground">Equipment requirements vary by program. Check the workouts before choosing a program; gym-based plans require access to gym equipment.</p>
               </details>
               <details className="group py-5">
                 <summary className="cursor-pointer list-none font-display text-2xl font-bold uppercase">Can I cancel during the trial?</summary>
@@ -403,7 +400,7 @@ export default function LandingPage() {
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-5 text-center sm:flex-row sm:text-left">
           <div className="flex items-center gap-3">
             <img src="/favicon.png" alt="" className="h-10 w-10 object-contain" loading="lazy" />
-            <div><p className="font-display text-lg font-bold uppercase tracking-[0.14em]">Man to Father</p><p className="text-xs text-muted-foreground">Faith. Family. Fitness. Service.</p></div>
+            <div><p className="font-display text-lg font-bold uppercase tracking-[0.14em]">Man to Father</p><p className="text-xs text-muted-foreground">Training. Nutrition. Partner support. Fatherhood preparation.</p></div>
           </div>
           <div className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs font-semibold text-muted-foreground">
             <Link to="/father-athlete-quiz" className="hover:text-foreground">Readiness Score</Link>
