@@ -1,6 +1,6 @@
 # Current tasks
 
-- [ ] Add device-local member recognition, login redirection, and a clear control; verify returning-member and new-device flows.
+- [x] Add device-local member recognition, login redirection, and a clear control; verify returning-member and new-device flows.
 
 - [x] Domain approach: keep man2father.app as the single public/app site; an optional .com can redirect here later.
 - [x] Build a polished public home page for logged-out visitors while preserving the signed-in dashboard.
