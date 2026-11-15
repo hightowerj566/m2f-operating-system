@@ -55,6 +55,7 @@ export const PERFORMANCE_ONLY_TABS = ["Macros"];
 
 // Single public membership (self-serve signup). Prices are resolved server-side by lookup key.
 export const MEMBERSHIP = {
+  trial_days: 7,
   monthly: { per_month: 29.99 },
   annual: { per_month: 24.99, total: 299.88 },
   features: [
