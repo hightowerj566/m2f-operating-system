@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { User } from "@supabase/supabase-js";
+import { rememberMemberDevice } from "@/lib/memberDevice";
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
@@ -9,6 +10,7 @@ export function useAuth() {
   useEffect(() => {
     // Set up auth listener first
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) rememberMemberDevice();
       setUser(session?.user ?? null);
       setLoading(false);
     });
@@ -29,6 +31,7 @@ export function useAuth() {
       }
 
       const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) rememberMemberDevice();
       setUser(session?.user ?? null);
       setLoading(false);
     };
