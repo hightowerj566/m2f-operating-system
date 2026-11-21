@@ -1,18 +1,16 @@
-// M2F OS · Onboarding (S1–S3): Welcome → The Countdown → The Man Assessment.
-// Ends by routing into the Readiness Assessment (S4), which reveals the score
-// and hands off to the 73-day plan (S5, /plan).
-//
-// Training Mode: users without a baby on the way can skip the due date entirely
-// and answer only the training-relevant questions. They land on the home dashboard.
+// M2F OS · Public welcome and member onboarding (S1–S3).
+// Signed-out visitors arriving from partner resources see a public introduction.
+// Signed-in members continue through due date → assessment → readiness plan.
+// Training Mode users can skip the due date and answer training-only questions.
 
 import { useEffect, useState } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { ChevronRight, ChevronLeft } from "lucide-react";
-import { daysRemaining } from "@/lib/phases";
+import { getDueDateCountdown } from "@/lib/dueDateCountdown";
 import { routeTrack } from "@/lib/readiness";
 import { ensureTrackAssignment } from "@/hooks/useReadiness";
 
@@ -61,16 +59,19 @@ export default function Start() {
   const [dueDate, setDueDate] = useState("");
   const [answers, setAnswers] = useState<Record<string, string | number | boolean>>({});
   const [trainingOnly, setTrainingOnly] = useState(false);
+  const [upgrading, setUpgrading] = useState(false);
   const [textDraft, setTextDraft] = useState("");
   const [error, setError] = useState("");
 
-  // Resume-later: a Training Mode user upgrading to Expecting jumps straight
-  // to the due date, then answers ONLY the baby questions he skipped.
-  // Also: if the profile already has a due_date (e.g. set in the readiness
-  // quiz), pre-fill it so the "due" step doesn't ask again.
-  const [upgrading, setUpgrading] = useState(false);
+  // Only the authenticated member's own profile may pre-fill this flow.
+  // Cancellation prevents a previous account's request from populating a new one.
   useEffect(() => {
-    if (!user?.id) return;
+    let active = true;
+    setStep("welcome");
+    setDueDate("");
+    setUpgrading(false);
+    if (!user?.id) return () => { active = false; };
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (supabase as any)
       .from("profiles")
@@ -79,25 +80,35 @@ export default function Start() {
       .maybeSingle()
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then(({ data: prof }: any) => {
-        if (prof?.due_date) setDueDate(prof.due_date);
+        if (!active) return;
+        if (getDueDateCountdown(prof?.due_date)) setDueDate(prof.due_date);
         if (prof?.journey === "training" && !prof?.due_date) {
           setUpgrading(true);
           setStep("due");
         }
       });
+
+    return () => { active = false; };
   }, [user?.id]);
 
-  if (loading) return null;
-  if (!user) return <Navigate to="/auth" replace />;
-
-  const days = daysRemaining(dueDate || null);
+  const countdown = getDueDateCountdown(dueDate);
   const activeQuestions = trainingOnly
     ? QUESTIONS.filter((qq) => !BABY_KEYS.has(qq.key))
     : upgrading
-      ? QUESTIONS.filter((qq) => BABY_KEYS.has(qq.key)) // upgrade: only what he skipped
+      ? QUESTIONS.filter((qq) => BABY_KEYS.has(qq.key))
       : QUESTIONS;
 
+  const begin = () => {
+    if (!user) {
+      navigate("/auth?mode=signup");
+      return;
+    }
+    setError("");
+    setStep(countdown ? "punch" : "due");
+  };
+
   const finish = async (final: Record<string, string | number | boolean>) => {
+    if (!user) return;
     setStep("saving");
     const scriptureOff = final.faith_practicing === false;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -106,7 +117,7 @@ export default function Start() {
       ...final,
       journey: trainingOnly ? "training" : "expecting",
     };
-    if (!trainingOnly && dueDate) profileUpdate.due_date = dueDate;
+    if (!trainingOnly && countdown) profileUpdate.due_date = dueDate;
     await db.from("profiles").update(profileUpdate).eq("user_id", user.id);
 
     // Training Mode: route + enroll the track now (no Readiness quiz required)
@@ -160,23 +171,48 @@ export default function Start() {
   const qIndex = typeof step === "number" ? step : -1;
   const q = qIndex >= 0 ? activeQuestions[qIndex] : null;
 
+  if (loading) {
+    return (
+      <div className="min-h-dvh bg-background text-foreground flex items-center justify-center" aria-label="Loading Man to Father">
+        <img src="/favicon.png" alt="Man to Father" className="h-16 w-16 object-contain" />
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-dvh bg-background text-foreground flex flex-col items-center justify-center px-6 pt-safe pb-safe">
-      {/* S1 · WELCOME */}
+    <div className="min-h-dvh bg-background text-foreground flex flex-col items-center justify-center px-6 py-10 pt-safe pb-safe">
+      {/* Public welcome · also the first step for signed-in members */}
       {step === "welcome" && (
-        <div className="text-center max-w-md">
-          <p className="text-xs font-bold tracking-[0.35em] uppercase text-primary mb-6">Man to Father</p>
-          <h1 className="text-4xl md:text-5xl font-black tracking-tight leading-[1.15] mb-4">
-            You have one shot at becoming her father.
+        <div className="text-center max-w-xl w-full">
+          <img src="/favicon.png" alt="Man to Father" className="h-20 w-20 object-contain mx-auto mb-5" />
+          <p className="text-xs font-bold tracking-[0.28em] uppercase text-primary mb-5">For expecting & new dads</p>
+          <h1 className="text-4xl md:text-5xl font-black tracking-tight leading-[1.08] mb-5">
+            Your baby is coming.<br /><span className="gold-text">Be ready for fatherhood.</span>
           </h1>
-          <p className="text-xl text-muted-foreground mb-10">Let's build the man first.</p>
+          <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-7 max-w-lg mx-auto">
+            Man to Father combines training, nutrition, and a practical fatherhood roadmap so you know how to care for your body, support your partner, and prepare for your baby.
+          </p>
+          <div className="grid grid-cols-2 gap-x-4 gap-y-3 max-w-md mx-auto mb-8 text-sm font-semibold text-foreground">
+            <span>Father Forge</span>
+            <span>Partner Strong</span>
+            <span>Fatherhood Prep</span>
+            <span>Father Fuel</span>
+          </div>
           <Button
             size="lg"
-            onClick={() => setStep(dueDate ? "punch" : "due")}
-            className="text-lg px-12 py-6 font-bold rounded-xl gold-gradient text-primary-foreground"
+            onClick={begin}
+            className="w-full sm:w-auto text-lg px-12 py-6 font-bold rounded-xl gold-gradient text-primary-foreground"
           >
-            Begin <ChevronRight className="ml-2 w-5 h-5" />
+            {user ? "Begin My Plan" : "Get Started"} <ChevronRight className="ml-2 w-5 h-5" />
           </Button>
+          {!user && (
+            <button
+              onClick={() => navigate("/auth?next=%2Fstart")}
+              className="mt-5 text-muted-foreground text-sm hover:text-foreground transition-colors underline underline-offset-4 mx-auto block"
+            >
+              Already a member? Log in
+            </button>
+          )}
         </div>
       )}
 
@@ -188,11 +224,11 @@ export default function Start() {
           <Input
             type="date"
             value={dueDate}
-            onChange={(e) => setDueDate(e.target.value)}
+            onChange={(e) => { setDueDate(e.target.value); setError(""); }}
             className="text-lg py-6 text-center"
           />
           <Button
-            onClick={() => (dueDate ? setStep("punch") : setError("Enter the date."))}
+            onClick={() => (countdown ? setStep("punch") : setError("Enter a valid due date."))}
             className="w-full text-lg py-6 font-bold gold-gradient text-primary-foreground rounded-xl mt-6"
           >
             Set The Clock <ChevronRight className="ml-2 w-5 h-5" />
@@ -210,13 +246,31 @@ export default function Start() {
         </div>
       )}
 
-      {/* S2b · THE PUNCH */}
-      {step === "punch" && (
-        <div className="text-center">
-          <p className="text-sm text-muted-foreground mb-4 tracking-widest uppercase">She arrives in</p>
-          <h1 className="text-8xl font-black tracking-tight gold-text leading-none">{days}</h1>
-          <p className="text-2xl font-bold mt-2 mb-1">DAYS</p>
-          <p className="text-muted-foreground mb-10">That's the runway. Let's use every one of them.</p>
+      {/* A countdown is rendered only for a valid calendar date. */}
+      {step === "punch" && countdown && (
+        <div className="text-center max-w-lg w-full">
+          {countdown.status === "past" ? (
+            <div data-testid="postpartum-message">
+              <p className="text-sm text-primary mb-4 tracking-widest uppercase font-bold">Your due date has passed</p>
+              <h1 className="text-4xl md:text-5xl font-black tracking-tight leading-tight mb-5">Be present for what comes next.</h1>
+              <p className="text-lg text-muted-foreground leading-relaxed mb-10">
+                If your baby is here, focus on recovery, rest, and showing up for your family. M2F will help you keep the next steps clear.
+              </p>
+            </div>
+          ) : countdown.status === "due-today" ? (
+            <div data-testid="due-today-message">
+              <p className="text-sm text-primary mb-4 tracking-widest uppercase font-bold">Today is your due date</p>
+              <h1 className="text-5xl md:text-6xl font-black tracking-tight gold-text leading-none mb-5">Stay ready.</h1>
+              <p className="text-lg text-muted-foreground mb-10">Stay close, stay present, and be available for your partner.</p>
+            </div>
+          ) : (
+            <div data-testid="due-countdown" data-days={countdown.days}>
+              <p className="text-sm text-muted-foreground mb-4 tracking-widest uppercase">She arrives in</p>
+              <h1 className="text-8xl font-black tracking-tight gold-text leading-none">{countdown.days}</h1>
+              <p className="text-2xl font-bold mt-2 mb-1">{countdown.days === 1 ? "DAY" : "DAYS"}</p>
+              <p className="text-muted-foreground mb-10">That's the runway. Let's use every one of them.</p>
+            </div>
+          )}
           <Button
             size="lg"
             onClick={() => setStep(0)}
