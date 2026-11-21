@@ -25,7 +25,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
-import { TIERS, type SubscriptionTier } from "@/lib/subscriptionTiers";
+import { getCheckoutRequestBody, MEMBERSHIP, TIERS, type SubscriptionTier } from "@/lib/subscriptionTiers";
 import { ManageSubscriptionView } from "@/components/settings/ManageSubscriptionView";
 import { FitnessToolsTab } from "@/components/tools/FitnessToolsTab";
 import { DemoModeCard } from "@/components/settings/DemoModeCard";
@@ -42,6 +42,7 @@ interface MoreTabProps {
   onProgramChanged?: () => void;
   onOpenMacros?: () => void;
   onOpenStandards?: () => void;
+  onOpenMembership?: () => void;
 }
 
 const EXERCISE_CATEGORIES = [
@@ -105,7 +106,7 @@ interface Program {
   total_days: number;
 }
 
-export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRefreshSub, currentProgramId, onProgramChanged, onOpenMacros, onOpenStandards }: MoreTabProps = {}) {
+export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRefreshSub, currentProgramId, onProgramChanged, onOpenMacros, onOpenStandards, onOpenMembership }: MoreTabProps = {}) {
   const { user, signOut } = useAuth();
   const [view, setView] = useState<"menu" | "maxes" | "programs" | "manage-sub" | "tools" | "graduation">("menu");
   const { hasPass, passExpires } = useDueDatePass(user?.id);
@@ -242,9 +243,9 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
     setCheckingSub(false);
   };
 
-  const handleSubscribe = async (priceId?: string) => {
+  const handleSubscribe = async (planOrPriceId = "annual") => {
     const { data, error } = await supabase.functions.invoke("create-checkout", {
-      body: { price_id: priceId || TIERS.base.monthly_price_id },
+      body: getCheckoutRequestBody(planOrPriceId),
     });
     if (error || data?.error) {
       toast({ title: data?.error || "Failed to start checkout", variant: "destructive" });
@@ -915,24 +916,19 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
           </div>
         ) : (
           <div className="space-y-2">
-            <p className="text-xs text-center text-primary font-semibold">7-day free trial on all plans</p>
+            <p className="text-xs text-center text-primary font-semibold">
+              {MEMBERSHIP.trial_days}-day free trial included
+            </p>
             <button
-              onClick={() => handleSubscribe(TIERS.base.monthly_price_id)}
-              className="w-full flex flex-col items-center gap-0.5 py-2.5 rounded-lg bg-secondary text-foreground font-semibold text-xs hover:bg-secondary/80 border border-border transition-colors"
+              onClick={() => onOpenMembership ? onOpenMembership() : handleSubscribe("annual")}
+              className="w-full flex flex-col items-center gap-0.5 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-xs hover:bg-primary/90 transition-colors"
             >
               <span className="flex items-center gap-1.5">
-                <CreditCard className="w-3.5 h-3.5" /> Training Only — ${TIERS.base.monthly_price}/mo
+                <Sparkles className="w-3.5 h-3.5" /> View Membership Options
               </span>
-              <span className="text-[10px] text-muted-foreground font-normal">Start with 7-day free trial</span>
-            </button>
-            <button
-              onClick={() => handleSubscribe(TIERS.performance.monthly_price_id)}
-              className="w-full flex flex-col items-center gap-0.5 py-2.5 rounded-lg bg-primary text-primary-foreground font-semibold text-xs hover:bg-primary/90 transition-colors"
-            >
-              <span className="flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5" /> Total Transformation — ${TIERS.performance.monthly_price}/mo
+              <span className="text-[10px] font-normal opacity-80">
+                From ${MEMBERSHIP.annual.per_month}/month · Annual or monthly billing
               </span>
-              <span className="text-[10px] font-normal opacity-80">Start with 7-day free trial</span>
             </button>
           </div>
         )}

@@ -53,6 +53,14 @@ export const DUE_DATE_PASS = {
 // Tabs gated behind Performance plan
 export const PERFORMANCE_ONLY_TABS = ["Macros"];
 
+export type MembershipPlan = "monthly" | "annual";
+
+export function getCheckoutRequestBody(planOrPriceId: string): { plan: MembershipPlan } | { price_id: string } {
+  return planOrPriceId === "monthly" || planOrPriceId === "annual"
+    ? { plan: planOrPriceId }
+    : { price_id: planOrPriceId };
+}
+
 // Single public membership (self-serve signup). Prices are resolved server-side by lookup key.
 export const MEMBERSHIP = {
   trial_days: 7,

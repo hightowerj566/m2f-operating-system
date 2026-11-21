@@ -1,5 +1,6 @@
 # Current tasks
 
+- [x] Restore the annual/monthly membership and 7-day trial in the locked-feature modal and More tab; verify both plan checkout requests.
 - [x] Fix `/start` as a public QR landing page with strict, member-specific due-date countdowns and postpartum handling; test with fresh browser storage.
 
 - [x] Correct public-page product pillars to Father Forge, Partner Strong, Fatherhood Prep, and Father Fuel; correct unsupported information and verify on desktop and mobile.

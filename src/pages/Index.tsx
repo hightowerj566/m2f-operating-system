@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { ChevronLeft, ChevronRight, Dumbbell, TrendingUp, Menu, Lock, Sparkles, Check, LayoutDashboard, Home, ClipboardList, LineChart, Wrench, X, Map } from "lucide-react";
+import { ChevronLeft, ChevronRight, Dumbbell, TrendingUp, Menu, Lock, Check, LayoutDashboard, Home, ClipboardList, LineChart, Wrench, X, Map } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useSubscription } from "@/hooks/useSubscription";
 import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
@@ -26,7 +26,8 @@ import { useDueDatePass } from "@/hooks/useM2fOs";
 import { StreakMilestonePopup } from "@/components/streak/StreakMilestonePopup";
 import { DayPickerModal } from "@/components/workout/DayPickerModal";
 import { ProgramPickerModal } from "@/components/workout/ProgramPickerModal";
-import { TIERS, PERFORMANCE_ONLY_TABS, MEMBERSHIP } from "@/lib/subscriptionTiers";
+import { PERFORMANCE_ONLY_TABS, getCheckoutRequestBody } from "@/lib/subscriptionTiers";
+import { MembershipUpgradeModal } from "@/components/membership/MembershipUpgradeModal";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "@/hooks/use-toast";
 import { getScheduleForDay, splitMergeExercises, type ScheduleDayConfig } from "@/lib/scheduleEngine";
@@ -748,9 +749,8 @@ export default function Index() {
 
   const handleCheckout = async (planOrPriceId: string) => {
     setCheckingOut(true);
-    const isPlan = planOrPriceId === "monthly" || planOrPriceId === "annual";
     const { data, error } = await supabase.functions.invoke("create-checkout", {
-      body: isPlan ? { plan: planOrPriceId } : { price_id: planOrPriceId },
+      body: getCheckoutRequestBody(planOrPriceId),
     });
     setCheckingOut(false);
     if (error || data?.error) {
@@ -914,7 +914,7 @@ export default function Index() {
       case "Progress":
         return <ProgressTab />;
       case "More":
-        return <MoreTab tier={tier} subscriptionEnd={subscriptionEnd} cancelAtPeriodEnd={cancelAtPeriodEnd} onRefreshSub={refreshSub} currentProgramId={programId} onProgramChanged={() => window.location.reload()} onOpenStandards={() => handleNavClick("Daily")} onOpenMacros={() => handleNavClick("Macros")} />;
+        return <MoreTab tier={tier} subscriptionEnd={subscriptionEnd} cancelAtPeriodEnd={cancelAtPeriodEnd} onRefreshSub={refreshSub} currentProgramId={programId} onProgramChanged={() => window.location.reload()} onOpenStandards={() => handleNavClick("Daily")} onOpenMacros={() => handleNavClick("Macros")} onOpenMembership={() => setShowUpgradeModal(true)} />;
       case "Workout":
         return (
           <>
@@ -1409,39 +1409,13 @@ export default function Index() {
         />
       )}
 
-      {/* Upgrade Modal */}
+      {/* Membership offer opens only when an unsubscribed member chooses a locked feature. */}
       {showUpgradeModal && (
-        <div className="fixed inset-0 z-50 bg-black/60 flex items-end justify-center" onClick={() => setShowUpgradeModal(false)}>
-          <div className="w-full max-w-md bg-card border-t border-border rounded-t-3xl p-6 pb-8 space-y-4 animate-in slide-in-from-bottom" onClick={e => e.stopPropagation()}>
-            <div className="flex justify-center">
-              <div className="w-10 h-1 rounded-full bg-border" />
-            </div>
-            <div className="text-center space-y-2">
-              <Sparkles className="w-8 h-8 text-primary mx-auto" />
-              <h2 className="text-xl font-black text-foreground">Upgrade to Performance</h2>
-              <p className="text-sm text-muted-foreground">Unlock nutrition coaching, macro tracking, and weekly check-ins.</p>
-            </div>
-            <div className="space-y-2">
-              {TIERS.performance.features.map((f, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-primary shrink-0" />
-                  <span className="text-sm text-foreground">{f}</span>
-                </div>
-              ))}
-            </div>
-            <div className="text-center">
-              <span className="text-3xl font-black text-foreground">${TIERS.performance.monthly_price}</span>
-              <span className="text-sm text-muted-foreground">/month</span>
-            </div>
-            <button onClick={() => { setShowUpgradeModal(false); handleCheckout(TIERS.performance.monthly_price_id); }} disabled={checkingOut}
-              className="w-full py-3.5 rounded-xl bg-primary text-primary-foreground font-bold text-sm hover:bg-primary/90 transition-colors disabled:opacity-50">
-              {checkingOut ? "Opening checkout..." : "Upgrade Now"}
-            </button>
-            <button onClick={() => setShowUpgradeModal(false)} className="w-full text-center text-xs text-muted-foreground hover:text-foreground">
-              Maybe later
-            </button>
-          </div>
-        </div>
+        <MembershipUpgradeModal
+          checkingOut={checkingOut}
+          onCheckout={handleCheckout}
+          onClose={() => setShowUpgradeModal(false)}
+        />
       )}
 
       {showDayPicker && <DayPickerModal totalDays={totalDays} currentDay={displayedDay} onSelect={handleDaySelect} onClose={() => setShowDayPicker(false)} />}
@@ -1518,66 +1492,6 @@ export default function Index() {
           onClose={() => setShowFeedbackModal(false)}
         />
       )}
-    </div>
-  );
-}
-
-// Pricing page shown to users with no subscription
-function PricingView({ onCheckout, checkingOut }: {
-  currentTier: string | null;
-  onCheckout: (plan: string) => void;
-  checkingOut: boolean;
-}) {
-  const { signOut } = useAuth();
-  const [yearly, setYearly] = useState(true);
-  const plan = yearly ? MEMBERSHIP.annual : MEMBERSHIP.monthly;
-
-  return (
-    <div className="px-5 pt-10 pb-8 space-y-6">
-      <div className="text-center space-y-2">
-        <h1 className="text-3xl font-black text-foreground">Start Your Membership</h1>
-        <p className="text-sm text-muted-foreground">Full access to training, nutrition coaching, and your fatherhood roadmap.</p>
-        <p className="text-xs font-semibold text-primary">7-day free trial. Cancel anytime.</p>
-      </div>
-
-      <div className="grid grid-cols-2 gap-1 p-1 bg-secondary rounded-xl">
-        {[{ k: true, l: "Annual" }, { k: false, l: "Monthly" }].map((o) => (
-          <button key={o.l} onClick={() => setYearly(o.k)}
-            className={`py-2 rounded-lg text-sm font-bold transition-colors ${yearly === o.k ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>
-            {o.l}{o.k && <span className="ml-1 text-[10px] font-semibold opacity-80">Save 17%</span>}
-          </button>
-        ))}
-      </div>
-
-      <div className="bg-card border-2 border-primary rounded-2xl p-5 space-y-4">
-        <div>
-          <h3 className="text-lg font-black text-foreground">M2F Membership</h3>
-          <div className="mt-1">
-            <span className="text-3xl font-black text-foreground">${plan.per_month.toFixed(2)}</span>
-            <span className="text-sm text-muted-foreground">/month</span>
-            <p className="text-sm font-bold text-primary mt-0.5">
-              {yearly ? "Billed annually" : "Billed monthly"}
-            </p>
-          </div>
-        </div>
-        <div className="space-y-2">
-          {MEMBERSHIP.features.map((f, i) => (
-            <div key={i} className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-primary shrink-0" />
-              <span className="text-sm text-foreground">{f}</span>
-            </div>
-          ))}
-        </div>
-        <button onClick={() => onCheckout(yearly ? "annual" : "monthly")} disabled={checkingOut}
-          className="w-full flex flex-col items-center gap-0.5 py-3 rounded-xl bg-primary text-primary-foreground font-bold text-sm hover:bg-primary/90 transition-colors disabled:opacity-50">
-          <span>{checkingOut ? "Loading..." : "Start Free Trial"}</span>
-          <span className="text-[10px] font-normal opacity-80">You won't be charged for 7 days</span>
-        </button>
-      </div>
-
-      <button onClick={signOut} className="w-full text-center text-xs text-muted-foreground hover:text-foreground">
-        Log out
-      </button>
     </div>
   );
 }
