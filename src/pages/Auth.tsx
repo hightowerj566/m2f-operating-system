@@ -6,6 +6,7 @@ import m2fLogo from "@/assets/m2f-logo.png.asset.json";
 import { Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { clearMemberDevice, isRecognizedMemberDevice, rememberMemberDevice } from "@/lib/memberDevice";
+import { normalizeMembershipPlan, savePreferredMembershipPlan } from "@/lib/membershipPlanPreference";
 
 function searchParams_init(): boolean {
   return new URLSearchParams(window.location.search).get("mode") === "signup";
@@ -39,6 +40,11 @@ export default function Auth() {
   const [searchParams] = useSearchParams();
   const next = safeNext(searchParams.get("next"));
   const inviteToken = searchParams.get("invite");
+  const requestedPlan = normalizeMembershipPlan(searchParams.get("plan"));
+
+  useEffect(() => {
+    if (requestedPlan) savePreferredMembershipPlan(requestedPlan);
+  }, [requestedPlan]);
 
   // Invitation state
   const [invitation, setInvitation] = useState<InvitationPreview | null>(null);

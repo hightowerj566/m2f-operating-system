@@ -1,11 +1,14 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { MoreTab } from "@/components/tabs/MoreTab";
+import { savePreferredMembershipPlan } from "@/lib/membershipPlanPreference";
 
 const invoke = vi.fn();
+const authUser = { id: "member-1", email: "member@example.com" };
+const signOut = vi.fn();
 
 vi.mock("@/hooks/useAuth", () => ({
-  useAuth: () => ({ user: { id: "member-1", email: "member@example.com" }, signOut: vi.fn() }),
+  useAuth: () => ({ user: authUser, signOut }),
 }));
 
 vi.mock("@/integrations/supabase/client", () => ({
@@ -34,6 +37,7 @@ vi.mock("@/components/settings/DemoModeCard", () => ({ DemoModeCard: () => null 
 
 describe("More tab membership entry point", () => {
   beforeEach(() => {
+    localStorage.clear();
     invoke.mockReset();
     invoke.mockResolvedValue({ data: { subscribed: false, subscription_end: null }, error: null });
   });
@@ -47,5 +51,17 @@ describe("More tab membership entry point", () => {
 
     expect(onOpenMembership).toHaveBeenCalledOnce();
     expect(invoke).not.toHaveBeenCalledWith("create-checkout", expect.anything());
+  });
+
+  it("uses the visitor's monthly choice when the standalone fallback starts checkout", async () => {
+    savePreferredMembershipPlan("monthly");
+    render(<MoreTab tier={null} />);
+
+    const button = await screen.findByRole("button", { name: /view membership options/i });
+    fireEvent.click(button);
+
+    await waitFor(() => expect(invoke).toHaveBeenCalledWith("create-checkout", {
+      body: { plan: "monthly" },
+    }));
   });
 });

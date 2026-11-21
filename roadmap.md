@@ -1,5 +1,6 @@
 # Current tasks
 
+- [x] Sweep every new-member purchase path for the same $24.99 annual / $29.99 monthly membership and 7-day trial; preserve legacy paid-member billing and settled records.
 - [x] Restore the annual/monthly membership and 7-day trial in the locked-feature modal and More tab; verify both plan checkout requests.
 - [x] Fix `/start` as a public QR landing page with strict, member-specific due-date countdowns and postpartum handling; test with fresh browser storage.
 

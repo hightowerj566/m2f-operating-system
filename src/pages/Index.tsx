@@ -28,6 +28,7 @@ import { DayPickerModal } from "@/components/workout/DayPickerModal";
 import { ProgramPickerModal } from "@/components/workout/ProgramPickerModal";
 import { PERFORMANCE_ONLY_TABS, getCheckoutRequestBody } from "@/lib/subscriptionTiers";
 import { MembershipUpgradeModal } from "@/components/membership/MembershipUpgradeModal";
+import { readPreferredMembershipPlan } from "@/lib/membershipPlanPreference";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "@/hooks/use-toast";
 import { getScheduleForDay, splitMergeExercises, type ScheduleDayConfig } from "@/lib/scheduleEngine";
@@ -1412,6 +1413,7 @@ export default function Index() {
       {/* Membership offer opens only when an unsubscribed member chooses a locked feature. */}
       {showUpgradeModal && (
         <MembershipUpgradeModal
+          initialPlan={readPreferredMembershipPlan()}
           checkingOut={checkingOut}
           onCheckout={handleCheckout}
           onClose={() => setShowUpgradeModal(false)}

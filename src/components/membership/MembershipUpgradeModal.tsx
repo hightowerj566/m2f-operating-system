@@ -1,17 +1,24 @@
 import { useState } from "react";
 import { Check, X } from "lucide-react";
 import { MEMBERSHIP, type MembershipPlan } from "@/lib/subscriptionTiers";
+import { savePreferredMembershipPlan } from "@/lib/membershipPlanPreference";
 
 interface MembershipUpgradeModalProps {
   checkingOut: boolean;
+  initialPlan?: MembershipPlan;
   onCheckout: (plan: MembershipPlan) => void;
   onClose: () => void;
 }
 
-export function MembershipUpgradeModal({ checkingOut, onCheckout, onClose }: MembershipUpgradeModalProps) {
-  const [yearly, setYearly] = useState(true);
+export function MembershipUpgradeModal({ checkingOut, initialPlan = "annual", onCheckout, onClose }: MembershipUpgradeModalProps) {
+  const [yearly, setYearly] = useState(initialPlan === "annual");
   const plan = yearly ? MEMBERSHIP.annual : MEMBERSHIP.monthly;
   const selectedPlan: MembershipPlan = yearly ? "annual" : "monthly";
+
+  const selectBilling = (annual: boolean) => {
+    setYearly(annual);
+    savePreferredMembershipPlan(annual ? "annual" : "monthly");
+  };
 
   return (
     <div
@@ -57,7 +64,7 @@ export function MembershipUpgradeModal({ checkingOut, onCheckout, onClose }: Mem
                 key={option.label}
                 type="button"
                 aria-pressed={yearly === option.key}
-                onClick={() => setYearly(option.key)}
+                onClick={() => selectBilling(option.key)}
                 className={`rounded-lg py-2 text-sm font-bold transition-colors ${
                   yearly === option.key ? "bg-primary text-primary-foreground" : "text-muted-foreground"
                 }`}

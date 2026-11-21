@@ -107,6 +107,7 @@ const journey = [
 export default function LandingPage() {
   const [annual, setAnnual] = useState(true);
   const price = annual ? MEMBERSHIP.annual.per_month : MEMBERSHIP.monthly.per_month;
+  const signupPath = `/auth?mode=signup&plan=${annual ? "annual" : "monthly"}`;
 
   return (
     <div className="min-h-screen overflow-hidden bg-background font-marketing text-foreground">
@@ -159,7 +160,7 @@ export default function LandingPage() {
                   Get my Readiness Score <ArrowRight className="h-5 w-5" />
                 </Link>
                 <Link
-                  to="/auth?mode=signup"
+                  to={signupPath}
                   className="inline-flex min-h-14 items-center justify-center gap-2 rounded-lg border border-border bg-card px-7 text-base font-bold text-foreground transition-colors hover:border-primary/60 hover:bg-secondary"
                 >
                   Start 7-day free trial <ChevronRight className="h-5 w-5" />
@@ -330,7 +331,7 @@ export default function LandingPage() {
                 <p className="mt-3 text-sm font-bold text-primary">{annual ? "Billed annually" : "Billed monthly"}</p>
                 <p className="mt-2 text-sm text-muted-foreground">{MEMBERSHIP.trial_days}-day free trial included.</p>
                 <Link
-                  to="/auth?mode=signup"
+                  to={signupPath}
                   className="mt-8 inline-flex min-h-14 items-center justify-center gap-2 rounded-lg bg-primary px-6 text-base font-extrabold text-primary-foreground transition-colors hover:bg-primary/90"
                 >
                   Start my free trial <ArrowRight className="h-5 w-5" />
@@ -388,7 +389,7 @@ export default function LandingPage() {
               <Link to="/father-athlete-quiz" className="inline-flex min-h-14 items-center justify-center gap-2 rounded-lg bg-primary px-7 font-extrabold text-primary-foreground transition-colors hover:bg-primary/90">
                 Get my Readiness Score <ArrowRight className="h-5 w-5" />
               </Link>
-              <Link to="/auth?mode=signup" className="inline-flex min-h-14 items-center justify-center rounded-lg border border-border bg-card px-7 font-bold transition-colors hover:border-primary/60">
+              <Link to={signupPath} className="inline-flex min-h-14 items-center justify-center rounded-lg border border-border bg-card px-7 font-bold transition-colors hover:border-primary/60">
                 Start {MEMBERSHIP.trial_days} days free
               </Link>
             </div>

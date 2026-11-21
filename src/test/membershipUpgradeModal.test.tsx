@@ -1,13 +1,16 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { MembershipUpgradeModal } from "@/components/membership/MembershipUpgradeModal";
+import type { MembershipPlan } from "@/lib/subscriptionTiers";
 
-function renderOffer(onCheckout = vi.fn()) {
-  render(<MembershipUpgradeModal checkingOut={false} onCheckout={onCheckout} onClose={vi.fn()} />);
+function renderOffer(onCheckout = vi.fn(), initialPlan: MembershipPlan = "annual") {
+  render(<MembershipUpgradeModal checkingOut={false} initialPlan={initialPlan} onCheckout={onCheckout} onClose={vi.fn()} />);
   return onCheckout;
 }
 
 describe("membership upgrade offer", () => {
+  beforeEach(() => localStorage.clear());
+
   it("defaults to the $24.99 annual plan and starts annual checkout", () => {
     const onCheckout = renderOffer();
 
@@ -26,6 +29,14 @@ describe("membership upgrade offer", () => {
     expect(screen.getByText("$29.99")).toBeInTheDocument();
     expect(screen.getByText("Billed monthly")).toBeInTheDocument();
 
+    fireEvent.click(screen.getByRole("button", { name: /start free trial/i }));
+    expect(onCheckout).toHaveBeenCalledWith("monthly");
+  });
+
+  it("opens with the monthly plan chosen before signup", () => {
+    const onCheckout = renderOffer(vi.fn(), "monthly");
+
+    expect(screen.getByText("$29.99")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /start free trial/i }));
     expect(onCheckout).toHaveBeenCalledWith("monthly");
   });

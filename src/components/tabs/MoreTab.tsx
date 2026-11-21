@@ -26,6 +26,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { getCheckoutRequestBody, MEMBERSHIP, TIERS, type SubscriptionTier } from "@/lib/subscriptionTiers";
+import { readPreferredMembershipPlan } from "@/lib/membershipPlanPreference";
 import { ManageSubscriptionView } from "@/components/settings/ManageSubscriptionView";
 import { FitnessToolsTab } from "@/components/tools/FitnessToolsTab";
 import { DemoModeCard } from "@/components/settings/DemoModeCard";
@@ -882,7 +883,7 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
             <span className="text-[10px] text-muted-foreground">Checking…</span>
           ) : subscribed ? (
             <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-              {tier === "performance" ? "Performance" : tier === "base" ? "Base" : "Active"}
+              Active
             </span>
           ) : (
             <span className="text-[10px] font-bold text-muted-foreground bg-secondary px-2 py-0.5 rounded-full">
@@ -920,7 +921,7 @@ export function MoreTab({ tier, subscriptionEnd: subEnd, cancelAtPeriodEnd, onRe
               {MEMBERSHIP.trial_days}-day free trial included
             </p>
             <button
-              onClick={() => onOpenMembership ? onOpenMembership() : handleSubscribe("annual")}
+              onClick={() => onOpenMembership ? onOpenMembership() : handleSubscribe(readPreferredMembershipPlan())}
               className="w-full flex flex-col items-center gap-0.5 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-xs hover:bg-primary/90 transition-colors"
             >
               <span className="flex items-center gap-1.5">

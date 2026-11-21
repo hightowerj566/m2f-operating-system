@@ -3,7 +3,7 @@ import { CreditCard, Star, X, AlertTriangle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "@/hooks/use-toast";
-import { TIERS, MEMBERSHIP, type SubscriptionTier } from "@/lib/subscriptionTiers";
+import { MEMBERSHIP, type SubscriptionTier } from "@/lib/subscriptionTiers";
 
 interface ManageSubscriptionViewProps {
   tier: SubscriptionTier;
@@ -208,7 +208,9 @@ export function ManageSubscriptionView({ tier, subscriptionEnd, cancelAtPeriodEn
           </div>
           <div className="flex-1">
             <p className="font-bold text-sm text-foreground">{tierInfo.name}</p>
-            <p className="text-xs text-muted-foreground">Annual $24.99/mo or monthly $29.99/mo</p>
+            <p className="text-xs text-muted-foreground">
+              Annual ${MEMBERSHIP.annual.per_month}/mo or monthly ${MEMBERSHIP.monthly.per_month}/mo
+            </p>
           </div>
           {cancelAtPeriodEnd ? (
             <span className="text-[10px] font-bold text-destructive bg-destructive/10 px-2 py-0.5 rounded-full">Cancelled</span>
@@ -249,19 +251,6 @@ export function ManageSubscriptionView({ tier, subscriptionEnd, cancelAtPeriodEn
         </div>
       </div>
 
-      {false && (
-        <button
-          onClick={async () => {
-            const { data, error } = await supabase.functions.invoke("create-checkout", {
-              body: { price_id: TIERS.performance.monthly_price_id },
-            });
-            if (!error && data?.url) window.open(data.url, "_blank");
-          }}
-          className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-primary text-primary-foreground font-bold text-sm hover:bg-primary/90 transition-colors"
-        >
-          Upgrade to Total Transformation — ${TIERS.performance.monthly_price}/mo
-        </button>
-      )}
 
       <button
         onClick={async () => {
