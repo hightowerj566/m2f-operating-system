@@ -6,6 +6,7 @@ import m2fLogo from "@/assets/m2f-logo.png.asset.json";
 import { Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { clearMemberDevice, isRecognizedMemberDevice, rememberMemberDevice } from "@/lib/memberDevice";
+import { normalizeReferralCode } from "@/lib/referrals";
 import { normalizeMembershipPlan, savePreferredMembershipPlan } from "@/lib/membershipPlanPreference";
 
 function searchParams_init(): boolean {
@@ -41,6 +42,7 @@ export default function Auth() {
   const next = safeNext(searchParams.get("next"));
   const inviteToken = searchParams.get("invite");
   const requestedPlan = normalizeMembershipPlan(searchParams.get("plan"));
+  const [referralCode, setReferralCode] = useState(() => normalizeReferralCode(searchParams.get("ref") ?? ""));
 
   useEffect(() => {
     if (requestedPlan) savePreferredMembershipPlan(requestedPlan);
@@ -85,12 +87,21 @@ export default function Auth() {
     }
 
     if (signupMode) {
+      const code = normalizeReferralCode(referralCode);
+      if (code) {
+        const { data: valid } = await supabase.rpc("validate_referral_code", { _code: code });
+        if (!valid) {
+          setError("That referral code isn't valid. Check it or leave it blank.");
+          setLoading(false);
+          return;
+        }
+      }
       const { data, error } = await supabase.auth.signUp({
         email: email.trim().toLowerCase(),
         password,
         options: {
           emailRedirectTo: `${window.location.origin}/`,
-          data: { display_name: displayName || email.split("@")[0] },
+          data: { display_name: displayName || email.split("@")[0], ...(code ? { referral_code: code } : {}) },
         },
       });
       if (error) setError(error.message);
@@ -260,6 +271,17 @@ export default function Auth() {
             minLength={signupMode ? 8 : 6}
             className="w-full bg-secondary border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary"
             required
+          />
+        )}
+        {signupMode && !forgotMode && (
+          <input
+            type="text"
+            placeholder="Referral code (optional)"
+            aria-label="Referral code (optional)"
+            value={referralCode}
+            onChange={(e) => setReferralCode(normalizeReferralCode(e.target.value))}
+            autoCapitalize="characters"
+            className="w-full bg-secondary border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary uppercase"
           />
         )}
         {!forgotMode && !signupMode && (

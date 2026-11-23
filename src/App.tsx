@@ -37,6 +37,7 @@ import WeeklyCheckIn from "./pages/WeeklyCheckIn";
 import { CoachingGate } from "./components/coaching/CoachingGate";
 import WeeklyReview from "./pages/WeeklyReview";
 import CoachCheckIns from "./pages/coach/CoachCheckIns";
+import CoachReferrals from "./pages/coach/CoachReferrals";
 import CoachCheckInReview from "./pages/coach/CoachCheckInReview";
 
 const queryClient = new QueryClient();
@@ -80,6 +81,7 @@ const App = () => (
           <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
           <Route path="/weekly-check-in" element={<CoachingGate><WeeklyCheckIn /></CoachingGate>} />
           <Route path="/weekly-review/:weekStart" element={<CoachingGate><WeeklyReview /></CoachingGate>} />
+          <Route path="/coach/referrals" element={<CoachReferrals />} />
           <Route path="/coach/check-ins" element={<CoachCheckIns />} />
           <Route path="/coach/check-ins/:checkInId" element={<CoachCheckInReview />} />
 

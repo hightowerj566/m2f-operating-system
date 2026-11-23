@@ -1133,6 +1133,112 @@ export type Database = {
         }
         Relationships: []
       }
+      referral_codes: {
+        Row: {
+          code: string
+          created_at: string
+          created_by: string
+          id: string
+          is_active: boolean
+          payout_cents: number
+          referrer_contact: string | null
+          referrer_name: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          created_by: string
+          id?: string
+          is_active?: boolean
+          payout_cents?: number
+          referrer_contact?: string | null
+          referrer_name: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          is_active?: boolean
+          payout_cents?: number
+          referrer_contact?: string | null
+          referrer_name?: string
+        }
+        Relationships: []
+      }
+      referral_payouts: {
+        Row: {
+          amount_cents: number
+          code_id: string
+          id: string
+          month: string
+          paid_at: string
+          paid_by: string
+          referral_count: number
+        }
+        Insert: {
+          amount_cents: number
+          code_id: string
+          id?: string
+          month: string
+          paid_at?: string
+          paid_by: string
+          referral_count: number
+        }
+        Update: {
+          amount_cents?: number
+          code_id?: string
+          id?: string
+          month?: string
+          paid_at?: string
+          paid_by?: string
+          referral_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referral_payouts_code_id_fkey"
+            columns: ["code_id"]
+            isOneToOne: false
+            referencedRelation: "referral_codes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      referrals: {
+        Row: {
+          code_id: string
+          first_paid_at: string | null
+          id: string
+          payout_cents: number | null
+          referred_user_id: string
+          signed_up_at: string
+        }
+        Insert: {
+          code_id: string
+          first_paid_at?: string | null
+          id?: string
+          payout_cents?: number | null
+          referred_user_id: string
+          signed_up_at?: string
+        }
+        Update: {
+          code_id?: string
+          first_paid_at?: string | null
+          id?: string
+          payout_cents?: number | null
+          referred_user_id?: string
+          signed_up_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referrals_code_id_fkey"
+            columns: ["code_id"]
+            isOneToOne: false
+            referencedRelation: "referral_codes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       schedule_change_log: {
         Row: {
           assignment_id: string
@@ -1981,6 +2087,18 @@ export type Database = {
           role: Database["public"]["Enums"]["app_role"]
         }[]
       }
+      get_referral_members: {
+        Args: { _code_ids: string[] }
+        Returns: {
+          code_id: string
+          display_name: string
+          email: string
+          first_paid_at: string
+          id: string
+          payout_cents: number
+          signed_up_at: string
+        }[]
+      }
       has_active_coaching: { Args: { _user_id: string }; Returns: boolean }
       has_active_subscription: { Args: { _user_id: string }; Returns: boolean }
       has_role: {
@@ -1992,6 +2110,7 @@ export type Database = {
       }
       is_admin: { Args: { _user_id: string }; Returns: boolean }
       is_coach_or_admin: { Args: { _user_id: string }; Returns: boolean }
+      validate_referral_code: { Args: { _code: string }; Returns: boolean }
       week_is_accessible: {
         Args: { _user_id: string; _week_id: string }
         Returns: boolean

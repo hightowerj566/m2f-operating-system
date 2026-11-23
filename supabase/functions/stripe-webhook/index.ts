@@ -94,6 +94,34 @@ serve(async (req) => {
         } else {
           logStep("Subscription upserted", { userId: matchedUser.id, status: sub.status });
         }
+
+        // Referral credit: only after the first real (non-zero) membership payment
+        if (sub.status === "active") {
+          try {
+            const { data: ref } = await supabaseAdmin
+              .from("referrals")
+              .select("id, first_paid_at, code_id")
+              .eq("referred_user_id", matchedUser.id)
+              .maybeSingle();
+            if (ref && !ref.first_paid_at) {
+              const invoiceId = typeof sub.latest_invoice === "string" ? sub.latest_invoice : sub.latest_invoice?.id;
+              const invoice = invoiceId ? await stripe.invoices.retrieve(invoiceId) : null;
+              if (invoice && invoice.status === "paid" && (invoice.amount_paid ?? 0) > 0) {
+                const { data: code } = await supabaseAdmin
+                  .from("referral_codes").select("payout_cents").eq("id", ref.code_id).maybeSingle();
+                const paidAt = invoice.status_transitions?.paid_at
+                  ? new Date(invoice.status_transitions.paid_at * 1000).toISOString()
+                  : new Date().toISOString();
+                await supabaseAdmin.from("referrals")
+                  .update({ first_paid_at: paidAt, payout_cents: code?.payout_cents ?? 0 })
+                  .eq("id", ref.id).is("first_paid_at", null);
+                logStep("Referral became eligible", { userId: matchedUser.id });
+              }
+            }
+          } catch (e) {
+            logStep("Referral credit check failed", { error: (e as Error).message });
+          }
+        }
         break;
       }
       case "checkout.session.completed": {
