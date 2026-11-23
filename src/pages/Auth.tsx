@@ -90,6 +90,7 @@ export default function Auth() {
       const code = normalizeReferralCode(referralCode);
       if (code) {
         const { data: valid } = await supabase.rpc("validate_referral_code", { _code: code });
+        window.__lovableEvents?.track?.("project.referral_code_entered", { valid: !!valid, from_link: !!searchParams.get("ref") });
         if (!valid) {
           setError("That referral code isn't valid. Check it or leave it blank.");
           setLoading(false);
@@ -104,6 +105,7 @@ export default function Auth() {
           data: { display_name: displayName || email.split("@")[0], ...(code ? { referral_code: code } : {}) },
         },
       });
+      if (!error && code) window.__lovableEvents?.track?.("project.referral_signup", { confirmed_immediately: !!data.session });
       if (error) setError(error.message);
       else if (data.session) {
         rememberMemberDevice();

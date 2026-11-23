@@ -78,6 +78,7 @@ export default function CoachReferrals() {
   const markPaid = async (c: Code, owed: number, count: number) => {
     const { error } = await supabase.from("referral_payouts").insert({ code_id: c.id, month, amount_cents: owed, referral_count: count, paid_by: user!.id });
     if (error) return toast.error(error.message);
+    window.__lovableEvents?.track?.("project.referral_payout_marked_paid", { amount_cents: owed, referral_count: count });
     toast.success(`Marked ${formatCents(owed)} paid to ${c.referrer_name}`);
     load();
   };

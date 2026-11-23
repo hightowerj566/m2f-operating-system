@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "events": {
+    "project.referral_code_entered": {
+      "event_schema_version": 1,
+      "description": "A new member submitted signup with a referral code; records whether it was valid.",
+      "privacy": {
+        "contains_pii": false,
+        "purpose": "product_analytics"
+      },
+      "properties_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "valid",
+          "from_link"
+        ],
+        "properties": {
+          "valid": {
+            "type": "boolean"
+          },
+          "from_link": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "project.referral_payout_marked_paid": {
+      "event_schema_version": 1,
+      "description": "A coach or admin marked a monthly referral payout as paid.",
+      "privacy": {
+        "contains_pii": false,
+        "purpose": "product_analytics"
+      },
+      "properties_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "amount_cents",
+          "referral_count"
+        ],
+        "properties": {
+          "amount_cents": {
+            "type": "integer"
+          },
+          "referral_count": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "project.referral_signup": {
+      "event_schema_version": 1,
+      "description": "An account was created with a valid referral code attached.",
+      "privacy": {
+        "contains_pii": false,
+        "purpose": "product_analytics"
+      },
+      "properties_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "confirmed_immediately"
+        ],
+        "properties": {
+          "confirmed_immediately": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}
