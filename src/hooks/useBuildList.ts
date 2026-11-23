@@ -13,6 +13,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { CATEGORIES, type CategorySlug } from "@/lib/readiness";
 import { FATHER_MODE, unlockedPhaseIds, isInfantPhaseUnlocked } from "@/lib/phases";
+import { readDemoRoadmap, setDemoMilestone } from "@/lib/demoRoadmap";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = supabase as any;
@@ -46,7 +47,8 @@ export function useBuildList(userId: string | undefined) {
     queryKey: ["build-list", userId],
     enabled: !!userId,
     queryFn: async () => {
-      const [{ data: milestones }, { data: done }] = await Promise.all([
+      const [{ data: authData }, { data: milestones }, { data: done }] = await Promise.all([
+        supabase.auth.getUser(),
         db
           .from("build_milestones")
           .select(
@@ -58,8 +60,14 @@ export function useBuildList(userId: string | undefined) {
         db.from("user_milestones").select("milestone_id, completed_at").eq("user_id", userId),
       ]);
       if (!milestones) return [];
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const doneMap = new Map((done ?? []).map((r: any) => [r.milestone_id, r.completed_at]));
+      const demoMode = !!authData.user?.user_metadata?.demo_backup;
+      // Demo checks never come from or write to the member's real completions.
+      const doneMap = new Map<string, string>(
+        demoMode
+          ? Object.entries(readDemoRoadmap(userId!))
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          : (done ?? []).map((r: any) => [r.milestone_id, r.completed_at]),
+      );
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return milestones.map((m: any) => ({
         ...m,
@@ -76,7 +84,10 @@ export function useToggleMilestone(userId: string | undefined) {
   const queryClient = useQueryClient();
   return async (milestoneId: string, complete: boolean) => {
     if (!userId) return;
-    if (complete) {
+    const { data: authData } = await supabase.auth.getUser();
+    if (authData.user?.user_metadata?.demo_backup) {
+      setDemoMilestone(userId, milestoneId, complete);
+    } else if (complete) {
       await db.from("user_milestones").upsert(
         { user_id: userId, milestone_id: milestoneId },
         { onConflict: "user_id,milestone_id" },

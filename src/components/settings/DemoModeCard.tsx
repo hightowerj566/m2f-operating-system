@@ -1,10 +1,12 @@
 // Demo mode: lets the owner account switch its own profile into pre-baby with
-// an example due date, then restore the real dates. The original values are
-// saved on the account (auth user metadata) so they survive any device/browser.
+// an example due date and a fresh, separate roadmap. Real dates are saved on
+// the account so they survive any device/browser; real completions are never
+// deleted or changed.
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { clearDemoRoadmap } from "@/lib/demoRoadmap";
 import { MonitorPlay } from "lucide-react";
 
 export const DEMO_EMAIL = "hightowerj566@gmail.com";
@@ -43,25 +45,43 @@ export function DemoModeCard({ userId, email }: { userId: string; email?: string
       const { data: p } = await db.from("profiles").select("due_date, baby_arrived_at, baby_name").eq("user_id", userId).maybeSingle();
       saved = { due_date: p?.due_date ?? null, baby_arrived_at: p?.baby_arrived_at ?? null, baby_name: p?.baby_name ?? null };
       const { error: mErr } = await supabase.auth.updateUser({ data: { demo_backup: saved } });
-      if (mErr) { setBusy(false); return toast({ title: "Couldn't save your real dates", description: mErr.message, variant: "destructive" }); }
+      if (mErr) {
+        setBusy(false);
+        return toast({ title: "Couldn't save your real dates", description: mErr.message, variant: "destructive" });
+      }
     }
+
+    // A fresh demo checklist lives outside user_milestones, so the member's
+    // real roadmap remains intact and ready the moment Demo Mode exits.
+    clearDemoRoadmap(userId);
     const { error } = await db.from("profiles").update({ due_date: due, baby_arrived_at: null }).eq("user_id", userId);
     setBusy(false);
     if (error) return toast({ title: "Couldn't start demo", description: error.message, variant: "destructive" });
     setBackup(saved);
-    toast({ title: "Demo mode on", description: `Pre-baby, due ${due}` });
+    toast({ title: "Demo mode on", description: `Pre-baby, due ${due}. Roadmap reset.` });
     refresh();
   };
 
   const exit = async () => {
     if (!backup) return;
     setBusy(true);
-    const { error } = await db.from("profiles").update(backup).eq("user_id", userId);
-    if (error) { setBusy(false); return toast({ title: "Couldn't exit demo", description: error.message, variant: "destructive" }); }
-    await supabase.auth.updateUser({ data: { demo_backup: null } });
+    // Send only profile columns; older in-development backups may contain a
+    // roadmap_completions field that does not belong on the profiles table.
+    const dates = { due_date: backup.due_date, baby_arrived_at: backup.baby_arrived_at, baby_name: backup.baby_name };
+    const { error } = await db.from("profiles").update(dates).eq("user_id", userId);
+    if (error) {
+      setBusy(false);
+      return toast({ title: "Couldn't exit demo", description: error.message, variant: "destructive" });
+    }
+    clearDemoRoadmap(userId);
+    const { error: metadataError } = await supabase.auth.updateUser({ data: { demo_backup: null } });
+    if (metadataError) {
+      setBusy(false);
+      return toast({ title: "Couldn't finish exiting demo", description: metadataError.message, variant: "destructive" });
+    }
     setBusy(false);
     setBackup(null);
-    toast({ title: "Demo mode off", description: "Your real dates are back." });
+    toast({ title: "Demo mode off", description: "Your real dates and roadmap progress are back." });
     refresh();
   };
 
@@ -72,7 +92,7 @@ export function DemoModeCard({ userId, email }: { userId: string; email?: string
         <span className="font-bold text-sm text-foreground flex-1">Demo Mode</span>
         {backup && <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">ON</span>}
       </div>
-      <p className="text-xs text-muted-foreground">Show the app as an expecting dad. Pick any example due date.</p>
+      <p className="text-xs text-muted-foreground">Show the app as an expecting dad with a fresh roadmap. Your real progress returns when you exit.</p>
       <input type="date" value={due} onChange={(e) => setDue(e.target.value)}
         className="w-full bg-secondary border border-border rounded-lg px-3 py-2 text-sm text-foreground" />
       <button onClick={start} disabled={busy || !due}
@@ -82,7 +102,7 @@ export function DemoModeCard({ userId, email }: { userId: string; email?: string
       {backup && (
         <button onClick={exit} disabled={busy}
           className="w-full py-2.5 rounded-lg border border-border text-foreground font-semibold text-xs disabled:opacity-50">
-          Exit Demo & Restore My Dates
+          Exit Demo & Restore My Progress
         </button>
       )}
     </div>
